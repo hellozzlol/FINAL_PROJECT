@@ -15,7 +15,7 @@ public class TogetherPetApplication {
 	
 	@GetMapping("/")
 	public String home() {
-		return "Hi";
+		return "HELLO";
 	}
 
 }
