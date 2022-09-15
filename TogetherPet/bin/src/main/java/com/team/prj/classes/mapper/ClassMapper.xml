@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.classes.mapper.ClassMapper">
+
+	<select id="classSelectList" resultType="com.team.prj.classes.service.ClassVO">
+		SELECT * 
+		FROM CLASS
+	</select>
+	
+	<select id="classSelect" parameterType="com.team.prj.classes.service.ClassVO"
+			resultType="com.team.prj.classes.service.ClassVO">
+		SELECT CLASS_NO,
+				NAME,
+				CATEGORY,
+				INTRO,
+				START_DT,
+				END_DT,
+				DAY,
+				TIME_START,
+				TIME_END,
+				PRICE,
+				UPLOAD_STATE,
+				UPLOAD_DATE,
+				HIT,
+				MAX_HEADCOUNT,
+				TUTOR_NO,
+				GROUP_NO,
+				ADDRESS,
+				LATITUDE,
+				LONGITUDE,
+				CATEGORY_ID,
+				RETURN_MESSAGE
+		FROM CLASS
+		WHERE CLASS_NO = #{classNo}
+	</select>
+	
+	<insert id="classInsert" parameterType="com.team.prj.classes.service.ClassVO">
+			<selectKey keyProperty="classNo" order="BEFORE" resultType="int">
+			SELECT
+				CASE WHEN MAX(CLASS_NO) IS NULL THEN 1 ELSE MAX(CLASS_NO) + 1 END AS NO
+			FROM CLASS
+			</selectKey>
+		INSERT INTO CLASS
+		VALUES(#{classNo},#{name},#{category},#{intro},#{startDt},#{endDt},#{day},#{timeStart},#{timeEnd},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage})
+	</insert>
+	
+	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
+		update class
+		<set>
+			<if test="category != null">CATEGORY = #{category},</if>
+			<if test="intro != null">INTRO = #{intro},</if>
+			<if test="startDt != null">START_DT = #{startDt},</if>
+			<if test="endDt != null">END_DT = #{endDt},</if>
+			<if test="day != null">DAY = #{day},</if>
+			<if test="timeStart != null">TIME_START = #{timeStart},</if>
+			<if test="timeEnd != null">TIME_END = #{timeEnd},</if>
+			<if test="price != null">PRICE = #{price},</if>
+			<if test="uploadDate != null">UPLOAD_DATE = #{uploadDate},</if>
+			<if test="maxHeadcount != null">MAX_HEADCOUNT = #{maxHeadcount},</if>
+			<if test="latitude != null">LATITUDE = #{latitude},</if>
+			<if test="longitude != null">LONGITUDE = #{longitude},</if>
+		</set>
+		WHERE CLASS_NO = #{classNo}
+	</update>
+	
+	<delete id="classDelete">
+		DELETE FROM CLASS
+		WHERE CLASS_NO = #{classNo}
+	</delete>
+
+
+
+</mapper>
