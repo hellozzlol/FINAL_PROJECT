@@ -12,6 +12,11 @@ public class TestController {
 	
 	@Autowired TestMapper test;
 	
+	@RequestMapping("/main")
+	public String main(Model model) {
+		return "main/main";
+	}
+	
 	@RequestMapping("/testList")
 	public String testList(Model model) {
 		model.addAttribute("test", test.findAll());
