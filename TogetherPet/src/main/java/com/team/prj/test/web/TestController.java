@@ -17,4 +17,9 @@ public class TestController {
 		model.addAttribute("test", test.findAll());
 		return "test/testList";
 	}
+	
+	@RequestMapping("/shopList")
+	public String shopList(Model model) {
+		return "shop/shopList";
+	}
 }
