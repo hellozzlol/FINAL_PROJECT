@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.team.prj.classreserve.mapper.ClassReserveMapper">
+	
+	<select id="classReserveSelectList" resultType="com.team.prj.classreserve.service.ClassReserveVO">
+		SELECT *
+		FROM CLASS_RESERVE
+	</select>	
+	
+	
+	<insert id="classReserveInsert" parameterType="com.team.prj.classreserve.service.ClassReserveVO">
+			<selectKey>
+			SELECT 
+				CASE WHEN MAX(RESERVE_NO) IS NULL THEN 1 ELSE MAX(RESERVE_NO) + 1 END AS NO
+			FROM CLASS_RESERVE
+			</selectKey>
+		INSERT INTO CLASS_RESERVE
+		VALUE(#{reserveNo},#{dt},SYSDATE,#{pay},#{payYn},#{userNo},#{classNo},#{minusPrice},#{totalPrice},0,#{minusDate})
+	</insert>
+	
+	
+	<delete id="classReserveDelete">
+		DELETE FROM CLASS_RESERVE
+		WHERE RESERVE_NO = #{RESERVENO}
+	</delete>
+</mapper>
