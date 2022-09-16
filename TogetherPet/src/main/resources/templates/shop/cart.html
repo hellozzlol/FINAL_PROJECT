@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<article layout:fragment="content">
+		<!--breadcrumbs area start-->
+		<br> <br> <br> <br>
+		<div class="breadcrumbs_area breadcrumbs_other">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="breadcrumb_content text-center">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li><a href="#">pages</a></li>
+							</ul>
+							<h3>Shopping Cart</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--breadcrumbs area end-->
+
+		<!--shopping cart area start -->
+		<div class="shopping_cart_area">
+			<div class="container">
+				<form action="#">
+					<div class="cart_page_inner mb-60">
+						<div class="row">
+							<div class="col-12">
+								<div class="cart_page_tabel">
+									<table>
+										<thead>
+											<tr>
+												<th>product</th>
+												<th>information</th>
+												<th>Price</th>
+												<th>Quantity</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="border-top">
+												<td>
+													<div class="cart_product_thumb">
+														<img src="assets/img/product/product4.jpg" alt="">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_text">
+														<br> <br>
+														<h4>상품이름상품이름상품이름상품이름상품이름상품이름</h4>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>가격가격</span>
+													</div>
+												</td>
+												<td class="product_quantity">
+													<div class="cart_product_quantity">
+														<input min="1" max="100" value="1" type="number">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>가격가격</span>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_remove text-right">
+														<a href="#"><i class="ion-android-close"></i></a>
+													</div>
+												</td>
+
+											</tr>
+											<tr class="border-top">
+												<td>
+													<div class="cart_product_thumb">
+														<img src="assets/img/product/product6.jpg" alt="">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_text">
+														<br> <br>
+														<h4>상품이름상품이름상품이름상품이름</h4>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>가격222</span>
+													</div>
+												</td>
+												<td class="product_quantity">
+													<div class="cart_product_quantity">
+														<input min="1" max="100" value="1" type="number">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>토탈토탈</span>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_remove text-right">
+														<a href="#"><i class="ion-android-close"></i></a>
+													</div>
+												</td>
+
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="grand_totall_area">
+										<div class="grand_totall_inner border-bottom">
+											<div class="cart_subtotal d-flex justify-content-between">
+												<p>sub total</p>
+												<span>$126.00</span>
+											</div>
+											<div class="cart_grandtotal d-flex justify-content-between">
+												<p>grand total</p>
+												<span>$126.00</span>
+											</div>
+										</div>
+										<div class="proceed_checkout_btn">
+											<a class="btn btn-primary" href="order">Proceed to Checkout</a>
+										</div>
+										<a href="#">Checkout with Mutilple Adresses</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--shopping cart area end -->
+
+	</article>
+</body>
+</html>
