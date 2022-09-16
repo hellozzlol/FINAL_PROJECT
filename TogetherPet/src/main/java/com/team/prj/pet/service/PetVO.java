@@ -2,6 +2,11 @@ package com.team.prj.pet.service;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PetVO {
 	int petNo;
 	String type;
