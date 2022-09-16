@@ -4113,7 +4113,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .widget_size ul li {
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 80px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .widget_size ul li {
@@ -4124,8 +4124,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin-right: 0;
 }
 .widget_size ul li a {
-  width: 38px;
-  height: 38px;
+  width: 100px;
+  height: 100px;
   line-height: 38px;
   text-align: center;
   font-size: 12px;
@@ -4143,9 +4143,15 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .widget_color > ul > li {
   position: relative;
   display: inline-block;
-  padding-right: 36px;
-  padding-bottom: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
+
+.cateimg {
+  object-fit:fill;
+}
+
+
 .widget_color > ul > li input {
   position: absolute;
   top: 50%;
@@ -4156,49 +4162,80 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   width: 100%;
   height: 30px;
 }
+
 .widget_color > ul > li input:checked ~ .checkmark::before {
   display: block;
 }
 .widget_color > ul > li span.color1 {
-  background: #ebcccc;
+  background: white;
 }
 .widget_color > ul > li span.color2 {
-  background: #cc6600;
+  background: white;
 }
 .widget_color > ul > li span.color3 {
-  background: #f5ebcc;
+  background: white;
 }
 .widget_color > ul > li span.color4 {
-  background: #f5f5cc;
+  background: white;
 }
 .widget_color > ul > li span.color5 {
-  background: #ebf5e0;
+  background: white;
 }
 .widget_color > ul > li span.color6 {
-  background: #d6e4ef;
+  background: white;
 }
-.widget_color > ul > li span.color7 {
-  background: #e5def2;
-}
-.widget_color > ul > li span.color8 {
-  background: #f6e3f8;
-}
+
+
+
+
 .widget_color > ul > li span.checkmark {
   height: 30px;
-  width: 30px;
-  border-radius: 50%;
+  width: 100px;
   display: block;
   position: absolute;
   top: 50%;
   transform: translatey(-50%);
   transition: .3s;
 }
+
+
+.widget_list > ul > li span.checkmark {
+  height: 30px;
+  width: 100px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  transform: translatey(-50%);
+  transition: .3s;
+}
+
+
+
 .widget_color > ul > li span.checkmark::before {
   left: 44%;
   top: 31%;
   width: 6px;
   height: 10px;
-  border: solid white;
+  border: solid red;
+  border-top-width: medium;
+  border-right-width: medium;
+  border-bottom-width: medium;
+  border-left-width: medium;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.widget_list > ul > li span.checkmark::before {
+  left: 44%;
+  top: 31%;
+  width: 6px;
+  height: 10px;
+  border: solid red;
   border-top-width: medium;
   border-right-width: medium;
   border-bottom-width: medium;
@@ -7493,8 +7530,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 2px solid #000;
 }
 .panel_radio span.checkmark {
-  height: 18px;
-  width: 18px;
+  height: 180px;
+  width: 180px;
   border-radius: 50%;
   display: block;
   position: absolute;
