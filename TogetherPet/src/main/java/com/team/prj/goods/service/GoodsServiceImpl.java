@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.goods.mapper.GoodsMapper;
+import com.team.prj.photo.service.PhotoVO;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -53,6 +54,18 @@ public class GoodsServiceImpl implements GoodsService {
 	public int goodsHitUpdate(GoodsVO vo) {
 		// TODO Auto-generated method stub
 		return map.goodsHitUpdate(vo);
+	}
+
+	@Override
+	public List<PhotoVO> goodsThumbList() {
+		// TODO Auto-generated method stub
+		return map.goodsThumbList();
+	}
+
+	@Override
+	public List<PhotoVO> goodsPhotoList(GoodsVO vo) {
+		// TODO Auto-generated method stub
+		return map.goodsPhotoList(vo);
 	}
 
 }

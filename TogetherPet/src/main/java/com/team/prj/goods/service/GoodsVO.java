@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GoodsVO {
-	private int goodsNo, amount, price, hit, sellerNo, dc, groupNo;
+	private int goodsNo, amount, price, hit, sellerNo, groupNo;
 	private String name, category, info, uploadState, sellState, categoryId, returnMessage;
 	private Date uploadDate;
+	private double dc;
 }

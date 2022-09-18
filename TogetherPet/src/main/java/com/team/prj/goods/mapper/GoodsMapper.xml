@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.goods.mapper.GoodsMapper">
+	<!-- 단건 조회 -->
+	<select id="goodsSelectOne"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		select * from goods where goods_no=#{goodsNo}
+	</select>
+	<!-- 썸네일 불러오기 -->
+	<select id="goodsThumbList"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		select * from photo where name='썸네일'
+	</select>
+
+	<!-- 그룹별 사진 불러오기 -->
+	<select id="goodsPhotoList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		select * from photo where group_no=#{groupNo} and name='리스트'
+	</select>
+	
+</mapper>
