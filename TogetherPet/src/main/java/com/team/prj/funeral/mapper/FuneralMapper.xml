@@ -3,11 +3,25 @@
 <mapper namespace="com.team.prj.funeral.mapper.FuneralMapper">
 
 
-<select id="findAll" resultType="com.team.prj.funeral.service.FuneralVO">
-SELECT *
-FROM FUNERAL
-ORDER BY FUNERAL_NO
-</select>
+	<select id="findAll"
+		resultType="com.team.prj.funeral.service.FuneralVO">
+		SELECT *
+		FROM FUNERAL
+		ORDER BY FUNERAL_NO
+	</select>
+
+	<select id="funeralSelect" parameterType="com.team.prj.funeral.service.FuneralVO"
+		resultType="com.team.prj.funeral.service.FuneralVO">
+
+		SELECT FUNERAL_NO,
+		NAME,
+		ADDRESS,
+		CALL,
+		INFO
+		FROM FUNERAL
+		WHERE FUNERAL_NO=${funeralNo}
+
+	</select>
 
 
 
