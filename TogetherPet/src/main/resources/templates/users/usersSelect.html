@@ -13,17 +13,20 @@
 }
 </style>
 	<script>
-	document.addEventListener('DOMContentLoaded', function () {
+	/* document.addEventListener('DOMContentLoaded', function () {
 		
 		console.log('???');
-	})
+	}) */
 	</script>
 </head>
 <body>
 	<article layout:fragment="content">
+	
+	
+	
 		<!--shop  area start-->
-		<br> <br> <br> <br>
-		<div class="shop_section shop_reverse">
+		<br> <br> <br> 
+		<div class="shop_section shop_reverse">		
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-3 col-md-12">
@@ -41,8 +44,7 @@
 											data-target="#women">내 반려동물 정보</a></li>
 										<hr>
 										<li class="widget_sub_categories">
-										<a href="javascript:void(0)" data-toggle="collapse"
-											data-target="#footwear">내 활동</a>
+										<a data-toggle="collapse" data-target="#footwear">내 활동</a>
 											<ul class="widget_dropdown_categories collapse show"
 												id="footwear">
 												<li><a href="#">작성 글 보기</a></li>
@@ -50,8 +52,7 @@
 											</ul></li>
 										<hr>
 										<li class="widget_sub_categories">
-										<a href="javascript:void(0)" data-toggle="collapse"
-											data-target="#accessories">내 스크랩</a>
+										<a data-toggle="collapse" data-target="#accessories">내 스크랩</a>
 											<ul class="widget_dropdown_categories collapse show"
 												id="accessories">
 												<li><a href="#">병원</a></li>
@@ -61,8 +62,7 @@
 											</ul></li>
 										<hr>
 										<li class="widget_sub_categories">
-										<a href="javascript:void(0)" data-toggle="collapse"
-											data-target="#footwear">내 쇼핑</a>
+										<a data-toggle="collapse" data-target="#footwear">내 쇼핑</a>
 											<ul class="widget_dropdown_categories collapse show"
 												id="footwear">
 												<li><a href="#">주문내역</a></li>
@@ -70,8 +70,7 @@
 											</ul></li>
 										<hr>
 										<li class="widget_sub_categories">
-										<a href="javascript:void(0)" data-toggle="collapse"
-											data-target="#footwear">내 클래스</a>
+										<a data-toggle="collapse" data-target="#footwear">내 클래스</a>
 											<ul class="widget_dropdown_categories collapse show"
 												id="footwear">
 												<li><a href="#">수강내역</a></li>
@@ -95,6 +94,15 @@
 						<div class="content-wrapper">
 							<!-- Content -->
 							<div class="container-xxl flex-grow-1 container-p-y">
+							<!--breadcrumbs area start-->
+		                    <div class="breadcrumb_content">
+		                        <ul>
+		                            <li><a href="/">home</a></li>
+		                            <li>my page</li>
+		                        </ul>
+		                    </div>
+		                    <!--breadcrumbs area end-->
+							
 								<div class="shipping_text">
 									<h3>내 정보보기</h3>
 								</div>
@@ -114,37 +122,36 @@
 											</div>
 											<hr class="my-0" />
 
-											<div class="card-body" th:each="user : ${users}">
-												<form id="formAccountSettings" method="POST"
-													onsubmit="return false">
+											<div class="card-body" th:each="list : ${userList}">
+												<form id="formAccountSettings" onsubmit="return false">
 													<div class="row">
 														<div class="mb-3 col-md-6">
 															<label for="id" class="form-label">아이디 ID</label>
 															<input class="form-control" type="text" id="id" name="id"
-																th:value="${user.id}" disabled="disabled" />
+																th:value="${list.id}" disabled="disabled" />
 														</div>
 														<div class="mb-3 col-md-6">
 															<label for="nickname" class="form-label">닉네임 Nickname</label>
 															<input class="form-control" type="text"
 																id="nickname" name="nickname"
-																th:value="${user.nickname}" disabled="disabled" />
+																th:value="${list.nickname}" disabled="disabled" />
 														</div>
 														<div class="mb-3 col-md-6">
 															<label for="name" class="form-label">이름 Name</label>
 															<input class="form-control" type="text" id="name" name="name"
-																th:value="${user.name}" disabled="disabled" />
+																th:value="${list.name}" disabled="disabled" />
 														</div>
 														<div class="mb-3 col-md-6">
 															<label for="email" class="form-label">이메일 E-mail</label>
 															<input class="form-control" type="text" id="email"
-																name="email" th:value="${user.email}"
+																name="email" th:value="${list.email}"
 																disabled="disabled" />
 														</div>
 														<div class="mb-3 col-md-6">
 															<label class="form-label" for="call">전화번호 Phone Number</label>
 															<div class="input-group input-group-merge">
 																<input type="text" id="call" name="call"
-																	class="form-control" th:value="${user.call}"
+																	class="form-control" th:value="${list.call}"
 																	disabled="disabled" />
 															</div>
 														</div>
@@ -152,7 +159,7 @@
 															<label for="address" class="form-label">주소 Address</label>
 															<input type="text" class="form-control"
 																id="address" name="address" disabled="disabled"
-																th:value="${user.address}" />
+																th:value="${list.address}" />
 														</div>
 													</div>
 													<div class="mt-2" style="text-align: center;">
