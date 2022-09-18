@@ -2,6 +2,8 @@ package com.team.prj.goods.service;
 
 import java.util.List;
 
+import com.team.prj.photo.service.PhotoVO;
+
 public interface GoodsService {
 	
 	// 모든 상품 조회
@@ -24,5 +26,11 @@ public interface GoodsService {
 	
 	// 조회수 처리
 	int goodsHitUpdate(GoodsVO vo);
+	
+	// 썸네일 불러오기
+	List<PhotoVO> goodsThumbList();
+	
+	// 포토리스트 불러오기
+	List<PhotoVO> goodsPhotoList(GoodsVO vo);
 
 }
