@@ -32,9 +32,8 @@
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
-		set nickname = #{nickname, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR},
-			call = #{call, jdbcType=VARCHAR}, address = #{address, jdbcType=VARCHAR}
-		WHERE user_no = #{userNo}
+				SET nickname = #{nickname}, email = #{email}, call = #{call}, address = #{address}
+				WHERE user_no = #{userNo}
 		<!-- <set>
 			<if test="nickname != null">nickname = #{nickname},</if>
 			<if test="email != null">email = #{email},</if>

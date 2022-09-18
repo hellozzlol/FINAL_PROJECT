@@ -2,19 +2,33 @@ package com.team.prj.users.service;
 
 import java.util.List;
 
+import com.team.prj.board.service.BoardVO;
+import com.team.prj.comment.service.CommentVO;
+import com.team.prj.scrap.service.ScrapVO;
+
 public interface UsersService {
+	// 내정보조회(단건 조회)
+	UsersVO usersSelect(UsersVO vo);
+	
+	// 내정보수정
+	int usersUpdate(UsersVO vo);
+	
+	// 회원삭제
+	int usersDelete(UsersVO vo);
+	
+	// 작성 글조회
+	List<BoardVO> boardSelectList(int boardNo, int userNo, String category);
+	
+	// 작성 댓글조회
+	List<CommentVO> commentSelectList(int commentNo, int userNo, String category);
+	
+	// 내 스크랩조회
+	List<ScrapVO> scrapSelectList(int boardNo, int userNo, String category);
+	
 	// 전체 리스트
 	List<UsersVO> usersSelectList();
-
-	// 단건 조회
-	UsersVO usersSelect(UsersVO vo);
-
+	
 	// 등록
 	int usersInsert(UsersVO vo);
 
-	// 수정
-	int usersUpdate(UsersVO vo);
-
-	// 삭제
-	int usersDelete(UsersVO vo);
 }
