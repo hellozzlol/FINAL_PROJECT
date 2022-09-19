@@ -13,8 +13,7 @@ public class FuneralController {
 
 	@Autowired
 	private FuneralMapper dao;
-	
-	
+
 	@RequestMapping("/funeralList")
 
 	public String funeralList(Model model) {
@@ -28,13 +27,13 @@ public class FuneralController {
 	 * model.addAttribute("funeral",dao.funeralSelect(vo)); return
 	 * "funeral/funeralSelect"; }
 	 */
-	
+
 	@RequestMapping("/funeral")
-	public String funeralSelect(FuneralVO vo,Model model) {
-		model.addAttribute("funeral",dao.funeralSelect(vo));
-		return  "funeral/funeralSelect";
+	public String funeralSelect(FuneralVO vo, Model model) {
+		model.addAttribute("funeral", dao.funeralSelect(vo));
+		return "funeral/funeralSelect";
 	}
-	
+
 	
 
 }
