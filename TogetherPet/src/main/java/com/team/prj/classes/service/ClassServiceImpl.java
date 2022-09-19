@@ -21,13 +21,13 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public ClassVO classSelect(ClassVO vo) {
 		// TODO Auto-generated method stub
-		return null;
+		return map.classSelect(vo);
 	}
 
 	@Override
 	public int classInsert(ClassVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return map.classInsert(vo);
 	}
 
 	@Override
@@ -40,6 +40,12 @@ public class ClassServiceImpl implements ClassService {
 	public int classDelete(ClassVO vo) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<ClassVO> classSearch(ClassVO vo) {
+		// TODO Auto-generated method stub
+		return map.classSearch(vo);
 	}
 
 }

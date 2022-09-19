@@ -4,7 +4,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
 	#cl1 {
 		width:500px;
@@ -50,62 +50,40 @@ layout:decorate="~{layout/layout}">
 							<div class="widget_inner">
 								<div class="widget_list widget_filter">
 									<h2>클래스 찾아보기</h2>
-									<form action="" method="get" id="classSearchForm">
+									<form action="classSearch" method="get" id="classSearchForm">
 									
 									<div class="filter__list widget_color">
 										<h3>카테고리</h3>
 										<ul>
 											<li>
-												<input type="checkbox" name="CATEGORY" value="FOOD">
-												<img class="cateimg" src="https://img.icons8.com/external-wanicon-lineal-wanicon/64/000000/external-cook-labor-wanicon-lineal-wanicon.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color2">펫 푸드</span>
+												<input type="checkbox" name="category" value="food">
+												<span class="checkmark color1"><img src="https://img.icons8.com/external-wanicon-lineal-wanicon/64/000000/external-cook-labor-wanicon-lineal-wanicon.png" /></span>
+												<br><br><br><br>
+												펫 푸드
 											</li>
 											<li>
-												<input type="checkbox" name="CATEGORY" value="HAND">
-												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-woven-alaska-icongeek26-outline-icongeek26.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color3">펫 핸드메이드</span>
-												
+												<input type="checkbox" name="category" value="hand">
+												<span class="checkmark color1"><img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-woven-alaska-icongeek26-outline-icongeek26.png" /></span>
+												<br><br><br><br>
+												펫 핸드메이드
 											</li>
 											<li>
-												<input type="checkbox" name="CATEGORY" value="BEAUTY">
-												<img class="cateimg" src="https://img.icons8.com/external-outline-berkahicon/64/000000/external-pet-linely-pet-grooming-outline-berkahicon-2.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color4">펫 미용</span>
-												
+												<input type="checkbox" name="category" value="beauty">
+												<span class="checkmark color1"><img class="cateimg" src="https://img.icons8.com/external-outline-berkahicon/64/000000/external-pet-linely-pet-grooming-outline-berkahicon-2.png" /></span>
+												<br><br><br><br>
+												펫 미용
 											</li>
 											<li>
-												<input type="checkbox" name="CATEGORY" value="DRAWING">
-												<img class="cateimg" src="https://img.icons8.com/wired/64/000000/drawing.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color5">펫 드로잉</span>
+												<input type="checkbox" name="category" value="drawing">
+												<span class="checkmark color1"><img class="cateimg" src="https://img.icons8.com/wired/64/000000/drawing.png" /></span>
+												<br><br><br><br>
+												펫 드로잉
 											</li>
 											<li>
-												<input type="checkbox" name="CATEGORY" value="ETC">
-												<img class="cateimg" src="https://img.icons8.com/external-outline-geotatah/64/000000/external-pet-pet-lover-society-outline-geotatah-16.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color6">기타</span>
+												<input type="checkbox" name="category" value="etc">
+												<span class="checkmark color1"><img class="cateimg" src="https://img.icons8.com/external-outline-geotatah/64/000000/external-pet-pet-lover-society-outline-geotatah-16.png" /></span>
+												<br><br><br><br>
+												기타
 											</li>
 											
 										</ul>
@@ -114,69 +92,48 @@ layout:decorate="~{layout/layout}">
 										<h3>지역</h3>
 										<ul>
 											<li>
-												<input type="checkbox" name="ADDRESS" value="SDK">
-												<img class="cateimg" src="https://img.icons8.com/external-glyph-wichaiwi/64/000000/external-seoul-soft-power-glyph-wichaiwi.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color7">경기권</span>
+												<input type="checkbox" name="address" value="sdk">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-glyph-wichaiwi/64/000000/external-seoul-soft-power-glyph-wichaiwi.png" /></span>
+												<br><br><br><br>
+												경기권
 											</li>
 											
 											<li>
-												<input type="checkbox" name="ADDRESS" value="KWK">
-												<img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-mountain-landscape-justicon-lineal-justicon-1.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color8">강원권</span>
+												<input type="checkbox" name="address" value="kwk">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-mountain-landscape-justicon-lineal-justicon-1.png" /></span>
+												<br><br><br><br>
+												강원권
 											</li>
 											<li>
-												<input type="checkbox" name="ADDRESS" value="CCK">
-												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/000000/external-bun-baking-and-bakery-icongeek26-glyph-icongeek26.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color9">충청권</span>
+												<input type="checkbox" name="address" value="cck">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/000000/external-bun-baking-and-bakery-icongeek26-glyph-icongeek26.png" /></span>
+												<br><br><br><br>
+												충청권
 											</li>
 											<li>
-												<input type="checkbox" name="ADDRESS" value="YNK">
-												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-sea-sea-life-icongeek26-outline-icongeek26.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color10">영남권</span>
+												<input type="checkbox" name="address" value="ynk">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-sea-sea-life-icongeek26-outline-icongeek26.png" /></span>
+												<br><br><br><br>
+												영남권
 											</li>
 											<li>
-												<input type="checkbox" name="ADDRESS" value="HNK">
-												<img class="cateimg" src="https://img.icons8.com/external-photo3ideastudio-lineal-photo3ideastudio/64/000000/external-bamboo-china-photo3ideastudio-lineal-photo3ideastudio.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color11">호남권</span>
+												<input type="checkbox" name="address" value="hnk">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-photo3ideastudio-lineal-photo3ideastudio/64/000000/external-bamboo-china-photo3ideastudio-lineal-photo3ideastudio.png" /></span>
+												<br><br><br><br>
+												호남권
 											</li>
 											<li>
-												<input type="checkbox" name="ADDRESS" value="JEJ">
-												<img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-dol-hareubang-korea-justicon-lineal-justicon.png" />
-												<br>
-												<br>
-												<br>
-												<br>
-												<br>
-												<span class="checkmark color12">제주권</span>
+												<input type="checkbox" name="address" value="jej">
+												<span class="checkmark color3"><img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-dol-hareubang-korea-justicon-lineal-justicon.png" /></span>
+												<br><br><br><br>
+												제주권
 											</li>
 										</ul>
 									</div>
-
+									
+									<button onclick="classSearch()" >클래스 검색하기</button>
+									<br><br><br><br>
+									
 									</form>
 								</div>
 							</div>
@@ -357,13 +314,52 @@ layout:decorate="~{layout/layout}">
 		</div>
 		<!--shop  area end-->
 
-
-
-
-
-
-
 	</article>
+	
+	
+
+	<script>
+	function classSearch(){
+		// 사용자 ID를 갖고 온다.    
+		//var userId = $("#userId").val();
+
+		// 1. 카테고리가 같은 체크박스의 값들을 배열에 담는다.
+		var categoryCkbox = [];
+		$("input[name='category']:checked").each(function(i) {
+			categoryCkbox.push($(this).val());    
+		});
+		
+		// 2. 주소가 같은 체크박스의 값들을 배열에 담는다.
+		var addressCkbox = [];
+		$("input[name='address']:checked").each(function(i) {
+			addressCkbox.push($(this).val());    
+		});
+		
+		// 3. 사용자 ID(문자열)와 체크박스 값들(배열)을 name/value 형태로 담는다.
+		var searchData = { "categories": categoryCkbox, "addressess" : addressCkbox };
+
+		$.ajax({ 
+			 url:"/getSearchList",        
+			 type:'GET',        
+			 data: searchData,        
+			 success:function(data){            
+				 alert("검색완료!");            
+				 window.opener.location.reload();            
+				 self.close();        
+				 },        
+			 error:function(jqXHR, textStatus, errorThrown){
+					alert("에러 발생~~ \n" + textStatus + " : " + errorThrown);            
+					self.close();        
+			 },
+			 success:function(result){
+				 //테이블 초기화
+				 $('.single_product').empty();
+			 }
+				 
+		});
+	}
+
+	</script>
 
 </body>
 </html>

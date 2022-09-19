@@ -1,4 +1,4 @@
-package com.team.prj.attend.service.mapper;
+package com.team.prj.attend.mapper;
 
 import java.util.List;
 

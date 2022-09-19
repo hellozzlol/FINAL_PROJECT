@@ -8,4 +8,5 @@ public interface ClassService {
 	int classInsert(ClassVO vo); //클래스 입력
 	int classUpdate(ClassVO vo); //클래스 수정
 	int classDelete(ClassVO vo); //클래스 삭제
+	List<ClassVO> classSearch(ClassVO vo); //클래스 검색
 }
