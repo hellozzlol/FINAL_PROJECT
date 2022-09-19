@@ -4,14 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.team.prj.cart.mapper.CartMapper;
 
+@Service
 public class CartServiceImpl implements CartService{
 	@Autowired
 	private CartMapper map;
 	@Override
-	public List<Map<String, Object>> cartList(CartVO vo) {
+	public List<CartVO> cartList(CartVO vo) {
 		// TODO Auto-generated method stub
 		return map.cartList(vo);
 	}

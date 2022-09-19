@@ -5,6 +5,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		//subtotal 	
+			let total = $('.sTotal')
+			let sTotal =0;
+			for(t of total){
+				sTotal += Number(t.innerHTML);
+			}
+			$('#sTotal').html(sTotal)
+			
+		//grandtotal 할인 적용 후 
+			total = $('.gTotal')
+			let gTotal = 0;
+			for(t of total){
+				gTotal += Number(t.innerHTML);
+			}
+			$('#gTotal').html(gTotal)
+		
+			$('.remove').on('click', '.removeCart', function(){
+				alert('called');
+			})
+	})
+</script>
 </head>
 <body>
 	<article layout:fragment="content">
@@ -46,7 +69,8 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr class="border-top">
+											<!-- tr 반복  -->
+											<tr th:each="c:${cartList}" class="border-top">
 												<td>
 													<div class="cart_product_thumb">
 														<img src="assets/img/product/product4.jpg" alt="">
@@ -55,61 +79,29 @@
 												<td>
 													<div class="cart_product_text">
 														<br> <br>
-														<h4>상품이름상품이름상품이름상품이름상품이름상품이름</h4>
+														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>가격가격</span>
-													</div>
-												</td>
-												<td class="product_quantity">
-													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>가격가격</span>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
-													</div>
-												</td>
+														<span>[[${#numbers.formatInteger(c.price*(1-c.dc),4)}]]</span>
 
-											</tr>
-											<tr class="border-top">
-												<td>
-													<div class="cart_product_thumb">
-														<img src="assets/img/product/product6.jpg" alt="">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_text">
-														<br> <br>
-														<h4>상품이름상품이름상품이름상품이름</h4>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>가격222</span>
 													</div>
 												</td>
 												<td class="product_quantity">
 													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
+														<input min="1" max="100" th:value="${c.qty}" type="number">
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>토탈토탈</span>
+														<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
+														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
 													</div>
 												</td>
 												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
+													<div class="cart_product_remove text-right remove">
+														<a class="removeCart"><i class="ion-android-close"></i></a>
 													</div>
 												</td>
 
@@ -122,15 +114,16 @@
 										<div class="grand_totall_inner border-bottom">
 											<div class="cart_subtotal d-flex justify-content-between">
 												<p>sub total</p>
-												<span>$126.00</span>
+												<span id="sTotal"></span>
 											</div>
 											<div class="cart_grandtotal d-flex justify-content-between">
 												<p>grand total</p>
-												<span>$126.00</span>
+												<span id="gTotal"></span>
 											</div>
 										</div>
 										<div class="proceed_checkout_btn">
-											<a class="btn btn-primary" href="order">Proceed to Checkout</a>
+											<a class="btn btn-primary" href="order">Proceed to
+												Checkout</a>
 										</div>
 										<a href="#">Checkout with Mutilple Adresses</a>
 									</div>
@@ -142,6 +135,11 @@
 			</div>
 		</div>
 		<!--shopping cart area end -->
+		<table border=1>
+			<tbody>
+
+			</tbody>
+		</table>
 
 	</article>
 </body>

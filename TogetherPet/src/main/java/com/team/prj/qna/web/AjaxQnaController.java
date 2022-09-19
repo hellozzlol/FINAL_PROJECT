@@ -10,7 +10,7 @@ import com.team.prj.qna.service.QnaService;
 import com.team.prj.qna.service.QnaVO;
 
 @RestController
-public class QnaController {
+public class AjaxQnaController {
 	@Autowired
 	private QnaService dao;
 

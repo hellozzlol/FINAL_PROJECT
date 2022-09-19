@@ -7,5 +7,9 @@ import lombok.Setter;
 @Setter
 public class CartVO {
 	private int goodsNo, userNo, qty;
-	
+
+	// GoodsVO
+	private String name;
+	private int price;
+	private double dc;
 }

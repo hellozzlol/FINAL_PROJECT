@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.cart.mapper.CartMapper">
-	<select id="cartList" resultType="com.team.prj.goods.service.GoodsVO">
-		select g.name, price, dc, qty
-		from goods g, users u, cart c
-		where g.goods_no = #{goodsNo}
-		and u.user_no = #{userNo}
+	<select id="cartList"
+		resultType="com.team.prj.cart.service.CartVO">
+		select *
+		from goods g, cart c
+		where g.goods_no = c.goods_no
+		and c.user_no = #{userNo}
 	</select>
-	
+
 	<insert id="insertCart">
 		insert into cart
 		values(#{goodsNo}, #{userNo}, #{qty})
