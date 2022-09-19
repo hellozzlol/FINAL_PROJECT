@@ -6,6 +6,6 @@ import com.team.prj.attend.service.attendVO;
 
 public interface attendMapper {
 	List<attendVO> attendSelectList();
-	attendVO attendSelect(attendVO vo);
-	attendVO attendUpdate(attendVO vo);
+	attendVO attendSelect(attendVO tvo);
+	attendVO attendUpdate(attendVO tvo);
 }

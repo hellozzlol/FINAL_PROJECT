@@ -18,13 +18,13 @@ public class attendServiceImpl implements attendService {
 	}
 
 	@Override
-	public attendVO attendSelect(attendVO vo) {
+	public attendVO attendSelect(attendVO tvo) {
 		// 출퇴근 시간 단건 조회
 		return null;
 	}
 
 	@Override
-	public attendVO attendUpdate(attendVO vo) {
+	public attendVO attendUpdate(attendVO tvo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+
+<style>
+	#cl1 {
+		width:500px;
+	}
+
+	#cl2 {
+		padding-bottom: 50px;
+	}
+
+	#city {
+		text-align: center;
+		font-size: large;
+	} 
+
+</style>
+
+<title>원데이 클래스 목록</title>
+</head>
+
+
+<body>
+	<article layout:fragment="content">
+
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>class</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+
+
+						<!--sidebar widget start-->
+						<aside class="sidebar_widget">
+							<div class="widget_inner">
+								<div class="widget_list widget_filter">
+									<h2>클래스 찾아보기</h2>
+									<form action="" method="get" id="classSearchForm">
+									
+									<div class="filter__list widget_color">
+										<h3>카테고리</h3>
+										<ul>
+											<li>
+												<input type="checkbox" name="CATEGORY" value="FOOD">
+												<img class="cateimg" src="https://img.icons8.com/external-wanicon-lineal-wanicon/64/000000/external-cook-labor-wanicon-lineal-wanicon.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color2">펫 푸드</span>
+											</li>
+											<li>
+												<input type="checkbox" name="CATEGORY" value="HAND">
+												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-woven-alaska-icongeek26-outline-icongeek26.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color3">펫 핸드메이드</span>
+												
+											</li>
+											<li>
+												<input type="checkbox" name="CATEGORY" value="BEAUTY">
+												<img class="cateimg" src="https://img.icons8.com/external-outline-berkahicon/64/000000/external-pet-linely-pet-grooming-outline-berkahicon-2.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color4">펫 미용</span>
+												
+											</li>
+											<li>
+												<input type="checkbox" name="CATEGORY" value="DRAWING">
+												<img class="cateimg" src="https://img.icons8.com/wired/64/000000/drawing.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color5">펫 드로잉</span>
+											</li>
+											<li>
+												<input type="checkbox" name="CATEGORY" value="ETC">
+												<img class="cateimg" src="https://img.icons8.com/external-outline-geotatah/64/000000/external-pet-pet-lover-society-outline-geotatah-16.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color6">기타</span>
+											</li>
+											
+										</ul>
+									</div>
+									<div class="filter__list widget_color" id="cl2">
+										<h3>지역</h3>
+										<ul>
+											<li>
+												<input type="checkbox" name="ADDRESS" value="SDK">
+												<img class="cateimg" src="https://img.icons8.com/external-glyph-wichaiwi/64/000000/external-seoul-soft-power-glyph-wichaiwi.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color7">경기권</span>
+											</li>
+											
+											<li>
+												<input type="checkbox" name="ADDRESS" value="KWK">
+												<img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-mountain-landscape-justicon-lineal-justicon-1.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color8">강원권</span>
+											</li>
+											<li>
+												<input type="checkbox" name="ADDRESS" value="CCK">
+												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/000000/external-bun-baking-and-bakery-icongeek26-glyph-icongeek26.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color9">충청권</span>
+											</li>
+											<li>
+												<input type="checkbox" name="ADDRESS" value="YNK">
+												<img class="cateimg" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/000000/external-sea-sea-life-icongeek26-outline-icongeek26.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color10">영남권</span>
+											</li>
+											<li>
+												<input type="checkbox" name="ADDRESS" value="HNK">
+												<img class="cateimg" src="https://img.icons8.com/external-photo3ideastudio-lineal-photo3ideastudio/64/000000/external-bamboo-china-photo3ideastudio-lineal-photo3ideastudio.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color11">호남권</span>
+											</li>
+											<li>
+												<input type="checkbox" name="ADDRESS" value="JEJ">
+												<img class="cateimg" src="https://img.icons8.com/external-justicon-lineal-justicon/64/000000/external-dol-hareubang-korea-justicon-lineal-justicon.png" />
+												<br>
+												<br>
+												<br>
+												<br>
+												<br>
+												<span class="checkmark color12">제주권</span>
+											</li>
+										</ul>
+									</div>
+
+									</form>
+								</div>
+							</div>
+						</aside>
+						<!--sidebar widget end-->
+					
+
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+						<!--shop toolbar start-->
+						<div
+							class="shop_toolbar_wrapper d-flex justify-content-between align-items-center">
+							<div class="page_amount">
+								<p>
+									<span>[[ ${#lists.size(class)} ]]</span> 개의 클래스가 회원님의 등록을 기다리고 있어요!
+								</p>
+							</div>
+							<div class=" sorting_by d-flex align-items-center">
+								<span>SORT BY :</span>
+								<form class="select_option" action="#">
+									<select name="orderby" id="short">
+										<option selected value="1">최신순</option>
+										<option value="2">인기순</option>
+										<option value="3">가격높은 순</option>
+										<option value="4">가격낮은 순</option>
+									</select>
+								</form>
+							</div>
+							<div class="toolbar_btn_wrapper d-flex align-items-center">
+								<div class="view_btn">
+									<a class="view" href="#">VIEW</a>
+								</div>
+								<div class="shop_toolbar_btn">
+									<ul class="d-flex align-items-center">
+										<li><a href="#" class="active btn-grid-3"
+											data-role="grid_3" data-tippy="3" data-tippy-inertia="true"
+											data-tippy-delay="50" data-tippy-arrow="true"
+											data-tippy-placement="top"><i class="ion-grid"></i></a></li>
+
+										<li><a href="#" class="btn-list" data-role="grid_list"
+											data-tippy="List" data-tippy-inertia="true"
+											data-tippy-delay="50" data-tippy-arrow="true"
+											data-tippy-placement="top"><i class="ion-navicon"></i></a></li>
+										<li class="header_search"><a href="#"><i
+												class="icon-magnifier icons"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<!--shop toolbar end-->
+						<div class="row shop_wrapper">
+
+
+							<!---------싱글 상품 리스트 반복문---------->
+							<div class="col-lg-4 col-md-4 col-sm-6 col-6 "  th:each="c:${class}">
+								<div class="single_product">
+									<!----썸네일?---->
+									<div class="product_thumb">
+										<a th:href="@{/class/classSelect(classNo=${c.classNo})}"> 
+											<img class="primary_img" src="assets/img/product/classtm1.jpg" alt="consectetur">
+										</a>
+										<div class="product_action">
+											<ul>
+												<li class="wishlist"><a href="#" data-tippy="Wishlist"
+													data-tippy-inertia="true" data-tippy-delay="50"
+													data-tippy-arrow="true" data-tippy-placement="left"><i
+														class="icon-heart icons"></i></a></li>
+
+												<li class="quick_view"><a data-toggle="modal"
+													data-target="#modal_box" data-tippy="Quick View" href="#"
+													data-tippy-inertia="true" data-tippy-delay="50"
+													data-tippy-arrow="true" data-tippy-placement="left"><i
+														class="icon-size-fullscreen icons"></i></a></li>
+												<li class="compare"><a data-tippy="Compare" href="#"
+													data-tippy-inertia="true" data-tippy-delay="50"
+													data-tippy-arrow="true" data-tippy-placement="left"><i
+														class="icon-refresh icons"></i></a></li>
+											</ul>
+										</div>
+										<div class="product_label">
+											<span th:text="${c.category}"></span>
+										</div>
+									</div>
+									
+
+									<!-----센터설명------>
+									<div class="product_content grid_content text-center">
+										<div class="product_ratting">
+											<ul class="d-flex justify-content-center">
+												<li><a href="#"><i class="ion-android-star"></i></a></li>
+												<li><a href="#"><i class="ion-android-star"></i></a></li>
+												<li><a href="#"><i class="ion-android-star"></i></a></li>
+												<li><a href="#"><i class="ion-android-star"></i></a></li>
+												<li><a href="#"><i class="ion-android-star"></i></a></li>
+												<li><span>(2)</span></li>
+											</ul>
+										</div>
+										<h4 class="product_name">
+											<a th:href="@{/class/classSelect(classNo=${c.classNo})}" th:text="${c.name}"></a>
+										</h4>
+										<h4 class="product_name">
+											<a th:href="@{/class/classSelect(classNo=${c.classNo})}" th:text="${c.address}"></a>
+										</h4>
+										<div class="price_box">
+											<span class="current_price" th:text="|${c.price}원|"></span>
+										</div>
+										<div class="add_to_cart">
+											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+												data-tippy-inertia="true" data-tippy-delay="50"
+												data-tippy-arrow="true" data-tippy-placement="top">클래스 찜하기</a>
+										</div>
+									</div>
+
+
+									<!----설명?---->
+									<div class="product_list_content">
+										<h4 class="product_name">
+											<a href="product-details.html" th:text="${c.name}"></a>
+										</h4>
+										<p>
+											<a href="#">shows</a>
+										</p>
+										<div class="price_box">
+											<span class="current_price" th:text="${c.price}"></span>
+										</div>
+										<div class="product_desc">
+											<p>Nunc facilisis sagittis ullamcorper. Proin lectus
+												ipsum, gravida et mattis vulputate, tristique ut lectus. Sed
+												et lorem nunc. Vestibulum ante ipsum primis in faucibus orci
+												luctus et ultrices posuere cubilia Curae; Aenean eleifend
+												laoreet congue. Viva..</p>
+										</div>
+										<div class="add_to_cart">
+											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+												data-tippy-inertia="true" data-tippy-delay="50"
+												data-tippy-arrow="true" data-tippy-placement="top">클래스 찜하기</a>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<!---------싱글 상품 리스트 반복문---------->
+
+
+						</div>
+						<div class="pagination_style pagination justify-content-center">
+							<ul class="d-flex">
+								<li><a href="#"> << </a></li>
+								<li><a href="#">1</a></li>
+								<li><a class="current" href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#">>></a></li>
+							</ul>
+						</div>
+
+						<!--shop toolbar end-->
+						<!--shop wrapper end-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--shop  area end-->
+
+
+
+
+
+
+
+	</article>
+
+</body>
+</html>

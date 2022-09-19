@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<article layout:fragment="content">
+		<br> <br> <br> <br>
+		<!--breadcrumbs area start-->
+		<div class="breadcrumbs_area breadcrumbs_other">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="breadcrumb_content text-center">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li><a href="#">pages</a></li>
+							</ul>
+							<h3>make your order here</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--breadcrumbs area end-->
+		<!-- 주문 상품 확인 -->
+		<!--shopping cart area start -->
+		<div class="shopping_cart_area">
+			<div class="container">
+				<form action="#">
+					<div class="cart_page_inner mb-60">
+						<div class="row">
+							<div class="col-12">
+								<div class="cart_page_tabel">
+									<table>
+										<thead>
+											<tr>
+												<th>product</th>
+												<th>information</th>
+												<th>Price</th>
+												<th>Quantity</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="border-top">
+												<td>
+													<div class="cart_product_thumb">
+														<img src="assets/img/product/product4.jpg" alt="">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_text">
+														<h4>Example With Title Product</h4>
+														<ul>
+															<li><i class="ion-ios-arrow-right"></i> Color : <span>White</span></li>
+															<li><i class="ion-ios-arrow-right"></i> Size : <span>XL</span></li>
+														</ul>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>$45.05</span>
+													</div>
+												</td>
+												<td class="product_quantity">
+													<div class="cart_product_quantity">
+														<input min="1" max="100" value="1" type="number">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>$45.05</span>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_remove text-right">
+														<a href="#"><i class="ion-android-close"></i></a>
+													</div>
+												</td>
+
+											</tr>
+											<tr class="border-top">
+												<td>
+													<div class="cart_product_thumb">
+														<img src="assets/img/product/product6.jpg" alt="">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_text">
+														<h4>Example With Title Product</h4>
+														<ul>
+															<li><i class="ion-ios-arrow-right"></i> Color : <span>White</span></li>
+															<li><i class="ion-ios-arrow-right"></i> Size : <span>XL</span></li>
+														</ul>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>$45.05</span>
+													</div>
+												</td>
+												<td class="product_quantity">
+													<div class="cart_product_quantity">
+														<input min="1" max="100" value="1" type="number">
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_price">
+														<span>$45.05</span>
+													</div>
+												</td>
+												<td>
+													<div class="cart_product_remove text-right">
+														<a href="#"><i class="ion-android-close"></i></a>
+													</div>
+												</td>
+
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 배송정보 입력, 적립금 사용, 결제수단 입력, 최종 결제 금액, 결제하기-->
+					<!--coupon code area start-->
+					<div class="cart_page_bottom">
+						<div class="row">
+							<div class="col-lg-4 col-md-6 col-sm-6">
+								<div class="shopping_coupon_calculate top">
+									<h3 class="border-bottom">배송정보 확인</h3>
+									<select class="select_option border">
+										<option value="1">배송메시지</option>
+										<option value="2">도착하기 전에 연락해 주세요.</option>
+										<option value="3">경비실에 맡겨주세요.</option>
+										<option value="4">벨 누르지 말아주세요.</option>
+									</select> <input class="border" placeholder="받는 사람" type="text">
+									<input class="border" placeholder="연락처" type="text"> <input
+										class="border" placeholder="주소" type="text">
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-6 col-sm-6">
+								<div class="shopping_coupon_calculate">
+									<h3 class="border-bottom">적립금</h3>
+									<p>1,000이상 사용 가능합니다.</p>
+									<input class="border" placeholder="Enter your code" type="text">
+									<button class="btn btn-primary" type="submit">사용하기</button>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-6 col-sm-6">
+								<div class="order_table_right">
+									<form action="#">
+										<h3>주문 및 결제 확인</h3>
+										<div class="order_table table-responsive">
+											<table>
+												<thead>
+													<tr>
+														<th>Product</th>
+														<th class="text-right">Total</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Slim Collarless Blaze</td>
+														<td class="text-right">$75.20</td>
+													</tr>
+													<tr>
+														<td>Denim Kimono Jacket</td>
+														<td class="text-right">$50.00</td>
+													</tr>
+												</tbody>
+												<tfoot>
+													<tr>
+														<td>Cart Subtotal</td>
+														<td class="text-right">$225.60</td>
+													</tr>
+													<tr class="order_total">
+														<th>Order Total</th>
+														<td class="text-right">$225.60</td>
+													</tr>
+												</tfoot>
+											</table>
+											<div class="panel-default">
+												<div class="panel_radio">
+													<input id="payment1" name="check_method" type="radio"
+														data-target="createp_account" value="transfer" /> <span
+														class="checkmark"></span>
+												</div>
+
+												<label for="payment1" data-toggle="collapse"
+													data-target="#panel1">실시간 이체</label>
+
+											</div>
+											<div class="panel-default">
+												<div class="panel_radio">
+													<input id="payment2" name="check_method" type="radio"
+														value="card" data-target="createp_account" /> <span
+														class="checkmark"></span>
+												</div>
+												<label for="payment2" data-toggle="collapse"
+													data-target="#method2">신용카드</label>
+
+											</div>
+											<div class="panel-default">
+												<div class="panel_radio">
+													<input id="payment3" name="check_method" type="radio"
+														value="deposit" data-target="createp_account" /> <span
+														class="checkmark"></span>
+												</div>
+												<label for="payment3" data-toggle="collapse"
+													data-target="#method3">무통장 입금</label>
+
+											</div>
+											<div class="panel-default">
+												<div class="panel_radio">
+													<input id="payment4" name="check_method" type="radio"
+														value="kakaopay" data-target="createp_account" /> <span
+														class="checkmark"></span>
+												</div>
+												<label for="payment4" data-toggle="collapse"
+													data-target="#method4">카카오페이</label>
+											</div>
+										</div>
+										<div class="place_order_btn">
+											<a class="btn btn-primary" href="orderConfirm">주문 및 결제</a>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--coupon code area end-->
+				</form>
+			</div>
+		</div>
+		<!--shopping cart area end -->
+
+
+	</article>
+</body>
+</html>
