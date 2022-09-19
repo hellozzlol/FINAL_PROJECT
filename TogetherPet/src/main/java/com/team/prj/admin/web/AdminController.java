@@ -20,21 +20,18 @@ public class AdminController {
 	
 	@RequestMapping("/admin")
 	public String admin() {
-		return "admin/admin";
+		return "admin/admin2";
 	}
 	
 	@GetMapping("/mypage")
-	public String adminSelect(Model model, adminVO vo) { 
+	public String adminSelect(Model model, adminVO vo, attendVO tvo) { 
 		vo.setAdNo(115913);
 		vo = as.adminSelect(vo);
 		model.addAttribute("admin", vo);
+		model.addAttribute("attend", ts.attendSelectList(tvo));
 		System.out.println(vo.getName());
-	
-//	String attendSelect(Model model1, attendVO tvo)
-//		vo.setAdNo(115913);
-//		tvo = ts.attendSelect(tvo);
-//		model1.addAttribute("attend", tvo);
-//		System.out.println(tvo.getStartDt());
+		
+
 		
 		return "admin/mypage";
 	}

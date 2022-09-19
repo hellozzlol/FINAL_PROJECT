@@ -5,16 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.team.prj.attend.service.mapper.attendMapper;
+import com.team.prj.attend.mapper.attendMapper;
 @Service
 public class attendServiceImpl implements attendService {
 	@Autowired
 	private attendMapper map;
 	
 	@Override
-	public List<attendVO> attendSelectList() {
+	public List<attendVO> attendSelectList(attendVO tvo) {
 		// 출퇴근 시간 리스트..?
-		return map.attendSelectList();
+		return map.attendSelectList(tvo);
 	}
 
 	@Override
