@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 
@@ -203,6 +203,11 @@
 								<p>
 									<span>[[ ${#lists.size(class)} ]]</span> 개의 클래스가 회원님의 등록을 기다리고 있어요!
 								</p>
+	
+								
+								
+								
+								
 							</div>
 							<div class=" sorting_by d-flex align-items-center">
 								<span>SORT BY :</span>
@@ -241,7 +246,7 @@
 
 
 							<!---------싱글 상품 리스트 반복문---------->
-							<div class="col-lg-4 col-md-4 col-sm-6 col-6 "  th:each="c:${class}">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-6 "  th:if="${#lists.size(class)} > 0" th:each="c:${class}">
 								<div class="single_product">
 									<!----썸네일?---->
 									<div class="product_thumb">
