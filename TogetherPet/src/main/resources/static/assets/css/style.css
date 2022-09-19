@@ -119,12 +119,6 @@ img {
   height: auto;
 }
 
-.primary_img {
-  width: 250px;
-  height: 400px;
-  object-fit: cover;
-}
-
 ul {
   list-style: outside none none;
   margin: 0;
@@ -1497,11 +1491,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   background-size: cover;
   position: relative;
   min-height: 960px;
-  width: 1920px;
-  height: 960px;
-  object-fit: cover;
 }
-
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
   .single_slider {
     min-height: 900px;
@@ -2150,23 +2140,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 0;
   font-weight: 600;
 }
-
-.btn-primary2 {
-  color: #272727;
-  font-size: 16px;
-  line-height: 45px;
-  height: 45px;
-  padding: 0 20px;
-  background: #ffffff;
-  border-radius: 0;
-  position: relative;
-  z-index: 9;
-  color: #6a7964;
-  border: 1;
-  font-weight: 600;
-  border-color: #272727;
-}
-
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .btn-primary {
     font-size: 14px;
@@ -3990,7 +3963,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .widget_categories > ul > li > a {
-  font-size: 18px;
+  font-size: 14px;
   display: block;
   line-height: 30px;
   font-weight: 600;
@@ -4130,7 +4103,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .widget_size ul li {
   display: inline-block;
-  margin-right: 80px;
+  margin-right: 8px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .widget_size ul li {
@@ -4141,8 +4114,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin-right: 0;
 }
 .widget_size ul li a {
-  width: 100px;
-  height: 100px;
+  width: 38px;
+  height: 38px;
   line-height: 38px;
   text-align: center;
   font-size: 12px;
@@ -4160,15 +4133,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .widget_color > ul > li {
   position: relative;
   display: inline-block;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-right: 36px;
+  padding-bottom: 30px;
 }
-
-.cateimg {
-  object-fit:fill;
-}
-
-
 .widget_color > ul > li input {
   position: absolute;
   top: 50%;
@@ -4179,80 +4146,49 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   width: 100%;
   height: 30px;
 }
-
 .widget_color > ul > li input:checked ~ .checkmark::before {
   display: block;
 }
 .widget_color > ul > li span.color1 {
-  background: white;
+  background: #ebcccc;
 }
 .widget_color > ul > li span.color2 {
-  background: white;
+  background: #cc6600;
 }
 .widget_color > ul > li span.color3 {
-  background: white;
+  background: #f5ebcc;
 }
 .widget_color > ul > li span.color4 {
-  background: white;
+  background: #f5f5cc;
 }
 .widget_color > ul > li span.color5 {
-  background: white;
+  background: #ebf5e0;
 }
 .widget_color > ul > li span.color6 {
-  background: white;
+  background: #d6e4ef;
 }
-
-
-
-
+.widget_color > ul > li span.color7 {
+  background: #e5def2;
+}
+.widget_color > ul > li span.color8 {
+  background: #f6e3f8;
+}
 .widget_color > ul > li span.checkmark {
   height: 30px;
-  width: 100px;
+  width: 30px;
+  border-radius: 50%;
   display: block;
   position: absolute;
   top: 50%;
   transform: translatey(-50%);
   transition: .3s;
 }
-
-
-.widget_list > ul > li span.checkmark {
-  height: 30px;
-  width: 100px;
-  display: block;
-  position: absolute;
-  top: 50%;
-  transform: translatey(-50%);
-  transition: .3s;
-}
-
-
-
 .widget_color > ul > li span.checkmark::before {
   left: 44%;
   top: 31%;
   width: 6px;
   height: 10px;
-  border: solid red;
-  border-top-width: medium;
-  border-right-width: medium;
-  border-bottom-width: medium;
-  border-left-width: medium;
-  border-width: 0 2px 2px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.widget_list > ul > li span.checkmark::before {
-  left: 44%;
-  top: 31%;
-  width: 6px;
-  height: 10px;
-  border: solid red;
+  border: solid white;
   border-top-width: medium;
   border-right-width: medium;
   border-bottom-width: medium;
@@ -7547,8 +7483,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 2px solid #000;
 }
 .panel_radio span.checkmark {
-  height: 180px;
-  width: 180px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   display: block;
   position: absolute;

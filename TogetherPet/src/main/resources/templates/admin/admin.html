@@ -19,6 +19,8 @@
   data-theme="theme-default"
   data-assets-path="admin/assets/"
   data-template="vertical-menu-template-free"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  
 >
   <head>
     <meta charset="utf-8" />
@@ -66,6 +68,7 @@
   </head>
 
   <body>
+  <article layout:fragment="content">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -157,74 +160,18 @@
               <li class="menu-item">
                 <a href="basicModal" class="menu-link" data-target="#basicModal">
                   <i class="menu-icon tf-icons bx bx-mobile-vibration"></i>
-                  <div data-i18n="Account">출근</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="menu-icon tf-icons bx bxs-mobile-vibration"></i><div data-i18n="Account">퇴근</div>
-                </a>
+                  <div data-i18n="Account">출근</div>&nbsp;&nbsp;&nbsp;</a>
+              </li>
+
+              <li class="menu-item">    
+                <a href="#" class="menu-link" data-target="#basicModal">
+                  <i class="menu-icon tf-icons bx bxs-mobile-vibration"></i>
+                  <div data-i18n="Account">퇴근</div></a>                
               </li>
  
               
 
-<!-- 출근 Button trigger modal -->
-<button
-type="button"
-class="btn btn-primary"
-data-bs-toggle="modal"
-data-bs-target="#basicModal">
-출근
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel1">출근</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">                               
-      출근 등록되었습니다. 
-    </div>
-    <div class="modal-footer">                                
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-    </div>
-  </div>
-</div>
-</div>
-
-
-<!-- 퇴근 Button trigger modal -->
-<button
-type="button"
-class="btn btn-primary"
-data-bs-toggle="modal"
-data-bs-target="#basicModal">
-퇴근
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel1">퇴근</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">                               
-      퇴근 등록되었습니다. 
-    </div>
-    <div class="modal-footer">                                
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-    </div>
-  </div>
-</div>
-</div>
 
 
 
@@ -242,7 +189,7 @@ data-bs-target="#basicModal">
             <!-- 통계,현황 -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">통계·현황</span></li>
             <li class="menu-item">
-              <a href="admin/visitCount" class="menu-link">
+              <a href="visitCount" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">방문 · 유입</div>
               </a>
@@ -937,5 +884,6 @@ data-bs-target="#basicModal">
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </article>
   </body>
 </html>

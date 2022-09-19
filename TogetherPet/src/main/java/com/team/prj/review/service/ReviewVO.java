@@ -14,7 +14,9 @@ public class ReviewVO {
 		private String star;
 		private Date dt;
 		private int boardNo;
-		private int categoryId;
+		private String categoryId;
 		private int groupNo;
 		private int userNo;
+		
+		int rvCnt; // 리뷰 개수 표시하는 거 때문에 희수가 추가
 }

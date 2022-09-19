@@ -1,19 +1,21 @@
 package com.team.prj.goods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.goods.mapper.GoodsMapper;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.review.service.ReviewVO;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
-	
+
 	@Autowired
 	private GoodsMapper map;
-	
+
 	@Override
 	public List<GoodsVO> goodsSelectAll() {
 		// TODO Auto-generated method stub
@@ -57,15 +59,33 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public List<PhotoVO> goodsThumbList() {
-		// TODO Auto-generated method stub
-		return map.goodsThumbList();
+	public List<PhotoVO> ThumbList() {
+		return map.ThumbList();
 	}
 
 	@Override
 	public List<PhotoVO> goodsPhotoList(GoodsVO vo) {
 		// TODO Auto-generated method stub
 		return map.goodsPhotoList(vo);
+	}
+
+
+	@Override
+	public List<Map<Integer, Integer>> reviewCount() {
+		// TODO Auto-generated method stub
+		return map.reviewCount();
+	}
+
+	@Override
+	public PhotoVO goodsPhoto(GoodsVO vo) {
+		// TODO Auto-generated method stub
+		return map.goodsPhoto(vo);
+	}
+
+	@Override
+	public List<ReviewVO> reviewList(GoodsVO vo) {
+		// TODO Auto-generated method stub
+		return map.reviewList(vo);
 	}
 
 }
