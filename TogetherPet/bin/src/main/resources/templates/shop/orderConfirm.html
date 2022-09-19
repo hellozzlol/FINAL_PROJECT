@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<article layout:fragment="content">
+		<br> <br> <br> <br>
+		<!--breadcrumbs area start-->
+		<div class="breadcrumbs_area breadcrumbs_other">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="breadcrumb_content text-center">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li><a href="#">pages</a></li>
+							</ul>
+							<h3>주문 접수가 완료되었습니다.</h3>
+							<br> <br>
+						</div>
+					</div>
+					<div class="order_table_right">
+						<form action="#">
+							<div class="order_table table-responsive">
+								<table>
+									<thead>
+										<tr>
+											<th>배송 정보</th>
+											<th class="text-right"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>받는 사람</td>
+											<td class="text-right">$75.20</td>
+										</tr>
+										<tr>
+											<td>연락처</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+										<tr>
+											<td>주소</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+										<tr>
+											<td>배송 요청사항</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+										<tr>
+											<td>결제 방법</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+									</tbody>
+								</table>
+								<table>
+									<thead>
+										<tr>
+											<th>주문 및 결제 정보</th>
+											<th class="text-right">Total</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>상품제목</td>
+											<td class="text-right">$75.20</td>
+										</tr>
+										<tr>
+											<td>상품이름</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+										<tr>
+											<td>적립금</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+										<tr>
+											<td>할인</td>
+											<td class="text-right">$50.00</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr class="order_total">
+											<th>Order Total</th>
+											<td class="text-right">$225.60</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</form>
+						<div class="proceed_checkout_btn">
+							<a class="btn btn-primary" href="shop">계속 쇼핑하기</a>
+							<!-- 상품리스트 -->
+						</div>
+						<br>
+						<div class="proceed_checkout_btn">
+							<a class="btn btn-primary" href="order">주문 페이지로 이동</a>
+							<!-- 마이페이지 -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</article>
+</body>
+</html>

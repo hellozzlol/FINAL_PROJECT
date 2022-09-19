@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> -->
+
+
+<link rel="stylesheet"
+	href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<title>장례업체</title>
+</head>
+<style>
+.map {
+	margin: auto !important;
+}
+
+
+</style>
+<body>
+	<article layout:fragment="content">
+		<br> <br> <br> <br> <br> <br>
+		
+				<!--breadcrumbs area start-->
+                  <div class="breadcrumb_content" style="margin: auto;">
+                     <ul>
+                        <li><a href="index.html">home</a></li>
+                        <li>funeral</li>
+                     </ul>
+                  </div>
+                  <!--breadcrumbs area end-->
+
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
+			style="width: 1000px; height: auto; margin: auto;">
+			<div class="container-fluid">
+
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link active"
+						onclick="setBounds()">전국</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">수도권</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">충청권</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">호남권</a></li>
+					<li class="nav-item"><a class="nav-link disabled" href="#">영남권</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+
+		<div id="map" style="width: 1000px; height: 400px; margin: auto;"></div>
+		<script type="text/javascript"
+			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0"></script>
+
+
+
+		<script>
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			mapOption = {
+				center : new kakao.maps.LatLng(36.027633329476224,
+						128.8184864680428), // 지도의 중심좌표
+				// 지도의 확대 레벨
+				level : 13,
+				mapTypeId : kakao.maps.MapTypeId.ROADMAP
+			};
+
+			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+			//버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정합니다 
+			var points = [ new kakao.maps.LatLng(35.838312, 128.5204534),
+					new kakao.maps.LatLng(36.447016, 127.0342069),
+					new kakao.maps.LatLng(37.0869782, 127.1656623),
+					new kakao.maps.LatLng(35.301235, 128.910958),
+					new kakao.maps.LatLng(35.5190112, 127.4181282),
+					new kakao.maps.LatLng(37.2794036, 127.3904041),
+					new kakao.maps.LatLng(37.8160839, 126.9644914),
+					new kakao.maps.LatLng(35.3345623, 128.3603837),
+
+			]
+
+			//지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+			var bounds = new kakao.maps.LatLngBounds();
+
+			var i, marker;
+			for (i = 0; i < points.length; i++) {
+				// 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+				marker = new kakao.maps.Marker({
+					position : points[i]
+				});
+				marker.setMap(map);
+
+				// LatLngBounds 객체에 좌표를 추가합니다
+				bounds.extend(points[i]);
+			}
+
+			function setBounds() {
+				// LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+				// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
+
+				map.setBounds(bounds);
+			}
+		</script>
+
+		<script>
+	
+			$(document).ready(function() {
+				$('#myTable').DataTable({
+					lengthChange : false,
+					info : false,
+					ordering : false
+				});
+			});
+		</script>  
+		
+		
+		
+	
+					<table border="1" id="myTable" class="customers"
+						>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>업체명</th>
+								<th>주소</th>
+								<th>전화번호</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="funi : ${funeral}">
+								<td th:text="${funi.funeralNo}"></td>
+								<td th:text="${funi.name}"></td>
+								<td th:text="${funi.address}"></td>
+								<td th:text="${funi.call}"></td>
+							</tr>
+						</tbody>
+					</table>
+					
+				
+
+	</article>
+
+</body>
+</html>

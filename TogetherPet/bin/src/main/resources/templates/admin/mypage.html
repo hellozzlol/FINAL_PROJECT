@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_admin}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.abc{
+		position: absolute;
+		left: 300px;
+	}
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+		<div class="abc">
+		<div class="container-xxl flex-grow-1 container-p-y">
+			<h5 class="fw-bold py-3 mb-4">
+				<span class="text-muted fw-light">내 정보 관리 /</span> Account
+			</h5>
+
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="nav nav-pills flex-column flex-md-row mb-3">
+						<li class="nav-item"><a class="nav-link active"
+							href="javascript:void(0);"><i class="bx bx-user me-1"></i>
+								Account</a></li>
+
+
+					</ul>
+					<div class="card mb-4">
+						<h5 class="card-header">Profile Details</h5>
+						<!-- Account -->
+						<div class="card-body">
+							<div class="d-flex align-items-start align-items-sm-center gap-4">
+								<img src="../assets/img/avatars/1.png" alt="user-avatar"
+									class="d-block rounded" height="100" width="100"
+									id="uploadedAvatar" />
+								<div class="button-wrapper">
+									<label for="upload" class="btn btn-primary me-2 mb-4"
+										tabindex="0"> <span class="d-none d-sm-block">Upload
+											new photo</span> <i class="bx bx-upload d-block d-sm-none"></i> <input
+										type="file" id="upload" class="account-file-input" hidden
+										accept="image/png, image/jpeg" />
+									</label>
+
+
+									<p class="text-muted mb-0">JPG, GIF or PNG. 최대사이즈: 800K</p>
+								</div>
+							</div>
+						</div>
+						<hr class="my-0" />
+						<div class="card-body">
+							<form id="formAccountSettings" method="POST"
+								onsubmit="return false">
+								<div class="row">
+									<div class="mb-3 col-md-6">
+										<label for="aName" class="form-label">이름</label> <input
+											class="form-control" type="text" id="aName" name="aName"
+											value="박가나" readonly />
+									</div>
+									<div class="mb-3 col-md-6">
+										<label for="ad_no" class="form-label">사번</label> <input
+											class="form-control" type="text" name="ad_no" id="ad_no"
+											value="115913" readonly />
+									</div>
+
+									<div class="mb-3 col-md-6">
+										<label for="dept" class="form-label">부서</label> <input
+											class="form-control" type="text" name="dept" id="dept"
+											value="인사팀" readonly />
+									</div>
+
+									<div class="mb-3 col-md-6">
+										<label for="position" class="form-label">직급</label> <input
+											class="form-control" type="text" name="position"
+											id="position" value="대리" readonly />
+									</div>
+
+
+									<div class="mb-3 col-md-6">
+										<label for="hiredate" class="form-label">입사일</label> <input
+											type="text" class="form-control" id="hiredate"
+											name="hiredate" value="2020-09-13" readonly />
+									</div>
+
+
+									<!-- /근태 정보 -->
+								</div>
+								<div class="card mb-4">
+									<h5 class="card-header">근태 정보</h5>
+									<div class="card-body">
+										<table border="1">
+											<thead>
+												<tr>
+													<th>사원 번호</th>
+													<th>일자</th>
+													<th>출근 시간</th>
+													<th>퇴근 시간</th>
+													<th>상태</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="att : ${attend}">
+													<td th:text="${att.adNo}"></td>
+													<td th:text="${att.Dt}"></td>
+													<td th:text="${att.startDt}"></td>
+													<td th:text="${att.endDt}"></td>
+													<td th:text="${att.state}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- / Content -->
+
+
+		<div class="content-backdrop fade"></div>
+		</div>
+	</article>
+
+</body>
+</html>

@@ -20,13 +20,13 @@ public class adminServiceImpl implements adminService {
 	@Override
 	public adminVO adminSelect(adminVO vo) {
 		// 관리자 단건조회
-		return null;
+		return map.adminSelect(vo);
 	}
 
 	@Override
 	public int adminUpdate(adminVO vo) {
 		// 관리자 수정
-		return 0;
+		return map.adminUpdate(vo);
 	}
 
 }
