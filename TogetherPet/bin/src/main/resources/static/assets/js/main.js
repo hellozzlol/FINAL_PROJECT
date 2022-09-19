@@ -141,7 +141,7 @@
     
     
     /*instagram activation*/
-    $.instagramFeed({
+ /*   $.instagramFeed({
         'username': 'portfolio.devitems',
         'container': "#instagramFeed",
         'display_profile': false,
@@ -153,7 +153,7 @@
         'items_per_row': 4,
         'margin': 2,
     });
-
+*/
       /*---  ScrollUp Active ---*/
     $.scrollUp({
         scrollText: '<i class="ion-android-arrow-up"></i>',

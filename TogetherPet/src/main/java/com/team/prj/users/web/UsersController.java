@@ -25,10 +25,10 @@ public class UsersController {
 		return "users/usersSelect";
 	}
 	
+	// 개인 회원 리스트
 //	@GetMapping("/usersSelect")
-//	public String usersSelect(UsersVO vo, Model model, HttpSession session, HttpServletResponse response) {
-//		vo.setId((String) session.getAttribute("id"));
-//		model.addAttribute("userList", us.usersSelect(vo));
+//	public String usersSelect(UsersVO vo, Model model) {
+//		model.addAttribute("userList", dao.usersSelect(vo));
 //		return "users/usersSelect";
 //	}
 	
@@ -44,7 +44,7 @@ public class UsersController {
 	@PostMapping("/usersUpdate")
 	public String usersUpdate(UsersVO vo, Model model) {
 		model.addAttribute("updateList", dao.usersUpdate(vo));
-		return "redirect:usersSelectList";
+		return "redirect:usersSelect";
 	}
 	
 }
