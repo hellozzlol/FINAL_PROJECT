@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.team.prj.admin.service.mapper.adminMapper;
+import com.team.prj.admin.mapper.adminMapper;
 @Service
 public class adminServiceImpl implements adminService {
 	@Autowired

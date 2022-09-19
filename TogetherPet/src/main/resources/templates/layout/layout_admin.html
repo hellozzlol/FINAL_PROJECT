@@ -156,11 +156,82 @@
               </li>
 
               <li class="menu-item">
-                <a href="pages-account-settings-account.html" class="menu-link">
+                <a href="#basicModal" class="menu-link" >
                   <i class="menu-icon tf-icons bx bx-mobile-vibration"></i>
-                  <div data-i18n="Account">출근</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="menu-icon tf-icons bx bxs-mobile-vibration"></i><div data-i18n="Account">퇴근</div>
-                </a>
+                  <div data-i18n="Account">출근</div></a>
               </li>
+
+              <li class="menu-item">    
+                <a href="#" class="menu-link" data-target="#basicModal">
+                  <i class="menu-icon tf-icons bx bxs-mobile-vibration"></i>
+                  <div data-i18n="Account">퇴근</div></a>                
+              </li>
+              
+              
+	<!-- 출근 Button trigger modal -->
+	<button
+	type="button"
+	class="btn btn-primary"
+	data-bs-toggle="modal"
+	data-bs-target="#basicModal">
+	출근
+	</button>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <h5 class="modal-title" id="exampleModalLabel1">출근</h5>
+	      <button
+	        type="button"
+	        class="btn-close"
+	        data-bs-dismiss="modal"
+	        aria-label="Close"></button>
+	    </div>
+	    <div class="modal-body">                               
+	      출근 등록되었습니다. 
+	    </div>
+	    <div class="modal-footer">                                
+	      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+	    </div>
+	  </div>
+	</div>
+	</div>
+	
+	
+	<!-- 퇴근 Button trigger modal -->
+	<button
+	type="button"
+	class="btn btn-primary"
+	data-bs-toggle="modal"
+	data-bs-target="#basicModal">
+	퇴근
+	</button>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <h5 class="modal-title" id="exampleModalLabel1">퇴근</h5>
+	      <button
+	        type="button"
+	        class="btn-close"
+	        data-bs-dismiss="modal"
+	        aria-label="Close"></button>
+	    </div>
+	    <div class="modal-body">                               
+	      퇴근 등록되었습니다. 
+	    </div>
+	    <div class="modal-footer">                                
+	      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+	    </div>
+	  </div>
+	</div>
+	</div>              
+              
+              
               
 
 
@@ -192,12 +263,12 @@
             <!-- 회원관리 -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">회원 관리</span></li>
             <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <a href="userManage" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Form Elements">개인회원</div>
               </a>
 
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <a href="buserManage" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-group"></i>
                 <div data-i18n="Form Elements">업체회원</div>
               </a>
@@ -267,6 +338,7 @@
 
     <!-- Page JS -->
     <script src="admin/assets/js/dashboards-analytics.js"></script>
+    <script src="../assets/js/ui-modals.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
