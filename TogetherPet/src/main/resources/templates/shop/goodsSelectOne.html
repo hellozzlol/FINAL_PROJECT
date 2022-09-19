@@ -65,8 +65,9 @@
 <script>
 		document.addEventListener('DOMContentLoaded', function () {
 			let goodsNo = Number($('#goodsNo').val())
+			let userNo = Number($('#userNo').val());
+				
 			qnaList();
-			console.log('상품 번호: ', goodsNo);
 
 			// 문의 리스트
 			function qnaList() {
@@ -87,7 +88,7 @@
 												</tbody>
 												</table>`)
 						res.forEach(obj => {
-							let userNo = obj.userNo;
+							userNo = obj.userNo;
 							// 닉네임 보여주기
 							$.ajax({
 									url: 'ajaxSelectNick',
@@ -198,12 +199,8 @@
 
 			// 문의 작성 폼에서 문의 제출하기 버튼 클릭하면 insert 실행
 			$('#qnaFrm').on('click', '#submitQna', function () {
-				let userNo = Number($('#userNo').val());
 				let title = $('#title').val();
 				let content = $('#content').val();
-				
-				console.log('title: ', document.getElementById('title').value); // ★ null
-				console.log('content: ', $('#content').val()); // ★ null
 
 				if (confirm('문의를 등록하시겠습니까?')) {
 					$.ajax('ajaxQnaInsert', {
@@ -217,7 +214,6 @@
 							dataType: 'text'
 						})
 						.done(res => {
-							console.log('res', res);
 							$('#qnaFrm').html('');
 							qnaList();
 						})
@@ -225,7 +221,23 @@
 			})
 			
 			// 장바구니 추가
-			$('#qty').val() = $('#setQty').val()
+			$('#addCart').on('click', function(){
+				$('#qty').val(Number($('#setQty').val()));
+				let formData = $("form[name=cartFrm]").serialize();
+				if(confirm('해당 상품을 장바구니에 추가하시겠습니까?')){
+					$.ajax('ajaxCartInsert', {
+						type: 'post',
+						data: formData,
+						dataType: 'text'
+					})
+					.done(res => {
+						if(confirm(res)){
+							location.href="cart?userNo=" + userNo;
+						}
+					})
+				}
+				
+			})
 		})
 	</script>
 </head>
@@ -588,71 +600,75 @@
 				</div>
 				<div class="col-lg-6 col-md-6">
 					<div class="product_d_right">
-							<br>
-							<h3>[[${goods.name}]]</h3>
-							<div class="product_ratting_review d-flex align-items-center">
-								<div class=" product_ratting">
-									<ul class="d-flex">
-										<li><a href="#"><i class="ion-ios-star"></i></a></li>
-										<li><a href="#"><i class="ion-ios-star"></i></a></li>
-										<li><a href="#"><i class="ion-ios-star"></i></a></li>
-										<li><a href="#"><i class="ion-ios-star"></i></a></li>
-										<li><a href="#"><i class="ion-ios-star"></i></a></li>
-									</ul>
-								</div>
-								<div class="product_review">
-									<ul class="d-flex">
-										<li>[[${#lists.size(reviewList)}]] reviews</li>
-									</ul>
-								</div>
-							</div>
-							<br> <br>
-							<div class="price_box">
-								<span class="old_price">KRW
-									[[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
-									class="current_price">KRW
-									[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
-							</div>
-							<div class="product_availalbe">
+						<br>
+						<h3>[[${goods.name}]]</h3>
+						<div class="product_ratting_review d-flex align-items-center">
+							<div class=" product_ratting">
 								<ul class="d-flex">
-									<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
-										left</li>
-									<li>Availalbe: <span class="stock">In Stock</span></li>
+									<li><a href="#"><i class="ion-ios-star"></i></a></li>
+									<li><a href="#"><i class="ion-ios-star"></i></a></li>
+									<li><a href="#"><i class="ion-ios-star"></i></a></li>
+									<li><a href="#"><i class="ion-ios-star"></i></a></li>
+									<li><a href="#"><i class="ion-ios-star"></i></a></li>
 								</ul>
 							</div>
+							<div class="product_review">
+								<ul class="d-flex">
+									<li>[[${#lists.size(reviewList)}]] reviews</li>
+								</ul>
+							</div>
+						</div>
+						<br> <br>
+						<div class="price_box">
+							<span class="old_price">KRW
+								[[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
+								class="current_price">KRW
+								[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
+						</div>
+						<div class="product_availalbe">
+							<ul class="d-flex">
+								<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
+									left</li>
+								<li>Availalbe: <span class="stock">In Stock</span></li>
+							</ul>
+						</div>
 
-							<div class="product_variant">
+						<div class="product_variant">
 
-								<div class="variant_quantity_btn d-flex">
-									<div class="pro-qty border">
+							<div class="variant_quantity_btn d-flex">
+								<div class="pro-qty border">
 
-										<input min="1" max="100" type="tex" id="setQty" value="1">
-									</div>
-									<form name="cartFrm" action="cartInsert" method="post">
-										<input type="hidden" name="goodsNo" id="goodsNo" th:value="${goods.goodsNo}"> <!-- 상품번호 -->
-										<input type="hidden" name="userNo" id="userNo" th:value="1"> <!-- 유저번호 -->
-										<input type="hidden" name="qty" id="qty" value=""> <!-- 수량 -->
-									<button class="button btn btn-primary" type="submit">
+									<input min="1" max="100" type="tex" id="setQty" value="1">
+								</div>
+								<form name="cartFrm" action="cartInsert" method="post">
+									<input type="hidden" name="goodsNo" id="goodsNo"
+										th:value="${goods.goodsNo}">
+									<!-- 상품번호 -->
+									<input type="hidden" name="userNo" id="userNo" th:value="1">
+									<!-- 유저번호 -->
+									<input type="hidden" name="qty" id="qty" value="">
+									<!-- 수량 -->
+									<button class="button btn btn-primary" type="button"
+										id="addCart">
 										<i class="ion-android-add"></i> Add To Cart
 									</button>
-									</form>
-									<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+								</form>
+								<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
 
-								</div>
 							</div>
+						</div>
 
-							<div class="priduct_social d-flex">
-								<span>SHARE: </span>
-								<ul>
-									<li><a href="#"><i class="ion-social-twitter"></i></a></li>
-									<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-									<li><a href="#"><i
-											class="ion-social-googleplus-outline"></i></a></li>
-									<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
-									<li><a href="#"><i
-											class="ion-social-instagram-outline"></i></a></li>
-								</ul>
-							</div>
+						<div class="priduct_social d-flex">
+							<span>SHARE: </span>
+							<ul>
+								<li><a href="#"><i class="ion-social-twitter"></i></a></li>
+								<li><a href="#"><i class="ion-social-facebook"></i></a></li>
+								<li><a href="#"><i
+										class="ion-social-googleplus-outline"></i></a></li>
+								<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
+								<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -753,9 +769,6 @@
 							<div class="tab-pane fade" id="qna" role="tabpanel">
 
 								<div class="product_d_table">
-									<form id="hiddenFrm" action="#">
-										<input type="hidden" id="goodsNo" th:value="${goods.goodsNo}">
-									</form>
 									<form id="qnaFrm" action="#"></form>
 								</div>
 							</div>
@@ -770,8 +783,8 @@
 									<form action="#">
 										<div class="row">
 											<div class="col-lg-6 col-md-6">
-												<input type="hidden" id="userNo" value="1"> <input
-													id="title" name="title" type="text" placeholder="제목을 입력하세요">
+												<input id="title" name="title" type="text"
+													placeholder="제목을 입력하세요">
 											</div>
 											<br> <br>
 											<div class="col-12">
