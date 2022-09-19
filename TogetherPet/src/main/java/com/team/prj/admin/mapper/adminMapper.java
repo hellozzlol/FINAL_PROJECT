@@ -1,4 +1,4 @@
-package com.team.prj.admin.service.mapper;
+package com.team.prj.admin.mapper;
 
 import java.util.List;
 
