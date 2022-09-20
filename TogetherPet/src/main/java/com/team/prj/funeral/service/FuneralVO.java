@@ -18,6 +18,7 @@ public class FuneralVO {
 	private String latitude;
 	private String longitude;
 	private String categoryId;
+	private String homepage;
 	
 	
 }
