@@ -14,22 +14,22 @@
 }
 
 .login_container{
-    width: 380px; 
-    height: 500px; 
+    width: 500px; 
+    height: 700px; 
     margin: auto; 
     border-radius: 3px; 
-    box-shadow: 0px 0px 20px #000;
+    
 }
 
 .form_container{
-    width: 300px;
+    width: 320px;
     margin: auto;
 }
 
 .form_title_div{
     margin: auto; 
     text-align: center;
-    padding-top: 13px;
+    padding-top: 10px;
 }
 
 .form_title_p{
@@ -37,6 +37,7 @@
     font-size: 20px; 
     display: inline-block; 
     padding-top: 10px;
+    
 }
 
 .form_input{
@@ -52,7 +53,7 @@
 }
 
 .form_text_alert{
-    height: 20px;
+    height: 10px;
 }
 
 .form_text_alert_padding{
@@ -60,9 +61,9 @@
 }
 
 .form_submit_button{
-    width: 100%; 
+    width: 110%; 
     height: 44px; 
-    background-color: rgb(83, 154, 236); 
+    background-color: #6a7964; 
     border: 1px; 
     border-radius: 3px; 
     color: white; 
@@ -78,7 +79,7 @@
 <body>
 <article layout:fragment="content">
 <div id="container" class="main_container">
-        <div style="padding: 120px;"></div>
+        <div style="padding: 100px;"></div>
         <div class="login_container">
             <div class="form_container">
                 <form name="login_form" action="/cookie" method="get">
@@ -127,6 +128,44 @@
                         </div>
                         <div>
                             <input type="text" name="userEmail" placeholder="eMail" class="form_input"/>
+                            <input type="text" name="userEmail" placeholder="인증번호를 입력하세요." class="form_input"/>
+                        </div>
+                        <div class="form_text_alert_padding">
+                            <div id="alert_username" class="form_text_alert"></div>
+                        </div>
+                    </div>
+                    
+                        <div>
+                        <div>
+                            <a class="form_item_name">닉네임</a>
+                        </div>
+                        <div>
+                            <input type="text" name="userEmail" placeholder="" class="form_input"/>
+                        </div>
+                        <div class="form_text_alert_padding">
+                            <div id="alert_username" class="form_text_alert"></div>
+                        </div>
+                    </div>
+                    
+                       <div>
+                        <div>
+                            <a class="form_item_name">전화번호</a>
+                        </div>
+                        <div>
+                            <input type="text" name="userTel" placeholder="" class="form_input"/>
+                        </div>
+                        <div class="form_text_alert_padding">
+                            <div id="alert_username" class="form_text_alert"></div>
+                        </div>
+                    </div>
+                    
+                    
+					   <div>
+                        <div>
+                            <a class="form_item_name">주소</a>
+                        </div>
+                        <div>
+                            <input type="text" name="userAddr" placeholder="주소" class="form_input"/>
                         </div>
                         <div class="form_text_alert_padding">
                             <div id="alert_username" class="form_text_alert"></div>
@@ -135,7 +174,7 @@
                     
                     
                     
-                    <div style="height: 10px;"></div>
+                    <div style="height: 20px;"></div>
                     <div>
                         <button type="button" class="form_submit_button" onclick="login()">등록</button>
                     </div>

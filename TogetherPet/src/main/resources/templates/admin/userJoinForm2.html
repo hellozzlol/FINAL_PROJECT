@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insert title here</title>
+<!-- <script src="./login.js" type="text/javascript"></script> -->
+
+
+
+</head>
+
+<body>
+<article layout:fragment="content">
+				<!-- 로그인 폼 -->
+                <div class="col-md-6">
+                  <div class="card mb-4">
+                    <h5 class="card-header">회원가입</h5>
+                    <div class="card-body demo-vertical-spacing demo-only-element">
+                      <label class="form-label" for="basic-default-password12">아이디</label>
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Recipient's username"
+                          aria-describedby="button-addon2"
+                        />
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2">중복확인</button>
+                      </div>
+                      
+
+                      <div class="form-password-toggle">
+                        <label class="form-label" for="basic-default-password12">비밀번호</label>
+                        <div class="input-group">
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="basic-default-password12"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="basic-default-password2"
+                          />
+                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+                            ><i class="bx bx-hide"></i
+                          ></span>
+                        </div>
+                      </div>
+
+                      <div class="form-password-toggle">
+                        <label class="form-label" for="basic-default-password12">비밀번호 확인</label>
+                        <div class="input-group">
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="basic-default-password12"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="basic-default-password2"
+                          />
+                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+                            ><i class="bx bx-hide"></i
+                          ></span>
+                        </div>
+                      </div>
+
+                     
+                      <label class="form-label" for="basic-default-password12">이메일</label>
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Recipient's username"
+                          aria-describedby="button-addon2"
+                        />
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2">인증코드전송</button>
+                      </div>
+
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Recipient's username"
+                          aria-describedby="button-addon2"
+                        />
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2">인증코드확인</button>
+                      </div>
+
+
+                      <label class="form-label" for="basic-default-password12">닉네임</label>
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Recipient's username"
+                          aria-describedby="button-addon2"
+                        />
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2">중복확인</button>
+                      </div>
+
+
+                      <div>
+                        <label for="defaultFormControlInput" class="form-label">연락처</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="defaultFormControlInput"
+                          placeholder="" />
+                      </div>
+                  
+                      <div>
+                        <label for="defaultFormControlInput" class="form-label">주소</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="defaultFormControlInput"
+                          placeholder="" />
+                      </div>
+
+</article>
+</body>
+</html>

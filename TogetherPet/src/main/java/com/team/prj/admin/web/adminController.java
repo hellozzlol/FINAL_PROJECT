@@ -94,10 +94,10 @@ public class adminController {
 		return "admin/loginForm";
 	}
 	
-	@GetMapping("/userJoinForm")
+	@GetMapping("/userJoinForm2")
 	public String userJoinForm(Model model) {
 		
-		return "admin/userJoinForm";
+		return "admin/userJoinForm2";
 	}
 	
 	
