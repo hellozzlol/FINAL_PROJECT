@@ -27,7 +27,8 @@ public class ClassController {
 		model.addAttribute("class", dao.classSelect(vo));
 		return "class/classSelect";
 	}
-		@RequestMapping("test")
+	
+	@RequestMapping("test")
 	public String test(Model model) {
 		return "class/test";
 	}
