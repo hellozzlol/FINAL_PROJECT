@@ -48,4 +48,10 @@ public class ClassServiceImpl implements ClassService {
 		return map.classSearch(vo);
 	}
 
+//	@Override
+//	public List<ClassVO> classSearch(String[] categories, String[] addresses, String searchkey, String searchval) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 }

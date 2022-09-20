@@ -28,7 +28,8 @@ public class ClassVO {
 	String categoryId;
 	String returnMessage;
 	
-	String[] categories;
-	String[] addresses;
-	String val;
+	String []categories;
+	//String []addresses;
+	String searchkey;
+	String searchval;
 }

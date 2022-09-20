@@ -76,22 +76,25 @@
 				#{category}
 				</foreach>
 			</if>
-			<if test="addresses != null">
+			<!--<if test="addresses != null">
 				and address in <foreach item="address" collection="addresses" open="(" close=")" separator=",">
 				#{address}
 				</foreach>
+			</if>-->
+			
+			<if test="address != null">
+					AND ADDRESS LIKE '%'|| #{address} ||'%'
 			</if>
 			
-			
-			<choose>
-				<when test="key == 'name'">
-					AND NAME LIKE '%'|| #{val} ||'%'
+			<!--<choose>
+				<when test="searchkey == 'name'">
+					AND NAME LIKE '%'|| #{searchval} ||'%'
 				</when>
 				  
-				<when test="key == 'address'">
-					AND ADDRESS LIKE '%'|| #{val} ||'%'
-				</when>
-			</choose>
+				<when test="searchkey == 'address'">
+					AND ADDRESS LIKE '%'|| #{searchval} ||'%'
+				</when> 
+			</choose>  -->
 		</where>	
 	</select>
 
