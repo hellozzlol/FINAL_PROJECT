@@ -1,67 +1,10 @@
-<!doctype html>
-<html class="no-js" lang="en">
-
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout2}">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Uthr – Product Details</title>
-<meta name="description"
-	content="Uthr Fashion eCommerce Bootstrap 5 Template is an innovative and modern e-commerce online store website template." />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="profile" href="https://gmpg.org/xfn/11">
-<link rel="canonical" href="Replace_with_your_PAGE_URL" />
-
-<!-- Open Graph (OG) meta tags are snippets of code that control how URLs are displayed when shared on social media  -->
-<!-- <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Uthr – Fashion eCommerce HTML Template" />
-    <meta property="og:url" content="PAGE_URL" />
-    <meta property="og:site_name" content="SITE_NAME" /> -->
-<!-- For the og:image content, replace the # with a link of an image -->
-<!-- <meta property="og:image" content="#" />
-    <meta property="og:description"
-        content="240+ Best Bootstrap Templates are available on this website. Find your template for your project compatible with the most popular HTML library in the world." /> -->
-
-<!-- Add site Favicon -->
-<link rel="icon"
-	href="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-32x32.png"
-	sizes="32x32" />
-<link rel="icon"
-	href="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-192x192.png"
-	sizes="192x192" />
-<link rel="apple-touch-icon"
-	href="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-180x180.png" />
-<meta name="msapplication-TileImage"
-	content="https://hasthemes.com/wp-content/uploads/2019/04/cropped-favicon-270x270.png" />
-
-<!-- CSS
-    ========================= -->
-<link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-<link rel="stylesheet" href="assets/css/slick.css">
-<link rel="stylesheet" href="assets/css/simple-line-icons.css">
-<link rel="stylesheet" href="assets/css/ionicons.min.css">
-<link rel="stylesheet" href="assets/css/font.awesome.css">
-<link rel="stylesheet" href="assets/css/animate.css">
-<link rel="stylesheet" href="assets/css/nice-select.css">
-<link rel="stylesheet" href="assets/css/jquery-ui.min.css">
-<link rel="stylesheet" href="assets/css/magnific-popup.css">
-
-<!-- Main Style CSS -->
-<link rel="stylesheet" href="assets/css/style.css">
-
-<!--modernizr min js here-->
-<script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
-
-
-<!-- Structured Data  -->
-<script type="application/ld+json">
-        {
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "Replace_with_your_site_title",
-        "url": "Replace_with_your_site_URL"
-        }
-    </script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 <script>
 		document.addEventListener('DOMContentLoaded', function () {
 			let goodsNo = Number($('#goodsNo').val())
@@ -243,687 +186,359 @@
 </head>
 
 <body>
-	<!--offcanvas menu area start-->
-	<div class="body_overlay"></div>
-	<div class="offcanvas_menu">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="offcanvas_menu_wrapper">
-						<div class="canvas_close">
-							<a href="javascript:void(0)"><i class="ion-android-close"></i></a>
-						</div>
-						<div class="header_contact_info">
-							<ul class="d-flex">
-								<li class="text-white"><i class="icons icon-phone"></i>053-421-2460</li>
-								<li class="text-white"><i
-									class="icon-envelope-letter icons"></i>yedam@yedam.com</a></li>
-							</ul>
-						</div>
-						<div class="header_social d-flex">
-							<span>Follow us</span>
-							<ul class="d-flex">
-								<li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
-								<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
-								<li><a href="#"><i class="icon-social-instagram icons"></i></a></li>
-							</ul>
-						</div>
+	<article layout:fragment="content">
+		<!--offcanvas menu area start-->
+		<br> <br> <br> <br>
 
-						<div id="menu" class="text-left ">
-							<ul class="offcanvas_main_menu">
-								<li class="menu-item-has-children active"><a href="#">Home</a>
-								</li>
-								<li class="menu-item-has-children"><a href="shop">Shop</a>
-								</li>
-								<li class="menu-item-has-children"><a
-									href="product-details.html"> Product Details</a></li>
-								<li><a href="#">sale</a></li>
-								<li class="menu-item-has-children"><a href="#">pages </a>
-									<ul class="sub-menu">
-										<li><a href="cart.html">cart</a></li>
-										<li><a href="checkout.html">Checkout</a></li>
-									</ul></li>
-								<li class="menu-item-has-children"><a href="#">blog</a>
-									<ul class="sub-menu">
-										<li><a href="blog.html">blog</a></li>
-										<li><a href="blog-details.html">blog details</a></li>
-									</ul></li>
-								<li><a href="#">buy</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--offcanvas menu area end-->
-	<!--mini cart-->
-	<div class="mini_cart">
-		<div class="cart_gallery">
-			<div class="cart_close">
-				<div class="cart_text">
-					<h3>cart</h3>
-				</div>
-				<div class="mini_cart_close">
-					<a href="javascript:void(0)"><i class="icon-close icons"></i></a>
-				</div>
-			</div>
-			<div class="cart_item">
-				<div class="cart_img">
-					<a href="#"><img src="assets/img/product/product1.jpg" alt=""></a>
-				</div>
-				<div class="cart_info">
-					<a href="#">Primis In Faucibus</a>
-					<p>
-						1 x <span> $65.00 </span>
-					</p>
-				</div>
-				<div class="cart_remove">
-					<a href="#"><i class="icon-close icons"></i></a>
-				</div>
-			</div>
-			<div class="cart_item">
-				<div class="cart_img">
-					<a href="#"><img src="assets/img/product/product2.jpg" alt=""></a>
-				</div>
-				<div class="cart_info">
-					<a href="#">Letraset Sheets</a>
-					<p>
-						1 x <span> $60.00 </span>
-					</p>
-				</div>
-				<div class="cart_remove">
-					<a href="#"><i class="icon-close icons"></i></a>
-				</div>
-			</div>
-		</div>
-		<div class="mini_cart_table">
-			<div class="cart_table_border">
-				<div class="cart_total">
-					<span>Sub total:</span> <span class="price">$125.00</span>
-				</div>
-				<div class="cart_total mt-10">
-					<span>total:</span> <span class="price">$125.00</span>
-				</div>
-			</div>
-		</div>
-		<div class="mini_cart_footer">
-			<div class="cart_button">
-				<a href="cart.html"><i class="fa fa-shopping-cart"></i> View
-					cart</a>
-			</div>
-			<div class="cart_button">
-				<a href="checkout.html"><i class="fa fa-sign-in"></i> Checkout</a>
-			</div>
-		</div>
-	</div>
-	<!--mini cart end-->
-	<!--header area start-->
-	<header class="header_section header_transparent">
-		<div class="header_top">
-			<div class="container-fluid">
+		<!--breadcrumbs area start-->
+		<div class="breadcrumbs_area breadcrumbs_product">
+			<div class="container">
 				<div class="row">
 					<div class="col-12">
-						<div
-							class="header_top_inner d-flex justify-content-between align-items-center">
-							<div class="header_contact_info">
-								<ul class="d-flex">
-									<li class="text-white"><i class="icons icon-phone"></i> <a
-										href="#">053-421-2460</a></li>
-									<li class="text-white"><i
-										class="icon-envelope-letter icons"></i> <a href="#">yedam@yedam.com</a>
-									</li>
-								</ul>
-							</div>
-
-							<div class="header_top_sidebar d-flex align-items-center">
-								<div class="header_social d-flex">
-									<span>Follow us</span>
-									<ul class="d-flex">
-										<li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
-										<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
-										<li><a href="#"><i
-												class="icon-social-instagram icons"></i></a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="main_header">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-12">
-						<div
-							class="header_container d-flex justify-content-between align-items-center">
-							<div class="canvas_open">
-								<a href="javascript:void(0)"><i class="ion-navicon"></i></a>
-							</div>
-
-							<div class="header_logo">
-								<a class="sticky_none" href="/"><img
-									src="assets/img/logo/logo.png" alt=""></a>
-							</div>
-							<!--main menu start-->
-							<div class="main_menu d-none d-lg-block">
-								<nav>
-									<ul class="d-flex">
-										<li><a href="shop">shop</a>
-											<ul class="sub_menu">
-												<li><a href="#">사료</a></li>
-												<li><a href="#">간식</a></li>
-												<li><a href="#">장난감</a></li>
-												<li><a href="#">생활용품</a></li>
-												<li><a href="#">위생/배변</a></li>
-												<li><a href="#">건강관리</a></li>
-											</ul></li>
-										<li><a href="classSelectList">class</a>
-											<ul class="sub_menu">
-												<li><a href="#">펫 푸드</a></li>
-												<li><a href="#">펫 핸드메이드</a></li>
-												<li><a href="#">펫 미용</a></li>
-												<li><a href="#">펫 드로잉</a></li>
-												<li><a href="#">기타 펫 클래스</a></li>
-											</ul></li>
-										<li><a href="#">pet info</a>
-											<ul class="sub_menu">
-												<li><a href="#">병원/약국</a></li>
-												<li><a href="#">숙박</a></li>
-												<li><a href="funeralList">장례업체</a></li>
-											</ul></li>
-										<li><a href="#">community</a></li>
-									</ul>
-								</nav>
-							</div>
-							<div class="header_account">
-								<ul class="d-flex">
-									<li class="header_search"><a href="#"><i
-											class="icon-magnifier icons"></i></a></li>
-									<li class="account_link"><a href="#"><i
-											class="icon-user icons"></i></a>
-										<ul class="dropdown_account_link">
-											<li><a href="usersSelect">My Account</a></li>
-											<li><a href="#">Login</a></li>
-											<li><a href="#">Contact</a></li>
-										</ul></li>
-									<li><a href="#"><i class="icon-heart icons"></i></a> <span
-										class="item_count">2</span></li>
-									<li class="shopping_cart"><a href="#"><i
-											class="icon-basket-loaded icons"></i></a> <span
-										class="item_count">2</span></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- page search box -->
-		<div class="page_search_box">
-			<div class="search_close">
-				<i class="ion-close-round"></i>
-			</div>
-			<form class="border-bottom" action="#">
-				<input class="border-0" placeholder="Search products..." type="text">
-				<button type="submit">
-					<span class="icon-magnifier icons"></span>
-				</button>
-			</form>
-		</div>
-		<!-- page search box -->
-		<div class="page_search_box">
-			<div class="search_close">
-				<i class="ion-close-round"></i>
-			</div>
-			<form class="border-bottom" action="#">
-				<input class="border-0" placeholder="Search products..." type="text">
-				<button type="submit">
-					<span class="icon-magnifier icons"></span>
-				</button>
-			</form>
-		</div>
-
-	</header>
-	<!--header area end-->
-	<!--offcanvas menu area start-->
-	<br>
-	<br>
-	<br>
-	<br>
-
-	<!--breadcrumbs area start-->
-	<div class="breadcrumbs_area breadcrumbs_product">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="breadcrumb_content">
-						<ul>
-							<li><a href="index.html">home</a></li>
-							<li><a href="shop.html">shop</a></li>
-							<li>Product Detail</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--breadcrumbs area end-->
-	<!--product details start-->
-	<section class="product_details mb-135">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-6">
-					<div class="product_zoom_gallery">
-						<div class="zoom_gallery_inner d-flex">
-							<div class="zoom_tab_img">
-								<!-- 반복되는 구간 -->
-								<div th:each="ph:${photoList}">
-									<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-										th:src="${ph.dir}" alt="tab-thumb"></a>
-								</div>
-								<div th:each="ph:${photoList}">
-									<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-										th:src="${ph.dir}" alt="tab-thumb"></a>
-								</div>
-								<!-- 반복되는 구간 -->
-
-								<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-									src="assets/img/product/small-product/product1.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product2.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product3.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product4.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product1.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product2.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product3.png"
-									alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-									href="javascript:void(0)"><img
-									src="assets/img/product/small-product/product4.png"
-									alt="tab-thumb"></a>
-							</div>
-							<div class="product_zoom_main_img">
-								<div th:each="ph:${photoList}">
-									<div class="product_zoom_thumb">
-										<img data-image="${ph.dir}" src="${ph.dir}" alt="">
-									</div>
-								</div>
-								<div th:each="ph:${photoList}">
-									<div class="product_zoom_thumb">
-										<img data-image="${ph.dir}" src="${ph.dir}" alt="">
-									</div>
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-								<div class="product_zoom_thumb">
-									<img data-image="assets/img/product/big-product/product1.png"
-										src="assets/img/product/big-product/product1.png" alt="">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<div class="product_d_right">
-						<br>
-						<h3>[[${goods.name}]]</h3>
-						<div class="product_ratting_review d-flex align-items-center">
-							<div class=" product_ratting">
-								<ul class="d-flex">
-									<li><a href="#"><i class="ion-ios-star"></i></a></li>
-									<li><a href="#"><i class="ion-ios-star"></i></a></li>
-									<li><a href="#"><i class="ion-ios-star"></i></a></li>
-									<li><a href="#"><i class="ion-ios-star"></i></a></li>
-									<li><a href="#"><i class="ion-ios-star"></i></a></li>
-								</ul>
-							</div>
-							<div class="product_review">
-								<ul class="d-flex">
-									<li>[[${#lists.size(reviewList)}]] reviews</li>
-								</ul>
-							</div>
-						</div>
-						<br> <br>
-						<div class="price_box">
-							<span class="old_price">KRW
-								[[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
-								class="current_price">KRW
-								[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
-						</div>
-						<div class="product_availalbe">
-							<ul class="d-flex">
-								<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
-									left</li>
-								<li>Availalbe: <span class="stock">In Stock</span></li>
-							</ul>
-						</div>
-
-						<div class="product_variant">
-
-							<div class="variant_quantity_btn d-flex">
-								<div class="pro-qty border">
-
-									<input min="1" max="100" type="tex" id="setQty" value="1">
-								</div>
-								<form name="cartFrm" action="cartInsert" method="post">
-									<input type="hidden" name="goodsNo" id="goodsNo"
-										th:value="${goods.goodsNo}">
-									<!-- 상품번호 -->
-									<input type="hidden" name="userNo" id="userNo" th:value="1">
-									<!-- 유저번호 -->
-									<input type="hidden" name="qty" id="qty" value="">
-									<!-- 수량 -->
-									<button class="button btn btn-primary" type="button"
-										id="addCart">
-										<i class="ion-android-add"></i> Add To Cart
-									</button>
-								</form>
-								<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
-
-							</div>
-						</div>
-
-						<div class="priduct_social d-flex">
-							<span>SHARE: </span>
+						<div class="breadcrumb_content">
 							<ul>
-								<li><a href="#"><i class="ion-social-twitter"></i></a></li>
-								<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-								<li><a href="#"><i
-										class="ion-social-googleplus-outline"></i></a></li>
-								<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
-								<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+								<li><a href="index.html">home</a></li>
+								<li><a href="shop.html">shop</a></li>
+								<li>Product Detail</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
-	<!--product details end-->
+		<!--breadcrumbs area end-->
+		<!--product details start-->
+		<section class="product_details mb-135">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<div class="product_zoom_gallery">
+							<div class="zoom_gallery_inner d-flex">
+								<div class="zoom_tab_img">
+									<!-- 반복되는 구간 -->
+									<div th:each="ph:${photoList}">
+										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
+											th:src="${ph.dir}" alt="tab-thumb"></a>
+									</div>
+									<div th:each="ph:${photoList}">
+										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
+											th:src="${ph.dir}" alt="tab-thumb"></a>
+									</div>
+									<!-- 반복되는 구간 -->
 
-	<!--product info start-->
-	<div class="product_d_info mb-118">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="product_d_inner">
-						<div class="product_info_button border-bottom">
-							<ul class="nav" role="tablist">
-								<li><a class="active" data-toggle="tab" href="#info"
-									role="tab" aria-controls="info" aria-selected="false">제품
-										상세보기</a></li>
-								<li><a data-toggle="tab" href="#reviews" role="tab"
-									aria-controls="reviews" aria-selected="false">구매 후기 </a></li>
-								<li><a data-toggle="tab" href="#qna" role="tab"
-									aria-controls="tags" aria-selected="false">QNA </a></li>
-								<li><a data-toggle="tab" href="#additional" role="tab"
-									aria-controls="additional" aria-selected="false">취소/교환 안내 </a></li>
-							</ul>
-						</div>
-						<div class="tab-content">
-							<div class="tab-pane fade show active" id="info" role="tabpanel">
-								<div class="product_info_content">
-									<!-- 상세 사진  -->
-									<img th:src="${detailshot.dir}"></img>
+									<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
+										src="assets/img/product/small-product/product1.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product2.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product3.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product4.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product1.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product2.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product3.png"
+										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
+										href="javascript:void(0)"><img
+										src="assets/img/product/small-product/product4.png"
+										alt="tab-thumb"></a>
+								</div>
+								<div class="product_zoom_main_img">
+									<div th:each="ph:${photoList}">
+										<div class="product_zoom_thumb">
+											<img data-image="${ph.dir}" src="${ph.dir}" alt="">
+										</div>
+									</div>
+									<div th:each="ph:${photoList}">
+										<div class="product_zoom_thumb">
+											<img data-image="${ph.dir}" src="${ph.dir}" alt="">
+										</div>
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product1.png"
+											src="assets/img/product/big-product/product1.png" alt="">
+									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade" id="reviews" role="tabpanel">
-								<div class="reviews_wrapper">
-									<h2>1 review for Donec eu furniture</h2>
-									<div class="reviews_comment_box">
-										<div class="comment_thmb">
-											<img src="assets/img/blog/comment2.jpg" alt="">
-										</div>
-										<div class="comment_text">
-											<div class="reviews_meta">
-												<div class="star_rating">
-													<ul class="d-flex">
-														<li><a href="#"><i class="icon-star"></i></a></li>
-														<li><a href="#"><i class="icon-star"></i></a></li>
-														<li><a href="#"><i class="icon-star"></i></a></li>
-														<li><a href="#"><i class="icon-star"></i></a></li>
-														<li><a href="#"><i class="icon-star"></i></a></li>
-													</ul>
-												</div>
-												<p>
-													<strong>admin </strong>- September 12, 2018
-												</p>
-												<span>roadthemes</span>
-											</div>
-										</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="product_d_right">
+							<br>
+							<h3>[[${goods.name}]]</h3>
+							<div class="product_ratting_review d-flex align-items-center">
+								<div class=" product_ratting">
+									<ul class="d-flex">
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+									</ul>
+								</div>
+								<div class="product_review">
+									<ul class="d-flex">
+										<li>[[${#lists.size(reviewList)}]] reviews</li>
+									</ul>
+								</div>
+							</div>
+							<br> <br>
+							<div class="price_box">
+								<span class="old_price">KRW
+									[[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
+									class="current_price">KRW
+									[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
+							</div>
+							<div class="product_availalbe">
+								<ul class="d-flex">
+									<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
+										left</li>
+									<li>Availalbe: <span class="stock">In Stock</span></li>
+								</ul>
+							</div>
 
+							<div class="product_variant">
+
+								<div class="variant_quantity_btn d-flex">
+									<div class="pro-qty border">
+
+										<input min="1" max="100" type="tex" id="setQty" value="1">
 									</div>
-									<div class="comment_title">
-										<h2>Add a review</h2>
-										<p>Your email address will not be published. Required
-											fields are marked</p>
+									<form name="cartFrm" action="cartInsert" method="post">
+										<input type="hidden" name="goodsNo" id="goodsNo"
+											th:value="${goods.goodsNo}">
+										<!-- 상품번호 -->
+										<input type="hidden" name="userNo" id="userNo" th:value="1">
+										<!-- 유저번호 -->
+										<input type="hidden" name="qty" id="qty" value="">
+										<!-- 수량 -->
+										<button class="button btn btn-primary" type="button"
+											id="addCart">
+											<i class="ion-android-add"></i> Add To Cart
+										</button>
+									</form>
+									<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+
+								</div>
+							</div>
+
+							<div class="priduct_social d-flex">
+								<span>SHARE: </span>
+								<ul>
+									<li><a href="#"><i class="ion-social-twitter"></i></a></li>
+									<li><a href="#"><i class="ion-social-facebook"></i></a></li>
+									<li><a href="#"><i
+											class="ion-social-googleplus-outline"></i></a></li>
+									<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
+									<li><a href="#"><i
+											class="ion-social-instagram-outline"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--product details end-->
+
+		<!--product info start-->
+		<div class="product_d_info mb-118">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="product_d_inner">
+							<div class="product_info_button border-bottom">
+								<ul class="nav" role="tablist">
+									<li><a class="active" data-toggle="tab" href="#info"
+										role="tab" aria-controls="info" aria-selected="false">제품
+											상세보기</a></li>
+									<li><a data-toggle="tab" href="#reviews" role="tab"
+										aria-controls="reviews" aria-selected="false">구매 후기 </a></li>
+									<li><a data-toggle="tab" href="#qna" role="tab"
+										aria-controls="tags" aria-selected="false">QNA </a></li>
+									<li><a data-toggle="tab" href="#additional" role="tab"
+										aria-controls="additional" aria-selected="false">취소/교환 안내
+									</a></li>
+								</ul>
+							</div>
+							<div class="tab-content">
+								<div class="tab-pane fade show active" id="info" role="tabpanel">
+									<div class="product_info_content">
+										<!-- 상세 사진  -->
+										<img th:src="${detailshot.dir}"></img>
 									</div>
-									<div class="product_ratting mb-10">
-										<h3>Your rating</h3>
-										<ul class="d-flex">
-											<li><a href="#"><i class="icon-star"></i></a></li>
-											<li><a href="#"><i class="icon-star"></i></a></li>
-											<li><a href="#"><i class="icon-star"></i></a></li>
-											<li><a href="#"><i class="icon-star"></i></a></li>
-											<li><a href="#"><i class="icon-star"></i></a></li>
-										</ul>
+								</div>
+								<div class="tab-pane fade" id="reviews" role="tabpanel">
+									<div class="reviews_wrapper">
+										<h2>1 review for Donec eu furniture</h2>
+										<div class="reviews_comment_box">
+											<div class="comment_thmb">
+												<img src="assets/img/blog/comment2.jpg" alt="">
+											</div>
+											<div class="comment_text">
+												<div class="reviews_meta">
+													<div class="star_rating">
+														<ul class="d-flex">
+															<li><a href="#"><i class="icon-star"></i></a></li>
+															<li><a href="#"><i class="icon-star"></i></a></li>
+															<li><a href="#"><i class="icon-star"></i></a></li>
+															<li><a href="#"><i class="icon-star"></i></a></li>
+															<li><a href="#"><i class="icon-star"></i></a></li>
+														</ul>
+													</div>
+													<p>
+														<strong>admin </strong>- September 12, 2018
+													</p>
+													<span>roadthemes</span>
+												</div>
+											</div>
+
+										</div>
+										<div class="comment_title">
+											<h2>Add a review</h2>
+											<p>Your email address will not be published. Required
+												fields are marked</p>
+										</div>
+										<div class="product_ratting mb-10">
+											<h3>Your rating</h3>
+											<ul class="d-flex">
+												<li><a href="#"><i class="icon-star"></i></a></li>
+												<li><a href="#"><i class="icon-star"></i></a></li>
+												<li><a href="#"><i class="icon-star"></i></a></li>
+												<li><a href="#"><i class="icon-star"></i></a></li>
+												<li><a href="#"><i class="icon-star"></i></a></li>
+											</ul>
+										</div>
+										<div class="product_review_form">
+											<form action="#">
+												<div class="row">
+													<div class="col-12">
+														<label for="review_comment">Your review </label>
+														<textarea name="comment" id="review_comment"></textarea>
+													</div>
+													<div class="col-lg-6 col-md-6">
+														<label for="author">Name</label> <input id="author"
+															type="text">
+
+													</div>
+													<div class="col-lg-6 col-md-6">
+														<label for="email">Email </label> <input id="email"
+															type="text">
+													</div>
+												</div>
+												<button type="submit">Submit</button>
+											</form>
+										</div>
 									</div>
+								</div>
+								<!-- 문의리스트, 문의 상세보기, 문의 작성하기 -->
+								<div class="tab-pane fade" id="qna" role="tabpanel">
+
+									<div class="product_d_table">
+										<form id="qnaFrm" action="#"></form>
+									</div>
+								</div>
+								<!-- 문의리스트 끝 -->
+								<!-- 문의폼 템플릿 -->
+								<div id="qnaInsertTemplate" style="display: none;">
+									<div>
+										<h2>문의하기</h2>
+									</div>
+									<br>
 									<div class="product_review_form">
 										<form action="#">
 											<div class="row">
+												<div class="col-lg-6 col-md-6">
+													<input id="title" name="title" type="text"
+														placeholder="제목을 입력하세요">
+												</div>
+												<br> <br>
 												<div class="col-12">
-													<label for="review_comment">Your review </label>
-													<textarea name="comment" id="review_comment"></textarea>
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<label for="author">Name</label> <input id="author"
-														type="text">
-
-												</div>
-												<div class="col-lg-6 col-md-6">
-													<label for="email">Email </label> <input id="email"
-														type="text">
+													<textarea name="content" id="content"
+														placeholder="문의내용을 입력하세요" style="padding-top: 10px"></textarea>
 												</div>
 											</div>
-											<button type="submit">Submit</button>
+										</form>
+									</div>
+									<br> <span class="stock listCall"> < 목록으로</span>
+									<div class="shopping_continue_btn" align="center">
+										<button class="btn btn-primary" type="button" id="submitQna">문의
+											제출하기</button>
+									</div>
+								</div>
+
+								<!-- 문의폼 템플릿 끝 -->
+
+								<!-- 취소/교환 정책 안내 시작 -->
+								<div class="tab-pane fade" id="additional" role="tabpanel">
+									<div class="product_info_content">
+										<form action="#">
+											<div class="df-cont">
+												<p>
+													<b>교환 및 반품이 가능한 경우</b><br> - 상품을 공급 받으신 날로부터 7일이내,
+												</p>
+												<p>
+													&nbsp;&nbsp; 단, 포장이 훼손되어 상품가치가 상실된 경우에는 교환/반품이 불가능합니다.<br>
+													- 공급받으신 상품 및 용역의 내용이 표시.광고 내용과
+												</p>
+												<p>
+													&nbsp;&nbsp; 다르거나 다르게 이행된 경우에는 공급받은 날로부터 3월이내, 그사실을 알게 된
+													날로부터 30일이내<br> <br> <b>교환 및 반품이 불가능한 경우</b><br>
+													- 고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우.
+												</p>
+												<p>
+													&nbsp;&nbsp; 단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외<br>
+													- 포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된 경우<br> - 고객님의 사용 또는 일부
+													소비에 의하여 상품의 가치가 현저히 감소한 경우<br> - 시간의 경과에 의하여 재판매가 곤란할
+													정도로 상품등의 가치가 현저히 감소한 경우<br> - 복제가 가능한 상품등의 포장을 훼손한 경우<br>
+													&nbsp; &nbsp;(자세한 내용은 고객만족센터 1:1 E-MAIL상담을 이용해 주시기 바랍니다.)<br>
+													<br> ※ 고객님의 마음이 바뀌어 교환, 반품을 하실 경우 상품반송 비용은 고객님께서 부담하셔야
+													합니다.<br> &nbsp;&nbsp; (색상 교환, 사이즈 교환 등 포함)
+												</p>
+											</div>
 										</form>
 									</div>
 								</div>
-							</div>
-							<!-- 문의리스트, 문의 상세보기, 문의 작성하기 -->
-							<div class="tab-pane fade" id="qna" role="tabpanel">
 
-								<div class="product_d_table">
-									<form id="qnaFrm" action="#"></form>
-								</div>
 							</div>
-							<!-- 문의리스트 끝 -->
-							<!-- 문의폼 템플릿 -->
-							<div id="qnaInsertTemplate" style="display: none;">
-								<div>
-									<h2>문의하기</h2>
-								</div>
-								<br>
-								<div class="product_review_form">
-									<form action="#">
-										<div class="row">
-											<div class="col-lg-6 col-md-6">
-												<input id="title" name="title" type="text"
-													placeholder="제목을 입력하세요">
-											</div>
-											<br> <br>
-											<div class="col-12">
-												<textarea name="content" id="content"
-													placeholder="문의내용을 입력하세요" style="padding-top: 10px"></textarea>
-											</div>
-										</div>
-									</form>
-								</div>
-								<br> <span class="stock listCall"> < 목록으로</span>
-								<div class="shopping_continue_btn" align="center">
-									<button class="btn btn-primary" type="button" id="submitQna">문의
-										제출하기</button>
-								</div>
-							</div>
-
-							<!-- 문의폼 템플릿 끝 -->
-
-							<!-- 취소/교환 정책 안내 시작 -->
-							<div class="tab-pane fade" id="additional" role="tabpanel">
-								<div class="product_info_content">
-									<form action="#">
-										<div class="df-cont">
-											<p>
-												<b>교환 및 반품이 가능한 경우</b><br> - 상품을 공급 받으신 날로부터 7일이내,
-											</p>
-											<p>
-												&nbsp;&nbsp; 단, 포장이 훼손되어 상품가치가 상실된 경우에는 교환/반품이 불가능합니다.<br>
-												- 공급받으신 상품 및 용역의 내용이 표시.광고 내용과
-											</p>
-											<p>
-												&nbsp;&nbsp; 다르거나 다르게 이행된 경우에는 공급받은 날로부터 3월이내, 그사실을 알게 된
-												날로부터 30일이내<br> <br> <b>교환 및 반품이 불가능한 경우</b><br>
-												- 고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우.
-											</p>
-											<p>
-												&nbsp;&nbsp; 단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외<br> -
-												포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된 경우<br> - 고객님의 사용 또는 일부
-												소비에 의하여 상품의 가치가 현저히 감소한 경우<br> - 시간의 경과에 의하여 재판매가 곤란할
-												정도로 상품등의 가치가 현저히 감소한 경우<br> - 복제가 가능한 상품등의 포장을 훼손한 경우<br>
-												&nbsp; &nbsp;(자세한 내용은 고객만족센터 1:1 E-MAIL상담을 이용해 주시기 바랍니다.)<br>
-												<br> ※ 고객님의 마음이 바뀌어 교환, 반품을 하실 경우 상품반송 비용은 고객님께서 부담하셔야
-												합니다.<br> &nbsp;&nbsp; (색상 교환, 사이즈 교환 등 포함)
-											</p>
-										</div>
-									</form>
-								</div>
-							</div>
-
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!--product info end-->
-	<!--footer area start-->
-	<footer class="footer_widgets">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-5 col-md-5 col-sm-5">
-					<div class="footer_widget_list">
-						<div class="footer_logo">
-							<a href="#"><img src="assets/img/logo/logo.png" alt=""></a>
-						</div>
-						<div class="footer_contact">
-							<div class="footer_contact_list">
-								<span>Our Location</span>
-								<p>대구광역시 중구 중앙대로 403 (남일동 135-1, 5층)</p>
-							</div>
-							<div class="footer_contact_list">
-								<span>24/7 hotline:</span> <a href="#">053-421-2460</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-7 col-md-7 col-sm-7">
-					<div class="footer_widget_list text-right">
-						<div class="footer_menu">
-							<ul class="d-flex justify-content-end">
-								<li><a href="/">home</a></li>
-								<li><a href="shop">Shop</a></li>
-								<li><a href="classSelectList">class</a></li>
-								<li><a href="#">pet info</a></li>
-								<li><a href="blog.html">community</a></li>
-							</ul>
-						</div>
-						<div class="footer_social">
-							<ul class="d-flex justify-content-end">
-								<li><a href="https://twitter.com" data-tippy="Twitter"
-									data-tippy-inertia="true" data-tippy-delay="50"
-									data-tippy-arrow="true" data-tippy-placement="top"> <i
-										class="ion-social-twitter"></i>
-								</a></li>
-								<li><a href="https://www.facebook.com"
-									data-tippy="Facebook" data-tippy-inertia="true"
-									data-tippy-delay="50" data-tippy-arrow="true"
-									data-tippy-placement="top"> <i class="ion-social-facebook"></i>
-								</a></li>
-								<li><a href="https://www.instagram.com"
-									data-tippy="Instagram" data-tippy-inertia="true"
-									data-tippy-delay="50" data-tippy-arrow="true"
-									data-tippy-placement="top"> <i
-										class="ion-social-instagram-outline"></i>
-								</a></li>
-							</ul>
-						</div>
-						<div class="copyright_right">
-							<p>
-								©2022 <span>Together Pet</span>. made with <i class="ion-heart"></i>
-								by <a href="https://hasthemes.com" target="_blank">HasThemes</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
-	<!--footer area end-->
-	<!-- JS
-============================================ -->
-
-	<script src="assets/js/vendor/jquery-3.4.1.min.js"></script>
-	<script src="assets/js/vendor/popper.js"></script>
-	<script src="assets/js/vendor/bootstrap.min.js"></script>
-	<script src="assets/js/slick.min.js"></script>
-	<script src="assets/js/wow.min.js"></script>
-	<script src="assets/js/jquery.scrollup.min.js"></script>
-	<script src="assets/js/images-loaded.min.js"></script>
-	<script src="assets/js/isotope.pkgd.min.js"></script>
-	<script src="assets/js/jquery.nice-select.js"></script>
-	<script src="assets/js/tippy-bundle.umd.js"></script>
-	<script src="assets/js/jquery-ui.min.js"></script>
-	<script src="assets/js/jquery.instagramFeed.min.js"></script>
-	<script src="assets/js/jquery.magnific-popup.min.js"></script>
-	<script src="assets/js/mailchimp-ajax.js"></script>
-
-	<!-- Main JS -->
-	<script src="assets/js/main.js"></script>
+	</article>
 </body>
 
 </html>
