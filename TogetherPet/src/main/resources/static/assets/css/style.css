@@ -3963,7 +3963,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .widget_categories > ul > li > a {
-  font-size: 14px;
+  font-size: 15px;
   display: block;
   line-height: 30px;
   font-weight: 600;
@@ -3979,7 +3979,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   padding: 3px 0 14px 15px;
 }
 .widget_categories > ul > li ul li a {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 30px;
   display: block;
   color: #999999;

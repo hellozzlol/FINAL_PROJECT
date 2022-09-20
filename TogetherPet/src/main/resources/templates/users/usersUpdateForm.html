@@ -12,6 +12,35 @@
     line-height: 18px;
   }
 </style>
+
+<script type="text/javascript">
+	function check() {
+		if(document.fr.password.value == "") {
+			alert("비밀번호를 입력하세요.");
+			return false;
+		}
+		
+		if(document.fr.email.value == "") {
+			alert("이메일을 입력하세요.");
+			return false;
+		}
+		
+		if(document.fr.address.value == "") {
+			alert("주소를 입력하세요.");
+			return false;
+		}
+		
+		if(document.fr.nickname.value == "") {
+			alert("닉네임을 입력하세요.");
+			return false;
+		}
+		
+		if(document.fr.call.value == "") {
+			alert("전화번호를 입력하세요.");
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
 	<article layout:fragment="content">
@@ -27,10 +56,10 @@
                             <div class="widget_list widget_categories">
                                 <ul>
                                     <li class="widget_sub_categories">
-                                    	<a href="javascript:void(0)" data-toggle="collapse" data-target="#men">내 정보</a>
+                                    	<a href="usersSelect" data-toggle="collapse" data-target="#men">내 정보</a>
                                     </li><hr>
                                     <li class="widget_sub_categories">
-                                    	<a href="javascript:void(0)" data-toggle="collapse" data-target="#women">내 반려동물 정보</a>
+                                    	<a href="petSelectList" data-toggle="collapse" data-target="#women">내 반려동물 정보</a>
                                     </li><hr>
                                     <li class="widget_sub_categories"><a href="javascript:void(0)" data-toggle="collapse" data-target="#footwear">내 활동</a>
                                         <ul class="widget_dropdown_categories collapse show" id="footwear">
@@ -59,7 +88,7 @@
                                         </ul>
                                     </li><hr>
                                     <li class="widget_sub_categories">
-                                    	<a href="javascript:void(0)" data-toggle="collapse" data-target="#women">일정관리</a>
+                                    	<a href="calendarSelectList" data-toggle="collapse" data-target="#women">일정관리</a>
                                     </li>
                                 </ul>
                             </div>
@@ -124,7 +153,7 @@
 		                    <hr class="my-0" />
 		                    
 		                    <div class="card-body" th:each="list : ${userList}">
-		                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+		                      <form name="fr" id="formAccountSettings" method="POST" onsubmit="return check()">
 		                        <div class="row">
 		                          <div class="mb-3 col-md-6">
 		                            <label for="id" class="form-label">아이디 ID</label>
@@ -144,7 +173,8 @@
 		                              id="nickname"
 		                              name="nickname"
 		                              th:value="${list.nickname}"
-		                              placeholder="Nickname" />
+		                              placeholder="Nickname"
+		                              oninput="nicknameModify()" />
 		                          </div>
 		                          <div class="mb-3 col-md-6">
 		                            <label for="password" class="form-label">비밀번호 PASSWORD</label>
@@ -155,6 +185,8 @@
 		                              name="password"
 		                              th:value="${list.password}"
 		                              placeholder="Password" />
+		                            <span class="nickname_ok">사용 가능한 닉네임입니다.</span>
+            						<span class="nickname_already">이미 존재하는 닉네임입니다.</span>  
 		                          </div>
 		                          <div class="mb-3 col-md-6">
 		                            <label for="password" class="form-label">비밀번호 확인 PASSWORD</label>
@@ -225,7 +257,7 @@
 		
 		            <div class="content-backdrop fade"></div>
 		          </div>
-          <!-- Content wrapper -->
+          		  <!-- Content wrapper -->
                      
                     
                     <!--shop wrapper end-->

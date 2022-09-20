@@ -8,8 +8,14 @@
 <style>
 .abc {
 	position: absolute;
-	left: 300px;
+	left: 400px;
 }
+
+#style_label{
+margin-left:20px;
+margin-right:20px;
+}
+
 </style>
 </head>
 <body>
@@ -74,20 +80,37 @@
 						</div>
 						
 						<!-- /근태 정보 -->
-
+ 
 						<div class="card">
 							<h5 class="card-header">근태 정보</h5>
-							<div class="card-body" th:each="att : ${attend}">
+							<div class="card-body">
 								<div class="mb-3 col-12 mb-0"></div>
 								<form id="formAccountDeactivation" method="POST" onsubmit="return false">
 									<div class="row">
 										<div class="mb-3 col-md-6">
-											<label for="attDt" class="form-label">일자</label> 
-											<input class="form-control" type="text" id="attDt" name="attDt"
-												th:value="${att.dt}" disabled="disabled" />
+											<label for="attDt" id="style_label" class="form-label">일자</label> 
+											<label for="ad_no" id="style_label" class="form-label">사원번호</label> 
+											<label for="ad_no" id="style_label" class="form-label">출근 시간</label> 
+											<label for="ad_no" id="style_label" class="form-label">퇴근 시간</label>
+											<label for="ad_no" id="style_label" class="form-label">상태</label>  
 										</div>
 										
-										<div class="mb-3 col-md-6">
+										<!-- /근태 정보 리스트 출력하기 -->
+											<div th:each="att : ${attendList}">
+												<a 
+													th:text="${att.DT}"></a>
+												<a 
+													th:text="${att.AD_NO}"></a>
+												<a 
+													th:text="${att.START_DT}"></a>
+												<a 
+													th:text="${att.END_DT}"></a>
+												<a 
+													th:text="${att.STATE}"></a>
+											</div>
+							
+										
+<!-- 										<div class="mb-3 col-md-6">
 											<label for="ad_no" class="form-label">사원번호</label> 
 											<input class="form-control" type="text" name="ad_no" id="ad_no"
 												th:value="${adm.adNo}" disabled="disabled" />
@@ -109,7 +132,7 @@
 											<label for="state" class="form-label">상태</label>
 											<input type="text" class="form-control" id="state"
 												name="state" th:value="${att.state}"disabled="disabled" />
-										</div>
+										</div> -->
 										
 									</div>
 

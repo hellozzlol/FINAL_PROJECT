@@ -2,10 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.attend.mapper.attendMapper">
 
-	<select id="attendSelect" 
+
+<!-- 	<select id="attendSelect" 
 	parameterType="com.team.prj.attend.service.attendVO"
 	resultType="com.team.prj.attend.service.attendVO">
 		SELECT *
+		FROM ATTEND
+		WHERE ad_no = #{adNo}
+
+	</select> -->
+
+	<select id="attendSelectList" parameterType="int"
+	resultType="HashMap" >
+	    SELECT *
 		FROM ATTEND
 		WHERE ad_no = #{adNo}
 	</select>

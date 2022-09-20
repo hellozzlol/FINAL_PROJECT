@@ -1,9 +1,10 @@
 package com.team.prj.attend.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface attendService {
-	List<attendVO> attendSelectList();
+	List<HashMap<String,Object>> attendSelectList(int ad_no);
 	attendVO attendSelect(attendVO tvo);
 	attendVO attendUpdate(attendVO tvo);
 }

@@ -1,16 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
-
+	layout:decorate="~{layout/layout2}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
 		document.addEventListener('DOMContentLoaded', function () {
 			let goodsNo = Number($('#goodsNo').val())
+			let userNo = Number($('#userNo').val());
+				
 			qnaList();
-			console.log('상품 번호: ', goodsNo);
 
 			// 문의 리스트
 			function qnaList() {
@@ -31,7 +31,7 @@
 												</tbody>
 												</table>`)
 						res.forEach(obj => {
-							let userNo = obj.userNo;
+							userNo = obj.userNo;
 							// 닉네임 보여주기
 							$.ajax({
 									url: 'ajaxSelectNick',
@@ -85,7 +85,7 @@
 						$('#qnaFrm').html('');
 						// 내가 쓴 글이면 삭제 버튼
 						$('#qnaFrm').append(
-							`<div align="right"><span class="stock" id="qnaDel">삭제</span></div>`)
+							`<div align="right"><a class="stock" id="qnaDel">삭제</a></div>`)
 						// 답변 널 처리
 						if(! res.answer){
 							res.answer = '답변이 등록되지 않았습니다.'
@@ -105,7 +105,7 @@
 												    </td></tr>
 												</tbody>
 											</table><br>
-											<span class="stock listCall">< 목록으로</span>`)
+											<a class="stock listCall">< 목록으로</a>`)
 					})
 			})
 
@@ -125,7 +125,6 @@
 							$('#qnaFrm').html('');
 							qnaList();
 						})
-
 				}
 			})
 
@@ -136,19 +135,15 @@
 			})
 
 			// 리스트에서 문의 작성 버튼 클릭하면 문의 작성 폼 불러오기 
-			$('#qnaFrm').on('click', 'button', function () {
+			$('#qnaFrm').on('click', '#qnaSubmit', function () {
 				$('#qnaFrm').html('');
 				$('#qnaFrm').html($('#qnaInsertTemplate').html());
 			})
 
 			// 문의 작성 폼에서 문의 제출하기 버튼 클릭하면 insert 실행
 			$('#qnaFrm').on('click', '#submitQna', function () {
-				let userNo = Number($('#userNo').val());
 				let title = $('#title').val();
 				let content = $('#content').val();
-				
-				console.log('title: ', document.getElementById('title').value); // ★ null
-				console.log('content: ', $('#content').val()); // ★ null
 
 				if (confirm('문의를 등록하시겠습니까?')) {
 					$.ajax('ajaxQnaInsert', {
@@ -162,11 +157,29 @@
 							dataType: 'text'
 						})
 						.done(res => {
-							console.log('res', res);
 							$('#qnaFrm').html('');
 							qnaList();
 						})
 				}
+			})
+			
+			// 장바구니 추가
+			$('#addCart').on('click', function(){
+				$('#qty').val(Number($('#setQty').val()));
+				let formData = $("form[name=cartFrm]").serialize();
+				if(confirm('해당 상품을 장바구니에 추가하시겠습니까?')){
+					$.ajax('ajaxCartInsert', {
+						type: 'post',
+						data: formData,
+						dataType: 'text'
+					})
+					.done(res => {
+						if(confirm(res)){
+							location.href="cart?userNo=" + userNo;
+						}
+					})
+				}
+				
 			})
 		})
 	</script>
@@ -174,8 +187,8 @@
 
 <body>
 	<article layout:fragment="content">
-		<br> <br> <br> <br>
 		<!--offcanvas menu area start-->
+		<br> <br> <br> <br>
 
 		<!--breadcrumbs area start-->
 		<div class="breadcrumbs_area breadcrumbs_product">
@@ -283,64 +296,76 @@
 					</div>
 					<div class="col-lg-6 col-md-6">
 						<div class="product_d_right">
-							<form action="#">
-								<br>
-								<h3>[[${goods.name}]]</h3>
-								<div class="product_ratting_review d-flex align-items-center">
-									<div class=" product_ratting">
-										<ul class="d-flex">
-											<li><a href="#"><i class="ion-ios-star"></i></a></li>
-											<li><a href="#"><i class="ion-ios-star"></i></a></li>
-											<li><a href="#"><i class="ion-ios-star"></i></a></li>
-											<li><a href="#"><i class="ion-ios-star"></i></a></li>
-											<li><a href="#"><i class="ion-ios-star"></i></a></li>
-										</ul>
-									</div>
-									<div class="product_review">
-										<ul class="d-flex">
-											<li>???? reviews</li>
-										</ul>
-									</div>
-								</div>
-								<br> <br>
-								<div class="price_box">
-									<span class="current_price">KRW
-										[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
-								</div>
-								<div class="product_availalbe">
+							<br>
+							<h3>[[${goods.name}]]</h3>
+							<div class="product_ratting_review d-flex align-items-center">
+								<div class=" product_ratting">
 									<ul class="d-flex">
-										<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
-											left</li>
-										<li>Availalbe: <span class="stock">In Stock</span></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
+										<li><a href="#"><i class="ion-ios-star"></i></a></li>
 									</ul>
 								</div>
+								<div class="product_review">
+									<ul class="d-flex">
+										<li>[[${#lists.size(reviewList)}]] reviews</li>
+									</ul>
+								</div>
+							</div>
+							<br> <br>
+							<div class="price_box">
+								<span class="old_price">KRW
+									[[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
+									class="current_price">KRW
+									[[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
+							</div>
+							<div class="product_availalbe">
+								<ul class="d-flex">
+									<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
+										left</li>
+									<li>Availalbe: <span class="stock">In Stock</span></li>
+								</ul>
+							</div>
 
-								<div class="product_variant">
+							<div class="product_variant">
 
-									<div class="variant_quantity_btn d-flex">
-										<div class="pro-qty border">
-											<input min="1" max="100" type="tex" value="1">
-										</div>
-										<button class="button btn btn-primary" type="submit">
+								<div class="variant_quantity_btn d-flex">
+									<div class="pro-qty border">
+
+										<input min="1" max="100" type="tex" id="setQty" value="1">
+									</div>
+									<form name="cartFrm" action="cartInsert" method="post">
+										<input type="hidden" name="goodsNo" id="goodsNo"
+											th:value="${goods.goodsNo}">
+										<!-- 상품번호 -->
+										<input type="hidden" name="userNo" id="userNo" th:value="1">
+										<!-- 유저번호 -->
+										<input type="hidden" name="qty" id="qty" value="">
+										<!-- 수량 -->
+										<button class="button btn btn-primary" type="button"
+											id="addCart">
 											<i class="ion-android-add"></i> Add To Cart
 										</button>
-										<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
-									</div>
-								</div>
+									</form>
+									<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
 
-								<div class="priduct_social d-flex">
-									<span>SHARE: </span>
-									<ul>
-										<li><a href="#"><i class="ion-social-twitter"></i></a></li>
-										<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-										<li><a href="#"><i
-												class="ion-social-googleplus-outline"></i></a></li>
-										<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
-										<li><a href="#"><i
-												class="ion-social-instagram-outline"></i></a></li>
-									</ul>
 								</div>
-							</form>
+							</div>
+
+							<div class="priduct_social d-flex">
+								<span>SHARE: </span>
+								<ul>
+									<li><a href="#"><i class="ion-social-twitter"></i></a></li>
+									<li><a href="#"><i class="ion-social-facebook"></i></a></li>
+									<li><a href="#"><i
+											class="ion-social-googleplus-outline"></i></a></li>
+									<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
+									<li><a href="#"><i
+											class="ion-social-instagram-outline"></i></a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -371,15 +396,8 @@
 							<div class="tab-content">
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
-										<p>[[${goods.info}]]</p>
-										<ul>
-											<li>Length: 74cm</li>
-											<li>Regular fit</li>
-											<li>Notched lapels</li>
-											<li>Twin button front fastening</li>
-											<li>Front patch pockets; chest pocket</li>
-											<li>Internal pockets</li>
-										</ul>
+										<!-- 상세 사진  -->
+										<img th:src="${detailshot.dir}"></img>
 									</div>
 								</div>
 								<div class="tab-pane fade" id="reviews" role="tabpanel">
@@ -449,9 +467,6 @@
 								<div class="tab-pane fade" id="qna" role="tabpanel">
 
 									<div class="product_d_table">
-										<form id="hiddenFrm" action="#">
-											<input type="hidden" id="goodsNo" th:value="${goods.goodsNo}">
-										</form>
 										<form id="qnaFrm" action="#"></form>
 									</div>
 								</div>
@@ -466,8 +481,7 @@
 										<form action="#">
 											<div class="row">
 												<div class="col-lg-6 col-md-6">
-													<input type="hidden" id="userNo" value="1"> <input
-														id="title" name="title" type="text"
+													<input id="title" name="title" type="text"
 														placeholder="제목을 입력하세요">
 												</div>
 												<br> <br>
@@ -489,37 +503,32 @@
 
 								<!-- 취소/교환 정책 안내 시작 -->
 								<div class="tab-pane fade" id="additional" role="tabpanel">
-									<div class="product_d_table">
-										<form action="#">
-											<table>
-												<tbody>
-													<tr>
-														<td class="first_child">Compositions</td>
-														<td>Polyester</td>
-													</tr>
-													<tr>
-														<td class="first_child">Styles</td>
-														<td>Girly</td>
-													</tr>
-													<tr>
-														<td class="first_child">Properties</td>
-														<td>Short Dress</td>
-													</tr>
-												</tbody>
-											</table>
-										</form>
-									</div>
 									<div class="product_info_content">
-										<p>Fashion has been creating well-designed collections
-											since 2010. The brand offers feminine designs delivering
-											stylish separates and statement dresses which have since
-											evolved into a full ready-to-wear collection in which every
-											item is a vital part of a woman's wardrobe. The result? Cool,
-											easy, chic looks with youthful elegance and unmistakable
-											signature style. All the beautiful pieces are made in Italy
-											and manufactured with the greatest attention. Now Fashion
-											extends to a range of accessories including shoes, hats,
-											belts and more!</p>
+										<form action="#">
+											<div class="df-cont">
+												<p>
+													<b>교환 및 반품이 가능한 경우</b><br> - 상품을 공급 받으신 날로부터 7일이내,
+												</p>
+												<p>
+													&nbsp;&nbsp; 단, 포장이 훼손되어 상품가치가 상실된 경우에는 교환/반품이 불가능합니다.<br>
+													- 공급받으신 상품 및 용역의 내용이 표시.광고 내용과
+												</p>
+												<p>
+													&nbsp;&nbsp; 다르거나 다르게 이행된 경우에는 공급받은 날로부터 3월이내, 그사실을 알게 된
+													날로부터 30일이내<br> <br> <b>교환 및 반품이 불가능한 경우</b><br>
+													- 고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우.
+												</p>
+												<p>
+													&nbsp;&nbsp; 단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외<br>
+													- 포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된 경우<br> - 고객님의 사용 또는 일부
+													소비에 의하여 상품의 가치가 현저히 감소한 경우<br> - 시간의 경과에 의하여 재판매가 곤란할
+													정도로 상품등의 가치가 현저히 감소한 경우<br> - 복제가 가능한 상품등의 포장을 훼손한 경우<br>
+													&nbsp; &nbsp;(자세한 내용은 고객만족센터 1:1 E-MAIL상담을 이용해 주시기 바랍니다.)<br>
+													<br> ※ 고객님의 마음이 바뀌어 교환, 반품을 하실 경우 상품반송 비용은 고객님께서 부담하셔야
+													합니다.<br> &nbsp;&nbsp; (색상 교환, 사이즈 교환 등 포함)
+												</p>
+											</div>
+										</form>
 									</div>
 								</div>
 
@@ -527,7 +536,8 @@
 						</div>
 					</div>
 				</div>
-				<!--product info end-->
+			</div>
+		</div>
 	</article>
 </body>
 

@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+	layout:decorate="~{layout/layout2}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+			// 장바구니 하단에  MemberVO 뿌리기
+	})
+</script>
 </head>
 <body>
 	<article layout:fragment="content">
@@ -45,8 +50,11 @@
 												<th>Total</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr class="border-top">
+										<tbody id="tb">
+											<!-- tr 반복  -->
+											<tr th:each="c:${cartList}" class="border-top"
+												th:id="${c.cartNo}">
+												<td style="display: none" th:text="${c.userNo}"></td>
 												<td>
 													<div class="cart_product_thumb">
 														<img src="assets/img/product/product4.jpg" alt="">
@@ -54,70 +62,29 @@
 												</td>
 												<td>
 													<div class="cart_product_text">
-														<h4>Example With Title Product</h4>
-														<ul>
-															<li><i class="ion-ios-arrow-right"></i> Color : <span>White</span></li>
-															<li><i class="ion-ios-arrow-right"></i> Size : <span>XL</span></li>
-														</ul>
+
+														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>$45.05</span>
+														<span>[[${#numbers.formatInteger(c.price*(1-c.dc),4)}]]</span>
+
 													</div>
 												</td>
 												<td class="product_quantity">
 													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
+														<input min="1" max="100" th:value="${c.qty}" type="number"
+															readonly>
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>$45.05</span>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
+														<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
+														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
 													</div>
 												</td>
 
-											</tr>
-											<tr class="border-top">
-												<td>
-													<div class="cart_product_thumb">
-														<img src="assets/img/product/product6.jpg" alt="">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_text">
-														<h4>Example With Title Product</h4>
-														<ul>
-															<li><i class="ion-ios-arrow-right"></i> Color : <span>White</span></li>
-															<li><i class="ion-ios-arrow-right"></i> Size : <span>XL</span></li>
-														</ul>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>$45.05</span>
-													</div>
-												</td>
-												<td class="product_quantity">
-													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>$45.05</span>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
-													</div>
-												</td>
 
 											</tr>
 										</tbody>
