@@ -67,6 +67,36 @@
 		DELETE FROM CLASS
 		WHERE CLASS_NO = #{classNo}
 	</delete>
+	
+	<select id="classSearch" resultType="com.team.prj.classes.service.ClassVO">
+		select * from class
+		<where>
+			<if test="categories != null">
+				and category in <foreach item="category" collection="categories" open="(" close=")" separator=",">
+				#{category}
+				</foreach>
+			</if>
+			<!--<if test="addresses != null">
+				and address in <foreach item="address" collection="addresses" open="(" close=")" separator=",">
+				#{address}
+				</foreach>
+			</if>-->
+			
+			<if test="address != null">
+					AND ADDRESS LIKE '%'|| #{address} ||'%'
+			</if>
+			
+			<!--<choose>
+				<when test="searchkey == 'name'">
+					AND NAME LIKE '%'|| #{searchval} ||'%'
+				</when>
+				  
+				<when test="searchkey == 'address'">
+					AND ADDRESS LIKE '%'|| #{searchval} ||'%'
+				</when> 
+			</choose>  -->
+		</where>	
+	</select>
 
 
 

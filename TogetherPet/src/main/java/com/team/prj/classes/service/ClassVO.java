@@ -27,4 +27,9 @@ public class ClassVO {
 	String longitude;
 	String categoryId;
 	String returnMessage;
+	
+	String []categories;
+	//String []addresses;
+	String searchkey;
+	String searchval;
 }

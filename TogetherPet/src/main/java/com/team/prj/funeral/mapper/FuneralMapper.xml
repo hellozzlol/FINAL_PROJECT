@@ -17,9 +17,10 @@
 		NAME,
 		ADDRESS,
 		CALL,
-		INFO
+		INFO,
+		HOMEPAGE
 		FROM FUNERAL
-		WHERE FUNERAL_NO=${funeralNo}
+		WHERE FUNERAL_NO=#{funeralNo}
 
 	</select>
 

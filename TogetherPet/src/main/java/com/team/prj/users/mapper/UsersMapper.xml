@@ -24,16 +24,28 @@
 		</selectKey>
 		
 		INSERT INTO USERS
-		VALUES(#{userNo}, #{id}, #{password}, #{name},
-			   #{nickname}, #{email}, #{call}, #{address},
-			   'USER', 3000, 1, SYSDATE)
+		VALUES(#{userNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{nickname}
+				,#{email}
+				,#{call}
+				,#{address}
+				,'USER'
+				,3000
+				,1
+				,SYSDATE)
 	</insert>
 
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
-				SET nickname = #{nickname}, email = #{email}, call = #{call}, address = #{address}
-				WHERE user_no = #{userNo}
+		SET nickname = #{nickname}
+			,email = #{email}
+			,call = #{call}
+			,address = #{address}
+		WHERE user_no = #{userNo}
 		<!-- <set>
 			<if test="nickname != null">nickname = #{nickname},</if>
 			<if test="email != null">email = #{email},</if>

@@ -14,7 +14,7 @@
 		#calendarModal {
 			position: fixed;
 			top: 30%;
-			left: 10%;
+			left: 8%;
 		}
 	</style>
 
@@ -24,70 +24,115 @@
 	<article layout:fragment="content">
 
 		<script>
-			document.addEventListener('DOMContentLoaded', function () {
-				var calendarEl = document.getElementById('calendar');
+			let calendar = null;
+			let Alldata = {};
+			$(function () {
 
-				var calendar = new FullCalendar.Calendar(calendarEl, {
-					initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할 수 있음
-					events: [{ // this object will be "parsed" into an Event Object
-						title: 'TEST', // 제목
-						start: '2022-09-01', // 시작일자
-						end: '2022-09-05' // 종료일자
-					}],
+				let calendarEl = $('#calendar')[0];
+
+				calendar = new FullCalendar.Calendar(calendarEl, {
+
+					expandRows: true, // 화면에 맞게 높이 재설정
+					slotMinTime: '08:00', // Day 캘린더에서 시작 시간
+					slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
+
 					headerToolbar: {
-						left: 'prev,next today',
+						left: 'prev,next',
 						center: 'title',
-						// right: 'dayGridMonth,timeGridWeek,timeGridDay'
-						right: 'addEventButton'
+						right: 'dayGridMonth'
 					},
-					customButtons: {
-						addEventButton: { // 추가한 버튼 설정
-							text: "일정 추가", // 버튼 내용
-							click: function () { // 버튼 클릭 시 이벤트 추가
-								$("#calendarModal").modal("show"); // modal 나타내기
 
-								$("#addCalendar").on("click", function () { // modal의 추가 버튼 클릭 시
-									var content = $("#content").val();
-									var start_date = $("#startDt").val();
-									var end_date = $("#endDt").val();
+					initialView: 'dayGridMonth',
+					editable: true,
+					selectable: true, // 달력 일자 드래그 설정가능
+					nowIndicator: true, // 현재 시간 마크
+					dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+					locale: 'ko', // 한국어 설정
 
-									// 내용 입력 여부 확인
-									if (content == null || content == "") {
-										alert("내용을 입력하세요.");
-									} else if (start_date == "" || end_date == "") {
-										alert("날짜를 입력하세요.");
-									} else if (new Date(end_date) - new Date(start_date) <
-										0) { // date 타입으로 변경 후 확인
-										alert("종료일이 시작일보다 먼저입니다.");
-									} else { // 정상적인 입력 시
-										var obj = {
-											"title": content,
-											"start": start_date,
-											"end": end_date
-										} // 전송할 객체 생성
+					eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
 
-										console.log(obj); // 서버로 해당 객체를 전달해서 DB 연동 가능
-									}
-								});
-							}
+						sDate =
+							obj.event._instance.range["start"].getFullYear() +
+							'-' + (obj.event._instance.range["start"].getMonth() + 1) +
+							'-' + obj.event._instance.range["start"].getDate();
+
+						eDate =
+							obj.event._instance.range["end"].getFullYear() +
+							'-' + (obj.event._instance.range["end"].getMonth() + 1) +
+							'-' + (obj.event._instance.range["end"].getDate() - 1);
+
+						Alldata = {
+							"start": sDate,
+							"end": eDate,
+							"title": obj.event._def["title"],
+							"allday": obj.event._def["allDay"],
+							"defId": obj.event._instance["defId"],
+							"instanceId": obj.event._instance["instanceId"]
+						};
+
+						let allEvent = calendar.getEvents();
+						console.log(allEvent);
+
+						let jsondata = JSON.stringify(Alldata);
+						console.log("jsondata : " + jsondata);
+
+
+					},
+					eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
+						console.log(obj);
+
+					},
+					eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
+						console.log(obj);
+
+					},
+					eventClick: function (obj) {
+						console.log(obj);
+
+					},
+					select: function (arg) { // 캘린더에서이벤트를 생성
+						let title = prompt('일정 내용을 입력하세요 :');
+						if (title) {
+							calendar.addEvent({
+								title: title,
+								start: arg.start,
+								end: arg.end,
+								allDay: arg.allDay
+							})
 						}
+						calendar.unselect()
 					},
-					// navLinks: true, // can click day/week names to navigate views
-					// selectable: true,
-					// selectMirror: true,
-					// dateClick: function (info) {
-					// 	alert('clicked ' + info.dateStr);
-					// },
-					// select: function (info) {
-					// 	alert('selected ' + info.startStr + ' to ' + info.endStr);
-					// },
-					locale: 'ko',
-					editable: true, // false로 변경 시 draggable 작동 x 
-					displayEventTime: false // 시간 표시 x
 				});
-
+				// 캘린더 랜더링
 				calendar.render();
+
 			});
+
+			function allSave() {
+
+				console.log(allData);
+				document.getElementById("submenu").style.display = "block";
+
+
+				$.ajax({
+					url: "/calendar/calendarInsert",
+					type: "post",
+					data: {
+						addEvent: JSON.stringify(Alldata)
+					},
+
+					success: function (data, textStatus, xhr) {
+						console.log(data);
+
+					},
+					error: function (xhr, status, error) {
+						console.log(error);
+					}
+
+
+
+				});
+			}
 		</script>
 		<!--shop  area start-->
 		<br> <br> <br>
@@ -100,10 +145,10 @@
 							<div class="widget_inner">
 								<div class="widget_list widget_categories">
 									<ul>
-										<li class="widget_sub_categories"><a href="javascript:void(0)"
+										<li class="widget_sub_categories"><a href="usersSelect"
 												data-toggle="collapse" data-target="#men">내 정보</a></li>
 										<hr>
-										<li class="widget_sub_categories"><a href="javascript:void(0)"
+										<li class="widget_sub_categories"><a href="petSelectList"
 												data-toggle="collapse" data-target="#women">내 반려동물 정보</a></li>
 										<hr>
 										<li class="widget_sub_categories"><a data-toggle="collapse"
@@ -166,17 +211,20 @@
 								<!--breadcrumbs area end-->
 
 								<!-- 캘린더 시작 -->
-								<div id='calendar'></div>
+								<div id='calendar-container'>
+									<div id='calendar'></div>
+								</div>
 								<!-- 캘린더 종료 -->
 
 
-								<!-- modal 추가 -->
+								<!-- modal -->
 								<div class="modal fade" id="calendarModal" tabindex="-1" role="dialog"
 									aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
+												<h5 class="modal-title" id="exampleModalLabel">일정을
+													입력하세요.</h5>
 												<button type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">&times;</span>
@@ -184,12 +232,12 @@
 											</div>
 											<div class="modal-body">
 												<div class="form-group">
-													<label for="taskId" class="col-form-label">일정 내용</label>
-													<input type="text" class="form-control" id="content" name="content">
-													<label for="taskId" class="col-form-label">시작 날짜</label>
-													<input type="date" class="form-control" id="startDt" name="startDt">
-													<label for="taskId" class="col-form-label">종료 날짜</label>
-													<input type="date" class="form-control" id="endDt" name="endDt">
+													<label for="taskId" class="col-form-label">일정 내용</label> <input
+														type="text" class="form-control" id="content" name="content">
+													<label for="taskId" class="col-form-label">시작 날짜</label> <input
+														type="date" class="form-control" id="startDt" name="startDt">
+													<label for="taskId" class="col-form-label">종료 날짜</label> <input
+														type="date" class="form-control" id="endDt" name="endDt">
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -202,6 +250,7 @@
 										</div>
 									</div>
 								</div>
+								<!-- modal -->
 
 
 								<div class="content-backdrop fade"></div>
