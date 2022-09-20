@@ -23,4 +23,12 @@
 	<delete id="deleteCart">
 		delete cart where cart_no=#{cartNo}
 	</delete>
+	
+	<update id="updateCart">
+		update cart set qty = #{qty} where cart_no = #{cartNo}
+	</update>
+	
+	<select id="isGoods" resultType="com.team.prj.cart.service.CartVO">
+		select * from cart where goods_no = #{goodsNo}
+	</select>
 </mapper>

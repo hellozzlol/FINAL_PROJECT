@@ -35,5 +35,11 @@ public class CartServiceImpl implements CartService{
 		// TODO Auto-generated method stub
 		return map.deleteCart(vo);
 	}
+
+	@Override
+	public CartVO isGoods(CartVO vo) {
+		// TODO Auto-generated method stub
+		return map.isGoods(vo);
+	}
 	
 }
