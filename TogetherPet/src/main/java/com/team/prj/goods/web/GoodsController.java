@@ -1,7 +1,6 @@
 package com.team.prj.goods.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 
 @Controller
@@ -55,9 +55,12 @@ public class GoodsController {
 		model.addAttribute("cartList", list);
 		return "shop/cart";
 	}
-
-	@RequestMapping("/order")
-	public String order() {
+	
+	// 장바구니 뿌리기
+	@RequestMapping("/order") // cartList
+	public String order(CartVO vo, Model model) {
+		List<CartVO> list = cart.cartList(vo);
+		model.addAttribute("cartList", list);
 		return "shop/order";
 	}
 

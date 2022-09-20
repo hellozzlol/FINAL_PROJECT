@@ -1,20 +1,23 @@
 package com.team.prj.attend.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.attend.mapper.attendMapper;
+
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 public class attendServiceImpl implements attendService {
 	@Autowired
 	private attendMapper map;
 	
 	@Override
-	public List<attendVO> attendSelectList(attendVO tvo) {
-		// 출퇴근 시간 리스트..?
-		return map.attendSelectList(tvo);
+	public List<HashMap<String,Object>> attendSelectList(int ad_no) {
+		// 근태 리스트 받아오기
+		return map.attendSelectList(ad_no);
 	}
 
 	@Override

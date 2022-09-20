@@ -16,7 +16,6 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-		<org.springframework.security-version>5.2.5.RELEASE</org.springframework.security-version> 
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,7 +35,6 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.2.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -44,8 +42,7 @@
 			<optional>true</optional>
 		</dependency>
 		
-		
-		
+
 		
 		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc10 -->
 		<dependency>
@@ -68,7 +65,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 
 	<build>
