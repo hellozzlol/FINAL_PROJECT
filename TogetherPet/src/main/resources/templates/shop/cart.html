@@ -13,6 +13,8 @@
 			for(t of total){
 				sTotal += Number(t.innerHTML);
 			}
+			// 천단위 콤마
+			sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 			$('#sTotal').html(sTotal)
 			
 		//grandtotal 할인 적용 후 
@@ -21,10 +23,36 @@
 			for(t of total){
 				gTotal += Number(t.innerHTML);
 			}
+			//천단위 콤마
+			gTotal = gTotal.toString() .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 			$('#gTotal').html(gTotal)
 		
+		// 장바구니 삭제	
 			$('.remove').on('click', '.removeCart', function(){
-				alert('called');
+				let cartNo = $(this).closest('tr').attr('id')
+				$.ajax({
+						url: 'ajaxCartDelete',
+						type: 'post',
+						data: {
+							cartNo: cartNo
+						}
+					})
+					.done(res => {
+						alert(res);
+						document.getElementById(cartNo).remove();
+					})
+			})
+		// order로 이동
+			$('#orderCallBtn').on('click', function(){
+				if(confirm('주문 페이지로 넘어가시겠습니까?')){
+					let userNo = $('.border-top')[0];
+					location.href="order?userNo=" + Number(userNo.firstElementChild.innerHTML);				
+					
+					// 포스트로 보내려고 폼 제출하면 400 에러 뜸
+//					userNo.value = Number(userNo.firstElementChild.innerHTML);
+//					document.getElementById('orderCall').submit();
+//					orderCall.submit();
+				}
 			})
 	})
 </script>
@@ -68,9 +96,11 @@
 												<th>Total</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody id="tb">
 											<!-- tr 반복  -->
-											<tr th:each="c:${cartList}" class="border-top">
+											<tr th:each="c:${cartList}" class="border-top"
+												th:id="${c.cartNo}">
+												<td style="display: none" th:text="${c.userNo}"></td>
 												<td>
 													<div class="cart_product_thumb">
 														<img src="assets/img/product/product4.jpg" alt="">
@@ -78,7 +108,7 @@
 												</td>
 												<td>
 													<div class="cart_product_text">
-														<br> <br>
+
 														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
@@ -121,11 +151,10 @@
 												<span id="gTotal"></span>
 											</div>
 										</div>
+
 										<div class="proceed_checkout_btn">
-											<a class="btn btn-primary" href="order">Proceed to
-												Checkout</a>
+											<a class="btn btn-primary" id="orderCallBtn">주문 및 결제하기</a>
 										</div>
-										<a href="#">Checkout with Mutilple Adresses</a>
 									</div>
 								</div>
 							</div>
@@ -135,11 +164,9 @@
 			</div>
 		</div>
 		<!--shopping cart area end -->
-		<table border=1>
-			<tbody>
-
-			</tbody>
-		</table>
+		<form name="orderCall" id="orderCall" method="post" action="order">
+			<input type="hidden" id="userNo" name="userNo">
+		</form>
 
 	</article>
 </body>

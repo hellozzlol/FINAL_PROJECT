@@ -10,7 +10,17 @@
 	</select>
 
 	<insert id="insertCart">
+		<selectKey keyProperty="cartNo" order="BEFORE"
+			resultType="int">
+			select case when max(cart_no) is null then 1 else
+			max(cart_no)+1 end
+			from cart
+		</selectKey>
 		insert into cart
-		values(#{goodsNo}, #{userNo}, #{qty})
+		values(#{goodsNo}, #{userNo}, #{qty}, #{cartNo})
 	</insert>
+	
+	<delete id="deleteCart">
+		delete cart where cart_no=#{cartNo}
+	</delete>
 </mapper>
