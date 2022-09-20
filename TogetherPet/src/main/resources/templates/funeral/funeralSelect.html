@@ -73,8 +73,20 @@
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">정보</td>
 									<td th:text="${f.info}"
-										style="width: 70%; text-align: center; font-size: 11px"></td>
+										style="width: 70%; text-align: center; font-size: 15px"></td>
 								</tr>
+								<tr th:each="f:${funeral}">
+									<td
+										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">홈페이지</td>
+									<td
+										style="width: 70%; text-align: center; font-size: 15px">
+											<a th:href="${f.homepage}">[[${f.homepage}]]</a>
+										</td>
+										
+								</tr>
+										
+								
+							
 							</tbody>
 						</table>
 						

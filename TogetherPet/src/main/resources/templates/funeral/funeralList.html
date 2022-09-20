@@ -9,7 +9,14 @@
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+
 <title>장례업체목록</title>
 <style>
 .map {
@@ -158,21 +165,25 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 						</div>
 
 						<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
-							style="width: 1000px; height: auto; margin: auto;">
+							style="width: auto; height: auto; margin: auto;">
 							<div class="container-fluid">
 								<ul class="navbar-nav">
-									<li class="nav-item"><a class="nav-link active"
-										onclick="setBounds()">전국</a></li>
-									<li class="nav-item"><a class="nav-link" onclick="setA()">수도권</a></li>
-									<li class="nav-item"><a class="nav-link" href="#">충청권</a></li>
-									<li class="nav-item"><a class="nav-link" href="#">호남권</a></li>
-									<li class="nav-item"><a class="nav-link disabled" href="#">영남권</a>
+									<li class="nav-item">
+									<a class="nav-link active" onclick="setBounds()">전국</a></li>
+									<li class="nav-item">
+									<a class="nav-link active" onclick="setBounds()">수도권</a></li>
+									<li class="nav-item">
+									<a class="nav-link active" href="#">충청권</a></li>
+									<li class="nav-item">
+									<a class="nav-link active" href="#">호남권</a></li>
+									<li class="nav-item">
+									<a class="nav-link active" href="#">영남권</a>
 									</li>
 								</ul>
 							</div>
 						</nav>
 
-						<div id="map" style="width: 1000px; height: 400px; margin: auto;"></div>
+						<div id="map" style="width: auto; height: 400px; margin: auto;"></div>
 						<script type="text/javascript"
 							src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0&libraries=services,clusterer,drawing"></script>
 
@@ -188,9 +199,11 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 								mapTypeId : kakao.maps.MapTypeId.ROADMAP
 							};
 
+							
+							// 지도를 생성합니다
 							var map = new kakao.maps.Map(mapContainer,
-									mapOption); // 지도를 생성합니다
-
+									mapOption); 
+						
 							//버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정합니다 (이건 전체 지역 다 보임 )
 							var points = [
 									new kakao.maps.LatLng(35.838312,
@@ -364,20 +377,21 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 
 							function setBounds() {
 								// LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-								// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
-
+								// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다.
 								map.setBounds(bounds);
 							}
 
 							var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 							mapOption = {
 								center : new kakao.maps.LatLng(
-										36.027633329476224, 128.8184864680428), // 지도의 중심좌표
+										37.31184690720705, 127.41842339288375), // 지도의 중심좌표
+										
 								// 지도의 확대 레벨
 								level : 13,
 								mapTypeId : kakao.maps.MapTypeId.ROADMAP
 							};
 
+						
 							// 클러스터러에 마커들을 추가합니다
 							clusterer.addMarkers(markers);
 						</script>
@@ -390,13 +404,19 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 									info : false,
 									ordering : false,
 									"language" : {
-
-										"search" : "검색",
-										"paginate" : {
-											"next" : "다음",
-											"previous" : "이전"
+								    "search" : "검색",
+								    "paginate" : {
+									"next" : "다음",
+								    "previous" : "이전"
 										}
-									}
+									},
+								dom:'Bfrtip',
+								buttons:[{
+								extend:'print',
+								title:'인쇄',
+								text:'인쇄',
+								className:'btn btn-dark execBtn'
+								}]
 								});
 							});
 						</script>
@@ -411,6 +431,7 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 									<th>업체명</th>
 									<th>주소</th>
 									<th>전화번호</th>
+									
 								</tr>
 							</thead>
 							<tbody>
