@@ -11,4 +11,7 @@ public interface CartMapper {
 	int insertCart(CartVO vo);
 	int updateCart(CartVO vo);
 	int deleteCart(CartVO vo);	
+	
+	CartVO isGoods(CartVO vo);
+
 }

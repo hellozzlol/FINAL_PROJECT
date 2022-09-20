@@ -2,33 +2,40 @@
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout2}">
+
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-		//subtotal 	
-			let total = $('.sTotal')
-			let sTotal =0;
-			for(t of total){
-				sTotal += Number(t.innerHTML);
+		document.addEventListener('DOMContentLoaded', function () {
+			// 총액 계산
+			getTotal();
+
+			function getTotal() {
+
+				//subtotal
+				let total = $('.sTotal')
+				let sTotal = 0;
+				for (t of total) {
+					sTotal += Number(t.innerHTML);
+				}
+				// 천단위 콤마
+				sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				$('#sTotal').html(sTotal)
+
+				//grandtotal 할인 적용 후 
+				total = $('.gTotal')
+				let gTotal = 0;
+				for (t of total) {
+					gTotal += Number(t.innerHTML);
+				}
+				//천단위 콤마
+				gTotal = gTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				$('#gTotal').html(gTotal)
 			}
-			// 천단위 콤마
-			sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-			$('#sTotal').html(sTotal)
-			
-		//grandtotal 할인 적용 후 
-			total = $('.gTotal')
-			let gTotal = 0;
-			for(t of total){
-				gTotal += Number(t.innerHTML);
-			}
-			//천단위 콤마
-			gTotal = gTotal.toString() .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-			$('#gTotal').html(gTotal)
-		
-		// 장바구니 삭제	
-			$('.remove').on('click', '.removeCart', function(){
+
+			// 장바구니 삭제	
+			$('.remove').on('click', '.removeCart', function () {
 				let cartNo = $(this).closest('tr').attr('id')
 				$.ajax({
 						url: 'ajaxCartDelete',
@@ -40,23 +47,51 @@
 					.done(res => {
 						alert(res);
 						document.getElementById(cartNo).remove();
+						getTotal();
 					})
 			})
-		// order로 이동
-			$('#orderCallBtn').on('click', function(){
-				if(confirm('주문 페이지로 넘어가시겠습니까?')){
-					let userNo = $('.border-top')[0];
-					location.href="order?userNo=" + Number(userNo.firstElementChild.innerHTML);				
-					
-					// 포스트로 보내려고 폼 제출하면 400 에러 뜸
-//					userNo.value = Number(userNo.firstElementChild.innerHTML);
-//					document.getElementById('orderCall').submit();
-//					orderCall.submit();
+			// 장바구니 수량 업데이트
+			$('.update').on('change', '.updateCart', function () {
+				//alert($(this).closest('tr').attr('id'))
+				let cartNo = $(this).closest('tr').attr('id');
+				let tr = document.getElementById(cartNo);
+				let qty = Number(tr.children[3].children[0].children[0].value)
+				let dc = Number(tr.children[5].children[0].innerHTML)
+				let price = Number(tr.children[2].children[0].children[0].innerText)
+
+				$.ajax({
+						url: 'ajaxCartUpdate',
+						type: 'post',
+						data: {
+							cartNo: cartNo,
+							qty: qty
+						}
+					})
+					.done(res => {
+						if (res == "1") {
+							// 수량 * 단가 동적 계산
+							tr.children[4].children[0].children[0].innerText = qty * price
+							tr.children[4].children[0].children[1].innerText = qty * price * (1 - dc);
+
+							getTotal();
+						}
+					})
+			})
+			// order로 이동
+			$('#orderCallBtn').on('click', function () {
+				if (confirm('주문 페이지로 넘어가시겠습니까?')) {
+					// userNo
+					let uN = $('.cart_product_text')[0];
+					uN = Number(uN.children[0].innerHTML);
+
+					userNo.value = uN;
+					document.getElementById('orderCall').submit();
 				}
 			})
-	})
-</script>
+		})
+	</script>
 </head>
+
 <body>
 	<article layout:fragment="content">
 		<!--breadcrumbs area start-->
@@ -89,18 +124,19 @@
 									<table>
 										<thead>
 											<tr>
+												<th style="display: none"></th>
 												<th>product</th>
 												<th>information</th>
 												<th>Price</th>
 												<th>Quantity</th>
 												<th>Total</th>
+												<th style="display: none"></th>
 											</tr>
 										</thead>
 										<tbody id="tb">
 											<!-- tr 반복  -->
 											<tr th:each="c:${cartList}" class="border-top"
 												th:id="${c.cartNo}">
-												<td style="display: none" th:text="${c.userNo}"></td>
 												<td>
 													<div class="cart_product_thumb">
 														<img src="assets/img/product/product4.jpg" alt="">
@@ -108,7 +144,7 @@
 												</td>
 												<td>
 													<div class="cart_product_text">
-
+														<h4 style="display: none" th:text="${c.userNo}"></h4>
 														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
@@ -119,8 +155,9 @@
 													</div>
 												</td>
 												<td class="product_quantity">
-													<div class="cart_product_quantity">
-														<input min="1" max="100" th:value="${c.qty}" type="number">
+													<div class="cart_product_quantity update">
+														<input min="1" max="100" th:value="${c.qty}" type="number"
+															class="updateCart">
 													</div>
 												</td>
 												<td>
@@ -129,6 +166,7 @@
 														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
 													</div>
 												</td>
+												<td style="display: none"><span>[[${c.dc}]]</span></td>
 												<td>
 													<div class="cart_product_remove text-right remove">
 														<a class="removeCart"><i class="ion-android-close"></i></a>
@@ -143,11 +181,11 @@
 									<div class="grand_totall_area">
 										<div class="grand_totall_inner border-bottom">
 											<div class="cart_subtotal d-flex justify-content-between">
-												<p>sub total</p>
+												<p>할인 전 총액</p>
 												<span id="sTotal"></span>
 											</div>
 											<div class="cart_grandtotal d-flex justify-content-between">
-												<p>grand total</p>
+												<p>할인 후 총액</p>
 												<span id="gTotal"></span>
 											</div>
 										</div>
