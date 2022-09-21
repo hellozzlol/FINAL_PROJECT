@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout3}">
+	layout:decorate="~{layout/layout4}">
 <head>
 <meta charset="UTF-8">
 <title>My page</title>
@@ -54,19 +54,13 @@
 							</div>
 							<hr class="my-0" />
 
-							<div class="card-body" th:each="list : ${userList}">
+							<div class="card-body" th:each="list : ${sellerList}">
 								<form id="formAccountSettings" onsubmit="return false">
 									<div class="row">
 										<div class="mb-3 col-md-6">
 											<label for="id" class="form-label">아이디 ID</label> <input
 												class="form-control" type="text" id="id" name="id"
 												th:value="${list.id}" disabled="disabled" />
-										</div>
-										<div class="mb-3 col-md-6">
-											<label for="nickname" class="form-label">닉네임 Nickname</label>
-											<input class="form-control" type="text" id="nickname"
-												name="nickname" th:value="${list.nickname}"
-												disabled="disabled" />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="name" class="form-label">이름 Name</label> <input

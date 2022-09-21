@@ -17,7 +17,7 @@ public class BoardController {
 
 	// 게시판 전체 조회
 	@GetMapping("/boardSelectList")
-	public String boardSelectList(BoardVO vo, Model model) {
+	public String boardSelectList(Model model) {
 		model.addAttribute("boardList", dao.boardSelectList());
 		return "users/boardSelectList";
 	}

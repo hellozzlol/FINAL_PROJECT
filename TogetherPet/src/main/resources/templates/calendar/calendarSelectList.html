@@ -1,108 +1,119 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout3}">
 
 <head>
-	<meta charset="UTF-8">
-	<link href='fullcalendar/main.css' rel='stylesheet' />
-	<script src='fullcalendar/main.js'></script>
-	<script src='fullcalendar/locales/ko.js'></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<title>My page</title>
-	<style>
+<meta charset="UTF-8">
+<link href='fullcalendar/main.css' rel='stylesheet' />
+<script src='fullcalendar/main.js'></script>
+<script src='fullcalendar/locales/ko.js'></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<title>My page</title>
+<!-- <style>
 		#calendarModal {
 			position: fixed;
 			top: 30%;
 			left: 8%;
 		}
-	</style>
+	</style> -->
 
 </head>
 
 <body>
-	<article layout:fragment="content">
-
+	<div class="col-lg-9 col-md-12" layout:fragment="content">
 		<script>
 			let calendar = null;
 			let Alldata = {};
-			$(function () {
+			$(function() {
 
 				let calendarEl = $('#calendar')[0];
 
-				calendar = new FullCalendar.Calendar(calendarEl, {
+				calendar = new FullCalendar.Calendar(
+						calendarEl,
+						{
 
-					expandRows: true, // 화면에 맞게 높이 재설정
-					slotMinTime: '08:00', // Day 캘린더에서 시작 시간
-					slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
+							expandRows : true, // 화면에 맞게 높이 재설정
+							slotMinTime : '08:00', // Day 캘린더에서 시작 시간
+							slotMaxTime : '20:00', // Day 캘린더에서 종료 시간
 
-					headerToolbar: {
-						left: 'prev,next',
-						center: 'title',
-						right: 'dayGridMonth'
-					},
+							headerToolbar : {
+								left : 'prev,next today',
+								center : 'title',
+								right : 'dayGridMonth,timeGridWeek,timeGridDay'
+							},
 
-					initialView: 'dayGridMonth',
-					editable: true,
-					selectable: true, // 달력 일자 드래그 설정가능
-					nowIndicator: true, // 현재 시간 마크
-					dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
-					locale: 'ko', // 한국어 설정
+							initialView : 'dayGridMonth',
+							editable : true,
+							selectable : true, // 달력 일자 드래그 설정가능
+							nowIndicator : true, // 현재 시간 마크
+							dayMaxEvents : true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+							locale : 'ko', // 한국어 설정
 
-					eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
+							eventAdd : function(obj) { // 이벤트가 추가되면 발생하는 이벤트
 
-						sDate =
-							obj.event._instance.range["start"].getFullYear() +
-							'-' + (obj.event._instance.range["start"].getMonth() + 1) +
-							'-' + obj.event._instance.range["start"].getDate();
+								sDate = obj.event._instance.range["start"]
+										.getFullYear()
+										+ '-'
+										+ (obj.event._instance.range["start"]
+												.getMonth() + 1)
+										+ '-'
+										+ obj.event._instance.range["start"]
+												.getDate();
 
-						eDate =
-							obj.event._instance.range["end"].getFullYear() +
-							'-' + (obj.event._instance.range["end"].getMonth() + 1) +
-							'-' + (obj.event._instance.range["end"].getDate() - 1);
+								eDate = obj.event._instance.range["end"]
+										.getFullYear()
+										+ '-'
+										+ (obj.event._instance.range["end"]
+												.getMonth() + 1)
+										+ '-'
+										+ (obj.event._instance.range["end"]
+												.getDate() - 1);
 
-						Alldata = {
-							"start": sDate,
-							"end": eDate,
-							"title": obj.event._def["title"],
-							"allday": obj.event._def["allDay"],
-							"defId": obj.event._instance["defId"],
-							"instanceId": obj.event._instance["instanceId"]
-						};
+								Alldata = {
+									"start" : sDate,
+									"end" : eDate,
+									"title" : obj.event._def["title"],
+									"allday" : obj.event._def["allDay"],
+									"defId" : obj.event._instance["defId"],
+									"instanceId" : obj.event._instance["instanceId"]
+								};
 
-						let allEvent = calendar.getEvents();
-						console.log(allEvent);
+								let allEvent = calendar.getEvents();
+								console.log(allEvent);
 
-						let jsondata = JSON.stringify(Alldata);
-						console.log("jsondata : " + jsondata);
+								let jsondata = JSON.stringify(Alldata);
+								console.log("jsondata : " + jsondata);
 
+							},
+							eventChange : function(obj) { // 이벤트가 수정되면 발생하는 이벤트
+								console.log(obj);
 
-					},
-					eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
-						console.log(obj);
+							},
+							eventRemove : function(obj) { // 이벤트가 삭제되면 발생하는 이벤트
+								console.log(obj);
 
-					},
-					eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
-						console.log(obj);
+							},
+							eventClick : function(obj) {
+								console.log(obj);
 
-					},
-					eventClick: function (obj) {
-						console.log(obj);
-
-					},
-					select: function (arg) { // 캘린더에서이벤트를 생성
-						let title = prompt('일정 내용을 입력하세요 :');
-						if (title) {
-							calendar.addEvent({
-								title: title,
-								start: arg.start,
-								end: arg.end,
-								allDay: arg.allDay
-							})
-						}
-						calendar.unselect()
-					},
-				});
+							},
+							select : function(arg) { // 캘린더에서이벤트를 생성
+								let title = prompt('일정 내용을 입력하세요 :');
+								if (title) {
+									calendar.addEvent({
+										title : title,
+										start : arg.start,
+										end : arg.end,
+										allDay : arg.allDay
+									})
+								}
+								calendar.unselect()
+							},
+						});
 				// 캘린더 랜더링
 				calendar.render();
 
@@ -113,112 +124,50 @@
 				console.log(allData);
 				document.getElementById("submenu").style.display = "block";
 
-
 				$.ajax({
-					url: "/calendar/calendarInsert",
-					type: "post",
-					data: {
-						addEvent: JSON.stringify(Alldata)
+					url : "/calendar/calendarInsert",
+					type : "post",
+					data : {
+						addEvent : JSON.stringify(Alldata)
 					},
 
-					success: function (data, textStatus, xhr) {
+					success : function(data, textStatus, xhr) {
 						console.log(data);
 
 					},
-					error: function (xhr, status, error) {
+					error : function(xhr, status, error) {
 						console.log(error);
 					}
-
-
 
 				});
 			}
 		</script>
-		<!--shop  area start-->
-		<br> <br> <br>
-		<div class="shop_section shop_reverse">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-3 col-md-12">
-						<!--sidebar widget start-->
-						<aside class="sidebar_widget">
-							<div class="widget_inner">
-								<div class="widget_list widget_categories">
-									<ul>
-										<li class="widget_sub_categories"><a href="usersSelect"
-												data-toggle="collapse" data-target="#men">내 정보</a></li>
-										<hr>
-										<li class="widget_sub_categories"><a href="petSelectList"
-												data-toggle="collapse" data-target="#women">내 반려동물 정보</a></li>
-										<hr>
-										<li class="widget_sub_categories"><a data-toggle="collapse"
-												data-target="#footwear">내 활동</a>
-											<ul class="widget_dropdown_categories collapse show" id="footwear">
-												<li><a href="#">작성 글 보기</a></li>
-												<li><a href="#">작성 댓글 보기</a></li>
-											</ul>
-										</li>
-										<hr>
-										<li class="widget_sub_categories"><a data-toggle="collapse"
-												data-target="#accessories">내 스크랩</a>
-											<ul class="widget_dropdown_categories collapse show" id="accessories">
-												<li><a href="#">병원</a></li>
-												<li><a href="#">장례</a></li>
-												<li><a href="#">숙박</a></li>
-												<li><a href="#">커뮤니티</a></li>
-											</ul>
-										</li>
-										<hr>
-										<li class="widget_sub_categories"><a data-toggle="collapse"
-												data-target="#footwear">내 쇼핑</a>
-											<ul class="widget_dropdown_categories collapse show" id="footwear">
-												<li><a href="#">주문내역</a></li>
-												<li><a href="#">교환 및 반품</a></li>
-											</ul>
-										</li>
-										<hr>
-										<li class="widget_sub_categories"><a data-toggle="collapse"
-												data-target="#footwear">내 클래스</a>
-											<ul class="widget_dropdown_categories collapse show" id="footwear">
-												<li><a href="#">수강내역</a></li>
-												<li><a href="#">위시리스트</a></li>
-											</ul>
-										</li>
-										<hr>
-										<li class="widget_sub_categories"><a href="calendarSelectList"
-												data-toggle="collapse" data-target="#women">일정관리</a></li>
-									</ul>
-								</div>
-							</div>
-						</aside>
-						<!--sidebar widget end-->
-					</div>
 
 
-					<div class="col-lg-9 col-md-12">
-						<!--shop wrapper start-->
-						<!-- Content wrapper -->
-						<div class="content-wrapper">
-							<!-- Content -->
-							<div class="container-xxl flex-grow-1 container-p-y">
-								<!--breadcrumbs area start-->
-								<div class="breadcrumb_content">
-									<ul>
-										<li><a href="/">home</a></li>
-										<li>my calendar</li>
-									</ul>
-								</div>
-								<!--breadcrumbs area end-->
 
-								<!-- 캘린더 시작 -->
-								<div id='calendar-container'>
-									<div id='calendar'></div>
-								</div>
-								<!-- 캘린더 종료 -->
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my calendar</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<!-- 캘린더 시작 -->
+				<div id='calendar-container'>
+					<div id='calendar'></div>
+				</div>
+				<!-- 캘린더 종료 -->
 
 
-								<!-- modal -->
-								<div class="modal fade" id="calendarModal" tabindex="-1" role="dialog"
+				<!-- modal -->
+				<!-- <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog"
 									aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
@@ -249,23 +198,19 @@
 
 										</div>
 									</div>
-								</div>
-								<!-- modal -->
+								</div> -->
+				<!-- modal -->
 
 
-								<div class="content-backdrop fade"></div>
-							</div>
-							<!-- Content wrapper -->
-
-
-							<!--shop wrapper end-->
-						</div>
-					</div>
-				</div>
+				<div class="content-backdrop fade"></div>
 			</div>
-			<!--shop  area end-->
+			<!-- Content wrapper -->
+
+
+			<!--shop wrapper end-->
 		</div>
-	</article>
+	</div>
+	<!--shop  area end-->
 </body>
 
 </html>
