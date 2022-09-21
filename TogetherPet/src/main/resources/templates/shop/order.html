@@ -7,7 +7,39 @@
 <title>Insert title here</title>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-		// 장바구니 하단에  MemberVO 뿌리기
+			getTotal();
+		// 총액 계산			
+			function getTotal() {
+
+				//subtotal
+				let total = $('.sTotal')
+				let sTotal = 0;
+				for (t of total) {
+					sTotal += Number(t.innerHTML);
+				}
+				$('#sTotal').html(sTotal)
+
+				//grandtotal 할인 적용 후 
+				total = $('.gTotal')
+				let gTotal = 0;
+				for (t of total) {
+					gTotal += Number(t.innerHTML);
+				}
+				let point = Number($('#point').html())
+				$('#gTotal').html(gTotal-point);
+				
+				// 할인액
+				$('#dc').html(sTotal-gTotal);
+			}
+		// 적립금 사용 동적 제어	
+			$('#getMoney').on('click', function(){
+				let money = Number($('#money').val());
+				let my = Number($('#my').html());
+				$('#my').html(my-money);
+				$('#point').html(money);
+				getTotal();
+			})
+			
 	})
 </script>
 </head>
@@ -67,7 +99,7 @@
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>[[${#numbers.formatInteger(c.price*(1-c.dc),4)}]]</span>
+														<span>[[${#numbers.formatInteger(c.price*(1-c.dc),3,'COMMA')}]]</span>
 
 													</div>
 												</td>
@@ -83,8 +115,6 @@
 														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
 													</div>
 												</td>
-
-
 											</tr>
 										</tbody>
 									</table>
@@ -99,23 +129,36 @@
 							<div class="col-lg-4 col-md-6 col-sm-6">
 								<div class="shopping_coupon_calculate top">
 									<h3 class="border-bottom">배송정보 확인</h3>
+
 									<select class="select_option border">
-										<option value="1">배송메시지</option>
+										<option value="1">배송메시지(없음)</option>
 										<option value="2">도착하기 전에 연락해 주세요.</option>
 										<option value="3">경비실에 맡겨주세요.</option>
 										<option value="4">벨 누르지 말아주세요.</option>
-									</select> <input class="border" placeholder="받는 사람" type="text" th:value="${user.name}">
-									<input class="border" placeholder="연락처" type="text" th:value="${user.call}"> <input
-										class="border" placeholder="주소" type="text" th:value="${user.address}">
+									</select>
+									<div id="showFrm" style="">
+										<form id="orderInfoFrm" name="orderInfoFrm">
+											<input class="border" placeholder="받는 사람" type="text"
+												th:value="${user.name}"> <input class="border"
+												placeholder="연락처" type="text" th:value="${user.call}">
+											<input class="border" placeholder="주소" type="text"
+												th:value="${user.address}">
+											<button class="btn btn-primary" type="button" id="getAddr">주소
+												변경</button>
+										</form>
+									</div>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6 col-sm-6">
 								<div class="shopping_coupon_calculate">
 									<h3 class="border-bottom">적립금</h3>
 									<p>1,000원 이상 사용 가능합니다.</p>
-									<p>내 적립금 : <span>[[${#numbers.formatInteger(user.money,3,'COMMA')}]]</span>원</p>
-									<input class="border" placeholder="사용할 적립금을 입력하세요." type="text">
-									<button class="btn btn-primary" type="submit">사용하기</button>
+									<p>
+										내 적립금 : <span id="my">[[${#numbers.formatInteger(user.money,4)}]]</span>원
+									</p>
+									<input id="money" class="border" placeholder="사용할 적립금을 입력하세요."
+										type="text">
+									<button class="btn btn-primary" type="button" id="getMoney">사용하기</button>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6 col-sm-6">
@@ -124,30 +167,24 @@
 										<h3>주문 및 결제 확인</h3>
 										<div class="order_table table-responsive">
 											<table>
-												<thead>
-													<tr>
-														<th>Product</th>
-														<th class="text-right">Total</th>
-													</tr>
-												</thead>
 												<tbody>
 													<tr>
-														<td>Slim Collarless Blaze</td>
-														<td class="text-right">$75.20</td>
+														<td>할인가</td>
+														<td id="dc" class="text-right">$50.00</td>
 													</tr>
 													<tr>
-														<td>Denim Kimono Jacket</td>
-														<td class="text-right">$50.00</td>
+														<td>적립금</td>
+														<td id="point" class="text-right">0</td>
 													</tr>
 												</tbody>
 												<tfoot>
 													<tr>
-														<td>Cart Subtotal</td>
-														<td class="text-right">$225.60</td>
+														<td>Sub Total</td>
+														<td id="sTotal" class="text-right"></td>
 													</tr>
 													<tr class="order_total">
-														<th>Order Total</th>
-														<td class="text-right">$225.60</td>
+														<th>Grand Total</th>
+														<td id="gTotal" class="text-right"></td>
 													</tr>
 												</tfoot>
 											</table>
