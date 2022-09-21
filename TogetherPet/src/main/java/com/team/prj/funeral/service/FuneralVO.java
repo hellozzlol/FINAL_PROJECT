@@ -19,6 +19,7 @@ public class FuneralVO {
 	private String longitude;
 	private String categoryId;
 	private String homepage;
+	private String fphoto;
 	
 	
 }
