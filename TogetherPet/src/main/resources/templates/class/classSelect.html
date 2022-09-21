@@ -1,5 +1,6 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
 <meta charset="utf-8">
@@ -47,7 +48,7 @@
 <link rel="stylesheet" href="assets/css/font.awesome.css">
 <link rel="stylesheet" href="assets/css/animate.css">
 <link rel="stylesheet" href="assets/css/nice-select.css">
-<link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+<!--<link rel="stylesheet" href="assets/css/jquery-ui.min.css"-->
 <link rel="stylesheet" href="assets/css/magnific-popup.css">
 <link rel="stylesheet" href="assets/css/jquery-ui.css"> 
 <!-- 새로추가 예약달력 css -->
@@ -643,7 +644,7 @@ display: none; /* �솕�궡�몴 �뾾�븷湲� for IE10, 11*/
 				<div class="col-lg-6 col-md-6">
 					<div class="product_d_right">
 						<form action="#">
-							<h1>클래스 제목</h1>
+							<h1></h1>
 							<div class="product_ratting_review d-flex align-items-center">
 								<div class=" product_ratting">
 									<ul class="d-flex">
@@ -754,8 +755,7 @@ display: none; /* �솕�궡�몴 �뾾�븷湲� for IE10, 11*/
 						<div class="product_info_button border-bottom">
 							<ul class="nav" role="tablist">
 								<li><a class="active" data-toggle="tab" href="#info"
-									role="tab" aria-controls="info" aria-selected="false">클래스
-										개요</a></li>
+									role="tab" aria-controls="info" aria-selected="false">클래스 개요</a></li>
 								<li><a data-toggle="tab" href="#reviews" role="tab"
 									aria-controls="reviews" aria-selected="false">리뷰 </a></li>
 								<li><a data-toggle="tab" href="#additional" role="tab"
