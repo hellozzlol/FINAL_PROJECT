@@ -3,8 +3,11 @@ package com.team.prj.classes.service;
 import java.util.Date;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class ClassVO {
 	int classNo;
 	String name;

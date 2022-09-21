@@ -85,7 +85,7 @@ layout:decorate="~{layout/layout}">
 				 
 				 var class_html = `<div class="col-lg-4 col-md-4 col-sm-6 col-6 "  th:if="${#lists.size(class)} > 0" th:each="c:${class}">
 						<div class="single_product">
-						<!----썸네일?---->
+
 						<div class="product_thumb">
 							<a th:href="@{/class/classSelect(classNo=${c.classNo})}"> 
 								<img class="primary_img" src="assets/img/product/classtm1.jpg" alt="consectetur">
@@ -114,7 +114,7 @@ layout:decorate="~{layout/layout}">
 						</div>
 						
 
-						<!-----센터설명------>
+		
 						<div class="product_content grid_content text-center">
 							<div class="product_ratting">
 								<ul class="d-flex justify-content-center">
@@ -143,7 +143,6 @@ layout:decorate="~{layout/layout}">
 						</div>
 
 
-						<!----설명?---->
 						<div class="product_list_content">
 							<h4 class="product_name">
 								<a href="product-details.html" th:text="${c.name}"></a>
