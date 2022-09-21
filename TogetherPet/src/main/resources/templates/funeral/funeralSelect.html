@@ -5,11 +5,161 @@
 <head>
 <meta charset="UTF-8">
 
-
-<title>반려동물장례식장</title>
 <style>
+.photo{
+height: 1000px;
+}
+
+#d5>div:nth-child(2){ 
+white-space: pre-line;
+text-align:center;
+}
+span{
+font-size: 30px;
+}
+
+.review-comment-list{
+	display:flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	background-color:#fff;
+	padding:15px 40px 15px 40px;
+	border-radius: 5px;
+}
+
+.review-comment{
+	display:flex;
+	justify-content: flex-start;
+	flex-direction:column;
+	align-items: flex-end;
+}
+
+.comment-item{
+	display:flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin:10px 0 15px;
+}
+
+.review-comment-list .comment-info {
+	width:30px;
+	margin-right:16px;
+}
+
+.class-review-content .review-comment-list .user-img{
+	width:30px;
+	height:30px;
+}
+
+.class-review-content .review-comment-list .comment-text{
+	width:654px;
+	font-size:14px;
+	color:#666;
+}
+
+span.user-review-info{
+	display:inline-block;
+	margin-right:10px;
+	font-size:15px;
+	font-weight:700;
+	color:#444;
+}
+
+
+.comment-delete{
+	color:#999;
+}
+
+.comment-menu{
+	margin-top:5px;
+}
+
+.comment-menu > span, .comment-menu > a{
+	display:inline-block;
+	margin-right:10px;
+	font-size:13px;
+	color:#777;
+}
+
+.comment-menu > span{
+	font-weight: 500;
+}
+
+.comment-menu > a{
+	font-weight: 600;
+}
+
+.comment-menu > .write-re-comment-btn{
+	color:#ff385c;
+}
+
+.comment-menu > a.comment-delete{
+	font-weight: 500;
+	color:#aaa;
+}
+
+
+.review-comment-write{
+	display:flex;
+	justify-content: flex-start;
+	align-items: center;
+	width:700px;
+	padding:0 40px 0 0px;
+}
+
+
+.reviewCommentFrm, .replyFrm{
+	display:flex;
+	justify-content: flex-start;
+	align-items: center;
+	width:700px;
+}
+
+.reviewCommentFrm{
+	width:700px;
+	margin-top:25px;
+}
+
+.replyFrm{
+	margin-bottom:20px;
+	margin-top:5px;
+}
+
+
+.review-reply{
+	width:590px;
+	min-height:50px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding:6px 10px;
+	resize: none;
+	
+}
+
+.replyFrm > .review-reply{
+	width:545px;
+	min-height:50px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding:6px 10px;
+}
+
+.review-reply-btn{
+	width:50px;
+	height:36px;
+	margin-left:14px;
+	border: none;
+	background-color:#000000;
+	color:#fff;
+	border-radius: 5px;
+	cursor:pointer;
+}
 
 </style>
+
+
+<title>반려동물장례식장</title>
+
 
 </head>
 
@@ -47,11 +197,16 @@
 							</div>
 						</div>
 					
+				
 					
 					
 					
+					
+				
 						<table style="width: 100%;">
 							<tbody>
+								
+
 								<tr th:each="f:${funeral}">
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">업체명</td>
@@ -69,12 +224,12 @@
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">전화번호</td>
 									<td th:text="${f.call}" style="width: 70%; text-align: center;"><br></td>
 								</tr>
-								<tr th:each="f:${funeral}">
+								<!-- <tr th:each="f:${funeral}">
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">정보</td>
 									<td th:text="${f.info}"
 										style="width: 70%; text-align: center; font-size: 15px"></td>
-								</tr>
+								</tr> -->
 								<tr th:each="f:${funeral}">
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">홈페이지</td>
@@ -84,12 +239,49 @@
 										</td>
 										
 								</tr>
-										
+								
+									
 								
 							
 							</tbody>
 						</table>
-						     
+						 <br>
+						 <br>
+						
+						<!-- 업체소개 -->
+						
+						<div id="d5" class="menu" th:each="f:${funeral}">
+						<img class="product" src="https://img.icons8.com/pastel-glyph/344/dog-sit--v1.png" width="50" height="50" />
+						<span>INFOMATION</span>
+							<hr>
+							<div class="menutitle" th:text="${f.info}"><br></div>			
+						</div>
+						    
+						     <table id="photo">
+									<tr th:each="f:${funeral}">
+									<td>
+									<a th:href="${f.fphoto}"><img th:src="${f.fphoto}" alt="tab-thumb" style="width: 1500px; height: 400px;"></a>
+									</td>
+								    </tr>
+							</table>
+							
+							<br>
+							<br>
+						<div id="d5" class="menu">
+						<img class="product" src="https://img.icons8.com/pastel-glyph/344/dog-sit--v1.png" width="50" height="50" />
+						<span>REVIEW</span>
+							<hr>
+							
+							
+					
+							<form class="reviewCommentFrm">
+								<input type="hidden" class="review_no" name="review_no" value="` + rvo.review_no + `"/>
+								<input type="hidden" class="review_com_no2" name="com_no2" value="0"/>
+								<textarea class="review-reply" name="reply" placeholder="댓글을 입력해주세요."></textarea>
+								<input class="review-reply-btn" type="button" value="등록"/>
+							</form>		
+						</div>		
+						    
 					</div>
 				</div>
 			</div>
