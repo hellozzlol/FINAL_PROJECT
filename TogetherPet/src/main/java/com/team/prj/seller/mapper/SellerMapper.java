@@ -1,8 +1,10 @@
-package com.team.prj.seller.service;
+package com.team.prj.seller.mapper;
 
 import java.util.List;
 
-public interface SellerService {
+import com.team.prj.seller.service.SellerVO;
+
+public interface SellerMapper {
 	List<SellerVO> sellerSelectList();
 
 	SellerVO sellerSelect(SellerVO vo);
@@ -12,5 +14,4 @@ public interface SellerService {
 	int sellerUpdate(SellerVO vo);
 
 	int sellerDelete(SellerVO vo);
-
 }

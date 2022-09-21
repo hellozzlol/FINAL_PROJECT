@@ -18,6 +18,6 @@ public class SellerVO {
 	String address; // 판매자 주소
 	String companyNo; // 사업자번호
 	String author; // 권한
-	String groupNo; // 그룹번호
+	int groupNo; // 그룹번호
 	Date dt; // 가입일자
 }

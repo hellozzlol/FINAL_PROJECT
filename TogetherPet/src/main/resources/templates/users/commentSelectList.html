@@ -36,7 +36,7 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>작성글</li>
+						<li>작성댓글</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
@@ -48,28 +48,22 @@
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<h5 class="card-header" style="font-weight: bold;">게시글 수
-						[[${#lists.size(boardList)}]]</h5>
+					<h5 class="card-header" style="font-weight: bold;">댓글 수
+						[[${#lists.size(commentList)}]]</h5>
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>카테고리</th>
-									<th>제목</th>
+									<th>내용</th>
 									<th>작성일</th>
-									<th>좋아요</th>
-									<th>조회수</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${boardList}">
+								<tr th:each="list : ${commentList}">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-										<strong>[[${list.category}]]</strong></td>
-									<td>[[${list.title}]]</td>
+										<strong>[[${list.content}]]</strong></td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
-									<td>[[${list.likes}]]</td>
-									<td>[[${list.hit}]]</td>
 									<td>
 										<div class="dropdown">
 											<button type="button"

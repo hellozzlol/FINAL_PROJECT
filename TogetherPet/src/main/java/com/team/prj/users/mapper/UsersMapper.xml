@@ -45,6 +45,7 @@
 			,email = #{email}
 			,call = #{call}
 			,address = #{address}
+			,password = #{password}
 		WHERE user_no = #{userNo}
 		<!-- <set>
 			<if test="nickname != null">nickname = #{nickname},</if>
