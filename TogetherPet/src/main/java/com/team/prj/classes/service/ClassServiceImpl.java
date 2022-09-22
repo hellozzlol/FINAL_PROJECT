@@ -20,7 +20,7 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public ClassVO classSelect(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//클래스 단건조회
 		return map.classSelect(vo);
 	}
 
@@ -46,6 +46,12 @@ public class ClassServiceImpl implements ClassService {
 	public List<ClassVO> classSearch(ClassVO vo) {
 		// TODO Auto-generated method stub
 		return map.classSearch(vo);
+	}
+
+	@Override
+	public List<ClassOptionVO> classDateOption(ClassOptionVO vo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 //	@Override
