@@ -1,3 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team.prj.tutor.mapper.TutorMapper"></mapper>
+<mapper namespace="com.team.prj.tutor.mapper.TutorMapper">
+	<select id="tutorSelectList"
+		resultType="com.team.prj.tutor.service.TutorVO">
+		select * from tutor
+	</select>
+
+	<select id="tutorSelect"
+		resultType="com.team.prj.tutor.service.TutorVO"
+		parameterType="com.team.prj.tutor.service.TutorVO">
+		select *
+		from tutor
+		where tutor_no = #{tutorNo}
+	</select>
+	
+	<insert id="tutorInsert">
+		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(tutor_no) IS NULL 
+			    THEN 1
+			    ELSE max(tutor_no) + 1 
+			    END AS no
+			FROM tutor
+		</selectKey>
+		
+		INSERT INTO tutor
+		VALUES(#{userNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{company}
+				,#{email}
+				,#{call}
+				,#{address}
+				,'TUTOR'
+				,1
+				,SYSDATE)
+	</insert>
+	
+	<update id="tutorUpdate">
+		update tutor
+		set password = #{password}
+			,company = #{company}
+			,email = #{email}
+			,call = #{call}
+			,address = #{address}
+			,dt = #{dt}
+	</update>
+	
+	<delete id="tutorDelete">
+		delete from tutor
+		where tutor_no = #{tutorNo}
+	</delete>
+</mapper>

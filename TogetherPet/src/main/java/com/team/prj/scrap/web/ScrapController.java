@@ -21,11 +21,11 @@ public class ScrapController {
 	
 	
 	// 스크랩 전체 조회
-	@GetMapping("/usersScrapList")
+	@GetMapping("/scrapSelectList")
 	public String scrapSelectList(Model model) {
 		model.addAttribute("scrapList", scrap.scrapSelectList());
 		model.addAttribute("hospitalList", hospital.hospitalSelectList());
-		return "users/usersScrapList";
+		return "scrap/scrapSelectList";
 	}
 	
 	// 스크랩 단건 조회

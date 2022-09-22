@@ -36,33 +36,42 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>스크랩</li>
+						<li>주문내역</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
 
 				<div class="shipping_text">
-					<h3>내 스크랩보기</h3>
+					<h3>주문내역</h3>
 				</div>
 				<br>
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<h5 class="card-header" style="font-weight: bold;">스크랩 수
-						[[${#lists.size(scrapList)}]]</h5>
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>카테고리ID</th>
-									<th>작성일</th>
-									<th></th>
+									<th>주문번호</th>
+									<th>상품이미지</th>
+									<th>상품명</th>
+									<th>가격</th>
+									<th>수량</th>
+									<th>주문상태</th>
+									<th>배송상태</th>
+									<th>주문일자</th>
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${scrapList}">
+								<tr th:each="list : ${orderList}">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-										<strong>[[${list.categoryId}]]</strong></td>
+										<strong>[[${list.orderNo}]]</strong></td>
+									<td><img src="assets/img/product/product4.jpg" alt=""></td>
+									<td>[[${list.name}]]</td>
+									<td>[[${list.totalPrice}]]</td>
+									<td>[[${list.amount}]]</td>
+									<td>[[${list.payYn}]]</td>
+									<td>[[${list.deliveryState}]]</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>
 										<div class="dropdown">
@@ -71,6 +80,8 @@
 												data-bs-toggle="dropdown"></button>
 											<div class="dropdown-menu">
 												<a class="dropdown-item" href="javascript:void(0);"> <i
+													class="bx bx-edit-alt me-1"></i> Edit
+												</a> <a class="dropdown-item" href="javascript:void(0);"> <i
 													class="bx bx-trash me-1"></i> Delete
 												</a>
 											</div>

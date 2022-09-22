@@ -3,7 +3,6 @@ package com.team.prj.goods.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.IsNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,9 @@ import com.team.prj.cart.service.CartVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderService;
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.state.service.StateService;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
@@ -73,5 +74,5 @@ public class GoodsController {
 	public String orderConfirm() {
 		return "shop/orderConfirm";
 	}
-
+	
 }
