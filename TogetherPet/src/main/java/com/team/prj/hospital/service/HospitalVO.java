@@ -14,6 +14,8 @@ public class HospitalVO {
 	private String info;// 병원정보
 	private String latitude;// 병원위도
 	private String longitude;// 병원경도
+	private String hphoto;//병원사진
+	private String hit;//조회
 	private String categoryId;// 카테고리 아이디
 
 }
