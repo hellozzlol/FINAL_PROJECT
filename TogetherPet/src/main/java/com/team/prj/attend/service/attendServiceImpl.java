@@ -34,4 +34,10 @@ public class attendServiceImpl implements attendService {
 		return null;
 	}
 
+	@Override
+	public attendVO attendInsert(attendVO tvo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
