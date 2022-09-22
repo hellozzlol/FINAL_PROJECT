@@ -44,14 +44,14 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public List<ClassVO> classSearch(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//ajax 클래스 리스트 검색
 		return map.classSearch(vo);
 	}
 
 	@Override
-	public List<ClassOptionVO> classDateOption(ClassOptionVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClassOptionVO> classDateOption(String sdate, int no) {
+		//ajax 클래스 단건조회 페이지에서 날짜 선택
+		return map.classDateOption(sdate, no);
 	}
 
 //	@Override
