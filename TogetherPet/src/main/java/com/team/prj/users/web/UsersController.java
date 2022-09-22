@@ -77,7 +77,7 @@ public class UsersController {
 //	}
 
 	// 회원 정보 수정 폼 호출
-	@RequestMapping("/user/usersUpdateForm")
+	@RequestMapping("/users/usersUpdateForm")
 
 	public String usersUpdateForm(UsersVO vo, Model model) {
 		vo.setUserNo(1);
