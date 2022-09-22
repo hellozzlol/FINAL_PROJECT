@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>My pet page</title>
 <script>
-	function age(birth) {
+	/* function age(birth) {
 		const today = new Date();
 		const yearDiff = today.getFullYear() - birth.getFullYear();
 		const monthDiff = today.getMonth() - birth.getMonth();
@@ -21,7 +21,23 @@
 			yearAge : yearDiff,
 			countingAge : yearDiff + 1,
 		}
+	} */
+	
+	function age(birth) {
+	    var date = new Date();
+	    var year = date.getFullYear();
+	    var month = (date.getMonth() + 1);
+	    var day = date.getDate();
+	    if (month < 10) month = '0' + month;
+	    if (day < 10) day = '0' + day;
+	    var monthDay = month + day;
+	    birth = birth.replace('-', '').replace('-', '');
+	    var birthdayy = birth.substr(0, 4);
+	    var birthdaymd = birth.substr(4, 4);
+	    var age = monthDay < birthdaymd ? year - birthdayy - 1 : year - birthdayy;
+	    return age;
 	}
+
 </script>
 <style>
 .shipping_text h3 {
@@ -60,7 +76,7 @@
 							<div class="card-body">
 								<div
 									class="d-flex align-items-start align-items-sm-center gap-4">
-									<img src="../assets/img/avatars/1.png" alt="user-avatar"
+									<img src="/admin/assets/img/avatars/1.png" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
 										id="uploadedAvatar" />
 								</div>
@@ -96,7 +112,7 @@
 									</div>
 									<div class="mt-2" style="text-align: center;">
 										<button type="button" class="btn btn-primary me-2"
-											onclick="location.href='petUpdateForm'">정보 수정</button>
+											onclick="location.href='/pet/petUpdateForm'">정보 수정</button>
 									</div>
 								</form>
 							</div>
