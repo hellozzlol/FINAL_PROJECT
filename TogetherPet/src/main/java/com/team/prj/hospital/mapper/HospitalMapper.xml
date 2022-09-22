@@ -3,13 +3,28 @@
 <mapper namespace="com.team.prj.hospital.mapper.HospitalMapper">
 	<select id="hospitalSelectList"
 		resultType="com.team.prj.hospital.service.HospitalVO">
-		select * from hospital
+		select hospital_no,
+			   name,
+			   call,
+			   address,
+			   working_Hour,
+			   hphoto,
+			   hit
+		 from hospital
 	</select>
 
 	<select id="hospitalSelect"
 		resultType="com.team.prj.hospital.service.HospitalVO"
 		parameterType="com.team.prj.hospital.service.HospitalVO">
-		select *
+		select hospital_no,
+		name,
+		address,
+		call,
+		vet,
+		working_Hour,
+		info,
+		hphoto,
+		hit
 		from hospital
 		where hospital_no = #{hospitalNo}
 	</select>
@@ -37,6 +52,7 @@
 				,#{latitude}
 				,#{longitude}
 				,#{categoryId})
+				,#{hphoto}
 	</insert>
 	
 	<update id="hospitalUpdate" parameterType="com.team.prj.hospital.service.HospitalVO">
@@ -49,6 +65,7 @@
 		,info = #{info}
 		,latitude = #{latitude}
 		,longitude = #{longitude}
+		,hphoto = #{hphoto}
 		where hospital_no = #{hospitalNo}
 	</update>
 	
@@ -56,4 +73,16 @@
 		delete from hospital
 		where hospital_no = #{hospitalNo}
 	</delete>
+	
+	
+	<update id="hospitalHitUpdate">
+	UPDATE hospital SET HIT = HIT + 1 WHERE hospital_no = #{hospitalNo}
+</update>
+	
+	
+	
+	
+	
+	
+	
 </mapper>
