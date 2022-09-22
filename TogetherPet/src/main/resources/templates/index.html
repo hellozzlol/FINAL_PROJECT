@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="en" xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -183,7 +183,7 @@
 			</div>
 		</div>
 	</div>
-	<!--mini cart end-->
+	<!--로그인정보 확인 test, 로그아웃 버튼
 
 	<div sec:authorize="isAuthenticated()">
 		<span th:text="${#authentication.principal.login}"></span> <span
@@ -196,7 +196,8 @@
 				th:value="${_csrf.token}">
 			<button>로그아웃</button>
 		</form>
-	</div>
+	</div>-->
+	
 	<!--header area start-->
 	<header class="header_section header_transparent">
 		<div class="header_top">
