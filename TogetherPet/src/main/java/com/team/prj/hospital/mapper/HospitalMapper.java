@@ -15,4 +15,6 @@ public interface HospitalMapper {
 	int hospitalUpdate(HospitalVO vo);
 
 	int hospitalDelete(HospitalVO vo);
+	//조회수 증가
+	int hospitalHitUpdate(HospitalVO vo);
 }

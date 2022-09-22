@@ -37,4 +37,10 @@ public class HospitalServiceImpl implements HospitalService {
 		return map.hospitalDelete(vo);
 	}
 
+	@Override
+	public int hospitalHitUpdate(HospitalVO vo) {
+		// 조회수
+		return map.hospitalHitUpdate(vo);
+	}
+
 }
