@@ -30,8 +30,8 @@ public class ClassAjaxController {
 	//클래스 단건조회에서 일정 달력 ajax
 	@RequestMapping("classDateOption")
 	@ResponseBody
-	public List<ClassOptionVO> classDateOption(Model model, ClassOptionVO vo){
-		
-		return ajaxDao.classDateOption(vo);
+	public List<ClassOptionVO> classDateOption(Model model, String sdate, int no){
+		List<ClassOptionVO> list = ajaxDao.classDateOption(sdate, no);
+		return list;
 	}
 }

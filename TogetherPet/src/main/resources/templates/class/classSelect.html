@@ -46,19 +46,23 @@
 	$(document).ready(function(){
 						var jc = jQuery.noConflict();
 						var logid = "${userId}";
-						var maxheadcount = "${class.max_headcount}"; //이 클래스의 최대인원	
+						var maxheadcount = "${clas.max_headcount}"; //이 클래스의 최대인원	
 						
 						//달력 Ajax	
 						jc('#datepicker').on("change", function() {
 								jc("#selectClassListd").empty();
-								var url = "/another/classDateOption";
-								//var params = {"datedate" : $(this).val(),"no": /*${vo.class_no }*/}
-								//console.log($(this).val()+ " , "+/*${vo.class_no }*/);	    	
+								var url = "/classDateOption";
+								var params = {"sdate" : jc(this).val(),"no":`[[${clas.classNo}]]` };
+								console.log(jc(this).val()+ " , "+`[[${clas.classNo}]]`);	    	
 								jc.ajax({
-										url : url,
-										//data:params,
-										success : function(r) {
-											var rr = $(r)
+										url:url,
+										data:params,
+										success : htmlView()
+											
+											
+											
+											function(r) {
+											var rr = jc(r)
 											var tag = "";
 											rr.each(function(idx, c) {
 												tag += "<div class='oneclassdiv' style='margin-bottom:10px;'>";
@@ -81,7 +85,7 @@
 													} else {
 															tag += "<div class='inend'>신청마감</div>";
 													} 		tag += "</div>";
-															$("#selectClassListd").html(tag);
+													jc("#selectClassListd").html(tag);
 											});
 										}
 								});
@@ -518,7 +522,7 @@
 					<div class="col-lg-6 col-md-6">
 						<div class="product_d_right">
 							<form action="#">
-								<h1>[[${class.name}]]</h1>
+								<h1>[[${clas.name}]]</h1>
 								<div class="product_ratting_review d-flex align-items-center">
 									<div class=" product_ratting">
 										<ul class="d-flex">
@@ -573,7 +577,7 @@
 								
 								<br> <br>
 								<div class="price_box">
-									<span class="current_price">[[${class.price}]]원</span>
+									<span class="current_price">[[${clas.price}]]원  [[${clas.classNo}]]</span>
 								</div>
 
 								<div class="product_variant">
@@ -640,7 +644,7 @@
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
 										<p>
-											[[${class.intro}]]
+											[[${clas.intro}]]
 										</p>
 										<ul>
 											<li>Length: 74cm</li>
