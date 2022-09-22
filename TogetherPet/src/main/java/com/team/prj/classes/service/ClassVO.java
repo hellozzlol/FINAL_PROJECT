@@ -13,8 +13,8 @@ public class ClassVO {
 	String name;
 	String category;
 	String intro;
-	Date startDt;
-	Date endDt;
+	//Date startDt;
+	//Date endDt;
 	String day;
 	Date timeStart;
 	Date timeEnd;

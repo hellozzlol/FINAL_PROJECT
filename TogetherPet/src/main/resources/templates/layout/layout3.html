@@ -44,7 +44,7 @@
 <link rel="stylesheet" href="assets/css/font.awesome.css">
 <link rel="stylesheet" href="assets/css/animate.css">
 <link rel="stylesheet" href="assets/css/nice-select.css">
-<link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+<link rel="stylesheet" href="assets/css/jquery-ui.css">
 <link rel="stylesheet" href="assets/css/magnific-popup.css">
 
 <!-- Main Style CSS -->
@@ -53,23 +53,7 @@
 <!--modernizr min js here-->
 <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
 
-<script src="assets/js/vendor/jquery-3.4.1.min.js"></script>
-<script src="assets/js/vendor/popper.js"></script>
-<script src="assets/js/vendor/bootstrap.min.js"></script>
-<script src="assets/js/slick.min.js"></script>
-<script src="assets/js/wow.min.js"></script>
-<script src="assets/js/jquery.scrollup.min.js"></script>
-<script src="assets/js/images-loaded.min.js"></script>
-<script src="assets/js/isotope.pkgd.min.js"></script>
-<script src="assets/js/jquery.nice-select.js"></script>
-<script src="assets/js/tippy-bundle.umd.js"></script>
-<script src="assets/js/jquery-ui.min.js"></script>
-<script src="assets/js/jquery.instagramFeed.min.js"></script>
-<script src="assets/js/jquery.magnific-popup.min.js"></script>
-<script src="assets/js/mailchimp-ajax.js"></script>
 
-<!-- Main JS -->
-<script src="assets/js/main.js"></script>
 
 <!-- Structured Data  -->
 <script type="application/ld+json">
@@ -79,7 +63,8 @@
         "name": "Replace_with_your_site_title",
         "url": "Replace_with_your_site_URL"
         }
-</script>
+    </script>
+
 
 </head>
 
@@ -261,7 +246,7 @@
 												<li><a href="#">위생/배변</a></li>
 												<li><a href="#">건강관리</a></li>
 											</ul></li>
-										<li><a href="classList">class</a>
+										<li><a href="classSelectList">class</a>
 											<ul class="sub_menu">
 												<li><a href="#">펫 푸드</a></li>
 												<li><a href="#">펫 핸드메이드</a></li>
@@ -272,7 +257,6 @@
 										<li><a href="#">pet info</a>
 											<ul class="sub_menu">
 												<li><a href="#">병원/약국</a></li>
-												<li><a href="#">여행상품</a></li>
 												<li><a href="#">숙박</a></li>
 												<li><a href="funeralList">장례업체</a></li>
 											</ul></li>
@@ -331,77 +315,9 @@
 	</header>
 	<!--header area end-->
 
-	<!--shop  area start-->
-	<br>
-	<br>
-	<br>
-	<div class="shop_section shop_reverse">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-12">
-					<!--sidebar widget start-->
-					<aside class="sidebar_widget">
-						<div class="widget_inner">
-							<div class="widget_list widget_categories">
-								<ul>
-									<li class="widget_sub_categories"><a href="usersSelect">내 정보</a></li>
-									<hr>
-									<li class="widget_sub_categories"><a href="petSelectList">내 반려동물 정보</a></li>
-									<hr>
-									<li class="widget_sub_categories"><a
-										data-toggle="collapse">내 활동</a>
-										<ul class="widget_dropdown_categories collapse show"
-											id="footwear">
-											<li><a href="boardSelectList">작성 글 보기</a></li>
-											<li><a href="commentSelectList">작성 댓글 보기</a></li>
-										</ul></li>
-									<hr>
-									<li class="widget_sub_categories">
-									<a href="/usersScrapList" data-toggle="collapse">내 스크랩</a>
-										<ul class="widget_dropdown_categories collapse show"
-											id="accessories">
-											<li><a href="#">병원</a></li>
-											<li><a href="#">장례</a></li>
-											<li><a href="#">숙박</a></li>
-											<li><a href="#">커뮤니티</a></li>
-										</ul></li>
-									<hr>
-									<li class="widget_sub_categories"><a
-										data-toggle="collapse">내 쇼핑</a>
-										<ul class="widget_dropdown_categories collapse show"
-											id="footwear">
-											<li><a href="#">주문내역</a></li>
-											<li><a href="#">장바구니</a></li>
-											<li><a href="#">교환 및 반품</a></li>
-										</ul></li>
-									<hr>
-									<li class="widget_sub_categories"><a
-										data-toggle="collapse">내 클래스</a>
-										<ul class="widget_dropdown_categories collapse show"
-											id="footwear">
-											<li><a href="#">수강내역</a></li>
-											<li><a href="#">위시리스트</a></li>
-										</ul></li>
-									<hr>
-									<li class="widget_sub_categories">
-										<a href="calendarSelectList" data-toggle="collapse">내 일정관리</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</aside>
-					<!--sidebar widget end-->
-				</div>
+	<article layout:fragment="content"></article>
 
-				<!-- body start -->
-				<div layout:fragment="content"></div>
-				<!-- body end -->
-
-			</div>
-		</div>
-	</div>
-
-
+	<!-- goods body end -->
 
 	<!--footer area start-->
 	<footer class="footer_widgets">
@@ -466,6 +382,28 @@
 		</div>
 	</footer>
 	<!--footer area end-->
+	<!-- JS
+============================================ -->
+
+	<!--<script src="assets/js/vendor/jquery-3.4.1.min.js"></script>  -->
+	<!--<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>  -->
+	<script src="assets/js/vendor/popper.js"></script>
+	<script src="assets/js/vendor/bootstrap.min.js"></script>
+	<script src="assets/js/slick.min.js"></script>
+	<script src="assets/js/wow.min.js"></script>
+	<script src="assets/js/jquery.scrollup.min.js"></script>
+	<script src="assets/js/images-loaded.min.js"></script>
+	<script src="assets/js/isotope.pkgd.min.js"></script>
+	<script src="assets/js/jquery.nice-select.js"></script>
+	<script src="assets/js/tippy-bundle.umd.js"></script>
+	<script src="assets/js/jquery-ui.min.js"></script>
+	<script src="assets/js/jquery.instagramFeed.min.js"></script>
+	<script src="assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="assets/js/mailchimp-ajax.js"></script>
+
+	<!-- Main JS -->
+	<script src="assets/js/main.js"></script>
+
 </body>
 
 </html>

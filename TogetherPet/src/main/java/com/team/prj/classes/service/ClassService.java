@@ -9,4 +9,10 @@ public interface ClassService {
 	int classUpdate(ClassVO vo); //클래스 수정
 	int classDelete(ClassVO vo); //클래스 삭제
 	List<ClassVO> classSearch(ClassVO vo); //클래스 검색
+	
+	////////////////////////////////////////////////////
+	
+	List<ClassOptionVO> classDateOption(ClassOptionVO vo);
+	//클래스 단건조회에서 날짜픽
+	
 }
