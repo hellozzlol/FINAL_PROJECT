@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<title>My page</title>
+<style>
+.shipping_text h3 {
+	margin-bottom: 7px;
+	font-size: 23px;
+	line-height: 18px;
+}
+</style>
+
+<script type="text/javascript">
+	function check() {
+		if (document.fr.password.value == "") {
+			alert("비밀번호를 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.email.value == "") {
+			alert("이메일을 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.address.value == "") {
+			alert("주소를 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.nickname.value == "") {
+			alert("닉네임을 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.call.value == "") {
+			alert("전화번호를 입력하세요.");
+			return false;
+		}
+	}
+</script>
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>내 정보수정</h3>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card mb-4">
+							<h5 class="card-header">Profile Details</h5>
+							<!-- Account -->
+							<div class="card-body">
+								<div
+									class="d-flex align-items-start align-items-sm-center gap-4">
+									<img src="../assets/img/avatars/1.png" alt="user-avatar"
+										class="d-block rounded" height="100" width="100"
+										id="uploadedAvatar" />
+									<div class="button-wrapper">
+										<label for="upload" class="btn btn-primary me-2 mb-4"
+											tabindex="0"> <span class="d-none d-sm-block">Upload
+												new photo</span> <i class="bx bx-upload d-block d-sm-none"></i> <input
+											type="file" id="upload" class="account-file-input" hidden
+											accept="image/png, image/jpeg, image/jpg" />
+										</label>
+										<button type="button"
+											class="btn btn-primary2 account-image-reset mb-4">
+											<i class="bx bx-reset d-block d-sm-none"></i> <span
+												class="d-none d-sm-block">Reset</span>
+										</button>
+
+										<p class="text-muted mb-0">Allowed JPG or PNG.</p>
+									</div>
+								</div>
+							</div>
+							<hr class="my-0" />
+
+							<div class="card-body" th:each="list : ${sellerList}">
+								<form name="fr" id="formAccountSettings" method="POST"
+									onsubmit="return check()">
+									<div class="row">
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="companyNo">사업자번호</label>
+											<input
+												class="form-control" type="text" id="companyNo"
+												name="companyNo" placeholder="Email"
+												th:value="${list.companyNo}" />
+											<button type="button" class="btn btn-primary me-2">사업자
+												인증</button>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="company">상호</label>
+											<input
+												class="form-control" type="text" id="company" name="company"
+												th:value="${list.company}" disabled="disabled" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">이름</label> <input
+												class="form-control" type="text" id="name" name="name"
+												th:value="${list.name}" disabled="disabled" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">아이디</label> <input
+												class="form-control" type="text" id="id" name="id"
+												th:value="${list.id}" disabled="disabled" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">비밀번호</label> <input
+												class="form-control" type="password" id="password"
+												name="password" th:value="${list.password}"
+												placeholder="Password" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">비밀번호 확인</label> <input
+												class="form-control" type="password" id="password"
+												name="password" th:value="${list.password}"
+												placeholder="Password" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">전화번호</label> <input
+												class="form-control" type="text" id="call" name="call"
+												th:value="${list.call}" />
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">주소</label> <input
+												type="text" class="form-control" id="address" name="address"
+												placeholder="Address" th:value="${list.address}" />
+											<button type="button" class="btn btn-primary me-2">주소
+												검색</button>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="name">이메일</label> <input
+												class="form-control" type="text" id="email" name="email"
+												th:value="${list.email}" />
+											<button type="button" class="btn btn-primary me-2">이메일
+												인증</button>
+										</div>
+									</div>
+									<div class="mt-2" style="text-align: center;">
+										<button type="submit" class="btn btn-primary me-2"
+											onclick="location.href='userSelect'">수정하기</button>
+										<button type="button" class="btn btn-primary2 me-2">
+											<a href="sellerComList">뒤로가기</a>
+										</button>
+									</div>
+								</form>
+							</div>
+							<!-- /Account -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- / Content -->
+
+			<div class="content-backdrop fade"></div>
+		</div>
+		<!-- Content wrapper -->
+
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

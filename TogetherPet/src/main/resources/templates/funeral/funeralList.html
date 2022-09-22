@@ -172,19 +172,21 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 							<div class="container-fluid">
 								<ul class="navbar-nav">
 									<li class="nav-item">
-									<a class="nav-link active" onclick="setBounds()">전국</a></li>
+									<button class="btn btn-dark" type="button" onclick="setCenter(37.31184690720705, 127.41842339288375,13)">전국</button></li>
 									<li class="nav-item">
-									<a class="nav-link active" onclick="setBounds()">수도권</a></li>
+									<button class="btn btn-dark" type="button" onclick="setCenter(37.38155353767582, 128.28986088789625,11)">수도권</button></li>
 									<li class="nav-item">
-									<a class="nav-link active" href="#">충청권</a></li>
+									<button class="btn btn-dark" type="button" onclick="setCenter(36.56512762465717, 128.2790137747256,11)">충청권</button></li>
 									<li class="nav-item">
-									<a class="nav-link active" href="#">호남권</a></li>
+									<button class="btn btn-dark" type="button" onclick="setCenter(35.35371727592137, 127.54708751819746,11)">호남권</button></li>
 									<li class="nav-item">
-									<a class="nav-link active" href="#">영남권</a>
+									<button class="btn btn-dark" type="button" onclick="setCenter(35.72843379262872, 129.3716931833299,11)">영남권</button>
 									</li>
 								</ul>
 							</div>
 						</nav>
+
+
 
 						<div id="map" style="width: auto; height: 400px; margin: auto;"></div>
 						<script type="text/javascript"
@@ -198,7 +200,7 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 								center : new kakao.maps.LatLng(
 										36.027633329476224, 128.8184864680428), // 지도의 중심좌표
 								// 지도의 확대 레벨
-								level : 13,
+								level : 11,
 								mapTypeId : kakao.maps.MapTypeId.ROADMAP
 							};
 
@@ -206,6 +208,19 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 							// 지도를 생성합니다
 							var map = new kakao.maps.Map(mapContainer,
 									mapOption); 
+							
+							function setCenter(lat,lng,lev){
+							// 이동할 위도 경도 위치를 생성합니다	
+								var moveLatLon = new kakao.maps.LatLng(lat,lng);
+							    // 지도를 1레벨 내립니다 (지도가 확대됩니다)
+							    map.setLevel(lev);
+							  
+							    
+							    // 지도 중심을 이동 시킵니다
+							    map.setCenter(moveLatLon);		
+							}
+							
+						
 						
 							//버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정합니다 (이건 전체 지역 다 보임 )
 							var points = [
@@ -215,7 +230,8 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 											127.0342069),
 									new kakao.maps.LatLng(37.0869782,
 											127.1656623),
-									new kakao.maps.LatLng(35.301235, 128.910958),
+									new kakao.maps.LatLng(35.301235, 
+											128.910958),
 									new kakao.maps.LatLng(35.5190112,
 											127.4181282),
 									new kakao.maps.LatLng(37.2794036,
@@ -378,6 +394,10 @@ table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.
 								bounds.extend(points[i]);
 							}
 
+							
+							
+							//전국 클릭하면 전국 보이게 하는 맵 좌표 
+							
 							function setBounds() {
 								// LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
 								// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다.

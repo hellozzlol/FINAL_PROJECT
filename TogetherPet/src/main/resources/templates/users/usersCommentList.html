@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_mypage}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="admin/assets/js/config.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>작성댓글</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>내 작성글보기</h3>
+				</div>
+				<br>
+
+				<!-- Hoverable Table rows -->
+				<div class="card">
+					<h5 class="card-header" style="font-weight: bold;">댓글 수
+						[[${#lists.size(commentList)}]]</h5>
+					<div class="table-responsive text-nowrap">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>내용</th>
+									<th>작성일</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								<tr th:each="list : ${commentList}">
+									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
+										<strong>[[${list.content}]]</strong></td>
+									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
+									<td>
+										<div class="dropdown">
+											<button type="button"
+												class="btn p-0 dropdown-toggle hide-arrow"
+												data-bs-toggle="dropdown"></button>
+											<div class="dropdown-menu">
+												<a class="dropdown-item" href="javascript:void(0);"> <i
+													class="bx bx-edit-alt me-1"></i> Edit
+												</a> <a class="dropdown-item" href="javascript:void(0);"> <i
+													class="bx bx-trash me-1"></i> Delete
+												</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div>
+			<!-- / Content -->
+
+			<div class="pagination_style pagination justify-content-center">
+				<ul class="d-flex">
+					<li><a href="#"> << </a></li>
+					<li><a class="current" href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#">>></a></li>
+				</ul>
+			</div>
+
+			<div class="content-backdrop fade"></div>
+		</div>
+		<!-- Content wrapper -->
+
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.comment.mapper.CommentMapper">
+	<select id="commentSelectList"
+		resultType="com.team.prj.comment.service.CommentVO">
+		select * from comments
+	</select>
+
+	<select id="commentSelect"
+		resultType="com.team.prj.comment.service.CommentVO"
+		parameterType="com.team.prj.comment.service.CommentVO">
+		select *
+		from comments
+		where comment_no = #{commentNo}
+	</select>
+	
+	<insert id="commentInsert" parameterType="com.team.prj.comment.service.CommentVO">
+		<selectKey keyProperty="commentNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(comment_no) IS NULL 
+			    THEN 1
+			    ELSE max(comment_no) + 1 
+			    END AS no
+			FROM comments
+		</selectKey>
+		
+		INSERT INTO comments
+		VALUES(#{commentNo}
+				,#{content}
+				,#{dt}
+				,#{boardNo}
+				,#{userNo})
+	</insert>
+	
+	<update id="commentUpdate" parameterType="com.team.prj.comment.service.CommentVO">
+		update comments
+		set content = #{content}
+			,dt = #{dt}
+		where comment_no = #{commentNo}
+	</update>
+	
+	<delete id="commentDelete">
+		delete from comment
+		where comment_no = #{commentNo}
+	</delete>
+</mapper>

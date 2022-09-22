@@ -1,8 +1,11 @@
 package com.team.prj.scrap.service;
 
-import org.springframework.stereotype.Controller;
+import java.util.List;
 
-@Controller
 public interface ScrapService {
-
+	List<ScrapVO> scrapSelectList();
+	
+	ScrapVO scrapSelect(ScrapVO vo);
+	
+	int scrapDelete(ScrapVO vo);
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.seller.mapper.SellerMapper">
+	<select id="sellerSelectList"
+		resultType="com.team.prj.seller.service.SellerVO">
+		select * from seller
+	</select>
+
+	<select id="sellerSelect"
+		resultType="com.team.prj.seller.service.SellerVO"
+		parameterType="com.team.prj.seller.service.SellerVO">
+		select *
+		from seller
+		where seller_no = #{sellerNo}
+	</select>
+	
+	<insert id="sellerInsert" parameterType="com.team.prj.seller.service.SellerVO">
+		<selectKey keyProperty="sellerNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(seller_no) IS NULL 
+			    THEN 1
+			    ELSE max(seller_no) + 1 
+			    END AS no
+			FROM seller
+		</selectKey>
+		
+		INSERT INTO seller
+		VALUES(#{sellerNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{company}
+				,#{email}
+				,#{call}
+				,#{address}
+				,#{companyNo}
+				,#{author}
+				,#{groupNo}
+				,#{dt})
+	</insert>
+	
+	<update id="sellerUpdate" parameterType="com.team.prj.seller.service.SellerVO">
+		update seller
+			set id = #{id}
+			,password = #{password}
+			,company = #{company}
+			,email = #{email}
+			,call = #{call}
+			,address = #{address}
+			,company_no = #{companyNo}
+			,dt = #{dt}
+		where seller_no = #{sellerNo}
+	</update>
+	
+	<delete id="sellerDelete">
+		delete from seller
+		where seller_no = #{sellerNo}
+	</delete>
+</mapper>

@@ -3,7 +3,9 @@
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
+
 		SELECT * FROM USERS
+
 	</select>
 
 	<select id="usersSelect"
@@ -43,9 +45,11 @@
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
 		SET nickname = #{nickname}
-		,email = #{email}
-		,call = #{call}
-		,address = #{address}
+
+			,email = #{email}
+			,call = #{call}
+			,address = #{address}
+			,password = #{password}
 		WHERE user_no = #{userNo}
 		<!-- <set> <if test="nickname != null">nickname = #{nickname},</if> <if 
 			test="email != null">email = #{email},</if> <if test="call != null">call 

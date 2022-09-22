@@ -34,6 +34,4 @@ public class FuneralController {
 		return "funeral/funeralSelect";
 	}
 
-	
-
 }
