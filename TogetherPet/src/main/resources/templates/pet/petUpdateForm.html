@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout3}">
+	layout:decorate="~{layout/layout_mypage}">
 
 <head>
 <meta charset="UTF-8">
 <title>My pet page</title>
 <script>
+	// 나이 계산
 	function age(birth) {
 		const today = new Date();
 		const yearDiff = today.getFullYear() - birth.getFullYear();
@@ -20,6 +21,24 @@
 			age : yearDiff + (isBeforeBirthDay ? -1 : 0),
 			yearAge : yearDiff,
 			countingAge : yearDiff + 1,
+		}
+	}
+	
+	// null값 체크
+	function check() {
+		if (document.fr.name.value == "") {
+			alert("이름을 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.birth.value == "") {
+			alert("나이를 입력하세요.");
+			return false;
+		}
+
+		if (document.fr.gender.value == "") {
+			alert("성별을 입력하세요.");
+			return false;
 		}
 	}
 </script>
@@ -83,7 +102,7 @@
 							<hr class="my-0" />
 
 							<div class="card-body" th:each="list : ${petList}">
-								<form id="formAccountSettings" method="POST"
+								<form id="formAccountSettings" method="POST" name="fr"
 									onsubmit="return check()">
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="name">이름

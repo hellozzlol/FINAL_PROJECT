@@ -3,7 +3,7 @@
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
-		SELECT * FROM USERS 
+		select * from users
 	</select>
 
 	<select id="usersSelect"
