@@ -15,14 +15,14 @@ public class SellerController {
 	private SellerService seller;
 
 	// 판매자 회원 전체 조회
-	@RequestMapping("/sellerSelectList")
+	@RequestMapping("/seller/sellerSelectList")
 	public String sellerSelectList(Model model) {
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerSelectList";
 	}
 
 	// 판매자 회원(개인정보) 단건 조회
-	@RequestMapping("/sellerMyPage")
+	@RequestMapping("/seller/sellerMyPage")
 	public String sellerMyPage(Model model, SellerVO vo) {
 		vo.setSellerNo(1);
 		model.addAttribute("sellerList", seller.sellerSelect(vo));
@@ -30,7 +30,7 @@ public class SellerController {
 	}
 
 	// 판매자 회원(개인정보) 수정 폼 호출
-	@RequestMapping("/sellerMyPageUpdForm")
+	@RequestMapping("/seller/sellerMyPageUpdForm")
 	public String sellerMyPageUpdForm(SellerVO vo, Model model) {
 		vo.setSellerNo(1);
 		model.addAttribute("sellerList", seller.sellerSelect(vo));
@@ -38,7 +38,7 @@ public class SellerController {
 	}
 
 	// 판매자 회원(사업자) 단건 조회
-	@RequestMapping("/sellerComList")
+	@RequestMapping("/seller/sellerComList")
 	public String sellerComList(Model model, SellerVO vo) {
 		vo.setSellerNo(1);
 		model.addAttribute("sellerList", seller.sellerSelect(vo));
@@ -46,24 +46,24 @@ public class SellerController {
 	}
 
 	// 판매자 정보(사업자) 수정 폼 호출
-	@RequestMapping("/sellerComUpForm")
+	@RequestMapping("/seller/sellerComUpForm")
 	public String sellerComUpForm(SellerVO vo, Model model) {
 		vo.setSellerNo(1);
 		model.addAttribute("sellerList", seller.sellerSelect(vo));
 		return "seller/sellerComUpForm";
 	}
 
-	// 회원 정보 수정
-	@PostMapping("/sellerUpdate")
+	// 판매자 회원(개인정보) 수정
+	@PostMapping("/seller/sellerMyPageUpd")
 	public String sellerUpdate(SellerVO vo, Model model) {
 		model.addAttribute("sellerList", seller.sellerUpdate(vo));
 		return "redirect:sellerSelect";
 	}
 	
 	// 판매 상품 등록 폼 호출
-	@RequestMapping("/sellerGoodsInsert")
+	@RequestMapping("/seller/sellerGIForm")
 	public String sellerGoodsInsert() {
-		return "seller/sellerGoodsInsert";
+		return "seller/sellerGIForm";
 	}
 
 }
