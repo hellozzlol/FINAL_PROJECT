@@ -1,15 +1,18 @@
 package com.team.prj.admin.web;
 
-import com.team.prj.admin.service.adminService;
-import com.team.prj.admin.service.adminVO;
-import com.team.prj.attend.service.attendService;
-import com.team.prj.attend.service.attendVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.team.prj.admin.service.adminService;
+import com.team.prj.admin.service.adminVO;
+import com.team.prj.attend.service.attendService;
+import com.team.prj.attend.service.attendVO;
 
 
 @Controller
@@ -21,17 +24,17 @@ public class adminController {
 	private attendService ts;
 	
 	
-	@RequestMapping("/admin")
+	@RequestMapping("/manager/admin")
 	public String admin() {
-		return "admin/admin2";
+		return "admin/admin";
 	}
 	
-	@GetMapping("/mypage")
-	public String adminSelect(Model model, adminVO vo, attendVO tvo) { 
-		vo.setAdNo(115913);
+	@RequestMapping("/manager/mypage")
+	public String adminSelect(Model model, HttpServletRequest request) { 
+		HttpSession session = request.getSession();
+		adminVO vo = (adminVO) session.getAttribute("admin");
 		
 		// 고객 정보 가져오기
-		vo = as.adminSelect(vo);
 		model.addAttribute("admin", vo);
 		
 		// 근태 리스트 가져오기
@@ -94,12 +97,20 @@ public class adminController {
 		return "admin/loginForm";
 	}
 	
-	@GetMapping("/userJoinForm2")
+	@GetMapping("/userJoinForm3")
 	public String userJoinForm(Model model) {
 		
-		return "admin/userJoinForm2";
+		return "admin/userJoinForm3";
+	}
+	
+	@RequestMapping("/admin/workIn")
+		public String workIn() {
+			// Ad넘버를 받아가지고
+			// insert
+			// update
+			return "출근되었습니다.";
+		}
 	}
 	
 	
-	
-}
+

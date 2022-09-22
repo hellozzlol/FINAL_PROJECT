@@ -8,6 +8,19 @@
 	 FROM ADMIN
 	 WHERE ad_no = #{adNo}
 	</select>
-
+	
+	<!-- 
+	<insert id="workIn" parameterType="">
+		insert into attend
+		values (#{adNo}, sysdate, null, 0)
+	</insert>
+	
+	<update id="workInCheck">
+		update attend 
+		set state = 
+		where ad_no = #{adNo}
+	</update>
+	 -->
+	
 
 </mapper>

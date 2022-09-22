@@ -1,6 +1,12 @@
 package com.team.prj.users.web;
 
+
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,10 +58,13 @@ public class UsersController {
 	
 
 	// 개인 회원 리스트
-	@RequestMapping("/usersSelect")
-	public String usersSelect(UsersVO vo, Model model) {
-		vo.setUserNo(1);
-		model.addAttribute("userList", user.usersSelect(vo));
+	@GetMapping("/users/usersSelect")
+	public String usersSelect(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		
+		model.addAttribute("userList", vo);
+
 		return "users/usersSelect";
 	}
 
@@ -67,7 +76,8 @@ public class UsersController {
 //	}
 
 	// 회원 정보 수정 폼 호출
-	@RequestMapping("/usersUpdateForm")
+	@GetMapping("/user/usersUpdateForm")
+
 	public String usersUpdateForm(UsersVO vo, Model model) {
 		vo.setUserNo(1);
 		model.addAttribute("userList", user.usersSelect(vo));

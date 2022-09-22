@@ -3,7 +3,9 @@
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
-		select * from users
+
+		SELECT * FROM USERS
+
 	</select>
 
 	<select id="usersSelect"
@@ -14,45 +16,44 @@
 
 	<insert id="usersInsert"
 		parameterType="com.team.prj.users.service.UsersVO">
-		<selectKey keyProperty="userNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(user_no) IS NULL 
-			    THEN 1
-			    ELSE max(user_no) + 1 
-			    END AS no
+		<selectKey keyProperty="userNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(user_no) IS NULL
+			THEN 1
+			ELSE max(user_no) + 1
+			END AS no
 			FROM users
 		</selectKey>
-		
+
 		INSERT INTO USERS
 		VALUES(#{userNo}
-				,#{id}
-				,#{password}
-				,#{name}
-				,#{nickname}
-				,#{email}
-				,#{call}
-				,#{address}
-				,'USER'
-				,3000
-				,1
-				,SYSDATE)
+		,#{id}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{email}
+		,#{call}
+		,#{address}
+		,'USER'
+		,3000
+		,1
+		,SYSDATE)
 	</insert>
 
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
 		SET nickname = #{nickname}
+
 			,email = #{email}
 			,call = #{call}
 			,address = #{address}
 			,password = #{password}
 		WHERE user_no = #{userNo}
-		<!-- <set>
-			<if test="nickname != null">nickname = #{nickname},</if>
-			<if test="email != null">email = #{email},</if>
-			<if test="call != null">call = #{call},</if>
-			<if test="address != null">address = #{address}</if>
-		</set> -->
+		<!-- <set> <if test="nickname != null">nickname = #{nickname},</if> <if 
+			test="email != null">email = #{email},</if> <if test="call != null">call 
+			= #{call},</if> <if test="address != null">address = #{address}</if> </set> -->
 	</update>
 
 	<delete id="usersDelete">
