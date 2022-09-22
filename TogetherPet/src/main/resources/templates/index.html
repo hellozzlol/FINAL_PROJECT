@@ -1,6 +1,7 @@
 <!doctype html>
-<html class="no-js" lang="en"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html class="no-js" lang="en" xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -183,6 +184,19 @@
 		</div>
 	</div>
 	<!--mini cart end-->
+
+	<div sec:authorize="isAuthenticated()">
+		<span th:text="${#authentication.principal.login}"></span> <span
+			th:text="${session}"></span> Logged user: <span
+			sec:authentication="name">Bob</span> Roles: <span
+			sec:authentication="principal.authorities">[ROLE_USER,
+			ROLE_ADMIN]</span>
+		<form action="logout" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<button>로그아웃</button>
+		</form>
+	</div>
 	<!--header area start-->
 	<header class="header_section header_transparent">
 		<div class="header_top">
@@ -207,8 +221,7 @@
 									<ul class="d-flex">
 										<li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
 										<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
-										<li><a href="#"><i
-												class="icon-social-instagram icons"></i></a></li>
+										<li><a href="manager/admin">관리자 페이지로</a></li>
 									</ul>
 								</div>
 							</div>
@@ -272,8 +285,8 @@
 									<li class="account_link"><a href="#"><i
 											class="icon-user icons"></i></a>
 										<ul class="dropdown_account_link">
-											<li><a href="usersSelect">My Account</a></li>
-											<li><a href="#">Login</a></li>
+											<li><a href="users/usersSelect">My Account</a></li>
+											<li><a href="loginForm">Login</a></li>
 											<li><a href="#">Contact</a></li>
 										</ul></li>
 									<li><a href="#"><i class="icon-heart icons"></i></a> <span

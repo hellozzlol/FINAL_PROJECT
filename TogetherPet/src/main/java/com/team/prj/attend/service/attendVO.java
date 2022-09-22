@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class attendVO {
-	Integer adNo;
+	int adNo;
 	Date startDt;
 	Date endDt;
-	Date Dt;
-	Integer state;
+//	Date Dt; // 0922 지움
+	int state;
 }

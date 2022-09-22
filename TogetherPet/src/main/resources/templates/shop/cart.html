@@ -5,11 +5,18 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
 <script>
 		document.addEventListener('DOMContentLoaded', function () {
 			// 총액 계산
 			getTotal();
+			
+			//
+			var token = $("meta[name='_csrf']").attr("content");
+		    var header = $("meta[name='_csrf_header']").attr("content");
 
 			function getTotal() {
 
@@ -36,10 +43,13 @@
 
 			// 장바구니 삭제	
 			$('.remove').on('click', '.removeCart', function () {
+				 
 				let cartNo = $(this).closest('tr').attr('id')
 				$.ajax({
 						url: 'ajaxCartDelete',
 						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
 						data: {
 							cartNo: cartNo
 						}
@@ -62,6 +72,8 @@
 				$.ajax({
 						url: 'ajaxCartUpdate',
 						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
 						data: {
 							cartNo: cartNo,
 							qty: qty
