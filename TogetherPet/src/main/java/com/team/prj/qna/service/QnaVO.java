@@ -17,5 +17,5 @@ public class QnaVO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private Date answerDate;
 	
-	//private String userNickname;
+	private String nickname; // 0922 추가
 }

@@ -3,7 +3,10 @@
 <mapper namespace="com.team.prj.qna.mapper.QnaMapper">
 	<select id="selectQnaAll"
 		resultType="com.team.prj.qna.service.QnaVO">
-		select * from qna where goods_no=#{goodsNo} order by 1 desc
+		select qna_no, title, content, dt, goods_no, answer,
+			   (select nickname from users where user_no=#{userNo}) as nickname
+		from qna
+		where goods_no=#{goodsNo}
 	</select>
 
 	<select id="selectQnaOne"
@@ -18,11 +21,13 @@
 			max(qna_no)+1 end
 			from qna
 		</selectKey>
-		insert into qna(qna_no, title, content, dt, user_no, goods_no, seller_no)
+		insert into qna(qna_no, title, content, dt, user_no, goods_no,
+		seller_no)
 		values(#{qnaNo}, #{title}, #{content}, sysdate,
-	     		#{userNo}, #{goodsNo}, 
-	     		(select seller_no from goods where
-	     		 goods_no=#{goodsNo}))
+		#{userNo},
+		#{goodsNo},
+		(select seller_no from goods where
+		goods_no=#{goodsNo}))
 	</insert>
 
 	<delete id="deleteQna">

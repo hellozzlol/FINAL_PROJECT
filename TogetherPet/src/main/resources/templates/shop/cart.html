@@ -215,7 +215,9 @@
 		</div>
 		<!--shopping cart area end -->
 		<form name="orderCall" id="orderCall" method="post" action="order">
-			<input type="hidden" id="userNo" name="userNo">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}"> <input type="hidden" id="userNo"
+				name="userNo">
 		</form>
 
 	</article>
