@@ -17,7 +17,9 @@
 			let userNo = Number($('#userNo').val());
 				
 			qnaList();
-
+			$("#classSearch").on('click', function(){
+				
+			})
 			// 문의 리스트
 			function qnaList() {
 				// 아작스로 데이터 불러오기
@@ -27,7 +29,8 @@
 						beforeSend : function(xhr){
 							xhr.setRequestHeader(header, token)},
 						data: {
-							goodsNo: goodsNo
+							goodsNo: goodsNo,
+							userNo: userNo
 						}
 					})
 					.done(res => {
@@ -39,21 +42,7 @@
 												</tbody>
 												</table>`)
 						res.forEach(obj => {
-							userNo = obj.userNo;
-							// 닉네임 보여주기
-							$.ajax({
-									url: 'ajaxSelectNick',
-									type: 'post',
-									beforeSend : function(xhr){
-										xhr.setRequestHeader(header, token)},
-									data: {
-										userNo: userNo
-									}
-								})
-								.done(res => {
-									obj.nickname = res;
-									$('#tb').append(makeTr(obj));
-								})
+								$('#tb').append(makeTr(obj));
 						});
 
 						// 로그인이 되어 있으면
@@ -86,6 +75,8 @@
 				$.ajax({
 						url: 'ajaxQnaSelect',
 						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
 						data: {
 							qnaNo: qnaNo
 						}
@@ -127,6 +118,8 @@
 					$.ajax({
 							url: 'ajaxQnaDelete',
 							type: 'post',
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
 							data: {
 								qnaNo: qnaNo
 							}
@@ -164,6 +157,8 @@
 								userNo: userNo,
 								goodsNo: goodsNo
 							},
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
 							dataType: 'text'
 						})
 						.done(res => {
@@ -181,7 +176,9 @@
 					$.ajax('ajaxCartInsert', {
 						type: 'post',
 						data: formData,
-						dataType: 'text'
+						dataType: 'text',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
 					})
 					.done(res => {
 						if(confirm(res)){
@@ -347,11 +344,11 @@
 										<input min="1" max="100" type="tex" id="setQty" value="1">
 									</div>
 									<form name="cartFrm" action="cartInsert" method="post">
+										<!-- 상품번호 -->
 										<input type="hidden" name="goodsNo" id="goodsNo"
 											th:value="${goods.goodsNo}">
-										<!-- 상품번호 -->
-										<input type="hidden" name="userNo" id="userNo" th:value="1">
 										<!-- 유저번호 -->
+										<input type="hidden" name="userNo" id="userNo" th:value="${session.user.userNo}">
 										<input type="hidden" name="qty" id="qty" value="">
 										<!-- 수량 -->
 										<button class="button btn btn-primary" type="button"
