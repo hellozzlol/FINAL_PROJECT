@@ -11,7 +11,7 @@ import com.team.prj.hospital.service.HospitalVO;
 
 @Controller
 public class HospitalController {
-	
+
 	@Autowired
 	private HospitalService dao;
 

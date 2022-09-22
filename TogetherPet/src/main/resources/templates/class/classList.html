@@ -5,6 +5,10 @@ layout:decorate="~{layout/layout}">
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
+   
 <!--script src="http://code.jquery.com/jquery-latest.min.js"></script>   -->
 <style>
 	#cl1 {
@@ -125,7 +129,7 @@ layout:decorate="~{layout/layout}">
 									</div> 
 									
 									
-									<button onclick="classSearch();" type="button" > 클래스 검색하기</button>
+									<button type="button" id="classSearch"> 클래스 검색하기</button>
 									<!-- <input type="button" value="클래스 검색하기" onclick="classSearch()"> -->
 									<br><br><br><br>
 									
@@ -376,6 +380,10 @@ layout:decorate="~{layout/layout}">
 	
 	
 	<script>
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	$("#classSearch").on('click', classSearch)
+	
 	function classSearch(){
 		
 		// 사용자 ID를 갖고 온다.    
@@ -398,7 +406,9 @@ layout:decorate="~{layout/layout}">
 
 		$.ajax({ 
 			 url :"classSearch",        
-			 method :'post',        
+			 type :'post', //method 
+			 beforeSend : function(xhr){
+				   xhr.setRequestHeader(header, token)},       
 			 data : searchData,//$('#classSearchForm').serialize(),        
 			 //dataType : 'json',
 			 success : function(response) {            
@@ -424,7 +434,7 @@ layout:decorate="~{layout/layout}">
 							<div class="single_product">
 								<!----썸네일?---->
 								<div class="product_thumb">
-									<a th:href="/class/classSelect?classNo=${c.classNo}}"> 
+									<a href="/classSelect?classNo=${c.classNo}"> 
 										<img class="primary_img" src="assets/img/product/classtm1.jpg" alt="consectetur">
 									</a>
 									
@@ -454,10 +464,10 @@ layout:decorate="~{layout/layout}">
 										</ul>
 									</div>
 									<h4 class="product_name">
-										<a href="/class/classSelect?classNo=${c.classNo}">${c.name}</a>
+										<a href="/classSelect?classNo=${c.classNo}">${c.name}</a>
 									</h4>
 									<h4 class="product_name">
-										<a href="/class/classSelect?classNo=${c.classNo}">${c.address}</a>
+										<a href="/classSelect?classNo=${c.classNo}">${c.address}</a>
 									</h4>
 									<div class="price_box">
 										<span class="current_price">${c.price}원</span>

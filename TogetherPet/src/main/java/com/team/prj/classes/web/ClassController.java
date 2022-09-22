@@ -20,24 +20,24 @@ public class ClassController {
 	private ClassService classes;
 	
 	//소스코드 테스트용입니다
-	@RequestMapping("/test")
+	@RequestMapping("test")
 	public String test(Model model) {
 		return "class/test";
 	}
 	
 	//클래스 리스트 페이지
-	@RequestMapping("/classList")
+	@RequestMapping("classList")
 	public String classSelectList(Model model) {
 		model.addAttribute("class", dao.classSelectList());
 		return "class/classList";
 	}
 	
 	//클래스 단건조회 페이지
-	@RequestMapping("/classSelect")
+	@RequestMapping("classSelect")
 	public String classSelect(Model model, ClassVO vo) {
 		//클래스 정보
 		vo = classes.classSelect(vo);
-		model.addAttribute("class", vo);
+		model.addAttribute("clas", vo);
 		
 		//클래스 사진 슬라이드 리스트
 		//List<PhotoVO> list = classes.classPhotoList(vo);
@@ -46,7 +46,7 @@ public class ClassController {
 	
 
 	//클래스 등록페이지
-	@GetMapping("/classInsert")
+	@GetMapping("classInsert")
 	public String classInsert(Model model) {
 		//ClassVO vo = new ClassVO();
 		//model.addAttribute("class", dao.classInsert(vo));
