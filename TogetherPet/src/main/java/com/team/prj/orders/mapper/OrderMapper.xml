@@ -5,6 +5,10 @@
 		select * from users where user_no=#{userNo}
 	</select>
 	
+	<select id="selectOrder" resultType="com.team.prj.orders.service.OrderVO">
+		select * from order where order_no=#{orderNo}
+	</select>
+	
 	<insert id="insertOrder">
 		<selectKey keyProperty="orderNo" resultType="int" order="BEFORE">
 			select case when max(order_no) is null then 1 
@@ -29,6 +33,6 @@
 				#{userNo}, 
 				#{goodsNo}, 
 				0, 
-				sysdate)
+				null)
 	</insert>
 </mapper>

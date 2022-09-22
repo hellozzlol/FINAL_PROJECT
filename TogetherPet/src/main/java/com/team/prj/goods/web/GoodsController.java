@@ -61,17 +61,19 @@ public class GoodsController {
 		return "shop/cart";
 	}
 	
-	// 장바구니 뿌리기
+	// 주문 및 결제 페이지 (조회)
 	@RequestMapping("/order") // cartList
 	public String order(CartVO vo, Model model) {
-		model.addAttribute("cartList", cart.cartList(vo));
-		UsersVO user = order.userInfo(vo);
-		model.addAttribute("user", user);
+		List<CartVO> list = cart.cartList(vo);
+		model.addAttribute("cartList", list);
 		return "shop/order";
 	}
-
-	@RequestMapping("/orderConfirm")
-	public String orderConfirm() {
+	
+	// 주문 및 결제 하기 (등록)
+	@RequestMapping("/orderInsert")
+	public String orderInsert(OrderVO vo, Model model) {
+		order.insertOrder(vo);
+		
 		return "shop/orderConfirm";
 	}
 	

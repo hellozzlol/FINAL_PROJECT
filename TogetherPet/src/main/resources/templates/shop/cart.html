@@ -67,7 +67,7 @@
 				let tr = document.getElementById(cartNo);
 				let qty = Number(tr.children[3].children[0].children[0].value)
 				let dc = Number(tr.children[5].children[0].innerHTML)
-				let price = Number(tr.children[2].children[0].children[0].innerText)
+				let price = Number(tr.children[5].children[1].innerHTML)
 
 				$.ajax({
 						url: 'ajaxCartUpdate',
@@ -92,12 +92,7 @@
 			// order로 이동
 			$('#orderCallBtn').on('click', function () {
 				if (confirm('주문 페이지로 넘어가시겠습니까?')) {
-					// userNo
-					let uN = $('.cart_product_text')[0];
-					uN = Number(uN.children[0].innerHTML);
-
-					userNo.value = uN;
-					document.getElementById('orderCall').submit();
+					$('#orderCall').submit();
 				}
 			})
 		})
@@ -136,13 +131,11 @@
 									<table>
 										<thead>
 											<tr>
-												<th style="display: none"></th>
 												<th>product</th>
 												<th>information</th>
 												<th>Price</th>
 												<th>Quantity</th>
 												<th>Total</th>
-												<th style="display: none"></th>
 											</tr>
 										</thead>
 										<tbody id="tb">
@@ -156,7 +149,6 @@
 												</td>
 												<td>
 													<div class="cart_product_text">
-														<h4 style="display: none" th:text="${c.userNo}"></h4>
 														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
@@ -174,11 +166,11 @@
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
 														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
+														<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
 													</div>
 												</td>
-												<td style="display: none"><span>[[${c.dc}]]</span></td>
+												<td style="display: none"><span>[[${c.dc}]]</span><span>[[${c.price}]]</span></td>
 												<td>
 													<div class="cart_product_remove text-right remove">
 														<a class="removeCart"><i class="ion-android-close"></i></a>
@@ -216,8 +208,7 @@
 		<!--shopping cart area end -->
 		<form name="orderCall" id="orderCall" method="post" action="order">
 			<input type="hidden" th:name="${_csrf.parameterName}"
-				th:value="${_csrf.token}"> <input type="hidden" id="userNo"
-				name="userNo">
+				th:value="${_csrf.token}"> <input type="hidden" name="userNo" th:value="${session.user.userNo}">
 		</form>
 
 	</article>
