@@ -5,39 +5,21 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>My pet page</title>
 <script>
-	/* function age(birth) {
-		const today = new Date();
-		const yearDiff = today.getFullYear() - birth.getFullYear();
-		const monthDiff = today.getMonth() - birth.getMonth();
-		const dateDiff = today.getDate() - birth.getDate();
-
-		const isBeforeBirthDay = monthDiff < 0 || monthDiff === 0
-				&& dateDiff < 0;
-
-		return {
-			age : yearDiff + (isBeforeBirthDay ? -1 : 0),
-			yearAge : yearDiff,
-			countingAge : yearDiff + 1,
-		}
-	} */
-	
-	function age(birth) {
-	    var date = new Date();
-	    var year = date.getFullYear();
-	    var month = (date.getMonth() + 1);
-	    var day = date.getDate();
-	    if (month < 10) month = '0' + month;
-	    if (day < 10) day = '0' + day;
-	    var monthDay = month + day;
-	    birth = birth.replace('-', '').replace('-', '');
-	    var birthdayy = birth.substr(0, 4);
-	    var birthdaymd = birth.substr(4, 4);
-	    var age = monthDay < birthdaymd ? year - birthdayy - 1 : year - birthdayy;
-	    return age;
-	}
-
+	$(document).ready(function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		const now = new Date();
+		const nowYear = now.getFullYear();
+		const nowAge_input = nowYear - $("#year").val() + 1;
+		const nowAge = nowYear - $("#year option:selected").val() + 1;
+		$("#age").val(nowAge);
+		$("#age_input").val(nowAge_input);
+	});
 </script>
 <style>
 .shipping_text h3 {
@@ -111,16 +93,14 @@
 										</div>
 									</div>
 									<div class="mt-2" style="text-align: right;">
-										<button type="button" class="btn btn-primary me-2"
-											onclick="location.href='/pet/petUpdateForm'">정보 수정</button>
+										<a href="/pet/petUpdateForm" class="btn btn-primary me-2">정보 수정</a>
 									</div>
 								</form>
 							</div>
 						</div>
-									<div class="mt-2" style="text-align: center;">
-										<button type="submit" class="btn btn-primary me-2"
-											onclick="location.href='/pet/petInsertForm'">+ 내 반려동물 정보 등록</button>&nbsp;
-									</div>
+						<div class="mt-2" style="text-align: center;">
+							<a href="/pet/petInsertForm" class="btn btn-primary me-2">+ 내 반려동물정보 등록</a>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -2140,6 +2140,35 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 0;
   font-weight: 600;
 }
+.btn-primary2 {
+  color: #272727;
+  font-size: 16px;
+  line-height: 45px;
+  height: 45px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-radius: 0;
+  position: relative;
+  z-index: 9;
+  color: #6a7964;
+  border: 1;
+  border-color:#6a7964;
+  font-weight: 600;
+}
+.btn-primary3 {
+  color: #272727;
+  font-size: 14px;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 10px;
+  background: #6a7964;
+  border-radius: 0;
+  position: relative;
+  z-index: 9;
+  color: #ffffff;
+  border: 0;
+  font-weight: 600;
+}
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .btn-primary {
     font-size: 14px;
