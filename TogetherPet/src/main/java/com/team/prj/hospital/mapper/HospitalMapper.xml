@@ -47,7 +47,7 @@
 				,#{address}
 				,${call}
 				,${vet}
-				,#{workingHour}
+				,#{working_Hour}
 				,#{info}
 				,#{latitude}
 				,#{longitude}
@@ -61,7 +61,7 @@
 		,address = #{address}
 		,call = #{call}
 		,vet = #{vet}
-		,working_hour = #{workingHour}
+		,working_hour = #{working_Hour}
 		,info = #{info}
 		,latitude = #{latitude}
 		,longitude = #{longitude}
@@ -73,6 +73,20 @@
 		delete from hospital
 		where hospital_no = #{hospitalNo}
 	</delete>
+	
+	
+	<select id="hospitalSearch" resultType="com.team.prj.hospital.service.HospitalVO">
+		select * from hospital
+		where
+		<choose>
+		<when test="key == 1"> address like '%' || #{val}||'%'</when>
+		<when test="key == 2"> name like '%' || #{val}||'%'</when>
+		</choose>
+	
+	</select>
+	
+	
+	
 	
 	
 	<update id="hospitalHitUpdate">

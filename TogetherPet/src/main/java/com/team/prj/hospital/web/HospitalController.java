@@ -35,5 +35,18 @@ public class HospitalController {
 		dao.hospitalHitUpdate(vo);// 조회수 증가
 		return "hospital/hospitalSelect";
 	}
+	
+	
+	//검색...아..작스 ...처리
+	
+	@RequestMapping("/hospitalSearch")
+	
+	public String hospitalSearch(HospitalVO vo , String key, String val, Model model) {
+		return "hospital/hospitalSearch";
+		
+	}
+	
+	
+	
 
 }

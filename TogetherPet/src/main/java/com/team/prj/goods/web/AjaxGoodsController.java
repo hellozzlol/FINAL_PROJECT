@@ -1,17 +1,22 @@
 package com.team.prj.goods.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.orders.service.OrderService;
+import com.team.prj.orders.service.OrderVO;
 
 @RestController
 public class AjaxGoodsController {
 
 	@Autowired
 	private CartService cart;
+	@Autowired
+	private OrderService order;
 
 	@RequestMapping("/ajaxCartInsert")
 	public String insertCart(CartVO vo) {
@@ -51,5 +56,26 @@ public class AjaxGoodsController {
 	public int updateCart(CartVO vo) {
 		int cnt = cart.updateCart(vo);
 		return cnt;
+	}
+	
+	// 주문 및 결제 하기 (등록)
+	@RequestMapping("/ajaxOrderInsert")
+	public int orderInsert(OrderVO vo, Model model) {
+		// 등록
+		order.insertOrder(vo);
+		int orderNo = vo.getOrderNo();
+		int money = vo.getMoney();
+		
+		// 장바구니 삭제
+		CartVO c = new CartVO();
+		int cartNo = vo.getCartNo();
+		c.setCartNo(cartNo);
+		cart.deleteCart(c);
+		
+		System.out.println("===========" + cartNo);
+		System.out.println("===========" + orderNo);
+		System.out.println("===========" + money);
+
+		return orderNo;
 	}
 }

@@ -29,6 +29,6 @@
 	</update>
 	
 	<select id="isGoods" resultType="com.team.prj.cart.service.CartVO">
-		select * from cart where goods_no = #{goodsNo}
+		select * from cart where goods_no = #{goodsNo} and user_no = #{userNo}
 	</select>
 </mapper>

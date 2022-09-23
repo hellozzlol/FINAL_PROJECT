@@ -1,15 +1,18 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout3}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout3}">
 
 <head>
 <meta charset="UTF-8">
+
 
 
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />  
 	
+
 <!--<script src="http://code.jquery.com/jquery-latest.min.js"></script>  -->
 <!--<script src="assets/js/jquery-ui.calander.min.js"></script>  -->
 <!-- 내가 추가함 예약 캘린더 -->
@@ -17,13 +20,17 @@
 <title>클래스 자세히보기</title>
 
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <!-- <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
 	//$(document).ready(function() {
 	//    $("#datepicker").datepicker();
 	//});
+
 	
 	$(document).ready(function(){
 						var jb = jQuery.noConflict();
@@ -39,6 +46,8 @@
 							//jb('.datepicker').datepicker('setdate', 'today');
 						})
 				});
+
+
 </script>
 
 
@@ -46,6 +55,7 @@
 	//$(document).ready(function() {
 	//    $("#datepicker").datepicker();
 	//});
+
 	$(document).ready(function(){
 						var jc = jQuery.noConflict();
 						//var logid = "${userId}";
@@ -125,7 +135,8 @@
 </script>
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
 <!-- 새로추가 예약달력 css -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 
 <script type="text/javascript">
@@ -492,9 +503,11 @@ var image1=new Image();
 		<section class="product_details mb-135">
 			<div class="container">
 				<div class="row">
+
 				<!-- ----------여기수정함--------------------------- -->
 					<div class="col-lg-6 col-md-6" id="content">
 						<img id="slide" src="test00.jpg" name="slide" width="600" height="350"><br />
+
 					</div>
 					<div class="col-lg-6 col-md-6">
 						<div class="product_d_right">
@@ -556,6 +569,7 @@ var image1=new Image();
 								<!----------------- 예약달력 ------------------>
 
 								<br><br>
+
 
 								<div class="product_variant">
 									<div class="variant_quantity_btn d-flex">
@@ -629,9 +643,7 @@ var image1=new Image();
 							<div class="tab-content">
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
-										<p>
-											[[${clas.intro}]]
-										</p>
+										<p>[[${clas.intro}]]</p>
 										<ul>
 											<li>Length: 74cm</li>
 											<li>Regular fit</li>

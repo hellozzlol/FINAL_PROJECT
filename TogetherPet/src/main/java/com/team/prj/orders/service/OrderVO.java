@@ -11,4 +11,9 @@ public class OrderVO {
 	private int orderNo, amount, totalPrice, minusPrice, userNo, goodsNo;
 	private String address, message, call, name, pay, payYn, deliveryNo, deliveryState, minusYn;
 	private Date dt, minusDate;
+	
+	// 0923 희수 추가
+	private int cartNo, money; 
+	private String goodsName;
+	
 }
