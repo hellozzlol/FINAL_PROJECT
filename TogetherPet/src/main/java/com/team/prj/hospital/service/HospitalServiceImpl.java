@@ -43,4 +43,10 @@ public class HospitalServiceImpl implements HospitalService {
 		return map.hospitalHitUpdate(vo);
 	}
 
+	@Override
+	public List<HospitalVO> hospitalSearch(String key, String val) {
+		// 검색
+		return map.hospitalSearch(key, val);
+	}
+
 }
