@@ -19,6 +19,29 @@
 		WHERE ad_no = #{adNo}
 	</select>
 
+ 	<!-- 출근 시간 입력  -->
+	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
+		insert into attend
+		values (#{adNo}, startDt, endDt, 0)
+	</insert>
+	
+<!--	
+	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
+		<selectKey keyProperty="adNo" order="BEFORE" resultType="int">
+			select
+			case when max()
+		</selectKey>
+		insert into attend
+		values(#{adNo}, )
+	</insert>
+	
+	
+	<update id="workInCheck">
+		update attend 
+		set state = 
+		where ad_no = #{adNo}
+	</update>
+-->	
 
 
 
