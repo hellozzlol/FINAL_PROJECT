@@ -1,5 +1,7 @@
 package com.team.prj.classes.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.team.prj.classes.mapper.ClassMapper;
+import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
 
@@ -39,6 +42,8 @@ public class ClassController {
 		vo = classes.classSelect(vo);
 		model.addAttribute("clas", vo);
 		
+		// 리뷰리스트
+		
 		//클래스 사진 슬라이드 리스트
 		//List<PhotoVO> list = classes.classPhotoList(vo);
 		return "class/classSelect";
@@ -51,6 +56,14 @@ public class ClassController {
 		//ClassVO vo = new ClassVO();
 		//model.addAttribute("class", dao.classInsert(vo));
 		return "class/classInsert";
+	}
+	
+	
+	//클래스 단건조회 -> 결제 페이지
+	@RequestMapping("classOrder")
+	public String classPay(Model model, ClassVO vo) {
+		
+		return "class/classOrder";
 	}
 	
 
