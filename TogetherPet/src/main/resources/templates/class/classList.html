@@ -380,12 +380,12 @@ layout:decorate="~{layout/layout}">
 	
 	
 	<script>
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 	$("#classSearch").on('click', classSearch)
 	
 	function classSearch(){
-		
 		// 사용자 ID를 갖고 온다.    
 		//var userId = $("#userId").val();
 
@@ -483,7 +483,7 @@ layout:decorate="~{layout/layout}">
 							</div>
 						</div>`	
 				$(".shop_wrapper").append(result); 	
-				$(".clst").append(".classlist");
+				//$(".clst").append(".classlist");
 			};
 
 		};

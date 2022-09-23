@@ -7,14 +7,23 @@
 <meta charset="UTF-8">
 
 
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />  
+	
+
 <!--<script src="http://code.jquery.com/jquery-latest.min.js"></script>  -->
 <!--<script src="assets/js/jquery-ui.calander.min.js"></script>  -->
 <!-- 내가 추가함 예약 캘린더 -->
 
 <title>클래스 자세히보기</title>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <!-- <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
@@ -22,22 +31,23 @@
 	//    $("#datepicker").datepicker();
 	//});
 
-	$(document).ready(function() {
-		var jb = jQuery.noConflict();
-		var logid = "${userId}";
-		var maxheadcount = "${vo.max_headcount}"; //이 클래스의 최대인원	
-		//달력
-		jb(function() {
-			jb('.datepicker').datepicker({
-				dateFormat : "yy-mm-dd",
-				dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
-				mindate : "-0m",
-				maxdate : "+5m"
-			})
+	
+	$(document).ready(function(){
+						var jb = jQuery.noConflict();
+						//달력
+						jb(function() {
+							jb('.datepicker').datepicker(
+									{ 	dateFormat : "yy-mm-dd",
+										dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
+										mindate : "-0m",
+										maxdate : "+5m"
+									})
+							
+							//jb('.datepicker').datepicker('setdate', 'today');
+						})
+				});
 
-			//jb('.datepicker').datepicker('setdate', 'today');
-		})
-	});
+
 </script>
 
 
@@ -45,20 +55,100 @@
 	//$(document).ready(function() {
 	//    $("#datepicker").datepicker();
 	//});
-	$(document).ready(function() {
-		var jc = jQuery.noConflict();
-		var logid = "${userId}";
-		var maxheadcount = "${clas.max_headcount}"; //이 클래스의 최대인원	
 
+	$(document).ready(function(){
+						var jc = jQuery.noConflict();
+						//var logid = "${userId}";
+						var token = jc("meta[name='_csrf']").attr("content");
+	    				var header = jc("meta[name='_csrf_header']").attr("content");
+						
+						//달력 Ajax	
+						jc('#datepicker').on("change", function() {
+								jc("#selectClassListd").empty();
+								var maxheadcount = `[[${clas.maxHeadcount}]]` //jc(this).(".maxhd").val(); //이 클래스의 최대인원		
+								var params = {"sdate" : jc(this).val(),"no":`[[${clas.classNo}]]` };
+								console.log(maxheadcount)
+								console.log(params);	    	
+								
+								jc.ajax({
+										url : "classDateOption",
+										type:'get',
+										data : params,
+										success : function(response){
+											htmlView(response);
+											//console.log('성공');
+											
+										}
+								});
+								
+								
+								function htmlView(list) {
+									for (c of list) {
+										if(maxheadcount != `${c.all_headcount}`){//name변경 checkedclassoption
+											var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
+												<div class='startdiv'>${c.startDt}</div>
+												<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 : ${c.allHeadcount}</div>
+												<div class='classoptionno'>${c.classOptionNo}</div>
+												<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label><input type='checkbox' class='checkbb' name='classNoPayList' value= '${c.classOptionNo}'  /></div>
+											</div>`
+					    					//var a = c.class_option_no;	 	    					
+					    				 } else {
+					    					 var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
+													<div class='startdiv'>${c.startDt}</div>
+													<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 :  ${c.allHeadcount}</div>
+													<div class='classoptionno'>${c.classOptionNo}</div>
+													<div class='inend'>신청마감</div> 
+												</div>`
+		 
+					    				 }
+
+										jc("#selectClassListd").append(result);
+									}
+								}				
+						});
+						
+						
+						
+						//장바구니 추가
+						jc('#addOrder').on('click', function(){
+							if(confirm('해당 클래스를 신청하시겠습니까?')){
+								let qty = Number($('#setQty').val());
+								
+								jc.ajax('ajaxClassOrderInsert', {
+									type: 'post',
+									data: {qty: qty, userNo:userNo, ClassNo:ClassNo, ClassOptionNo:ClassOptionNo},
+									dataType: 'text',
+									beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token)},
+								})
+								.done(res => {
+									if(confirm(res)){
+										jc('#orderCall').submit();
+									}
+								})
+							}
+						})
+						
+						
 	});
+	
 </script>
-
-
-
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
 <!-- 새로추가 예약달력 css -->
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+
+<script type="text/javascript">
+var image1=new Image();
+   image1.src="assets/img/product/product1.jpg";
+ var image2=new Image();
+   image2.src="assets/img/product/product2.jpg";
+ var image3=new Image();
+   image3.src="assets/img/product/product3.jpg";
+</script>
+
+
 
 
 <style>
@@ -413,64 +503,17 @@
 		<section class="product_details mb-135">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-6 col-md-6">
-						<div class="product_zoom_gallery">
-							<div class="zoom_gallery_inner d-flex">
-								<div class="zoom_tab_img">
-									<a class="zoom_tabimg_list" href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product1.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product2.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product3.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product1.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product2.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product3.png"
-										alt="tab-thumb"></a>
-								</div>
-								<div class="product_zoom_main_img">
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product2.png"
-											src="assets/img/product/big-product/product2.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product3.png"
-											src="assets/img/product/big-product/product3.png" alt="">
-									</div>
 
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product2.png"
-											src="assets/img/product/big-product/product2.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product3.png"
-											src="assets/img/product/big-product/product3.png" alt="">
-									</div>
+				<!-- ----------여기수정함--------------------------- -->
+					<div class="col-lg-6 col-md-6" id="content">
+						<img id="slide" src="test00.jpg" name="slide" width="600" height="350"><br />
 
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="col-lg-6 col-md-6">
 						<div class="product_d_right">
 							<form action="#">
 								<h1>[[${clas.name}]]</h1>
+								
 								<div class="product_ratting_review d-flex align-items-center">
 									<div class=" product_ratting">
 										<ul class="d-flex">
@@ -483,14 +526,16 @@
 									</div>
 									<div class="product_review">
 										<ul class="d-flex">
-											<li>4 reviews</li>
-											<li>Write your review</li>
+											<li>reviews</li>
 										</ul>
 									</div>
 								</div>
 
 
-
+								<div class="price_box">
+									<span class="current_price">KRW [[${#numbers.formatInteger(clas.price,3,'COMMA')}]]</span>
+								</div>
+								
 
 								<!-- -------------------예약달력-------------------->
 								<div id="rightdiv">
@@ -510,6 +555,7 @@
 												<div style="margin-top: 10px; width: 300px; color: #666;"
 													id=>개설 된 클래스</div>
 												<div id="selectClassListd" style="margin-top: 10px;">
+													
 												</div>
 												<div id="result999"></div>
 											</div>
@@ -522,36 +568,41 @@
 								</div>
 								<!----------------- 예약달력 ------------------>
 
+								<br><br>
 
-								<br> <br>
-								<div class="price_box">
-									<span class="current_price">[[${clas.price}]]원
-										[[${clas.classNo}]]</span>
-								</div>
 
 								<div class="product_variant">
 									<div class="variant_quantity_btn d-flex">
-										<button class="button btn btn-primary" type="submit">
-											<i class="ion-android-add"></i> 클래스 신청하기
-										</button>
+										<div class="pro-qty border">
+											<input min="1" max="100" type="text" id="setQty" value="1">
+										</div>
+										<form id="orderCall" name="orderCall" action="classOrder" method="post">
+											<input type="hidden" th:name="${_csrf.parameterName}"
+												th:value="${_csrf.token}">
+											<!------- 클래스번호 -------->
+											<input type="hidden" name="classNo" id="classNo"
+												th:value="${clas.classNo}">
+											<!------- 유저가선택한 클래스 일정번호 -------
+											<input type="hidden" name="classOptionNo" id="classOptionNo"
+												th:value="${option.classOptionNo}">->
+											<!------- 유저번호 -------->
+											<input type="hidden" name="userNo" id="userNo"
+												th:value="${session.user.userNo}">
+											
+											
+											<button class="button btn btn-primary" id="addOrder" type="submit">
+												<i class="ion-android-add"></i> 클래스 신청하기
+											</button>
+										</form>
 										<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+	
 									</div>
 								</div>
+								
+								
+								
+								
 
-
-								<div class="product_sku">
-									<p>
-										<span>SKU: </span> #ABC123456
-									</p>
-								</div>
-								<div class="product_tags d-flex">
-									<span>tags: </span>
-									<ul class="d-flex">
-										<li><a href="#">fashion,</a></li>
-										<li><a href="#">clothings,</a></li>
-										<li><a href="#">accessorires</a></li>
-									</ul>
-								</div>
 								<div class="priduct_social d-flex">
 									<span>SHARE: </span>
 									<ul>
@@ -703,13 +754,7 @@
 										<p>Fashion has been creating well-designed collections
 											since 2010. The brand offers feminine designs delivering
 											stylish separates and statement dresses which have since
-											evolved into a full ready-to-wear collection in which every
-											item is a vital part of a woman's wardrobe. The result? Cool,
-											easy, chic looks with youthful elegance and unmistakable
-											signature style. All the beautiful pieces are made in Italy
-											and manufactured with the greatest attention. Now Fashion
-											extends to a range of accessories including shoes, hats,
-											belts and more!</p>
+										</p>
 									</div>
 								</div>
 								<div class="tab-pane fade" id="tabinfo" role="tabpanel">
@@ -737,13 +782,7 @@
 										<p>Fashion has been creating well-designed collections
 											since 2010. The brand offers feminine designs delivering
 											stylish separates and statement dresses which have since
-											evolved into a full ready-to-wear collection in which every
-											item is a vital part of a woman's wardrobe. The result? Cool,
-											easy, chic looks with youthful elegance and unmistakable
-											signature style. All the beautiful pieces are made in Italy
-											and manufactured with the greatest attention. Now Fashion
-											extends to a range of accessories including shoes, hats,
-											belts and more!</p>
+										</p>
 									</div>
 								</div>
 								<div class="tab-pane fade" id="video" role="tabpanel">
@@ -763,371 +802,20 @@
 		</div>
 		<!--product info end-->
 
-		<!--product area start-->
-		<section class="product_area related_products mb-118">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="section_title mb-50">
-							<h2>Related Products</h2>
-						</div>
-					</div>
-				</div>
-				<div class="product_container row">
-					<div class=" product_slick slick_slider_activation"
-						data-slick='{
-                    "slidesToShow": 4,
-                    "slidesToScroll": 1,
-                    "arrows": true,
-                    "dots": false,
-                    "autoplay": false,
-                    "speed": 300,
-                    "infinite": true,
-                    "responsive":[
-                      {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                      {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                      {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                     ]
-                }'>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product1.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(4)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Basic Joggin Shorts</a>
-										</h4>
-										<div class="price_box">
-											<span class="current_price">$26.00</span> <span
-												class="old_price">$62.00</span>
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product2.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-										<div class="product_label">
-											<span>-20%</span>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(6)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Make Thing Happen T-Shirts</a>
-										</h4>
-										<div class="price_box">
-											<span class="text-black">$38.00</span>
-
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product3.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-										<div class="product_label">
-											<span>-18%</span>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(2)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Basic White Simple Sneaker</a>
-										</h4>
-										<div class="price_box">
-											<span class="current_price">$43.00</span> <span
-												class="old_price">$46.00</span>
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product4.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(8)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Simple Rounded Sunglasses</a>
-										</h4>
-										<div class="price_box">
-											<span class="text-black">$42.00</span>
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product1.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(12)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Basic Joggin Shorts</a>
-										</h4>
-										<div class="price_box">
-											<span class="current_price">$26.00</span> <span
-												class="old_price">$362.00</span>
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-						<div class="col-lg-3">
-							<article class="single_product">
-								<figure>
-									<div class="product_thumb">
-										<a href="product-details.html"> <img class="primary_img"
-											src="assets/img/product/product2.jpg" alt="consectetur">
-										</a>
-										<div class="product_action">
-											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
-
-												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-size-fullscreen icons"></i></a></li>
-												<li class="compare"><a data-tippy="Compare" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-refresh icons"></i></a></li>
-											</ul>
-										</div>
-										<div class="product_label">
-											<span>-20%</span>
-										</div>
-									</div>
-									<figcaption class="product_content text-center">
-										<div class="product_ratting">
-											<ul class="d-flex justify-content-center">
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><a href="#"><i class="ion-android-star"></i></a></li>
-												<li><span>(14)</span></li>
-											</ul>
-										</div>
-										<h4 class="product_name">
-											<a href="product-details.html">Simple Rounded Sunglasses</a>
-										</h4>
-										<div class="price_box">
-											<span class="current_price">$35.00</span> <span
-												class="old_price">$38.00</span>
-										</div>
-										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">Add
-												To Cart</a>
-										</div>
-									</figcaption>
-								</figure>
-							</article>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!--product area end-->
 
 
+<script type="text/javascript">
+		var step = 1;
+		function slideit() {
+			document.images.slide.src = eval("image" + step + ".src");
+			if (step < 3)
+				step++;
+			else
+				step = 1;
+			setTimeout("slideit()", 2500);
+		}
+		slideit();
+	</script>
 
 	</article>
 
