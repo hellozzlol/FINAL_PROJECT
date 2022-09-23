@@ -11,6 +11,10 @@
 	font-size: 23px;
 	line-height: 18px;
 }
+.option .form-control {
+	display: inline;
+	width: 30%;
+}
 </style>
 
 <!-- Core CSS -->
@@ -39,7 +43,7 @@
 				</div>
 				<br>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-11">
 						<div class="row">
 							<div class="card mb-4">
 								<form id="formAccountSettings" onsubmit="return false">
@@ -67,7 +71,7 @@
 												id="exampleFormControlInput1" placeholder="업체명을 입력하세요." />
 										</div><hr>
 										<div class="mb-3">
-											<label for="exampleFormControlInput1" class="form-label"><strong>판매가</strong></label>
+											<label for="exampleFormControlInput1" class="form-label"><strong>판매가(원)</strong></label>
 											<input type="email" class="form-control"
 												id="exampleFormControlInput1" placeholder="판매가를 입력하세요." />
 										</div><hr>
@@ -82,19 +86,18 @@
 												id="exampleFormControlTextarea1" rows="3"
 												placeholder="상품 설명을 입력하세요."></textarea>
 										</div><hr>
-										<div class="mb-3">
+										<div class="mb-3 option">
 											<label for="exampleFormControlInput1" class="form-label"><strong>상품옵션</strong></label>
 											<br>옵션명 : <input type="email" class="form-control"
-												id="exampleFormControlInput1" placeholder="옵션을 입력하세요." />
-											<br>
-											옵션금액 : <input type="email" class="form-control"
-												id="exampleFormControlInput1" placeholder="옵션 금액을 입력하세요." />
+												id="exampleFormControlInput1" placeholder="옵션을 입력하세요." />&nbsp;&nbsp;&nbsp;
+											옵션금액(원) : <input type="email" class="form-control"
+												id="exampleFormControlInput1" placeholder="옵션 금액을 입력하세요." />&nbsp;&nbsp;&nbsp;
 											<button type="button" class="btn btn-primary me-2"
 												onclick="location.href=''">+ 옵션 추가</button>
 										</div><hr>
 										<div class="mb-3">
 											<label for="exampleFormControlInput1" class="form-label"><strong>상품이미지</strong></label>
-											<div class="button-wrapper">
+											<div class="button-wrapper" align="center">
 												<label for="upload" class="btn btn-primary me-2 mb-4"
 													tabindex="0"> <span class="d-none d-sm-block">첨부파일등록</span>
 													<i class="bx bx-upload d-block d-sm-none"></i> <input
@@ -116,14 +119,13 @@
 									</div>
 								</form>
 							</div>
+							<div class="mt-2" align="center">
+								<a href="/seller/sellerGIForm" class="btn btn-primary me-2">상품등록하기</a>
+							</div>
 						</div>
 					</div>
 					<!-- /Account -->
 
-					<div class="mt-2" style="text-align: center;">
-						<button type="submit" class="btn btn-primary me-2"
-							onclick="location.href=''">상품등록하기</button>
-					</div>
 				</div>
 			</div>
 		</div>

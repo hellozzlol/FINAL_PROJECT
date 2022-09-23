@@ -1,14 +1,16 @@
 package com.team.prj.users.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team.prj.board.service.BoardService;
 import com.team.prj.calendar.service.CalendarService;
@@ -63,32 +65,23 @@ public class UsersController {
 	public String usersSelect(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
-
 		model.addAttribute("userList", vo);
-
 		return "users/usersSelect";
 	}
-
-	// 개인 회원 리스트
-//	@GetMapping("/usersSelect")
-//	public String usersSelect(UsersVO vo, Model model) {
-//		model.addAttribute("userList", dao.usersSelect(vo));
-//		return "users/usersSelect";
-//	}
-
+	
 	// 회원 정보 수정 폼 호출
 	@RequestMapping("/users/usersUpdateForm")
-
-	public String usersUpdateForm(UsersVO vo, Model model) {
-		vo.setUserNo(1);
-		model.addAttribute("userList", user.usersSelect(vo));
+	public String usersUpdateForm(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		model.addAttribute("userList", vo);
 		return "users/usersUpdateForm";
 	}
-
+	
 	// 회원 정보 수정
 	@PostMapping("/users/usersUpdate")
-	public String usersUpdate(UsersVO vo, Model model) {
-		model.addAttribute("updateList", user.usersUpdate(vo));
+	public String usersUpdate(UsersVO vo) {
+		user.usersUpdate(vo);
 		return "redirect:usersSelect";
 	}
 
@@ -97,6 +90,15 @@ public class UsersController {
 	public String userOrder(CartVO vo, Model model) {
 		model.addAttribute("orderList", cart.cartList(vo));
 		return "users/usersOrderList";
+	}
+	
+	// 회원 탈퇴
+	@RequestMapping("/users/usersDelete")
+	public String usersDelete(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		user.usersDelete(vo);
+		return "index";
 	}
 
 	// 마이페이지 장바구니
