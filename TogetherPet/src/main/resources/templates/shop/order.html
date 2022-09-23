@@ -2,13 +2,19 @@
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout2}">
+
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
+		document.addEventListener('DOMContentLoaded', function () {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 			getTotal();
-		// 총액 계산			
+			// 총액 계산			
 			function getTotal() {
 
 				//subtotal
@@ -26,57 +32,90 @@
 					gTotal += Number(t.innerHTML);
 				}
 				let point = Number($('#point').html())
-				$('#gTotal').html(gTotal-point);
-				
+				$('#gTotal').html(gTotal - point);
+
 				// 할인액
-				$('#dc').html(sTotal-gTotal);
+				$('#dc').html(sTotal - gTotal);
 			}
-		// 적립금 사용 동적 제어	
-			$('#getMoney').on('click', function(){
+			// 적립금 사용 동적 제어	
+			$('#getMoney').on('click', function () {
 				let money = Number($('#money').val());
-				if(money < 1000){
+				if (money < 1000) {
 					alert('적립금은 1,000원 이상 사용 가능합니다.');
 					$('#money').val('');
 					return
 				}
 				let my = Number($('#my').html());
-				$('#my').html(my-money);
+				$('#my').html(my - money);
 				$('#point').html(money);
 				getTotal();
 				$('#money').val('');
 			})
-		
-		// 주문/결제 
-			$('#insertOrder').on('click', function(){
-				let address = $('#adress').val();
-				let message = $('#message').val(); // 1. 없음 2. 도착하기 전에 연락 주세요. 3. 경비실에 맡겨주세요. 4. 벨 누르지 말아 주세요.
-				let call = $('#call').val();
-				let name = $('#name').val();
-				let pay = $('input[name=pay]:checked').val();
-				let userNo = Number($('#userNo').val());
-				let goods = $('#tb > tr');
-				var queryString = $("form[name=insertOrder]").serialize()
-				console.log('???', goods);
-				for(g of goods){
-					let goodsNo = Number(g.getAttribute('id'));
-					let totalPrice = Number(g.children[4].children[0].children[0].innerHTML);
-					let minusPrice = totalPrice*0.9;
+
+			// 주문/결제 
+			$('#insertOrder').on('click', function () {
+				if (confirm('해당 상품으로 주문 및 결제를 진행하시겠습니까')) {
+					let address = $('#address').val();
+					let message = $('#message').val(); // 1. 없음 2. 도착하기 전에 연락 주세요. 3. 경비실에 맡겨주세요. 4. 벨 누르지 말아 주세요.
+					if(message == "1"){
+						message = "없음"	
+					}else if(message == "2"){
+						message = "도착하기 전에 연락 주세요."
+					}else if(message == "3"){
+						message = "경비실에 맡겨주세요."
+					}else if(message == "4"){
+						message = "벨 누르지 말아 주세요."
+					}
+					let call = $('#call').val();
+					let name = $('#name').val();
+					let pay = $('input[name=pay]:checked').val();
+					let userNo = Number($('#userNo').val());
+					let money = $('#point').html();
+					console.log('money' + money);
 					
-					$('#insertOrder').append(`<input type="hidden" name="goodsNo" value="${goodsNo}">
-											  <input type="hidden" name="totalPrice" value="${totalPrice}">
-											  <input type="hidden" name="minusPrice" value="${minusPrice}">
-											 `)
-					$.ajax({
-						url
-					})
-					//document.getElementById('insertOrder').submit();						 
-					//$('#insertOrder').submit();						 
+					let goods = $('#tb > tr');
+					for (g of goods) {
+						let goodsNo = Number(g.getAttribute('id'));
+						let totalPrice = Number(g.children[4].children[0].children[0].innerHTML);
+						let minusPrice = totalPrice * 0.9;
+						let amount = Number(g.children[3].children[0].children[0].value);
+						let cartNo = Number(g.getAttribute('data-cn'));
+						console.log('cartNo' + cartNo);
+						
+						$.ajax({
+								url: 'ajaxOrderInsert',
+								type: 'post',
+								beforeSend: function (xhr) {
+									xhr.setRequestHeader(header, token)
+								},
+								data: {
+									address: address,
+									message: message,
+									call: call,
+									name: name,
+									amount: amount,
+									pay: pay,
+									userNo: userNo,
+									goodsNo: goodsNo,
+									totalPrice: totalPrice,
+									minusPrice: minusPrice,
+									cartNo: cartNo,
+									money: money
+								}
+							})
+							.done(res => {
+								$('#orderNo').val(res);
+								$('#orderConfirmCall').submit();
+							})
+					}
+					
 				}
 			})
-			
-	})
-</script>
+
+		})
+	</script>
 </head>
+
 <body>
 	<article layout:fragment="content">
 		<br> <br> <br> <br>
@@ -118,7 +157,7 @@
 									<tbody id="tb">
 										<!-- tr 반복  -->
 										<tr th:each="c:${cartList}" class="border-top"
-											th:id="${c.goodsNo}">
+											th:id="${c.goodsNo}" th:data-cn="${c.cartNo}">
 											<td>
 												<div class="cart_product_thumb">
 													<img src="assets/img/product/product4.jpg" alt="">
@@ -157,123 +196,124 @@
 				</div>
 				<!-- 배송정보 입력, 적립금 사용, 결제수단 입력, 최종 결제 금액, 결제하기-->
 				<!--coupon code area start-->
-				<form id="indertOrder" name="insertOrder" action="orderInsert" method="post">
-					<div class="cart_page_bottom">
-						<div class="row">
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="shopping_coupon_calculate top">
-									<h3 class="border-bottom">배송정보 확인</h3>
+				<div class="cart_page_bottom">
+					<div class="row">
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="shopping_coupon_calculate top">
+								<h3 class="border-bottom">배송정보 확인</h3>
 
-									<select id="message" name="message"
-										class="select_option border">
-										<option value="1">배송메시지(없음)</option>
-										<option value="2">도착하기 전에 연락해 주세요.</option>
-										<option value="3">경비실에 맡겨주세요.</option>
-										<option value="4">벨 누르지 말아주세요.</option>
-									</select> <input id="name" name="name" class="border"
-										placeholder="받는 사람" type="text"
-										th:value="${session.user.name}"> <input id="call"
-										name="name" class="border" placeholder="연락처" type="text"
-										th:value="${session.user.call}"> <input id="adress"
-										name="adress" class="border" placeholder="주소" type="text"
-										th:value="${session.user.address}">
-									<button class="btn btn-primary" type="button" id="getAddr">주소
-										변경</button>
-								</div>
+								<select id="message" name="message" class="select_option border">
+									<option value="1">배송메시지(없음)</option>
+									<option value="2">도착하기 전에 연락해 주세요.</option>
+									<option value="3">경비실에 맡겨주세요.</option>
+									<option value="4">벨 누르지 말아주세요.</option>
+								</select> <input id="name" name="name" class="border" placeholder="받는 사람"
+									type="text" th:value="${session.user.name}"> <input
+									id="call" name="call" class="border" placeholder="연락처"
+									type="text" th:value="${session.user.call}"> <input
+									id="address" name="address" class="border" placeholder="주소"
+									type="text" th:value="${session.user.address}">
+								<button class="btn btn-primary" type="button" id="getAddr">주소
+									변경</button>
 							</div>
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="shopping_coupon_calculate">
-									<h3 class="border-bottom">적립금</h3>
-									<p>1,000원 이상 사용 가능합니다.</p>
-									<p>
-										내 적립금 : <span id="my">[[${session.user.money}]]</span>원
-									</p>
-									<input id="money" class="border" placeholder="사용할 적립금을 입력하세요."
-										type="text">
-									<button class="btn btn-primary" type="button" id="getMoney">사용하기</button>
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="order_table_right">
-									<h3>주문 및 결제 확인</h3>
-									<div class="order_table table-responsive">
-										<table>
-											<tbody>
-												<tr>
-													<td>할인가</td>
-													<td id="dc" class="text-right">$50.00</td>
-												</tr>
-												<tr>
-													<td>적립금</td>
-													<td id="point" class="text-right">0</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td>Sub Total</td>
-													<td id="sTotal" class="text-right"></td>
-												</tr>
-												<tr class="order_total">
-													<th>Grand Total</th>
-													<td id="gTotal" class="text-right"></td>
-												</tr>
-											</tfoot>
-										</table>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment1" name="pay" type="radio"
-													data-target="createp_account" value="transfer" /> <span
-													class="checkmark"></span>
-											</div>
-
-											<label for="payment1" data-toggle="collapse"
-												data-target="#panel1">실시간 이체</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment2" name="pay" type="radio" value="card"
-													data-target="createp_account" /> <span class="checkmark"></span>
-											</div>
-											<label for="payment2" data-toggle="collapse"
-												data-target="#method2">신용카드</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment3" name="pay" type="radio" value="deposit"
-													data-target="createp_account" /> <span class="checkmark"></span>
-											</div>
-											<label for="payment3" data-toggle="collapse"
-												data-target="#method3">무통장 입금</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment4" name="pay" type="radio"
-													value="kakaopay" data-target="createp_account" /> <span
-													class="checkmark"></span>
-											</div>
-											<label for="payment4" data-toggle="collapse"
-												data-target="#method4">카카오페이</label>
-										</div>
-									</div>
-									<div class="place_order_btn">
-										<input type="hidden" id="userNo" name="userNo"
-											th:val="${session.user.userNo}"><input type="hidden"
-											th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-										<a class="btn btn-primary" id="insertOrder">주문 및 결제</a>
-									</div>
-								</div>
-							</div>
-
 						</div>
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="shopping_coupon_calculate">
+								<h3 class="border-bottom">적립금</h3>
+								<p>1,000원 이상 사용 가능합니다.</p>
+								<p>
+									내 적립금 : <span id="my">[[${session.user.money}]]</span>원
+								</p>
+								<input id="money" class="border" placeholder="사용할 적립금을 입력하세요."
+									type="text">
+								<button class="btn btn-primary" type="button" id="getMoney">사용하기</button>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="order_table_right">
+								<h3>주문 및 결제 확인</h3>
+								<div class="order_table table-responsive">
+									<table>
+										<tbody>
+											<tr>
+												<td>할인가</td>
+												<td id="dc" class="text-right">$50.00</td>
+											</tr>
+											<tr>
+												<td>적립금</td>
+												<td id="point" class="text-right">0</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td>Sub Total</td>
+												<td id="sTotal" class="text-right"></td>
+											</tr>
+											<tr class="order_total">
+												<th>Grand Total</th>
+												<td id="gTotal" class="text-right"></td>
+											</tr>
+										</tfoot>
+									</table>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment1" name="pay" type="radio"
+												data-target="createp_account" value="transfer" /> <span
+												class="checkmark"></span>
+										</div>
+
+										<label for="payment1" data-toggle="collapse"
+											data-target="#panel1">실시간 이체</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment2" name="pay" type="radio" value="card"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment2" data-toggle="collapse"
+											data-target="#method2">신용카드</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment3" name="pay" type="radio" value="deposit"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment3" data-toggle="collapse"
+											data-target="#method3">무통장 입금</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment4" name="pay" type="radio" value="kakaopay"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment4" data-toggle="collapse"
+											data-target="#method4">카카오페이</label>
+									</div>
+								</div>
+								<div class="place_order_btn">
+									<input type="hidden" th:value="${session.user.userNo}"
+										id="userNo" name="userNo"> <a class="btn btn-primary"
+										id="insertOrder">주문 및 결제</a>
+								</div>
+							</div>
+						</div>
+
 					</div>
-				</form>
+				</div>
 				<!--coupon code area end-->
 			</div>
 		</div>
 		<!--shopping cart area end -->
+		<form id="orderConfirmCall" name="orderConfirmCall"
+			action="orderConfirm" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<!-- 주문번호 -->
+			<input type="hidden" name="orderNo" id="orderNo">
+		</form>
 
 
 	</article>

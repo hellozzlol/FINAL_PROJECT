@@ -3,10 +3,7 @@
 <mapper namespace="com.team.prj.qna.mapper.QnaMapper">
 	<select id="selectQnaAll"
 		resultType="com.team.prj.qna.service.QnaVO">
-		select qna_no, title, content, dt, goods_no, answer,
-			   (select nickname from users where user_no=#{userNo}) as nickname
-		from qna
-		where goods_no=#{goodsNo}
+		select * from qna where goods_no=#{goodsNo} order by 1 desc
 	</select>
 
 	<select id="selectQnaOne"

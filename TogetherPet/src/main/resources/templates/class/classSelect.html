@@ -1,41 +1,43 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout3}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout3}">
 
 <head>
 <meta charset="UTF-8">
 
-	
+
 <!--<script src="http://code.jquery.com/jquery-latest.min.js"></script>  -->
 <!--<script src="assets/js/jquery-ui.calander.min.js"></script>  -->
 <!-- 내가 추가함 예약 캘린더 -->
 
 <title>클래스 자세히보기</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
 	//$(document).ready(function() {
 	//    $("#datepicker").datepicker();
 	//});
-	
-	$(document).ready(function(){
-						var jb = jQuery.noConflict();
-						var logid = "${userId}";
-						var maxheadcount = "${vo.max_headcount}"; //이 클래스의 최대인원	
-						//달력
-						jb(function() {
-							jb('.datepicker').datepicker(
-									{ 	dateFormat : "yy-mm-dd",
-										dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
-										mindate : "-0m",
-										maxdate : "+5m"
-									})
-							
-							//jb('.datepicker').datepicker('setdate', 'today');
-						})
-				});
+
+	$(document).ready(function() {
+		var jb = jQuery.noConflict();
+		var logid = "${userId}";
+		var maxheadcount = "${vo.max_headcount}"; //이 클래스의 최대인원	
+		//달력
+		jb(function() {
+			jb('.datepicker').datepicker({
+				dateFormat : "yy-mm-dd",
+				dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
+				mindate : "-0m",
+				maxdate : "+5m"
+			})
+
+			//jb('.datepicker').datepicker('setdate', 'today');
+		})
+	});
 </script>
 
 
@@ -43,62 +45,20 @@
 	//$(document).ready(function() {
 	//    $("#datepicker").datepicker();
 	//});
-	$(document).ready(function(){
-						var jc = jQuery.noConflict();
-						var logid = "${userId}";
-						var maxheadcount = "${clas.max_headcount}"; //이 클래스의 최대인원	
-						
-						//달력 Ajax	
-						jc('#datepicker').on("change", function() {
-								jc("#selectClassListd").empty();
-								var url = "/classDateOption";
-								var params = {"sdate" : jc(this).val(),"no":`[[${clas.classNo}]]` };
-								console.log(jc(this).val()+ " , "+`[[${clas.classNo}]]`);	    	
-								jc.ajax({
-										url:url,
-										data:params,
-										success : htmlView()
-											
-											
-											
-											function(r) {
-											var rr = jc(r)
-											var tag = "";
-											rr.each(function(idx, c) {
-												tag += "<div class='oneclassdiv' style='margin-bottom:10px;'>";
-												tag += "<div class='startdiv'>"
-													+ c.start_dt
-													+ "</div>";
-													//tag +="<div class='enddㅓㅓㅓiv'>"+vo4.end_date+ "</div>"; //vo에서 셀렉트할때 데이트형식 -> 종료시간만 꺼내게 가져왓음
-													tag += "<div class='headcountdiv'> 최대인원 : "
-													+ maxheadcount
-													+ "&nbsp;&nbsp;&nbsp;신청인원 : "
-													+ c.all_headcount
-													+ "</div>";
-												tag += "<div class='classoptionno'>"
-													+ c.class_option_no
-													+ "</div>";
-			
-													if (maxheadcount != c.all_headcount) {//name변경 checkedclassoption
-															tag += "<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label>&nbsp;&nbsp;<input type='checkbox' class='checkbb' name='classNoPayList' value='"+c.class_option_no +"'  /></div>";
-															var a = c.class_option_no;
-													} else {
-															tag += "<div class='inend'>신청마감</div>";
-													} 		tag += "</div>";
-													jc("#selectClassListd").html(tag);
-											});
-										}
-								});
-						})
+	$(document).ready(function() {
+		var jc = jQuery.noConflict();
+		var logid = "${userId}";
+		var maxheadcount = "${clas.max_headcount}"; //이 클래스의 최대인원	
 
-				});
+	});
 </script>
 
 
 
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
 <!-- 새로추가 예약달력 css -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 
 <style>
@@ -467,9 +427,6 @@
 										src="assets/img/product/small-product/product3.png"
 										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
 										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product4.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
 										src="assets/img/product/small-product/product1.png"
 										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
 										href="javascript:void(0)"><img
@@ -477,9 +434,6 @@
 										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
 										href="javascript:void(0)"><img
 										src="assets/img/product/small-product/product3.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product4.png"
 										alt="tab-thumb"></a>
 								</div>
 								<div class="product_zoom_main_img">
@@ -488,33 +442,27 @@
 											src="assets/img/product/big-product/product1.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/product2.png"
+											src="assets/img/product/big-product/product2.png" alt="">
 									</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/product3.png"
+											src="assets/img/product/big-product/product3.png" alt="">
+									</div>
+
 									<div class="product_zoom_thumb">
 										<img data-image="assets/img/product/big-product/product1.png"
 											src="assets/img/product/big-product/product1.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/product2.png"
+											src="assets/img/product/big-product/product2.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/product3.png"
+											src="assets/img/product/big-product/product3.png" alt="">
 									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
+
 								</div>
 							</div>
 						</div>
@@ -574,10 +522,11 @@
 								</div>
 								<!----------------- 예약달력 ------------------>
 
-								
+
 								<br> <br>
 								<div class="price_box">
-									<span class="current_price">[[${clas.price}]]원  [[${clas.classNo}]]</span>
+									<span class="current_price">[[${clas.price}]]원
+										[[${clas.classNo}]]</span>
 								</div>
 
 								<div class="product_variant">
@@ -643,9 +592,7 @@
 							<div class="tab-content">
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
-										<p>
-											[[${clas.intro}]]
-										</p>
+										<p>[[${clas.intro}]]</p>
 										<ul>
 											<li>Length: 74cm</li>
 											<li>Regular fit</li>

@@ -19,7 +19,7 @@
 								<li><a href="index.html">home</a></li>
 								<li><a href="#">pages</a></li>
 							</ul>
-							<h3>주문 접수가 완료되었습니다.</h3>
+							<h3>주문 및 결제가 완료되었습니다.</h3>
 							<br> <br>
 						</div>
 					</div>
@@ -36,23 +36,23 @@
 									<tbody>
 										<tr>
 											<td>받는 사람</td>
-											<td class="text-right">$75.20</td>
+											<td class="text-right">[[${order.name}]]</td>
 										</tr>
 										<tr>
 											<td>연락처</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right">[[${order.call}]]</td>
 										</tr>
 										<tr>
 											<td>주소</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right">[[${order.address}]]</td>
 										</tr>
 										<tr>
 											<td>배송 요청사항</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right">[[${order.message}]]</td>
 										</tr>
 										<tr>
 											<td>결제 방법</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right">[[${order.name}]]</td>
 										</tr>
 									</tbody>
 								</table>
@@ -65,26 +65,24 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td>상품제목</td>
-											<td class="text-right">$75.20</td>
+											<td>총 [[${lists.size(oList)}]]건</td>
+											<td class="text-right"></td>
 										</tr>
 										<tr>
 											<td>상품이름</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right"><div th:each="o:${oList}">
+													<span th:text="${o.goodsName}"></span><br>
+												</div></td>
 										</tr>
 										<tr>
 											<td>적립금</td>
-											<td class="text-right">$50.00</td>
-										</tr>
-										<tr>
-											<td>할인</td>
-											<td class="text-right">$50.00</td>
+											<td class="text-right">- [[${order.money}]]</td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr class="order_total">
 											<th>Order Total</th>
-											<td class="text-right">$225.60</td>
+											<td class="text-right">[[${totalPrice}]]</td>
 										</tr>
 									</tfoot>
 								</table>
@@ -96,7 +94,7 @@
 						</div>
 						<br>
 						<div class="proceed_checkout_btn">
-							<a class="btn btn-primary" href="order">주문 페이지로 이동</a>
+							<a class="btn btn-primary" href="#">주문 페이지로 이동</a> <!-- 마이페이지 -->
 							<!-- 마이페이지 -->
 						</div>
 					</div>

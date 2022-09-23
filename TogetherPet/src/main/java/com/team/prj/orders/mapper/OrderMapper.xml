@@ -1,38 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.orders.mapper.OrderMapper">
-	<select id="userInfo" resultType="com.team.prj.users.service.UsersVO">
+	<select id="userInfo"
+		resultType="com.team.prj.users.service.UsersVO">
 		select * from users where user_no=#{userNo}
 	</select>
-	
-	<select id="selectOrder" resultType="com.team.prj.orders.service.OrderVO">
-		select * from order where order_no=#{orderNo}
+
+	<select id="selectOrder"
+		resultType="com.team.prj.orders.service.OrderVO">
+		select order_no, address, message, call, name,
+			   pay, amount, total_price, minus_price, pay_yn,
+			   delivery_no, delivery_state, dt, user_no, goods_no,
+		       minus_yn, minus_date,
+		       (select name from goods where goods_no=(select goods_no from orders where order_no=#{orderNo} )) as goods_name
+		from orders
+		where order_no=#{orderNo}
 	</select>
-	
+
 	<insert id="insertOrder">
-		<selectKey keyProperty="orderNo" resultType="int" order="BEFORE">
-			select case when max(order_no) is null then 1 
-						else max(order_no)+1 end
-						as order_no
-			from orders			
+		<selectKey keyProperty="orderNo" resultType="int"
+			order="BEFORE">
+			select case when max(order_no) is null then 1
+			else max(order_no)+1 end
+			as order_no
+			from orders
 		</selectKey>
 		insert into orders
-		values (#{orderNo}, 
-				#{address}, 
-				#{message}, 
-				#{call}, 
-				#{name}, 
-				#{pay}, 
-				#{amount}, 
-				#{totalPrice}, 
-				#{totalPrice}*0.9, 
-				1, 
-				null, 
-				1, 
-				sysdate, 
-				#{userNo}, 
-				#{goodsNo}, 
-				0, 
-				null)
+		values (#{orderNo},
+		#{address},
+		#{message},
+		#{call},
+		#{name},
+		#{pay},
+		#{amount},
+		#{totalPrice},
+		#{totalPrice}*0.9,
+		1,
+		null,
+		1,
+		sysdate,
+		#{userNo},
+		#{goodsNo},
+		0,
+		null,
+		#{cartNo},
+		#{money})
 	</insert>
+
+	<update id="updateMoney">
+		update users set money=(select money from users where user_no=#{userNo})-#{money} where user_no =
+		#{userNo}
+	</update>
 </mapper>
