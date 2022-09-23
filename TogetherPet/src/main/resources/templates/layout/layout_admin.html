@@ -22,7 +22,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
+
 <title>Together Pet ADMIN</title>
+
+
 
 <meta name="description" content="" />
 
@@ -88,15 +91,29 @@
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+
+
+
+<!-- 
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-		$('#workIn').on('click', function(){
+		
+		$('#workIn').on('click', function(e){
+			let list = $("#list").val();
 			$.ajax('ajaxWorkIn', {
+				url : "/workInsert.do",
 				type: 'post',
 				data: {
-					adNo : $('#')
+					adNo : $('#'),
+					startDt : ,
+					endDt : ,
+					state
 				},
+				beforeSend : function(xhr){
+					
+				}
 				dataType: 'text'
+				},
 			})
 			.done(res => {
 				console.log(res);
@@ -104,6 +121,15 @@
 		})
 	})
 </script>
+ -->
+ <script>
+ function modalClick(){
+	 //$('checkWork').val('Y');
+	 //location.href="admin/workIn?checkVal=Y";
+ }
+ </script>
+ 
+ 
 </head>
 
 <body>
@@ -115,7 +141,7 @@
 			<aside id="layout-menu"
 				class="layout-menu menu-vertical menu bg-menu-theme">
 				<div class="app-brand demo">
-					<a href="admin" class="app-brand-link"> <span
+					<a href="/manager/admin" class="app-brand-link"> <span
 						class="app-brand-logo demo"> <svg width="25"
 								viewBox="0 0 25 42" version="1.1"
 								xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +205,7 @@
 				<ul class="menu-inner py-1">
 					<!-- Dashboard -->
 					<li class="menu-item active">
-					<li class="menu-item"><a href="mypage" class="menu-link">
+					<li class="menu-item"><a href="/manager/mypage" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-id-card"></i>
 							<div data-i18n="Account">내 정보 관리</div>
 							<form name="" action="/admin/workIn" method="post">
@@ -190,7 +216,9 @@
 					<li class="menu-item" data-bs-toggle="modal"
 						data-bs-target="#Modal1"><a id="workIn" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-mobile-vibration"></i>
-							<div data-i18n="Account">출근</div>
+							<div data-i18n="Account" onclick="modalClick()">
+							<input type="hidden" id="checkWork"/> 출근 
+							</div>
 					</a></li>
 
 					<li class="menu-item" data-bs-toggle="modal"
@@ -209,11 +237,11 @@
 					<!-- 통계,현황 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">통계·현황</span></li>
-					<li class="menu-item"><a href="visitCount" class="menu-link">
+					<li class="menu-item"><a href="/manager/visitCount" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-collection"></i>
 							<div data-i18n="Basic">방문 · 유입</div>
 					</a></li>
-					<li class="menu-item"><a href="postCount" class="menu-link">
+					<li class="menu-item"><a href="/manager/postCount" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-collection"></i>
 							<div data-i18n="Basic">조회수</div>
 					</a></li>
@@ -222,20 +250,20 @@
 					<!-- 회원관리 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">회원 관리</span></li>
-					<li class="menu-item"><a href="userManage" class="menu-link">
+					<li class="menu-item"><a href="/manager/userManage" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-user"></i>
 							<div data-i18n="Form Elements">개인회원</div>
-					</a> <a href="buserManage" class="menu-link"> <i
+					</a> <a href="/manager/buserManage" class="menu-link"> <i
 							class="menu-icon tf-icons bx bxs-group"></i>
 							<div data-i18n="Form Elements">업체회원</div>
 					</a> <!-- 글 관리 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">글 관리</span></li>
-					<li class="menu-item"><a href="allPostView" class="menu-link">
+					<li class="menu-item"><a href="/manager/allPostView" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-file"></i>
 							<div data-i18n="Support">전체 글 조회</div>
 					</a></li>
-					<li class="menu-item"><a href="postManage" class="menu-link">
+					<li class="menu-item"><a href="/manager/postManage" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-file"></i>
 							<div data-i18n="Support">검토</div>
 					</a></li>
@@ -244,7 +272,7 @@
 					<!-- 매출 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">매출 관리</span></li>
-					<li class="menu-item"><a href="salesCheck" class="menu-link">
+					<li class="menu-item"><a href="/manager/salesCheck" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-receipt"></i>
 							<div data-i18n="Form Elements">매출 조회</div>
 					</a>
@@ -273,12 +301,14 @@
 				<div class="modal-body" style="min-height: 100px;">출근 등록이
 					완료되었습니다.</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary"
+					<button type="button" class="btn btn-primary" 
 						data-bs-dismiss="modal">확인</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
 
 
 	<div class="modal fade" id="Modal2" tabindex="-1"

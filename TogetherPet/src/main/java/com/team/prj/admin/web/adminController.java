@@ -22,6 +22,8 @@ public class adminController {
 	private adminService as;
 	@Autowired
 	private attendService ts;
+
+
 	
 	
 	@RequestMapping("/manager/admin")
@@ -34,7 +36,7 @@ public class adminController {
 		HttpSession session = request.getSession();
 		adminVO vo = (adminVO) session.getAttribute("admin");
 		
-		// 고객 정보 가져오기
+		// 관리자 정보 가져오기
 		model.addAttribute("admin", vo);
 		
 		// 근태 리스트 가져오기
@@ -44,52 +46,53 @@ public class adminController {
 		return "admin/mypage";
 	}
 	
-//	@GetMapping("/visitCount")
-//	public String visitCount(Model model) {
-//		//
-//		return "admin/visitCount";
-//	}
+	@GetMapping("/manager/visitCount")
+	public String visitCount(Model model) {
+		//
+		return "admin/visitCount";
+	}
 	
-	
-	
-	@GetMapping("/postCount")
+		
+	@GetMapping("/manager/postCount")
 	public String postCount(Model model) {
 		//
 		return "admin/postCount";
 	}
 	
-	@GetMapping("/userManage")
+	@GetMapping("/manager/userManage")
 	public String userManage(Model model) {
 		//
 		return "admin/userManage";
 	}
 	
-	@GetMapping("/buserManage")
+	@GetMapping("/manager/buserManage")
 	public String buserManage(Model model) {
 		//
 		return "admin/buserManage";
 	}
 	
 	
-	@GetMapping("/allPostView")
+	@GetMapping("/manager/allPostView")
 	public String allPostView(Model model) {
 
 		return "admin/allPostView";
 	}
 	
 
-	@GetMapping("/postManage")
+	@GetMapping("/manager/postManage")
 	public String postManage(Model model) {
 		
 		return "admin/postManage";
 	}
 	
 	
-	@GetMapping("/salesCheck")
+	@GetMapping("/manager/salesCheck")
 	public String salesCheck(Model model) {
 		
 		return "admin/salesCheck";
 	}
+	
+	
 	
 	@GetMapping("/loginForm")
 	public String loginForm(Model model) {
@@ -104,11 +107,19 @@ public class adminController {
 	}
 	
 	@RequestMapping("/admin/workIn")
-		public String workIn() {
-			// Ad넘버를 받아가지고
+		public String workIn(String checkVal, HttpServletRequest request) {
+			HttpSession session = request.getSession();
+			attendVO vo = (attendVO) session.getAttribute("admin");
+		
+		// Ad넘버를 받아
+			attendVO avo = new attendVO();
+			avo.setAdNo(vo.getAdNo());
+			avo.setWorkCk(checkVal);
+			
 			// insert
+			
 			// update
-			return "출근되었습니다.";
+			return "admin/admin";
 		}
 	}
 	

@@ -12,4 +12,5 @@ public class attendVO {
 	Date endDt;
 //	Date Dt; // 0922 지움
 	int state;
+	String workCk; // 0923 추가
 }
