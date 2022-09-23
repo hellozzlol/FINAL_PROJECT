@@ -30,7 +30,6 @@
 							xhr.setRequestHeader(header, token)},
 						data: {
 							goodsNo: goodsNo,
-							userNo: userNo
 						}
 					})
 					.done(res => {
@@ -42,7 +41,21 @@
 												</tbody>
 												</table>`)
 						res.forEach(obj => {
-								$('#tb').append(makeTr(obj));
+							let uN = obj.userNo;
+							// 닉네임 보여주기
+							$.ajax({
+									url: 'ajaxSelectNick',
+									type: 'post',
+									beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token)},
+									data: {
+										userNo: uN
+									}
+								})
+								.done(res => {
+									obj.nickname = res;
+									$('#tb').append(makeTr(obj));
+								})
 						});
 
 						// 로그인이 되어 있으면
@@ -231,70 +244,35 @@
 									</div>
 									<!-- 반복되는 구간 -->
 
-									<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-										src="assets/img/product/small-product/product1.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product2.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product3.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product4.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product1.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product2.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product3.png"
-										alt="tab-thumb"></a> <a class="zoom_tabimg_list"
-										href="javascript:void(0)"><img
-										src="assets/img/product/small-product/product4.png"
-										alt="tab-thumb"></a>
+
 								</div>
 								<div class="product_zoom_main_img">
-									<div th:each="ph:${photoList}">
-										<div class="product_zoom_thumb">
-											<img data-image="${ph.dir}" src="${ph.dir}" alt="">
-										</div>
-									</div>
-									<div th:each="ph:${photoList}">
-										<div class="product_zoom_thumb">
-											<img data-image="${ph.dir}" src="${ph.dir}" alt="">
-										</div>
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/물통1.png"
+											src="assets/img/product/big-product/물통1.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/물통2.png"
+											src="assets/img/product/big-product/물통2.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/물통3.png"
+											src="assets/img/product/big-product/물통3.png" alt="">
+									</div>
+
+									<div class="product_zoom_thumb">
+										<img data-image="assets/img/product/big-product/물통1.png"
+											src="assets/img/product/big-product/물통1.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/물통2.png"
+											src="assets/img/product/big-product/물통2.png" alt="">
 									</div>
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
+										<img data-image="assets/img/product/big-product/물통3.png"
+											src="assets/img/product/big-product/물통3.png" alt="">
 									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/product1.png"
-											src="assets/img/product/big-product/product1.png" alt="">
-									</div>
+
 								</div>
 							</div>
 						</div>

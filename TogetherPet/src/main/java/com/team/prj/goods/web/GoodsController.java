@@ -60,7 +60,7 @@ public class GoodsController {
 		model.addAttribute("cartList", list);
 		return "shop/cart";
 	}
-	
+
 	// 주문 및 결제 페이지 (조회)
 	@RequestMapping("/order") // cartList
 	public String order(CartVO vo, Model model) {
@@ -68,13 +68,41 @@ public class GoodsController {
 		model.addAttribute("cartList", list);
 		return "shop/order";
 	}
-	
+
 	// 주문 및 결제 하기 (등록)
 	@RequestMapping("/orderInsert")
 	public String orderInsert(OrderVO vo, Model model) {
-		order.insertOrder(vo);
+		int cnt = order.insertOrder(vo);
+
+		// vo = order.selectOrder(vo);
+		model.addAttribute("order", vo);
+		return "shop/orderConfirm";
+	}
+
+	@RequestMapping("/orderConfirm")
+	public String orderConfirm(OrderVO vo, Model model) {
+		List<OrderVO> oList = order.selectOrder(vo);
+		vo = oList.get(0);
+		
+		// 상품 총 가격(할인후가격-적립금)
+		int total = 0;
+		for (int i = 0; i < oList.size(); i++) {
+			total += oList.get(i).getTotalPrice();
+		}
+		total = total - vo.getMoney();
+		
+		// 적립금 업데이트
+		UsersVO u = new UsersVO();
+		System.out.println("===========" + vo.getUserNo());
+		System.out.println("===========" + vo.getMoney());
+		u.setUserNo(vo.getUserNo());
+		u.setMoney(vo.getMoney());
+		order.updateMoney(u);
+		
+		model.addAttribute("orderList", oList);
+		model.addAttribute("order", vo);
+		model.addAttribute("totalPrice", total);
 		
 		return "shop/orderConfirm";
 	}
-	
 }
