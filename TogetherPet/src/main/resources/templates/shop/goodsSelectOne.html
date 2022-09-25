@@ -1,33 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout2}">
+
 <head>
-<meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"
-	th:content="${_csrf.headerName}" />
-<title>Insert title here</title>
-<script>
+	<meta charset="UTF-8">
+	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+	<title>Insert title here</title>
+	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			var token = $("meta[name='_csrf']").attr("content");
-		    var header = $("meta[name='_csrf_header']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 
 			let goodsNo = Number($('#goodsNo').val())
 			let userNo = Number($('#userNo').val());
-				
+
 			qnaList();
-			$("#classSearch").on('click', function(){
-				
-			})
+
 			// 문의 리스트
 			function qnaList() {
 				// 아작스로 데이터 불러오기
 				$.ajax({
 						url: 'ajaxQnaList',
 						type: 'post',
-						beforeSend : function(xhr){
-							xhr.setRequestHeader(header, token)},
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
 						data: {
 							goodsNo: goodsNo,
 						}
@@ -46,8 +44,9 @@
 							$.ajax({
 									url: 'ajaxSelectNick',
 									type: 'post',
-									beforeSend : function(xhr){
-										xhr.setRequestHeader(header, token)},
+									beforeSend: function (xhr) {
+										xhr.setRequestHeader(header, token)
+									},
 									data: {
 										userNo: uN
 									}
@@ -70,7 +69,7 @@
 			function makeTr(obj) {
 				// 답변 여부 표시
 				let answerYn = '<span style="color: red">답변대기<span>'
-				if(obj.answer){
+				if (obj.answer) {
 					answerYn = '<span style="color: green">답변완료<span>'
 				}
 				let tr = $('<tr>').addClass('clickTr').append($('<td style="width: 600px">').html(obj.title),
@@ -88,8 +87,9 @@
 				$.ajax({
 						url: 'ajaxQnaSelect',
 						type: 'post',
-						beforeSend : function(xhr){
-							xhr.setRequestHeader(header, token)},
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
 						data: {
 							qnaNo: qnaNo
 						}
@@ -101,10 +101,10 @@
 						$('#qnaFrm').append(
 							`<div align="right"><a class="stock" id="qnaDel">삭제</a></div>`)
 						// 답변 널 처리
-						if(! res.answer){
+						if (!res.answer) {
 							res.answer = '답변이 등록되지 않았습니다.'
 						}
-						if(! res.answerDate){
+						if (!res.answerDate) {
 							res.answerDate = '';
 						}
 						// 문의 상세보기 폼 띄우기
@@ -127,12 +127,13 @@
 			$('#qnaFrm').on('click', '#qnaDel', function () {
 				if (confirm('문의를 삭제하시겠습니까?')) {
 					let qnaNo = $(this).parent().next().next().children().first().children().first()
-					.children().first().html()
+						.children().first().html()
 					$.ajax({
 							url: 'ajaxQnaDelete',
 							type: 'post',
-							beforeSend : function(xhr){
-								xhr.setRequestHeader(header, token)},
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
 							data: {
 								qnaNo: qnaNo
 							}
@@ -170,8 +171,9 @@
 								userNo: userNo,
 								goodsNo: goodsNo
 							},
-							beforeSend : function(xhr){
-								xhr.setRequestHeader(header, token)},
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
 							dataType: 'text'
 						})
 						.done(res => {
@@ -180,23 +182,43 @@
 						})
 				}
 			})
-			
+
+			// 재고 없을 때
+			let amount = Number($("#amount").html());
+			if (amount <= 0) {
+				$("#stock").html("Not in Stock").css("color", "red")
+			}
+
 			// 장바구니 추가
-			$('#addCart').on('click', function(){
-				if(confirm('해당 상품을 장바구니에 추가하시겠습니까?')){
-					let qty = Number($('#setQty').val());
+			$('#addCart').on('click', function () {
+				let qty = Number($('#setQty').val());
+				if (amount == 0) {
+					alert('해당 상품의 재고가 없습니다.');
+					return;
+				}
+				if (amount < qty) {
+					alert('재고보다 많은 수량을 입력할 수 없습니다.');
+					return;
+				}
+				if (confirm('해당 상품을 장바구니에 추가하시겠습니까?')) {
 					$.ajax('ajaxCartInsert', {
-						type: 'post',
-						data: {qty: qty, userNo:userNo, goodsNo:goodsNo},
-						dataType: 'text',
-						beforeSend : function(xhr){
-							xhr.setRequestHeader(header, token)},
-					})
-					.done(res => {
-						if(confirm(res)){
-						$('#cartCall').submit();
-						}
-					})
+							type: 'post',
+							data: {
+								qty: qty,
+								userNo: userNo,
+								goodsNo: goodsNo,
+								amount: amount
+							},
+							dataType: 'text',
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
+						})
+						.done(res => {
+							if (confirm(res)) {
+								$('#cartCall').submit();
+							}
+						})
 				}
 			})
 		})
@@ -235,12 +257,12 @@
 								<div class="zoom_tab_img">
 									<!-- 반복되는 구간 -->
 									<div th:each="ph:${photoList}">
-										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-											th:src="${ph.dir}" alt="tab-thumb"></a>
+										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img th:src="${ph.dir}"
+												alt="tab-thumb"></a>
 									</div>
 									<div th:each="ph:${photoList}">
-										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img
-											th:src="${ph.dir}" alt="tab-thumb"></a>
+										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img th:src="${ph.dir}"
+												alt="tab-thumb"></a>
 									</div>
 									<!-- 반복되는 구간 -->
 
@@ -306,9 +328,10 @@
 							</div>
 							<div class="product_availalbe">
 								<ul class="d-flex">
-									<li><i class="icon-layers icons"></i> Only <span>[[${goods.amount}]]</span>
-										left</li>
-									<li>Availalbe: <span class="stock">In Stock</span></li>
+									<li><i class="icon-layers icons"></i> Only <span
+										id="amount">[[${goods.amount}]]</span> left</li>
+									<li>Availalbe: <span id="stock" class="stock">In
+											Stock</span></li>
 								</ul>
 							</div>
 
@@ -380,7 +403,7 @@
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
 										<!-- 상세 사진  -->
-										<img th:src="${detailshot.dir}"></img>
+										<img th:src="${goods.detail}"></img>
 									</div>
 								</div>
 								<div class="tab-pane fade" id="reviews" role="tabpanel">

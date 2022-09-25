@@ -3,7 +3,7 @@
 <mapper namespace="com.team.prj.accomo.mapper.accomoMapper">
 
 
-<select id="accomoSelectList" resultMap="">
+<select id="accomoSelectList" resultType="com.team.prj.accomo.service.accomoVO">
 
 
 

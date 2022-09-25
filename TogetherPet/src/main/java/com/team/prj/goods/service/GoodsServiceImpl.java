@@ -17,9 +17,9 @@ public class GoodsServiceImpl implements GoodsService {
 	private GoodsMapper map;
 
 	@Override
-	public List<GoodsVO> goodsSelectAll() {
+	public List<GoodsVO> goodsSelectAll(String key) {
 		// TODO Auto-generated method stub
-		return map.goodsSelectAll();
+		return map.goodsSelectAll(key);
 	}
 
 	@Override
@@ -59,11 +59,6 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public List<PhotoVO> ThumbList() {
-		return map.ThumbList();
-	}
-
-	@Override
 	public List<PhotoVO> goodsPhotoList(GoodsVO vo) {
 		// TODO Auto-generated method stub
 		return map.goodsPhotoList(vo);
@@ -76,11 +71,6 @@ public class GoodsServiceImpl implements GoodsService {
 		return map.reviewCount();
 	}
 
-	@Override
-	public PhotoVO goodsPhoto(GoodsVO vo) {
-		// TODO Auto-generated method stub
-		return map.goodsPhoto(vo);
-	}
 
 	@Override
 	public List<ReviewVO> reviewList(GoodsVO vo) {

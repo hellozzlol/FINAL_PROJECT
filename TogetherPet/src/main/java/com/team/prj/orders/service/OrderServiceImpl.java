@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.mapper.OrderMapper;
 import com.team.prj.users.service.UsersVO;
 
@@ -35,5 +36,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int updateMoney(UsersVO vo) {
 		return map.updateMoney(vo);
+	}
+
+	@Override
+	public int updateGoodsQty(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return map.updateGoodsQty(vo);
 	}
 }

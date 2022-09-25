@@ -52,7 +52,7 @@
 										</tr>
 										<tr>
 											<td>결제 방법</td>
-											<td class="text-right">[[${order.name}]]</td>
+											<td class="text-right">[[${order.pay}]]</td>
 										</tr>
 									</tbody>
 								</table>
@@ -65,17 +65,17 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td>총 [[${lists.size(oList)}]]건</td>
+											<td>총 [[${#lists.size(orderList)}]]건</td>
 											<td class="text-right"></td>
 										</tr>
 										<tr>
 											<td>상품이름</td>
-											<td class="text-right"><div th:each="o:${oList}">
+											<td class="text-right"><div th:each="o:${orderList}">
 													<span th:text="${o.goodsName}"></span><br>
 												</div></td>
 										</tr>
 										<tr>
-											<td>적립금</td>
+											<td>적립금 사용</td>
 											<td class="text-right">- [[${order.money}]]</td>
 										</tr>
 									</tbody>
