@@ -80,7 +80,7 @@
 											Age</label>
 										<div class="col-sm-10">
 											<input class="form-control" type="text" id="birth"
-												name="birth" th:value="${list.birth}" disabled="disabled" />
+												name="birth" th:value="${#dates.format(list.birth, 'yyyy-MM-dd')}" disabled="disabled" />
 										</div>
 									</div>
 									<div class="row mb-3">

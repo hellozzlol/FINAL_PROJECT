@@ -104,29 +104,71 @@
 							<div class="card-body" th:each="list : ${petList}">
 								<form id="formAccountSettings" method="POST" name="fr"
 									onsubmit="return check()">
-									<div class="row mb-3">
-										<label class="col-sm-2 col-form-label" for="name">이름
-											Name</label>
-										<div class="col-sm-10">
+									<div class="row">
+										<div class="mb-3 col-md-6">
+											<label for="petNo" class="form-label">동물등록번호 *</label>
+											<input class="form-control" type="text" id="petNo" name="petNo"
+												th:value="${list.petNo}" placeholder="petNo" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="type" class="form-label">반려동물종류</label>
+											<input class="form-control" type="text" id="type" name="type"
+												th:value="${list.type}" placeholder="Type" />
+											<select id="defaultSelect" class="form-select">
+												<option>===선택===</option>
+												<option value="1">강아지</option>
+												<option value="2">고양이</option>
+												<option value="3">토끼</option>
+												<option value="4">기타</option>
+											</select>
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="name" class="form-label">이름 *</label>
 											<input class="form-control" type="text" id="name" name="name"
 												th:value="${list.name}" placeholder="Name" />
 										</div>
-									</div>
-									<div class="row mb-3">
-										<label class="col-sm-2 col-form-label" for="birth">나이
-											Age</label>
-										<div class="col-sm-10">
-											<input class="form-control" type="text" id="birth"
-												name="birth" th:value="${list.birth}" placeholder="Age" />
+										<div class="mb-3 col-md-6">
+											<label for="breed" class="form-label">품종</label>
+											<input class="form-control" type="text" id="breed" name="breed"
+												th:value="${list.breed}" placeholder="breed"/>
+											<select id="defaultSelect" class="form-select">
+												<option>===선택===</option>
+												<option value="1">말티즈</option>
+												<option value="2">푸들</option>
+												<option value="3">치와와</option>
+												<option value="4">기타</option>
+											</select>
 										</div>
-									</div>
-									<div class="row mb-3">
-										<label class="col-sm-2 col-form-label" for="gender">성별
-											Gender</label>
-										<div class="col-sm-10">
+										<div class="mb-3 col-md-6">
+											<label for="weight" class="form-label">몸무게(kg)</label>
+											<input class="form-control" type="text" id="weight" name="weight"
+												th:value="${list.weight}" placeholder="weight"/>
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="gender" class="form-label">성별</label>
 											<input type="text" id="gender" name="gender"
-												class="form-control" th:value="${list.gender}"
-												placeholder="Gender" />
+												class="form-control" th:value="${list.gender}" placeholder="Gender" />
+											<select id="defaultSelect" class="form-select">
+												<option>===선택===</option>
+												<option value="1">여자</option>
+												<option value="2">남자</option>
+											</select>
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="birth" class="form-label">생일</label>
+											<input type="text" id="neu" name="birth"
+												class="form-control" th:value="${#dates.format(list.birth, 'yyyy-MM-dd')}" placeholder="birth" />
+											<input class="form-control" type="date" id="html5-date-input" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label for="neu" class="form-label">중성화여부</label>
+											<input type="text" id="neu" name="gender"
+												class="form-control" th:value="${list.neu}" placeholder="neu" />
+											<select id="defaultSelect" class="form-select">
+												<option>===선택===</option>
+												<option value="1">완료</option>
+												<option value="2">미완료</option>
+											</select>
 										</div>
 									</div>
 									<div class="mt-2" style="text-align: center;">

@@ -5,6 +5,9 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <link href='/fullcalendar/main.css' rel='stylesheet' />
 <script src='/fullcalendar/main.js'></script>
 <script src='/fullcalendar/locales/ko.js'></script>
@@ -13,13 +16,6 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <title>My page</title>
-<!-- <style>
-		#calendarModal {
-			position: fixed;
-			top: 30%;
-			left: 8%;
-		}
-	</style> -->
 
 </head>
 
@@ -31,17 +27,17 @@
 			$(function() {
 
 				let calendarEl = $('#calendar')[0];
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
 
 				calendar = new FullCalendar.Calendar(
 						calendarEl,
-						{
-
-							expandRows : true, // 화면에 맞게 높이 재설정
+							{expandRows : true, // 화면에 맞게 높이 재설정
 							slotMinTime : '08:00', // Day 캘린더에서 시작 시간
 							slotMaxTime : '20:00', // Day 캘린더에서 종료 시간
 
 							headerToolbar : {
-								left : 'prev,next today',
+								left : 'prevYear,prev,next,nextYear today',
 								center : 'title',
 								right : 'dayGridMonth,timeGridWeek,timeGridDay'
 							},
@@ -101,7 +97,7 @@
 								console.log(obj);
 
 							},
-							select : function(arg) { // 캘린더에서이벤트를 생성
+							select : function(arg) { // 캘린더에서 이벤트를 생성
 								let title = prompt('일정 내용을 입력하세요 :');
 								if (title) {
 									calendar.addEvent({
@@ -118,29 +114,6 @@
 				calendar.render();
 
 			});
-
-			function allSave() {
-
-				console.log(allData);
-				document.getElementById("submenu").style.display = "block";
-
-				$.ajax({
-					url : "/calendar/calendarInsert",
-					type : "post",
-					data : {
-						addEvent : JSON.stringify(Alldata)
-					},
-
-					success : function(data, textStatus, xhr) {
-						console.log(data);
-
-					},
-					error : function(xhr, status, error) {
-						console.log(error);
-					}
-
-				});
-			}
 		</script>
 
 
@@ -164,43 +137,6 @@
 					<div id='calendar'></div>
 				</div>
 				<!-- 캘린더 종료 -->
-
-
-				<!-- modal -->
-				<!-- <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog"
-									aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">일정을
-													입력하세요.</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="form-group">
-													<label for="taskId" class="col-form-label">일정 내용</label> <input
-														type="text" class="form-control" id="content" name="content">
-													<label for="taskId" class="col-form-label">시작 날짜</label> <input
-														type="date" class="form-control" id="startDt" name="startDt">
-													<label for="taskId" class="col-form-label">종료 날짜</label> <input
-														type="date" class="form-control" id="endDt" name="endDt">
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-warning"
-													id="addCalendar">일정추가</button>
-												<button type="button" class="btn btn-secondary" data-dismiss="modal"
-													id="sprintSettingModalClose">취소</button>
-											</div>
-
-										</div>
-									</div>
-								</div> -->
-				<!-- modal -->
-
 
 				<div class="content-backdrop fade"></div>
 			</div>

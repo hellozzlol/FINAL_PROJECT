@@ -5,6 +5,7 @@
 
 <select id="accomoSelectList" resultType="com.team.prj.accomo.service.accomoVO">
 
+
 select accomo_no,
 	   name,
 	   address,
@@ -14,6 +15,8 @@ select accomo_no,
 	
 	from accomo
 	order by accomo_no asc
+
+
 
 </select>
 
