@@ -13,6 +13,7 @@ import com.team.prj.admin.service.adminService;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.attend.service.attendService;
 import com.team.prj.attend.service.attendVO;
+import com.team.prj.mem.service.MemService;
 
 
 @Controller
@@ -22,6 +23,8 @@ public class adminController {
 	private adminService as;
 	@Autowired
 	private attendService ts;
+	@Autowired
+	MemService ms;
 
 
 	
@@ -46,25 +49,33 @@ public class adminController {
 		return "admin/mypage";
 	}
 	
+	
+	// 방문자 수
 	@GetMapping("/manager/visitCount")
 	public String visitCount(Model model) {
 		//
 		return "admin/visitCount";
 	}
 	
-		
+	// 조회수
 	@GetMapping("/manager/postCount")
 	public String postCount(Model model) {
 		//
 		return "admin/postCount";
 	}
 	
-	@GetMapping("/manager/userManage")
-	public String userManage(Model model) {
-		//
-		return "admin/userManage";
+	
+	// 일반회원 관리
+	@GetMapping("/manager/memManage")
+	public String memManage(Model model) {
+		model.addAttribute("users", ms.usersList());
+		return "member/memManage";
 	}
 	
+	
+	
+	
+	// 업체회원 관리
 	@GetMapping("/manager/buserManage")
 	public String buserManage(Model model) {
 		//
@@ -72,20 +83,21 @@ public class adminController {
 	}
 	
 	
+	// 전체 글 조회, 삭제?
 	@GetMapping("/manager/allPostView")
 	public String allPostView(Model model) {
 
 		return "admin/allPostView";
 	}
-	
-
+		
+	//  
 	@GetMapping("/manager/postManage")
 	public String postManage(Model model) {
 		
 		return "admin/postManage";
 	}
 	
-	
+	// 매출 조회
 	@GetMapping("/manager/salesCheck")
 	public String salesCheck(Model model) {
 		
@@ -94,18 +106,22 @@ public class adminController {
 	
 	
 	
+	// 로그인
 	@GetMapping("/loginForm")
 	public String loginForm(Model model) {
 		
 		return "admin/loginForm";
 	}
 	
+	// 일반회원 가입
 	@GetMapping("/userJoinForm")
 	public String userJoinForm(Model model) {
 		
 		return "admin/userJoinForm";
 	}
 	
+	
+	// 출근 등록
 	@RequestMapping("/admin/workIn")
 		public String workIn(String checkVal, HttpServletRequest request) {
 			HttpSession session = request.getSession();

@@ -20,4 +20,8 @@ public class UsersVO {
 	int money; // 적립금
 	int groupNo; // 그룹번호
 	Date dt; // 가입일자
+	
+	
+	String state; // 0924/JH / 0925 DB에 추가함
+	
 }
