@@ -3,11 +3,30 @@
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
-
 		SELECT * FROM USERS
-
+	</select>
+	
+	<!-- 주문 내역 불러오기 -->
+	<select id="orderList" resultType="com.team.prj.orders.service.OrderVO">
+		select * from orders
+		where user_no = #{userNo}
 	</select>
 
+	<!-- 장바구니 내역 조회 -->
+	<select id="cartList"
+		resultType="com.team.prj.cart.service.CartVO">
+		select *
+		from goods g, cart c
+		where g.goods_no = c.goods_no
+		and c.user_no = #{userNo}
+	</select>
+	
+	<!-- 사진 불러오기 -->
+	<select id="photoList" resultType="com.team.prj.photo.service.PhotoVO">
+		select * from photo
+		where group_no = #{groupNo}
+	</select>
+	
 	<select id="usersSelect"
 		parameterType="com.team.prj.users.service.UsersVO"
 		resultType="com.team.prj.users.service.UsersVO">
@@ -44,16 +63,19 @@
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
-		SET nickname = #{nickname}
-
+		<!-- SET nickname = #{nickname}
+			,password = #{password}
 			,email = #{email}
 			,call = #{call}
-			,address = #{address}
-			,password = #{password}
+			,address = #{address} -->
+		<set>
+			<if test="nickname != null">nickname = #{nickname},</if>
+			<if test="password != null">password = #{password},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="call != null">call = #{call},</if>
+			<if test="address != null">address = #{address}</if>
+		</set>
 		WHERE user_no = #{userNo}
-		<!-- <set> <if test="nickname != null">nickname = #{nickname},</if> <if 
-			test="email != null">email = #{email},</if> <if test="call != null">call 
-			= #{call},</if> <if test="address != null">address = #{address}</if> </set> -->
 	</update>
 
 	<delete id="usersDelete">

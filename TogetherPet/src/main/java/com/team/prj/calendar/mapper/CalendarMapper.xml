@@ -38,7 +38,7 @@
 	</update>
 
 	<delete id="calendarDelete">
-		DELETE FROM calendar WHERE alendar_no = #{calendarNo}
+		DELETE FROM calendar WHERE calendar_no = #{calendarNo}
 	</delete>
 
 </mapper>

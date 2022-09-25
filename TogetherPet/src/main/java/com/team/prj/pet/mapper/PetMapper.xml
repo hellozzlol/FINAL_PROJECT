@@ -14,7 +14,7 @@
 
 	<insert id="petInsert"
 		parameterType="com.team.prj.pet.service.PetVO">
-		<selectKey keyProperty="userNo" order="BEFORE"
+		<selectKey keyProperty="petNo" order="BEFORE"
 			resultType="int">
 			SELECT
 			CASE WHEN max(pet_no) IS NULL
@@ -25,8 +25,16 @@
 		</selectKey>
 
 		INSERT INTO PET
-		VALUES(#{petNo}, #{type}, #{name}, #{breed},
-		#{weight}, #{gender}, #{birth}, #{neu})
+		VALUES(#{petNo, jdbcType=INTEGER},
+				#{type},
+				#{name},
+				#{breed},
+				#{weight},
+				#{gender},
+				#{birth},
+				#{neu},
+				1,
+				1)
 	</insert>
 
 	<update id="petUpdate"
