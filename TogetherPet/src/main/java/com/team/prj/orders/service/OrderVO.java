@@ -14,6 +14,8 @@ public class OrderVO {
 	
 	// 0923 희수 추가
 	private int cartNo, money; 
-	private String goodsName;
 	
+	//0925 희수 추가
+	private int sellerNo;
+	private String goodsName;
 }

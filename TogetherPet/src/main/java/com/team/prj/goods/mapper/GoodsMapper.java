@@ -14,8 +14,7 @@ import com.team.prj.review.service.ReviewVO;
 public interface GoodsMapper {
 
 	// 모든 상품 조회
-	@Select("select * from goods order by 1 desc")
-	List<GoodsVO> goodsSelectAll();
+	List<GoodsVO> goodsSelectAll(@Param("key") String key);
 
 	// 상세보기
 	GoodsVO goodsSelectOne(GoodsVO vo);
@@ -36,14 +35,8 @@ public interface GoodsMapper {
 	@Update("update goods set hit=hit+1 where goods_no=#{goodsNo}")
 	int goodsHitUpdate(GoodsVO vo);
 
-	// 썸네일 불러오기
-	List<PhotoVO> ThumbList();
-
 	// 포토리스트 불러오기
 	List<PhotoVO> goodsPhotoList(GoodsVO vo);
-	
-	// 상세 사진 불러오기
-	PhotoVO goodsPhoto(GoodsVO vo);
 
 	// 리뷰리스트
 	List<Map<Integer, Integer>> reviewCount();
