@@ -3,7 +3,10 @@ package com.team.prj.users.service;
 import java.util.List;
 
 import com.team.prj.board.service.BoardVO;
+import com.team.prj.cart.service.CartVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.orders.service.OrderVO;
+import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
 
 public interface UsersService {
@@ -15,6 +18,15 @@ public interface UsersService {
 	
 	// 회원삭제
 	int usersDelete(UsersVO vo);
+	
+	// 주문 내역 조회
+	List<OrderVO> orderList(OrderVO vo);
+	
+	// 사진 불러오기
+	List<PhotoVO> photoList(PhotoVO vo);
+	
+	// 장바구니 조회
+	List<CartVO> cartList(CartVO vo);
 	
 	// 작성 글조회
 	List<BoardVO> boardSelectList(int boardNo, int userNo, String category);

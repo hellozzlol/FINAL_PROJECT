@@ -2,6 +2,8 @@ package com.team.prj.pet.service;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,7 @@ public class PetVO {
 	String breed; // 펫 품종
 	String weight; // 펫 몸무게
 	String gender; // 펫 성별
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	Date birth; // 펫 생일
 	String neu; // 펫 중성화여부
 	int groupNo; // 그룹번호
