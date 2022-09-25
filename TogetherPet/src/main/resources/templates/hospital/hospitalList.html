@@ -11,23 +11,25 @@
 <meta charset="UTF-8">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
-   th:content="${_csrf.headerName}" />
+	th:content="${_csrf.headerName}" />
 
 
 
 
 <style>
-.btn{
- text-align: center;
- display: inline-block;
- position: absolute;
+.btn {
+	text-align: center;
+	display: inline-block;
+	position:  absolute;
+}
 
- }
- form{
- text-align: center;
- display: inline-block;
- position: absolute;
- }
+form {
+	text-align: center;
+	display: inline-block;
+	position:  absolute;
+}
+
+
 </style>
 <title>동물병원</title>
 
@@ -94,36 +96,53 @@
 						</table> -->
 
 						<!-- 검색기능 시작  -->
-					
-						 <div class="input-group mb-3" id="btn" style="min-height: 100px;" >
+
+						<!-- <div class="input-group mb-3" id="btn" style="min-height: 100px;">
 							<table>
 								<tr>
-									<td width="100">
-									<select id="key" name="key">
+									<td width="100"><select id="key" name="key">
 											<option value="1">지역</option>
 											<option value="2">병원명</option>
-									</select>
-									</td>
-									<td>
-									<input type="text" id="val" name="val">
-									</td>
-									
-									
+									</select></td>
+									<td><input type="text" id="val" name="val"></td>
 									<td width="100" align="center">
 										<button type="button" id="Serachbtn" class="btn btn-dark">검색</button>
 									</td>
 								</tr>
 							</table>
-						</div> 
-						
+						</div> -->
+
 						<!-- 검색기능 끝  -->
 
+						<!-- 검색기능 시작  -->
+						<form class="row gy-2 gx-3 align-items-center" id="btn">
+							<div class="col-auto">
+								<select id="key" name="key">
+									<option value="1">지역</option>
+									<option value="2">병원명</option>
+								</select>
+							</div>
+
+							<div class="col-auto">
+								<input class="form-control" type="text" id="val" name="val">
+							</div>
+							<div class="col-auto">
+								<button type="button" class="btn btn-dark" id="Serachbtn"
+									onclick="searchCall()">검색</button>
+							</div>
+						</form>
+						<!-- 검색기능 끝  -->
+							<br>
+							<br>
+							<br>
 						<!-- 병원리스트 반복문 시작 -->
 						<div class="row shop_wrapper">
-							<div class="card" style="width: 18rem;" id="point" th:each="h:${hospital}">
-								<img th:src="${h.hphoto}" alt="tab-thumb">
+							<div class="card" style="width: 18rem;" id="point"
+								th:each="h:${hospital}">
+								<div class="embed-responsive embed-responsive-4by3">
+								<img th:src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
+								</div>
 								<div class="card-body">
-
 									<h5 class="card-title">🐶[[${h.name}]]</h5>
 									<p class="card-text">⏰[[${h.workingHour}]]</p>
 									<p class="card-text" th:text="${h.address}"></p>
@@ -138,8 +157,8 @@
 				</div>
 			</div>
 		</div>
-		
-<!-- 검색아작스 스크립트 시작  -->
+
+		<!-- 검색아작스 스크립트 시작  -->
 		<script>
 		
 		$("#Serachbtn").on('click', searchCall)
@@ -179,8 +198,10 @@
 					
 						 var result = `
 								<div class="card" id="point" style="width: 18rem;">
+								<div class="embed-responsive embed-responsive-4by3">
+								<img src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
+								</div>
 								<div class="card-body">
-								<img src="${h.hphoto}" alt="tab-thumb">
 									<h5 class="card-title">${h.name}</h5>
 									<p class="card-text">⏰${h.workingHour}</p>
 									<p class="card-text">${h.address}</p>
