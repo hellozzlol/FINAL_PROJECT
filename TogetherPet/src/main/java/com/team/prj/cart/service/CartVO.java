@@ -15,4 +15,7 @@ public class CartVO {
 	
 	// 0925 희수 추가
 	private int amount; // 재고
+	
+	// 0926 희수 추가
+	private String thumb;
 }
