@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" 
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
 layout:decorate="~{layout/layout}">
@@ -164,14 +164,12 @@ layout:decorate="~{layout/layout}">
 							</div>
 							<div class=" sorting_by d-flex align-items-center">
 								<span>SORT BY :</span>
-								<form class="select_option" action="#">
-									<select name="orderby" id="short">
+									<select name="orderby" id="short" class="select_option border">
 										<option selected value="1">최신순</option>
 										<option value="2">인기순</option>
 										<option value="3">가격높은 순</option>
 										<option value="4">가격낮은 순</option>
 									</select>
-								</form>
 							</div>
 							<div class="toolbar_btn_wrapper d-flex align-items-center">
 								<div class="view_btn">
@@ -484,17 +482,12 @@ layout:decorate="~{layout/layout}">
 						</div>`	
 				$(".shop_wrapper").append(result); 	
 				//$(".clst").append(".classlist");
-			};
-
-		};
-		
+			}
+		}		
 	};
 
 	</script>
 	
-
-</article>
-
-
+	</article>
 </body>
 </html>

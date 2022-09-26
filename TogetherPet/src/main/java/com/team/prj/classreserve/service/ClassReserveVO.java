@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ClassReserveVO {
 	int reserveNo;
-	Date dt;
+	String dt;
 	Date orderDate;
 	String pay;
 	String payYn;
@@ -17,4 +17,9 @@ public class ClassReserveVO {
 	int totalPrice;
 	int minusYn;
 	Date minusDate;
+	int classOptionNo;
+	String call; //유저전화번호
+	String name; //유저이름
+	int money; //적립금
+	String className; //클래스 이름
 }
