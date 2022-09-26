@@ -13,7 +13,7 @@ import com.team.prj.admin.service.adminService;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.attend.service.attendService;
 import com.team.prj.attend.service.attendVO;
-import com.team.prj.mem.service.MemService;
+import com.team.prj.users.service.UsersService;
 
 
 @Controller
@@ -21,10 +21,12 @@ public class adminController {
 	
 	@Autowired
 	private adminService as;
+	
 	@Autowired
 	private attendService ts;
+	
 	@Autowired
-	MemService ms;
+	private UsersService us;
 
 
 	
@@ -68,7 +70,7 @@ public class adminController {
 	// 일반회원 관리
 	@GetMapping("/manager/memManage")
 	public String memManage(Model model) {
-		model.addAttribute("users", ms.usersList());
+		model.addAttribute("users", us.usersSelectList());
 		return "member/memManage";
 	}
 	
