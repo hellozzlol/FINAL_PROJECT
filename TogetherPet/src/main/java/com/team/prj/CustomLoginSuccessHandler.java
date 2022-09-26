@@ -15,6 +15,10 @@ import com.team.prj.admin.mapper.adminMapper;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.login.mapper.LoginMapper;
 import com.team.prj.login.service.LoginVO;
+import com.team.prj.seller.mapper.SellerMapper;
+import com.team.prj.seller.service.SellerVO;
+import com.team.prj.tutor.mapper.TutorMapper;
+import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.mapper.UsersMapper;
 import com.team.prj.users.service.UsersVO;
 
@@ -26,6 +30,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	LoginMapper login;
 	@Autowired
 	adminMapper admin;
+	@Autowired
+	SellerMapper seller;
+	@Autowired
+	TutorMapper tutor;
 
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
@@ -51,11 +59,21 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			session.setAttribute("user", uvo);
 
 		} else if (auth.equals("[ROLE_SELLER]")) {
-			//
+			// SellerVO 추출
+			SellerVO svo = new SellerVO();
+			svo.setSellerNo(no);
+			svo = seller.sellerMyPage(svo);
+			session.setAttribute("seller", svo);
+			
 		} else if (auth.equals("[ROLE_TUTOR]")) {
-			//
+			// TutorVO 추출
+			TutorVO tvo = new TutorVO();
+			tvo.setTutorNo(no);
+			tvo = tutor.tutorSelect(tvo);
+			session.setAttribute("tutor", tvo);
+			
 		} else if (auth.equals("[ROLE_ADMIN]")) {
-			//
+			// AdminVO 추출
 			adminVO avo = new adminVO();
 			avo.setAdNo(no);
 			avo = admin.adminSelect(avo);

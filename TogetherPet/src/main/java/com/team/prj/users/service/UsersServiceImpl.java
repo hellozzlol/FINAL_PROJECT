@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.classes.service.ClassVO;
+import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
@@ -84,5 +86,12 @@ public class UsersServiceImpl implements UsersService {
 		return map.cartList(vo);
 	}
 
+	// 수강 내역 조회
+	@Override
+	public List<ClassVO> classList(ClassReserveVO vo) {
+		return map.classList(vo);
+	}
+
+	
 
 }

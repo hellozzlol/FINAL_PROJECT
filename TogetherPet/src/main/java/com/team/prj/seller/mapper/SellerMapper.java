@@ -7,7 +7,7 @@ import com.team.prj.seller.service.SellerVO;
 public interface SellerMapper {
 	List<SellerVO> sellerSelectList();
 
-	SellerVO sellerSelect(SellerVO vo);
+	SellerVO sellerMyPage(SellerVO vo);
 
 	int sellerInsert(SellerVO vo);
 

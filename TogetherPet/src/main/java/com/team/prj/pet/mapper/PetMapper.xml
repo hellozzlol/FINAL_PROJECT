@@ -9,7 +9,10 @@
 	<select id="petSelect"
 		parameterType="com.team.prj.pet.service.PetVO"
 		resultType="com.team.prj.pet.service.PetVO">
-		SELECT * FROM PET WHERE pet_no = #{petNo}
+		SELECT *
+		from pet p, users u
+		where p.user_no = u.user_no
+        and u.user_no = #{userNo}
 	</select>
 
 	<insert id="petInsert"

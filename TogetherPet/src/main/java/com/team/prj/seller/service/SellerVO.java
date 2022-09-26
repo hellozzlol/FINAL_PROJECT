@@ -2,14 +2,10 @@ package com.team.prj.seller.service;
 
 import java.util.Date;
 
-import com.team.prj.users.service.UsersVO;
+import lombok.Data;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class SellerVO extends UsersVO {
+@Data
+public class SellerVO {
 	int sellerNo; // 판매자 번호
 	String id; // 판매자 아이디
 	String password; // 판매자 비밀번호

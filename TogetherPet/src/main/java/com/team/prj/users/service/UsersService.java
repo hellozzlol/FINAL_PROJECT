@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.classes.service.ClassVO;
+import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
@@ -27,6 +29,9 @@ public interface UsersService {
 	
 	// 장바구니 조회
 	List<CartVO> cartList(CartVO vo);
+	
+	// 수강내역 조회
+	List<ClassVO> classList(ClassReserveVO vo);
 	
 	// 작성 글조회
 	List<BoardVO> boardSelectList(int boardNo, int userNo, String category);

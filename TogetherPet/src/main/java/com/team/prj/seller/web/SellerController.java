@@ -1,5 +1,8 @@
 package com.team.prj.seller.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,41 +26,64 @@ public class SellerController {
 
 	// 판매자 회원(개인정보) 단건 조회
 	@RequestMapping("/seller/sellerMyPage")
-	public String sellerMyPage(Model model, SellerVO vo) {
-		vo.setSellerNo(1);
-		model.addAttribute("sellerList", seller.sellerSelect(vo));
+	public String sellerMyPage(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SellerVO vo = (SellerVO) session.getAttribute("seller");
+		seller.sellerMyPage(vo);
 		return "seller/sellerMyPage";
 	}
 
 	// 판매자 회원(개인정보) 수정 폼 호출
 	@RequestMapping("/seller/sellerMyPageUpdForm")
-	public String sellerMyPageUpdForm(SellerVO vo, Model model) {
-		vo.setSellerNo(1);
-		model.addAttribute("sellerList", seller.sellerSelect(vo));
+	public String sellerMyPageUpdForm(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		SellerVO vo = new SellerVO();
+		String id = (String) session.getAttribute("id");
+		vo.setId(id);
+		vo = seller.sellerMyPage(vo);
+		request.setAttribute("sellerList", vo);
 		return "seller/sellerMyPageUpdForm";
+	}
+
+	// 판매자 회원(개인정보) 수정
+	@PostMapping("/seller/sellerMyPageUpd")
+	public String sellerUpdate(SellerVO vo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		seller.sellerUpdate(vo);
+		vo = seller.sellerMyPage(vo);
+		session.setAttribute("seller", vo);
+		return "redirect:/seller/sellerMyPage";
 	}
 
 	// 판매자 회원(사업자) 단건 조회
 	@RequestMapping("/seller/sellerComList")
-	public String sellerComList(Model model, SellerVO vo) {
-		vo.setSellerNo(1);
-		model.addAttribute("sellerList", seller.sellerSelect(vo));
+	public String sellerComList(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SellerVO vo = (SellerVO) session.getAttribute("seller");
+		seller.sellerMyPage(vo);
 		return "seller/sellerComList";
 	}
 
 	// 판매자 정보(사업자) 수정 폼 호출
 	@RequestMapping("/seller/sellerComUpForm")
-	public String sellerComUpForm(SellerVO vo, Model model) {
-		vo.setSellerNo(1);
-		model.addAttribute("sellerList", seller.sellerSelect(vo));
+	public String sellerComUpForm(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		SellerVO vo = new SellerVO();
+		String id = (String) session.getAttribute("id");
+		vo.setId(id);
+		vo = seller.sellerMyPage(vo);
+		request.setAttribute("sellerList", vo);
 		return "seller/sellerComUpForm";
 	}
 
-	// 판매자 회원(개인정보) 수정
-	@PostMapping("/seller/sellerMyPageUpd")
-	public String sellerUpdate(SellerVO vo, Model model) {
-		model.addAttribute("sellerList", seller.sellerUpdate(vo));
-		return "redirect:sellerSelect";
+	// 판매자 정보(사업자) 수정 처리
+	@PostMapping("/seller/sellerComUpdate")
+	public String sellerComUpdate(SellerVO vo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		seller.sellerUpdate(vo);
+		vo = seller.sellerMyPage(vo);
+		session.setAttribute("seller", vo);
+		return "redirect:/seller/sellerComList";
 	}
 
 	// 판매 상품 등록 폼 호출

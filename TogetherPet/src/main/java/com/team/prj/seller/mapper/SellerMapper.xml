@@ -6,24 +6,28 @@
 		select * from seller
 	</select>
 
-	<select id="sellerSelect"
+	<!-- 판매자 단건 조회 -->
+	<select id="sellerMyPage"
 		resultType="com.team.prj.seller.service.SellerVO"
 		parameterType="com.team.prj.seller.service.SellerVO">
 		select *
 		from seller
 		where seller_no = #{sellerNo}
 	</select>
-	
-	<insert id="sellerInsert" parameterType="com.team.prj.seller.service.SellerVO">
-		<selectKey keyProperty="sellerNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(seller_no) IS NULL 
-			    THEN 1
-			    ELSE max(seller_no) + 1 
-			    END AS no
+
+	<!-- 판매자 정보 등록 -->
+	<insert id="sellerInsert"
+		parameterType="com.team.prj.seller.service.SellerVO">
+		<selectKey keyProperty="sellerNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(seller_no) IS NULL
+			THEN 1
+			ELSE max(seller_no) + 1
+			END AS no
 			FROM seller
 		</selectKey>
-		
+
 		INSERT INTO seller
 		VALUES(#{sellerNo}
 				,#{id}
@@ -38,20 +42,26 @@
 				,#{groupNo}
 				,#{dt})
 	</insert>
-	
-	<update id="sellerUpdate" parameterType="com.team.prj.seller.service.SellerVO">
+
+	<!-- 판매자 정보 수정 -->
+	<update id="sellerUpdate"
+		parameterType="com.team.prj.seller.service.SellerVO">
 		update seller
-			set id = #{id}
-			,password = #{password}
-			,company = #{company}
-			,email = #{email}
-			,call = #{call}
-			,address = #{address}
-			,company_no = #{companyNo}
-			,dt = #{dt}
+		<set>
+			<if test="id != null">id = #{id},</if>
+			<if test="password != null">password = #{password},</if>
+			<if test="company != null">company = #{company},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="call != null">call = #{call},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="companyNo != null">company_no = #{companyNo},</if>
+			<if test="dt != null">dt = #{dt},</if>
+			<if test="name != null">name = #{name}</if>
+		</set>
 		where seller_no = #{sellerNo}
 	</update>
-	
+
+	<!-- 판매자 삭제 -->
 	<delete id="sellerDelete">
 		delete from seller
 		where seller_no = #{sellerNo}

@@ -53,14 +53,14 @@
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
-								<tr>
+								<tr style="text-align: center;">
 									<th>내용</th>
 									<th>작성일</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${commentList}">
+								<tr th:each="list : ${commentList}" style="text-align: center;">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
 										<strong>[[${list.content}]]</strong></td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>

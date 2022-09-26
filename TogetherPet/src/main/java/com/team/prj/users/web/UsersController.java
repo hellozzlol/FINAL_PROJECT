@@ -1,9 +1,6 @@
 package com.team.prj.users.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.team.prj.board.service.BoardService;
 import com.team.prj.calendar.service.CalendarService;
 import com.team.prj.calendar.service.CalendarVO;
 import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
-import com.team.prj.classes.service.ClassService;
+import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentService;
 import com.team.prj.like.service.LikesService;
 import com.team.prj.orders.service.OrderService;
@@ -53,8 +47,6 @@ public class UsersController {
 	@Autowired
 	private StateService state; // 반품교환상태
 	@Autowired
-	private ClassService classes; // 수강내역
-	@Autowired
 	private CommentService comment; // 댓글조회
 	@Autowired
 	private BoardService board; // 작성글조회
@@ -74,7 +66,7 @@ public class UsersController {
 	public String usersSelect(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
-		// model.addAttribute("userList", vo);
+		user.usersSelect(vo);
 		return "users/usersSelect";
 	}
 
@@ -92,10 +84,12 @@ public class UsersController {
 
 	// 회원 정보 수정 처리
 	@PostMapping("/users/usersUpdate")
-	public String usersUpdate(UsersVO vo, HttpSession session) {
+	public String usersUpdate(UsersVO vo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		user.usersUpdate(vo);
-		session.invalidate();
-		return "redirect:users/usersSelect";
+		vo = user.usersSelect(vo);
+		session.setAttribute("user", vo);
+		return "redirect:/users/usersSelect";
 	}
 
 	// 마이페이지 주문 내역
@@ -108,7 +102,7 @@ public class UsersController {
 		model.addAttribute("photoList", user.photoList(pvo));
 		return "users/usersOrderList";
 	}
-	
+
 	// 회원 탈퇴
 	@RequestMapping("/users/usersDelete")
 	public String usersDelete(HttpServletRequest request) {
@@ -127,7 +121,7 @@ public class UsersController {
 		model.addAttribute("cartList", user.cartList(vo));
 		return "users/usersCartList";
 	}
-	
+
 	// 마이페이지 반품/교환 내역
 	@RequestMapping("/users/usersCancelList")
 	public String userCancel(OrderVO vo, Model model) {
@@ -137,8 +131,10 @@ public class UsersController {
 
 	// 마이페이지 클래스 수강내역
 	@RequestMapping("/users/usersClassList")
-	public String userClass(Model model) {
-		model.addAttribute("classList", classes.classSelectList());
+	public String userClass(ClassReserveVO vo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UsersVO u = (UsersVO) session.getAttribute("user");
+		model.addAttribute("classList", user.classList(vo));
 		return "users/usersClassList";
 	}
 
@@ -199,8 +195,8 @@ public class UsersController {
 	// 반려동물 단건 조회
 	@RequestMapping("/pet/petSelect")
 	public String petSelect(PetVO vo, Model model) {
-		model.addAttribute("petList", pet.petSelect(vo));
-		return "/pet/petSelect";
+	model.addAttribute("petList", pet.petSelect(vo));
+	return "/pet/petSelect";
 	}
 
 	// 반려동물 정보 수정 폼 호출
@@ -242,7 +238,7 @@ public class UsersController {
 //		pet.petInsert(vo);
 //		return "redirect:pet/petSelectList";
 //	}
-	
+
 	@PostMapping("/pet/petInsert")
 	public String memberInsert(PetVO vo, Model model) {
 		int m = pet.petInsert(vo);
