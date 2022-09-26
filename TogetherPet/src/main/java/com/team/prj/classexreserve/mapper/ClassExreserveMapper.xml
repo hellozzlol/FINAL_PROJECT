@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.team.prj.classexreserve.mapper.ClassExreserveMapper">
+
+	<!-- 클래스 예약전 단건조회 -->
+	<select id="classExreserveSelect" resultType="com.team.prj.classexreserve.service.ClassExreserveVO">
+		SELECT * 
+		FROM CLASS_EXRESERVE
+		WHERE CLASS_NO = #{classNo} 
+		AND USER_NO = #{userNo}
+	</select>
+	
+	<!-- 클래스 예약전 페이지 리스트 -->
+	<select id="exreserveList" resultType="com.team.prj.classexreserve.service.ClassExreserveVO">
+		SELECT *
+		FROM CLASS C, CLASS_EXRESERVE E, CLASS_OPTION O
+		WHERE C.CLASS_NO = E.CLASS_NO
+        AND E.CLASS_OPTION_NO = O.CLASS_OPTION_NO
+		AND E.USER_NO = #{userNo}
+	</select>
+	
+	<!-- 클래스 예약전 입력 -->
+	<insert id="classExreserveInsert">
+		<selectKey keyProperty="exreserveNo" order="BEFORE" resultType="int">
+			SELECT CASE WHEN MAX(EXRESERVE_NO) IS NULL THEN 1 ELSE
+			MAX(EXRESERVE_NO)+1 END
+			FROM CLASS_EXRESERVE
+		</selectKey>
+		INSERT INTO CLASS_EXRESERVE
+		VALUES(#{userNo}, #{classOptionNo}, #{exreserveNo}, #{classNo})
+	</insert>
+
+	<!-- 클래스 예약전 삭제 -->
+	<delete id="classExreserveDelete">
+		DELETE CLASS_EXRESERVE
+		WHERE USER_NO = #{userNo}
+	</delete>
+
+</mapper>

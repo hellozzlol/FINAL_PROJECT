@@ -3,25 +3,82 @@
 <mapper
 	namespace="com.team.prj.classreserve.mapper.ClassReserveMapper">
 	
+	
+	<!-- 유저정보 -->
+	<select id="userInfo"
+		resultType="com.team.prj.users.service.UsersVO">
+		SELECT * FROM USERS WHERE USER_NO=#{userNo}
+	</select>
+	
+	
+	<!-- 예약 조회 -->
 	<select id="classReserveSelectList" resultType="com.team.prj.classreserve.service.ClassReserveVO">
-		SELECT *
-		FROM CLASS_RESERVE
-	</select>	
+	SELECT RESERVE_NO,
+			DT,
+			ORDER_DATE,
+			PAY,
+			PAY_YN,
+			USER_NO,
+			CLASS_NO,
+			MINUS_PRICE,
+			TOTAL_PRICE,
+			MINUS_YN,
+			MINUS_DATE,
+			CLASS_OPTION_NO,
+			CALL,
+			NAME,
+			MONEY,
+			CLASS_NAME
+	FROM CLASS_RESERVE
+	WHERE RESERVE_NO =#{reserveNo}
+	</select>
 	
 	
-	<insert id="classReserveInsert" parameterType="com.team.prj.classreserve.service.ClassReserveVO">
-			<selectKey>
-			SELECT 
-				CASE WHEN MAX(RESERVE_NO) IS NULL THEN 1 ELSE MAX(RESERVE_NO) + 1 END AS NO
+	<!-- 예약 입력 -->
+	<insert id="classReserveInsert">
+		<selectKey keyProperty="reserveNo" resultType="int" order="BEFORE">
+			SELECT CASE WHEN MAX(RESERVE_NO) IS NULL THEN 1
+			ELSE MAX(RESERVE_NO)+1 END
+			AS RESERVE_NO
 			FROM CLASS_RESERVE
-			</selectKey>
+		</selectKey>
 		INSERT INTO CLASS_RESERVE
-		VALUE(#{reserveNo},#{dt},SYSDATE,#{pay},#{payYn},#{userNo},#{classNo},#{minusPrice},#{totalPrice},0,#{minusDate})
+		VALUES #{reserveNo},
+				TO_DATE(#{dt}, 'YYYY-MM-DD HH24:MI:SS'),
+				SYSDATE,
+				#{pay},
+				1,
+				#{userNo},
+				#{classNo},
+				#{totalPrice},
+				#{totalPrice}*0.9,
+				0,
+				null,
+				#{classOptionNo},
+				#{call},
+				#{name},
+				#{money},
+				#{className}
+		)
+	
 	</insert>
 	
 	
-	<delete id="classReserveDelete">
-		DELETE FROM CLASS_RESERVE
-		WHERE RESERVE_NO = #{RESERVENO}
-	</delete>
+	<!-- 머니 업데이트 -->
+	<update id="updateMoney">
+		UPDATE USERS SET MONEY=(SELECT MONEY FROM USERS WHERE USER_NO=#{userNo})-#{money} WHERE USER_NO =
+		#{userNo}
+	</update>
+	
+	
+	<!-- 클래스 수강신청인원 업데이트 -->
+	<update id="updateHeadCount">
+		UPDATE CLASS_OPTION
+		SET ALL_HEADCOUNT = ALL_HEADCOUNT+1
+		WHERE CLASS_OPTION_NO = #{classOptionNo}
+	</update>
+	
+	
+	
+	
 </mapper>

@@ -13,27 +13,7 @@
 	<!-- 클래스 단건조회 -->
 	<select id="classSelect" parameterType="com.team.prj.classes.service.ClassVO"
 			resultType="com.team.prj.classes.service.ClassVO">
-		SELECT CLASS_NO,
-				NAME,
-				CATEGORY,
-				INTRO,
-				START_DT,
-				END_DT,
-				DAY,
-				TIME_START,
-				TIME_END,
-				PRICE,
-				UPLOAD_STATE,
-				UPLOAD_DATE,
-				HIT,
-				MAX_HEADCOUNT,
-				TUTOR_NO,
-				GROUP_NO,
-				ADDRESS,
-				LATITUDE,
-				LONGITUDE,
-				CATEGORY_ID,
-				RETURN_MESSAGE
+		SELECT *
 		FROM CLASS
 		WHERE CLASS_NO = #{classNo}
 	</select>
@@ -45,7 +25,7 @@
 			FROM CLASS
 			</selectKey>
 		INSERT INTO CLASS
-		VALUES(#{classNo},#{name},#{category},#{intro},#{startDt},#{endDt},#{day},#{timeStart},#{timeEnd},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage})
+		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage})
 	</insert>
 	
 	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
@@ -53,11 +33,6 @@
 		<set>
 			<if test="category != null">CATEGORY = #{category},</if>
 			<if test="intro != null">INTRO = #{intro},</if>
-			<if test="startDt != null">START_DT = #{startDt},</if>
-			<if test="endDt != null">END_DT = #{endDt},</if>
-			<if test="day != null">DAY = #{day},</if>
-			<if test="timeStart != null">TIME_START = #{timeStart},</if>
-			<if test="timeEnd != null">TIME_END = #{timeEnd},</if>
 			<if test="price != null">PRICE = #{price},</if>
 			<if test="uploadDate != null">UPLOAD_DATE = #{uploadDate},</if>
 			<if test="maxHeadcount != null">MAX_HEADCOUNT = #{maxHeadcount},</if>

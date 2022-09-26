@@ -12,7 +12,8 @@ public interface ClassService {
 	
 	////////////////////////////////////////////////////
 	
-	List<ClassOptionVO> classDateOption(String sdate, int no);
 	//클래스 단건조회에서 날짜픽
+	List<ClassOptionVO> classDateOption(String sdate, int no);
+
 	
 }

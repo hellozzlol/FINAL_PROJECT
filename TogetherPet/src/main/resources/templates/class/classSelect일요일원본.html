@@ -89,7 +89,7 @@
 												<div class='startdiv'>${c.startDt}</div>
 												<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 : ${c.allHeadcount}</div>
 												<div class='classoptionno'>${c.classOptionNo}</div>
-												<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label><input type='radio' class='radio' name='radioNo' id='radioNo' value= '${c.classOptionNo}'  /></div>
+												<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label><input type='checkbox' class='checkbb' name='classOptionNo' id='classOptionNo' value= '${c.classOptionNo}'  /></div>
 												</div>`
 					    					//var a = c.class_option_no;	 	    					
 					    				 } else {
@@ -135,18 +135,9 @@
 						})
 						
 						
-						//결제페이지로 이동함 테스트용~~~
+						//결제페이지로 이동함
 						jc('#addExreserve2').on('click', function(){
-							if(confirm('해당 클래스를 신청하시겠습니까?')){	
-								//클래스 옵션 체크값 선언 후 체크값 추출
-								var option =  jc('input:radio[name="radioNo"]:checked').val();
-								alert(option);
-								var token = jc("meta[name='_csrf']").attr("content");
-			    				var header = jc("meta[name='_csrf_header']").attr("content");
-								
-								//폼에 추출한 값 넣어주기?
-								jc("#classOptionNo").val(option);
-								
+							if(confirm('해당 클래스를 신청하시겠습니까?')){						
 								jc('#exreserveCall').submit();
 								
 							}
@@ -621,13 +612,11 @@ var image1=new Image();
 											<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
 										</form>
 										
-										
-										<!-- 테스트용 폼 -->
 										<form id="exreserveCall2" name="exreserveCall" method="post" action="classExreserve">
 											<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
 											<input type="hidden" name="classNo" id="classNo" th:value="${clas.classNo}">
-											<input type="hidden" name="classOptionNo" id="classOptionNo">
+											<input type="hidden" name="classOptionNo" id="classOptionNo" th:value="1">
 											<input type="hidden" name="userNo" id="userNo" th:value="${session.user.userNo}">
 		
 											<button class="button btn btn-primary" id="addExreserve2">테스트</button>
