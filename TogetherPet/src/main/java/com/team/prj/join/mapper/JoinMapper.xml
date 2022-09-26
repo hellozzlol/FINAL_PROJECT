@@ -2,20 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.join.mapper.JoinMapper">
 
+<!--
+		<insert id="usersInsert"
+		parameterType="com.team.prj.users.service.UsersVO">
+		<selectKey keyProperty="userNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(user_no) IS NULL
+			THEN 1
+			ELSE max(user_no) + 1
+			END AS no
+			FROM users
+		</selectKey>
+
+		INSERT INTO USERS
+		VALUES(#{userNo}
+		,#{id}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{email}
+		,#{call}
+		,#{address}
+		,'USER'
+		,3000
+		,1
+		,SYSDATE)
+		</insert> -->
+
+	
+
 	<!-- 아이디 중복체크 -->
-	<select id="idChk" resultType="int">
-		select count(*)
+	<select id="idCheck" resultType="int" parameterType="String">
+		select count(id)
 		from users
 		where id = #{id}
 	</select>
 	
 	
-	<!-- 이메일 중복체크 -->
+	<!-- 이메일 중복체크 
 	<select id="emailChk" resultType="int">
 		select count(*)
 		from users
 		where email = #{email}
-	</select>
+	</select> -->
 
 
 

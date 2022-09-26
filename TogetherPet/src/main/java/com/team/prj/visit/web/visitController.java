@@ -9,13 +9,5 @@ import com.team.prj.visit.service.visitService;
 
 @Controller
 public class visitController {
-	@Autowired
-	private visitService vs;
-	
-	@GetMapping("/visitCount")
-	public String visitCount(Model model) {
-		//
-		return "admin/visitCount";
-	}
-	
+
 }
