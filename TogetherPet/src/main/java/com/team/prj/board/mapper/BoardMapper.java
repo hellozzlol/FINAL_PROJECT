@@ -2,6 +2,7 @@ package com.team.prj.board.mapper;
 
 import java.util.List;
 
+
 import com.team.prj.board.service.BoardVO;
 
 public interface BoardMapper {
@@ -14,4 +15,7 @@ public interface BoardMapper {
 	int boardUpdate(BoardVO vo);
 
 	int boardDelete(BoardVO vo);
+	
+	//조회수 증가
+		int boardHitUpdate(BoardVO vo);
 }

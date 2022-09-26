@@ -3,7 +3,8 @@
 <mapper namespace="com.team.prj.accomo.mapper.accomoMapper">
 
 
-<select id="accomoSelectList" resultType="com.team.prj.accomo.service.accomoVO">
+<select id="accomoSelectList" 
+resultType="com.team.prj.accomo.service.accomoVO">
 
 
 select accomo_no,
@@ -14,19 +15,21 @@ select accomo_no,
 	   hit
 	
 	from accomo
-	order by accomo_no asc
+	order by accomo_no ASC
 
 
 
 </select>
 
-<select id="accomoSelect" resultType="com.team.prj.accomo.service.accomoVO"
-parameterType="com.team.prj.attend.service.attendVO">
+<select id="accomoSelect" 
+resultType="com.team.prj.accomo.service.accomoVO" 
+parameterType="com.team.prj.accomo.service.accomoVO">
 
 select accomo_no,
 		name,
 		address,
 		info,
+		price,
 		aphoto,
 		hit
 		from accomo
@@ -42,12 +45,11 @@ where accomo_no = #{accomoNo}
 
 
 
-<select id="accomoSerch" resultType="com.team.prj.accomo.service.accomoVO">
+<select id="accomoSearch" resultType="com.team.prj.accomo.service.accomoVO">
 
 select * from accomo
 where
 <choose>
-
 <when test="key == 1"> address like '%' || #{val}||'%'</when>
 <when test="key == 2"> name like '%' || #{val}||'%'</when>
 </choose>
@@ -59,7 +61,9 @@ where
 
 
 
-
+	<update id="accomoHitUpdate">
+	UPDATE accomo SET HIT = HIT + 1 WHERE accomo_no = #{accomoNo}
+</update>
 
 
 

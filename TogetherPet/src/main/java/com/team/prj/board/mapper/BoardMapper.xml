@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.board.mapper.BoardMapper">
+
 	<select id="boardSelectList"
 		resultType="com.team.prj.board.service.BoardVO">
 		select * from board
 	</select>
+
 
 	<select id="boardSelect"
 		resultType="com.team.prj.board.service.BoardVO"
@@ -13,41 +15,58 @@
 		from board
 		where board_no = #{boardNo}
 	</select>
-	
+
 	<insert id="boardInsert"
 		parameterType="com.team.prj.board.service.BoardVO">
-		<selectKey keyProperty="boardNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(board_no) IS NULL 
-			    THEN 1
-			    ELSE max(board_no) + 1 
-			    END AS no
+		<selectKey keyProperty="boardNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(board_no) IS NULL
+			THEN 1
+			ELSE max(board_no) + 1
+			END AS no
 			FROM board
 		</selectKey>
-		
+
 		INSERT INTO board
 		VALUES(#{boardNo}
-				,#{title}
-				,#{content}
-				,#{dt}
-				,#{likes}
-				,#{hit}
-				,#{category}
-				,#{groupNo}
-				,#{userNo})
+		,#{title}
+		,#{content}
+		,#{dt}
+		,#{likes}
+		,#{hit}
+		,#{category}
+		,#{groupNo}
+		,#{userNo})
+		,#{writer}
 	</insert>
-	
-	<update id="boardUpdate" parameterType="com.team.prj.board.service.BoardVO">
+
+	<update id="boardUpdate"
+		parameterType="com.team.prj.board.service.BoardVO">
 		update board
 		set title = #{title}
-			,content = #{content}
-			,dt = #{dt}
-			,category = #{category}
+		,content = #{content}
+		,dt = #{dt}
+		,category = #{category}
 		where board_no = #{boardNo}
 	</update>
-	
+
 	<delete id="boardDelete">
 		delete from board
 		where board_no = #{boardNo}
 	</delete>
+	
+	
+	
+		<update id="boardHitUpdate">
+			UPDATE board SET HIT = HIT + 1 WHERE board_no = #{boardNo}
+		</update>
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

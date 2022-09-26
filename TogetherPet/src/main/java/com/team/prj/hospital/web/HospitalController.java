@@ -22,13 +22,14 @@ public class HospitalController {
 		return "users/usersHospitalList";
 	}
 
+	//병원리스트
 	@RequestMapping("/hospitalList")
 	public String hospitalList(Model model) {
 		model.addAttribute("hospital", dao.hospitalSelectList());
 		return "hospital/hospitalList";
 
 	}
-
+	//상세보기
 	@RequestMapping("/hospital")
 	public String hospitalSelect(HospitalVO vo, Model model) {
 		model.addAttribute("hospital", dao.hospitalSelect(vo));

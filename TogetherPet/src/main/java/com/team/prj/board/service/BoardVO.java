@@ -14,6 +14,7 @@ public class BoardVO {
 	private int likes; // 게시글좋아용
 	private int hit; // 조회수
 	private String category; // 말머리 카테고리
+	private String writer;//작성자
 	private int groupNo; // 그룹번호(사진)
 	private int userNo; // 유저번호
 }
