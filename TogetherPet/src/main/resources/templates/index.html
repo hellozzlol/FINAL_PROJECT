@@ -5,14 +5,64 @@
 
 <head>
 <meta charset="utf-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
 <title>Together Pet</title>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		// 장바구니 추가
+		$('#all').on('click', '.addCart', function() {
+			// 상품번호
+			let goodsNo = $(this).closest('div').prev().find('input')[0];
+			goodsNo = goodsNo.value;
+			// 재고
+			let amount = $(this).closest('div').prev().find('input')[1];
+			amount = amount.value;
+			// 유저번호
+			let userNo = $('input[name=userNo]').val();
+			
+			if (amount == 0) {
+				alert('해당 상품의 재고가 없습니다.');
+				return;
+			}
+
+			if (confirm('해당 상품을 장바구니에 추가하시겠습니까?')) {
+				$.ajax('ajaxCartInsert', {
+						type: 'post',
+						data: {
+							qty: 1,
+							userNo: userNo,
+							goodsNo: goodsNo,
+							amount: amount
+						},
+						dataType: 'text',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+					})
+					.done(res => {
+						if (confirm(res)) {
+							$('#cartCall').submit();
+						}
+					})
+			}
+		})
+	})
+</script>
+</head>
+
 <body>
 
 	<article layout:fragment="content">
-	<!--slider area start-->
-	<section class="slider_section mb-63">
-		<div class="slider_area slick_slider_activation"
-			data-slick='{
+		<!--slider area start-->
+		<section class="slider_section mb-63">
+			<div class="slider_area slick_slider_activation"
+				data-slick='{
 
             "slidesToShow": 1,
             "slidesToScroll": 1,
@@ -40,7 +90,7 @@
 					</div>
 				</div>
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="assets/img/slider/slider1.jpg">
+					data-bgimg="https://images.pexels.com/photos/2558605/pexels-photo-2558605.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-7">
@@ -58,7 +108,7 @@
 					</div>
 				</div>
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="assets/img/slider/slider1.jpg">
+					data-bgimg="https://images.pexels.com/photos/6957670/pexels-photo-6957670.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-7">
@@ -170,24 +220,8 @@
 						<h2>shopping</h2>
 					</div>
 					<div class="product_tab_btn d-flex">
-						<ul class="nav" role="tablist">
-							<li><a class="active" data-toggle="tab" href="#all"
-								role="tab" aria-controls="all" aria-selected="true"> All </a></li>
-							<li><a data-toggle="tab" href="#clothings" role="tab"
-								aria-controls="clothings" aria-selected="false"> FOOD </a></li>
-							<li><a data-toggle="tab" href="#bags" role="tab"
-								aria-controls="bags" aria-selected="false"> SNACK </a></li>
-							<li><a data-toggle="tab" href="#shoes" role="tab"
-								aria-controls="shoes" aria-selected="false"> TOY </a></li>
-							<li><a data-toggle="tab" href="#accessories" role="tab"
-								aria-controls="accessories" aria-selected="false"> LIFE </a></li>
-							<li><a data-toggle="tab" href="#accessories" role="tab"
-								aria-controls="accessories" aria-selected="false"> PAD </a></li>
-							<li><a data-toggle="tab" href="#accessories" role="tab"
-								aria-controls="accessories" aria-selected="false"> HEALTH </a></li>
-						</ul>
 						<div class="all_product">
-							<a href="shop.html">All Product</a>
+							<a href="shop">All Product</a>
 						</div>
 					</div>
 				</div>
@@ -209,11 +243,12 @@
                               {"breakpoint":300, "settings": { "slidesToShow": 1 } }
                              ]
                         }'>
-								<article class="col single_product">
+								<!-- 반복되는 구간 -->
+								<article th:each="g:${goodsList}" class="col single_product">
 									<figure>
 										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
+											<a th:href="@{goods(goodsNo=${g.goodsNo})}"> <img
+												class="primary_img" th:src="${g.thumb}" alt="consectetur">
 											</a>
 											<div class="product_action">
 												<ul>
@@ -231,55 +266,9 @@
 													</a></li>
 												</ul>
 											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(4)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-											<div class="product_label">
-												<span>-20%</span>
+											<div class="product_label" th:if="${g.dc}">
+												<span>[[${#numbers.formatInteger(g.dc *
+													100,2,'COMMA')}]]%</span>
 											</div>
 										</div>
 										<figcaption class="product_content text-center">
@@ -290,1438 +279,56 @@
 													<li><a href="#"><i class="ion-android-star"></i></a></li>
 													<li><a href="#"><i class="ion-android-star"></i></a></li>
 													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(6)</span></li>
+													<li><div th:each="rv:${reviewCount}">
+															<span th:if="${rv.boardNo == g.goodsNo}"
+																th:text="${rv.rvCnt}"></span>
+														</div></li>
 												</ul>
 											</div>
 											<h4 class="product_name">
-												<a href="product-details.html">Make Thing Happen
-													T-Shirts</a>
+												<a th:href="@{goods/{goodsNo}(goodsNo=${g.goodsNo})}">[[${g.name}]]</a>
 											</h4>
 											<div class="price_box">
-												<span class="current_price">$26.00</span> <span
-													class="old_price">$62.00</span>
+												<span class="current_price">KRW
+													[[${#numbers.formatInteger(g.price*(1-g.dc),3,'COMMA')}]] </span>
+												<span class="old_price" th:if="${g.dc}">KRW
+													[[${#numbers.formatInteger(g.price,3,'COMMA')}]]</span>
 											</div>
 											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-											<div class="product_label">
-												<span>-15%</span>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(2)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic White Simple
-													Sneaker</a>
-											</h4>
-											<div class="price_box">
-												<span class="current_price">$26.00</span> <span
-													class="old_price">$62.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product4.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(8)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$42.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(12)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-											<div class="product_label">
-												<span>-20%</span>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(14)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
+												<div class="hiddenInfo" style="display: none">
+													<!-- 상품번호 -->
+													<input type="number" name="goodsNo" th:value="${g.goodsNo}">
+													<!-- 재고 -->
+													<input type="number" name="amount" th:value="${g.amount}">
+												</div>
+												<div sec:authorize="isAuthenticated()">
+													<button class="button btn btn-primary addCart"
+														type="button">
+														<i class="ion-android-add"></i> Add To Cart
+													</button>
+												</div>
+												<div sec:authorize="isAnonymous()">
+													<button class="button btn btn-primary" type="button"
+														onclick="location.href='loginForm'">
+														<i class="ion-android-add"></i> Add To Cart
+													</button>
+												</div>
 											</div>
 										</figcaption>
 									</figure>
 								</article>
 							</div>
 						</div>
-						<div class="tab-pane fade" id="clothings" role="tabpanel">
-							<div class="product_slick slick_slider_activation"
-								data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
 
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(2)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic White Simple
-													Sneaker</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product4.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(8)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$42.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(12)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(14)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(4)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a title="Add To Cart" class="btn btn-primary" href="#">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(6)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Make Thing Happen
-													T-Shirts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-
-
-							</div>
-						</div>
-						<div class="tab-pane fade" id="bags" role="tabpanel">
-							<div class="product_slick slick_slider_activation"
-								data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(2)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic White Simple
-													Sneaker</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product4.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(8)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$42.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(4)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a title="Add To Cart" class="btn btn-primary" href="#">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(6)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Make Thing Happen
-													T-Shirts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(12)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(14)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-							</div>
-						</div>
-						<div class="tab-pane fade" id="shoes" role="tabpanel">
-							<div class="product_slick slick_slider_activation"
-								data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(6)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Make Thing Happen
-													T-Shirts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(12)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(14)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(2)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic White Simple
-													Sneaker</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product4.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(8)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$42.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(4)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a title="Add To Cart" class="btn btn-primary" href="#">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-							</div>
-						</div>
-						<div class="tab-pane fade" id="accessories" role="tabpanel">
-							<div class="product_slick slick_slider_activation"
-								data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(4)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a title="Add To Cart" class="btn btn-primary" href="#">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(6)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Make Thing Happen
-													T-Shirts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product1.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(12)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic Joggin Shorts</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(14)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(2)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Basic White Simple
-													Sneaker</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$38.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product4.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-heart icons"></i></a></li>
-
-													<li class="quick_view"><a data-toggle="modal"
-														data-target="#modal_box" data-tippy="Quick View" href="#"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"><i
-															class="icon-size-fullscreen icons"></i></a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="product_content text-center">
-											<div class="product_ratting">
-												<ul class="d-flex justify-content-center">
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><a href="#"><i class="ion-android-star"></i></a></li>
-													<li><span>(8)</span></li>
-												</ul>
-											</div>
-											<h4 class="product_name">
-												<a href="product-details.html">Simple Rounded Sunglasses</a>
-											</h4>
-											<div class="price_box">
-												<span class="text-black">$42.00</span>
-											</div>
-											<div class="add_to_cart">
-												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="top">Add
-													To Cart</a>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-							</div>
-						</div>
 					</div>
 				</div>
+			</div>
+			<div sec:authorize="isAuthenticated()">
+				<form id="cartCall" name="cartCall" action="cart" method="post">
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}"> <input type="hidden"
+						name="userNo" th:value="${session.user.userNo}">
+				</form>
 			</div>
 		</section>
 		<!-- product section end -->

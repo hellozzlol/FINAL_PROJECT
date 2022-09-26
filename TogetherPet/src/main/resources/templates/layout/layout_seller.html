@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="en"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 <meta charset="utf-8">
@@ -288,8 +289,19 @@
 											class="icon-user icons"></i></a>
 										<ul class="dropdown_account_link">
 											<li><a href="/users/usersSelect">My Account</a></li>
-											<li><a href="/loginForm">Login</a></li>
-											<li><a href="#">Contact</a></li>
+											<!-- 0926 희수가 추가 -->
+											<div sec:authorize="isAnonymous()">
+												<li><a href="loginForm">Login</a></li>
+												<li><a href="userJoinForm">Join</a></li>
+											</div>
+											<div sec:authorize="isAuthenticated()">
+												<li><a id="logout">Logout</a></li>
+												<form action="logout" method="post" id="logoutFrm">
+													<input type="hidden" th:name="${_csrf.parameterName}"
+														th:value="${_csrf.token}">
+												</form>
+											</div>
+											<!-- 0926 희수가 추가 -->
 										</ul></li>
 									<li><a href="#"><i class="icon-heart icons"></i></a> <span
 										class="item_count">2</span></li>
@@ -369,9 +381,11 @@
 											<li><a href="/seller/sellerDoneList">판매완료</a></li>
 										</ul></li>
 									<hr>
-									<li class="widget_sub_categories"><a href="/seller/sellerCalList">정산관리</a></li>
+									<li class="widget_sub_categories"><a
+										href="/seller/sellerCalList">정산관리</a></li>
 									<hr>
-									<li class="widget_sub_categories"><a href="/seller/sellerQnaList">고객문의</a></li>
+									<li class="widget_sub_categories"><a
+										href="/seller/sellerQnaList">고객문의</a></li>
 								</ul>
 							</div>
 						</div>
