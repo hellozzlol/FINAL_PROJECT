@@ -12,26 +12,31 @@ public class SellerServiceImpl implements SellerService {
 	@Autowired
 	private SellerMapper map;
 	
+	// 판매자 전체 조회
 	@Override
 	public List<SellerVO> sellerSelectList() {
 		return map.sellerSelectList();
 	}
 
+	// 판매자 단건 조회
 	@Override
-	public SellerVO sellerSelect(SellerVO vo) {
-		return map.sellerSelect(vo);
+	public SellerVO sellerMyPage(SellerVO vo) {
+		return map.sellerMyPage(vo);
 	}
 
+	// 판매자 등록
 	@Override
 	public int sellerInsert(SellerVO vo) {
 		return map.sellerInsert(vo);
 	}
 
+	// 판매자 수정
 	@Override
 	public int sellerUpdate(SellerVO vo) {
 		return map.sellerUpdate(vo);
 	}
 
+	// 판매자 삭제
 	@Override
 	public int sellerDelete(SellerVO vo) {
 		return map.sellerDelete(vo);

@@ -5,7 +5,7 @@ import java.util.List;
 public interface SellerService {
 	List<SellerVO> sellerSelectList();
 
-	SellerVO sellerSelect(SellerVO vo);
+	SellerVO sellerMyPage(SellerVO vo);
 
 	int sellerInsert(SellerVO vo);
 

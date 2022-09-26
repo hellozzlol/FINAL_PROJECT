@@ -111,9 +111,9 @@
 												th:value="${list.petNo}" placeholder="petNo" />
 										</div>
 										<div class="mb-3 col-md-6">
-											<label for="type" class="form-label">반려동물종류</label>
+											<label for="type" class="form-label">반려동물종류</label><br>
 											<input class="form-control" type="text" id="type" name="type"
-												th:value="${list.type}" placeholder="Type" />
+												th:value="${list.type}" placeholder="Type" style="display: inline; width: 150px;"/>
 											<select id="defaultSelect" class="form-select">
 												<option>===선택===</option>
 												<option value="1">강아지</option>
@@ -156,9 +156,7 @@
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="birth" class="form-label">생일</label>
-											<input type="text" id="neu" name="birth"
-												class="form-control" th:value="${#dates.format(list.birth, 'yyyy-MM-dd')}" placeholder="birth" />
-											<input class="form-control" type="date" id="html5-date-input" />
+											<input class="form-control" th:value="${#dates.format(list.birth, 'yyyy-MM-dd')}" type="date" id="html5-date-input" />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="neu" class="form-label">중성화여부</label>

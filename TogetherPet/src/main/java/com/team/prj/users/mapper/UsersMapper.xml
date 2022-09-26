@@ -5,9 +5,10 @@
 		resultType="com.team.prj.users.service.UsersVO">
 		SELECT * FROM USERS
 	</select>
-	
+
 	<!-- 주문 내역 불러오기 -->
-	<select id="orderList" resultType="com.team.prj.orders.service.OrderVO">
+	<select id="orderList"
+		resultType="com.team.prj.orders.service.OrderVO">
 		select * from orders
 		where user_no = #{userNo}
 	</select>
@@ -20,19 +21,30 @@
 		where g.goods_no = c.goods_no
 		and c.user_no = #{userNo}
 	</select>
-	
+
+	<!-- 수강 내역 조회 -->
+	<select id="classList"
+		resultType="com.team.prj.classreserve.service.ClassReserveVO">
+		select *
+		from class_reserve
+		where user_no = #{userNo}
+	</select>
+
 	<!-- 사진 불러오기 -->
-	<select id="photoList" resultType="com.team.prj.photo.service.PhotoVO">
+	<select id="photoList"
+		resultType="com.team.prj.photo.service.PhotoVO">
 		select * from photo
 		where group_no = #{groupNo}
 	</select>
-	
+
+	<!-- 회원 조회 -->
 	<select id="usersSelect"
 		parameterType="com.team.prj.users.service.UsersVO"
 		resultType="com.team.prj.users.service.UsersVO">
 		SELECT * FROM USERS WHERE user_no = #{userNo}
 	</select>
 
+	<!-- 회원 등록 -->
 	<insert id="usersInsert"
 		parameterType="com.team.prj.users.service.UsersVO">
 		<selectKey keyProperty="userNo" order="BEFORE"
@@ -40,7 +52,8 @@
 			SELECT
 			CASE WHEN max(user_no) IS NULL
 			THEN 1
-			ELSE max(user_no) + 1
+			ELSE
+			max(user_no) + 1
 			END AS no
 			FROM users
 		</selectKey>
@@ -57,17 +70,14 @@
 		,'USER'
 		,3000
 		,1
-		,SYSDATE)
+		,SYSDATE
+		,'1')
 	</insert>
 
+	<!-- 회원 수정 -->
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
-		<!-- SET nickname = #{nickname}
-			,password = #{password}
-			,email = #{email}
-			,call = #{call}
-			,address = #{address} -->
 		<set>
 			<if test="nickname != null">nickname = #{nickname},</if>
 			<if test="password != null">password = #{password},</if>
@@ -78,7 +88,9 @@
 		WHERE user_no = #{userNo}
 	</update>
 
+	<!-- 회원 삭제 -->
 	<delete id="usersDelete">
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
+
 </mapper>
