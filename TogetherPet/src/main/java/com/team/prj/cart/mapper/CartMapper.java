@@ -7,11 +7,15 @@ import com.team.prj.cart.service.CartVO;
 
 public interface CartMapper {
 	List<CartVO> cartList(CartVO vo);
-	
+
 	int insertCart(CartVO vo);
+
 	int updateCart(CartVO vo);
-	int deleteCart(CartVO vo);	
-	
+
+	int deleteCart(CartVO vo);
+
 	CartVO isGoods(CartVO vo);
 
+	// 0926 희수가 추가
+	int cartCount(CartVO vo);
 }

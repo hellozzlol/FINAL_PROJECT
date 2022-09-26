@@ -31,4 +31,9 @@
 	<select id="isGoods" resultType="com.team.prj.cart.service.CartVO">
 		select * from cart where goods_no = #{goodsNo} and user_no = #{userNo}
 	</select>
+
+	<!-- 0926 희수가 추가 -->
+	<select id="cartCount" resultType="int">
+		select count(*) from cart where user_no=#{userNo}
+	</select>
 </mapper>

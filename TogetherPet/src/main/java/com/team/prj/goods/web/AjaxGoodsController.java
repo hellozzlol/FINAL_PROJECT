@@ -23,11 +23,11 @@ public class AjaxGoodsController {
 		String msg = null;
 		int cnt = 0;
 		int qty = 0;
-		
+
 		// 장바구니에 없는 goodsNo이면 인서트
 		// 장바구니에 있는 goodsNo이면 수량 업데이트
 		CartVO oldCart = cart.isGoods(vo);
-		
+
 		if (oldCart == null) {
 			cnt = cart.insertCart(vo);
 		} else {
@@ -41,8 +41,7 @@ public class AjaxGoodsController {
 		}
 		if (cnt > 0) {
 			msg = "장바구니에 추가 완료! 장바구니로 이동하시겠습니까?";
-		} 
-		else {
+		} else {
 			msg = "네트워크 문제로 인해 장바구니에 상품을 넣지 못하였습니다. 다시 시도해 주세요.";
 		}
 		return msg;
@@ -68,7 +67,7 @@ public class AjaxGoodsController {
 
 	// 주문 및 결제 하기 (등록)
 	@RequestMapping("/ajaxOrderInsert")
-	public int orderInsert(OrderVO vo, Model model) {
+	public int orderInsert(OrderVO vo) {
 		// 등록
 		order.insertOrder(vo);
 		int orderNo = vo.getOrderNo();
@@ -83,8 +82,13 @@ public class AjaxGoodsController {
 		c.setCartNo(cartNo);
 		cart.deleteCart(c);
 
-		System.out.println("===========" + qtyUpd);
-
 		return orderNo;
+	}
+
+	// 인덱스 헤더에 표시할 장바구니 갯수
+	@RequestMapping("/ajaxCartCount")
+	public int ajaxCartCount(CartVO vo) {
+		int cnt = cart.cartCount(vo);
+		return cnt;
 	}
 }

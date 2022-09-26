@@ -13,4 +13,7 @@ public interface CartService {
 	int deleteCart(CartVO vo);
 	
 	CartVO isGoods(CartVO vo);
+	
+	// 0926 희수가 추가
+	int cartCount(CartVO vo);
 }
