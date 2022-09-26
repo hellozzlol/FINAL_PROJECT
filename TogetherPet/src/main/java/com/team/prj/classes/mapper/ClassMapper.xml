@@ -18,6 +18,20 @@
 		WHERE CLASS_NO = #{classNo}
 	</select>
 	
+	
+	
+	<!-- 그룹별 사진 불러오기 -->
+	<select id="classPhotoList"
+		parameterType="com.team.prj.classes.service.ClassVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		SELECT * 
+		FROM PHOTO 
+		WHERE GROUP_NO =#{groupNo} 
+		AND NAME='리스트'
+	</select>
+	
+	
+	
 	<insert id="classInsert" parameterType="com.team.prj.classes.service.ClassVO">
 			<selectKey keyProperty="classNo" order="BEFORE" resultType="int">
 			SELECT
@@ -25,7 +39,7 @@
 			FROM CLASS
 			</selectKey>
 		INSERT INTO CLASS
-		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage})
+		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage},#{thumb},#{detail})
 	</insert>
 	
 	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">

@@ -21,6 +21,7 @@ import com.team.prj.classreserve.mapper.ClassReserveMapper;
 import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.orders.service.OrderVO;
+import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
@@ -28,15 +29,14 @@ public class ClassController {
 	
 	@Autowired 
 	private ClassMapper dao;
-	
 	@Autowired
 	private ClassService classes;
-	
 	@Autowired 
 	private ClassExreserveService exreserve;
-	
 	@Autowired
 	private ClassReserveService reserve;
+	
+	
 	
 	//소스코드 테스트용입니다
 	@RequestMapping("test")
@@ -60,8 +60,10 @@ public class ClassController {
 		
 		// 리뷰리스트
 		
-		//클래스 사진 슬라이드 리스트
-		//List<PhotoVO> list = classes.classPhotoList(vo);
+		//클래스 그룹사진 슬라이드 리스트
+		List<PhotoVO> list = classes.classPhotoList(vo);
+		model.addAttribute("photoList", list);
+		
 		return "class/classSelect";
 	}
 	
@@ -74,14 +76,6 @@ public class ClassController {
 		return "class/classInsert";
 	}
 
-	/*클래스 결제 페이지
-	@RequestMapping("classExreserve")
-	public String classExreserveSelect(Model model, ClassExreserveVO vo) {
-		//클래스 예약 선택 정보
-		vo = exreserve.classExreserveSelect(vo);
-		model.addAttribute("exreserve", vo);
-		return "class/classExreserve";
-	}*/
 
 	
 	//클래스 결제 페이지
@@ -112,8 +106,11 @@ public class ClassController {
 	}
 	
 	//reserveConfirm 클래스 최종 예약
-	@RequestMapping("/reserveConfirm")
+	@RequestMapping("reserveConfirm")
 	public String orderConfirm(Model model, ClassReserveVO vo) {
+		
+		//vo.setReserveNo(reserveNo);
+		System.out.println(vo.getReserveNo());
 		
 		List<ClassReserveVO> list = reserve.classReserveSelectList(vo);
 		vo = list.get(0);
