@@ -41,5 +41,12 @@ public class CartServiceImpl implements CartService{
 		// TODO Auto-generated method stub
 		return map.isGoods(vo);
 	}
+
+	// 0926 희수가 추가
+	@Override
+	public int cartCount(CartVO vo) {
+		// TODO Auto-generated method stub
+		return map.cartCount(vo);
+	}
 	
 }

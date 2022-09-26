@@ -1,11 +1,15 @@
 <!doctype html>
 <html class="no-js" lang="en"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>Together Pet</title>
 <meta name="description"
 	content="Uthr Fashion eCommerce Bootstrap 5 Template is an innovative and modern e-commerce online store website template." />
@@ -62,15 +66,30 @@
 </script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
 		$('#logout').on('click', function() {
 			$('#logoutFrm').submit();
 		})
-		
+
 		/* 0926 희수가 추가 */
 		$('#layoutcartCall').on('click', function() {
 			$('#layoutcartFrm').submit();
 		})
-
+		
+		let userNo = $('#userNo').val();
+		$.ajax({
+			url: 'ajaxCartCount',
+			type: 'post',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader(header, token)
+			},
+			data: {userNo:userNo}
+		})
+		.done(res => {
+			$('#item_count').html(res);
+		})
 	})
 </script>
 
@@ -208,20 +227,20 @@
 														th:value="${_csrf.token}">
 												</form>
 											</div>
-											<!-- 0926 희수가 추가 -->
 										</ul></li>
+									<li><a href="#"><i class="icon-heart icons"></i></a> <span
+										class="item_count">2</span></li>
 									<div sec:authorize="isAuthenticated()">
-										<li><a href="#"><i class="icon-heart icons"></i></a> <span
-											class="item_count">2</span></li>
-										<li class="shopping_cart"><a id="layoutcartCall"><i
-												class="icon-basket-loaded icons"></i></a> <span
-											class="item_count">2</span></li>
+										<li class="shopping_cart"><a id="layoutcartCall"><img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
+												<span id="item_count" class="item_count"></span></a></li>
 									</div>
 									<div sec:authorize="isAnonymous()">
-										<li class="shopping_cart"><a href="loginForm"><i
-												class="icon-basket-loaded icons"></i></a> <span
-											class="item_count">2</span></li>
+										<li class="shopping_cart"><a href="loginForm"><img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
+										</li>
 									</div>
+									<!-- / 0926 희수가 추가 -->
 								</ul>
 							</div>
 						</div>
@@ -260,10 +279,11 @@
 	<article layout:fragment="content"></article>
 	<!-- 0926 희수가 추가 -->
 	<div sec:authorize="isAuthenticated()">
-		<form id="layoutcartFrm" name="layoutcartFrm" action="cart" method="post">
+		<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
+			method="post">
 			<input type="hidden" th:name="${_csrf.parameterName}"
 				th:value="${_csrf.token}"> <input type="hidden"
-				name="userNo" th:value="${session.user.userNo}">
+				name="userNo" id="userNo" th:value="${session.user.userNo}">
 		</form>
 	</div>
 	<!-- goods body end -->
