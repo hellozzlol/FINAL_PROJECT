@@ -74,7 +74,7 @@
 												<input class="form-control" type="text" id="val" name="val">
 											</div>
 											<div class="col-auto">
-												<button type="button" class="btn btn-dark" id="Serachbtn"
+												<button type="button" class="btn btn-dark" id="Searchbtn"
 													onclick="searchCall()">검색</button>
 											</div>
 										</form>
@@ -85,13 +85,12 @@
 										<div class="row shop_wrapper ">
 
 											<!--숙소 반복문 스타트! -->
-											<div class="col-lg-4 col-md-4 col-sm-6 col-6"
+											<div class="col-lg-4 col-md-4 col-sm-6 col-6 " id="point"
 												th:each="a:${accomo}">
 												<div class="single_product">
 													<div class="product_thumb">
-														<a
-															href="https://petairline.co.kr/pettour/%EB%B0%98%EB%A0%A4%EA%B2%AC%EA%B3%BC-%EB%96%A0%EB%82%98%EB%8A%94-4%EB%B0%95-6%EC%9D%BC-%ED%91%B8%EC%BC%93%EC%97%AC%ED%96%89-%EB%A1%9C%EC%A6%88%EC%9A%B0%EB%93%9C-%EC%9A%94%ED%8A%B8%ED%88%AC%EC%96%B4/">
-															<img class="primary_img" th:src="${a.aphoto}" alt="tree">
+														<a th:href="@{accomo(accomoNo=${a.accomoNo})}"> <img
+															class="primary_img" th:src="${a.aphoto}" alt="tree">
 														</a>
 
 
@@ -126,7 +125,102 @@
 
 											<!--숙소 반복문 끝! -->
 
-
+											<script>
+		
+		$("#Searchbtn").on('click', searchCall)
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			  let key = document.getElementById('key').value;
+		      let val = document.getElementById('val').value;
+		      console.log(key,",",val)
+		     
+		     
+		     $.ajax({
+		    	url : "accomoajaxSearch",
+		    	method : 'get',//method
+		    	data : {'key' : key, 'val' : val},
+		    	dataType : 'json',
+		    	success : function(response) {
+					console.log('2',response);
+					htmlView(response);
+				},
+				error : function () {
+					console.log('오류');   
+				}
+		     });
+		     
+		     function htmlView(data) {
+					//html로 변환해서 원하는 위치에 출력하도록 구현
+					
+					 $(".shop_wrapper>div").remove(); 
+					 //$(".host").remove(); 
+					 
+				
+					 for(a of data) {
+					/* 	 if(date.length==0){
+							 var result = `
+								 <!--숙소 반복문 스타트! -->
+								 <div class="col-lg-4 col-md-4 col-sm-6 col-6 ">
+										<div class="single_product" id="point">
+											<div class="product_thumb">
+													<h1>나중에 준비 ㅇㅋ?</h1>
+											</div>
+										</div>
+									</div>
+									`
+						 }else{ */
+					
+						 var result = `
+							 <!--숙소 반복문 스타트! -->
+							 <div class="col-lg-4 col-md-4 col-sm-6 col-6 ">
+									<div class="single_product" id="point">
+										<div class="product_thumb">
+											<a href="accomo?accomoNo=${a.accomoNo}">
+												<img class="primary_img" src="${a.aphoto}" alt="tree">
+											</a>
+											<!--스크랩기능 시작  -->
+											<div class="product_action">
+												<ul>
+													<li class="wishlist">
+													<a href="#"
+														data-tippy="Wishlist" data-tippy-inertia="true"
+														data-tippy-delay="50" data-tippy-arrow="true"
+														data-tippy-placement="left"><i
+															class="icon-heart icons"></i></a></li>
+												</ul>
+											</div>
+											<!--스크랩기능 끝  -->
+											<div class="product_content grid_content text-center">
+												<h4 class="product_name">🐶${a.name}</h4>
+												<div class="price_box">
+													<span class="current_price">🐶${a.address}</span>
+												</div>
+												<div class="price_box">
+													<span class="current_price">🐶${a.price}원</span>
+												</div>
+												<div class="product_name">
+													<span class="current_price">👀${a.hit}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								`
+								
+								
+								<!--숙소 반복문 끝! -->
+							 $(".shop_wrapper").append(result); 	
+							//$(".host").append(".card-body");
+					 
+					 		};	
+					 			/* } */
+					 	};
+					     
+					};
+		</script>
 
 
 											<!-- 페이징시작 -->

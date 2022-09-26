@@ -37,4 +37,10 @@ public class BoardServiceImpl implements BoardService {
 		return map.boardDelete(vo);
 	}
 
+	@Override
+	public int boardHitUpdate(BoardVO vo) {
+		
+		return map.boardHitUpdate(vo);
+	}
+
 }
