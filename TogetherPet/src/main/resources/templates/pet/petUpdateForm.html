@@ -5,42 +5,11 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
 <title>My pet page</title>
 <script>
-	// 나이 계산
-	function age(birth) {
-		const today = new Date();
-		const yearDiff = today.getFullYear() - birth.getFullYear();
-		const monthDiff = today.getMonth() - birth.getMonth();
-		const dateDiff = today.getDate() - birth.getDate();
-
-		const isBeforeBirthDay = monthDiff < 0 || monthDiff === 0
-				&& dateDiff < 0;
-
-		return {
-			age : yearDiff + (isBeforeBirthDay ? -1 : 0),
-			yearAge : yearDiff,
-			countingAge : yearDiff + 1,
-		}
-	}
-	
-	// null값 체크
-	function check() {
-		if (document.fr.name.value == "") {
-			alert("이름을 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.birth.value == "") {
-			alert("나이를 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.gender.value == "") {
-			alert("성별을 입력하세요.");
-			return false;
-		}
-	}
 </script>
 <style>
 .shipping_text h3 {
@@ -104,11 +73,12 @@
 							<div class="card-body" th:each="list : ${petList}">
 								<form id="formAccountSettings" method="POST" name="fr"
 									onsubmit="return check()">
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 									<div class="row">
 										<div class="mb-3 col-md-6">
 											<label for="petNo" class="form-label">동물등록번호 *</label>
 											<input class="form-control" type="text" id="petNo" name="petNo"
-												th:value="${list.petNo}" placeholder="petNo" />
+												th:value="${list.petNo}" placeholder="petNo" required />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="type" class="form-label">반려동물종류</label><br>
@@ -125,7 +95,7 @@
 										<div class="mb-3 col-md-6">
 											<label for="name" class="form-label">이름 *</label>
 											<input class="form-control" type="text" id="name" name="name"
-												th:value="${list.name}" placeholder="Name" />
+												th:value="${list.name}" placeholder="Name" required />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label for="breed" class="form-label">품종</label>

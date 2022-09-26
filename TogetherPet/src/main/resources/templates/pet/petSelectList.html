@@ -27,6 +27,9 @@
 	font-size: 23px;
 	line-height: 18px;
 }
+.petrow {
+	padding-top: 30px;
+}
 </style>
 </head>
 
@@ -53,12 +56,13 @@
 				<div class="row">
 					<div class="col-md-12">
 						<!-- Horizontal -->
-						<div class="card mb-3">
-							<div class="row g-0" th:each="list : ${petList}">
+						<div class="card mb-3" th:each="list : ${petList}">
+							<div class="row petrow">
 								<div class="col-md-4">
 									<a th:href="@{/pet/petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
-										src="/admin/assets/img/elements/dog.png" alt="Card image" />
+										src="/admin/assets/img/elements/dog.png" alt="Card image"
+										style="width: 220px; height: 220px;" />
 									</a>
 								</div>
 								<div class="col-md-8">
@@ -98,7 +102,6 @@
 														disabled="disabled" />
 												</div>
 											</div>
-											<hr>
 										</form>
 									</div>
 								</div>

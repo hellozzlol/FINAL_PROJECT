@@ -8,9 +8,13 @@
 
 	<!-- 주문 내역 불러오기 -->
 	<select id="orderList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
-		select * from orders
-		where user_no = #{userNo}
+		select *
+		from orders o, goods g
+		where o.goods_no = g.goods_no
+        and o.user_no = 1
+		order by order_no desc
 	</select>
 
 	<!-- 장바구니 내역 조회 -->
@@ -32,9 +36,12 @@
 
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.photo.service.PhotoVO">
-		select * from photo
+		select *
+		from photo
 		where group_no = #{groupNo}
+		and name = '리스트'
 	</select>
 
 	<!-- 회원 조회 -->

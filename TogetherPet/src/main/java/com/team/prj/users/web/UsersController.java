@@ -93,13 +93,18 @@ public class UsersController {
 	}
 
 	// 마이페이지 주문 내역
+//	@RequestMapping("/users/usersOrderList")
+//	public String orderList(OrderVO vo, Model model, HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		UsersVO u = (UsersVO) session.getAttribute("user");
+//		vo.setUserNo(u.getUserNo());
+//		List<OrderVO> list = user.orderList(vo);
+//		model.addAttribute("orderList", list);
+//		return "users/usersOrderList";
+//	}
 	@RequestMapping("/users/usersOrderList")
-	public String orderList(OrderVO vo, PhotoVO pvo, Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UsersVO u = (UsersVO) session.getAttribute("user");
-		vo.setUserNo(u.getUserNo());
-		model.addAttribute("orderList", user.orderList(vo));
-		model.addAttribute("photoList", user.photoList(pvo));
+	public String orderList(OrderVO ovo, Model model, HttpServletRequest request) {
+		model.addAttribute("orderList", user.orderList(ovo));
 		return "users/usersOrderList";
 	}
 
@@ -187,7 +192,7 @@ public class UsersController {
 
 	// 반려동물 전체 리스트
 	@RequestMapping("/pet/petSelectList")
-	public String petSelectList(PetVO vo, Model model) {
+	public String petSelectList(Model model) {
 		model.addAttribute("petList", pet.petSelectList());
 		return "pet/petSelectList";
 	}
@@ -195,8 +200,8 @@ public class UsersController {
 	// 반려동물 단건 조회
 	@RequestMapping("/pet/petSelect")
 	public String petSelect(PetVO vo, Model model) {
-	model.addAttribute("petList", pet.petSelect(vo));
-	return "/pet/petSelect";
+		model.addAttribute("petList", pet.petSelect(vo));
+		return "pet/petSelect";
 	}
 
 	// 반려동물 정보 수정 폼 호출
