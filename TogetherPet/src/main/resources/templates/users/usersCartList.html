@@ -102,12 +102,7 @@
 			// order로 이동
 			$('#orderCallBtn').on('click', function () {
 				if (confirm('주문 페이지로 넘어가시겠습니까?')) {
-					// userNo
-					let uN = $('.cart_product_text')[0];
-					uN = Number(uN.children[0].innerHTML);
-
-					userNo.value = uN;
-					document.getElementById('orderCall').submit();
+					$('#orderCall').submit();
 				}
 			})
 		})
@@ -159,7 +154,7 @@
 														th:id="${c.cartNo}">
 														<td>
 															<div class="cart_product_thumb">
-																<img src="assets/img/product/product4.jpg" alt="">
+																<img th:src="${c.thumb}" alt="">
 															</div>
 														</td>
 														<td>
@@ -223,8 +218,8 @@
 				<!--shopping cart area end -->
 				<form name="orderCall" id="orderCall" method="post" action="order">
 					<input type="hidden" th:name="${_csrf.parameterName}"
-						th:value="${_csrf.token}"> <input type="hidden"
-						name="userNo" th:value="${session.user.userNo}">
+						th:value="${_csrf.token}">
+					<input type="hidden" name="userNo" th:value="${session.user.userNo}">
 				</form>
 
 			</div>
