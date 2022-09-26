@@ -35,4 +35,7 @@ public class ClassVO {
 	//String []addresses;
 	String searchkey;
 	String searchval;
+	
+	String thumb; //썸네일
+	String detail; //상세보기 
 }

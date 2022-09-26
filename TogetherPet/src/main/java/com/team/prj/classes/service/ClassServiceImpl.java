@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.classes.mapper.ClassMapper;
+import com.team.prj.photo.service.PhotoVO;
 
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -54,10 +55,12 @@ public class ClassServiceImpl implements ClassService {
 		return map.classDateOption(sdate, no);
 	}
 
-//	@Override
-//	public List<ClassVO> classSearch(String[] categories, String[] addresses, String searchkey, String searchval) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<PhotoVO> classPhotoList(ClassVO vo) {
+		// TODO Auto-generated method stub
+		return map.classPhotoList(vo);
+	}
+
+
 
 }

@@ -207,7 +207,7 @@ layout:decorate="~{layout/layout}">
 									<!----썸네일?---->
 									<div class="product_thumb">
 										<a th:href="@{classSelect(classNo=${c.classNo})}"> 
-											<img class="primary_img" src="assets/img/product/classtm1.jpg" alt="consectetur">
+											<img class="primary_img" th:src="${c.thumb}" alt="consectetur">
 										</a>
 										
 										<div class="product_action">
@@ -219,7 +219,7 @@ layout:decorate="~{layout/layout}">
 											</ul>
 										</div>
 										<div class="product_label">
-											<span th:text="${c.category}"></span>
+											<span th:text="${c.category}" style="width: 120%;"></span>
 										</div>
 									</div>				
 

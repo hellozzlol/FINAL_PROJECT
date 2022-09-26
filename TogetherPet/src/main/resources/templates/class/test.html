@@ -1,84 +1,169 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>테스트</title>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-
-<link rel="stylesheet" href="/assets/css/sdp2.ko_KR.css" type="text/css" />
-
-
-<script>
-	
-</script>
-
-
+  <title>실험하는 페이지</title>
+  
+  
 <style>
-.prod-image__item:hover {
-	
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/* ---------위쪽코드는 reset.css------------ */
+
+
+/*=================이미지 슬라이더================*/
+#sul{
+    list-style:none;
+}
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.scontainer{
+    width:600px;
+    height:400px;
+    position: relative;
+    overflow: hidden;
+}
+.slider{
+    display: flex;
+    position:absolute;
+    top:0;
+    left:0;
 }
 
-</style>
+.sbtn{
+    font-size: 50px;
+    color: #d3d3d3;
+}
+.prev{
+    position:absolute;
+    top:20%;
+    left:23%;
+}
+.next{
+    position:absolute;
+    top:20%;
+    right:23%;
+}
+.scontainer #sul{
+    -webkit-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+    -o-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+    transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+}
+</style> 
+  
 
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+		var slideWrapper = document.querySelector('.scontainer');
+		var slides = document.querySelectorAll('.item');
+		var totalSlides = slides.length; // item의 갯수
+		
+		
+		var sliderWidth = slideWrapper.clientWidth; // container의 width
+		var slideIndex = 0;
+		var slider = document.querySelector('.slider');
+		
+		slider.style.width = sliderWidth * totalSlides + 'px';
+		
+		
+		function showSlides(n) {
+		    slideIndex = n;
+		    if (slideIndex == -1) {
+		        slideIndex = totalSlides - 1;
+		    } else if (slideIndex === totalSlides) {
+		        slideIndex = 0;
+		    }
+		    slider.style.left = -(sliderWidth * slideIndex) + 'px';
+		}
+		
+		function plusSlides(n){
+		    showSlides(slideIndex += n);
+		}
+		  
+		function currentSlide(n) {
+		    showSlides(slideIndex = n);
+		}
+		
+		var nextBtn = document.querySelector('.next');
+		var prevBtn = document.querySelector('.prev');
+		
+		nextBtn.addEventListener('click', function () {
+		    plusSlides(1);
+		});
+		prevBtn.addEventListener('click', function () {
+		    plusSlides(-1);
+		});
+})
 
+</script>
+
+  
 </head>
+
+
 <body>
-
-
-	<div class="prod-image" data-global-banner-fold="">
-		<div id="repImageContainer" class="prod-image-container"
-			data-global-banner-fold="">
-			<div class="prod-image__items">
-
-				<div class="prod-image__item">
-					<!-- 여기밑에 넣은 사진 왼쪽에 썸네일처럼 조그맣게 나옴... -->
-					<img src="assets/img/product/product1.jpg"> 
-					<i class="prod-image__item__border"></i>
-				</div>
-
-				<div class="prod-image__item ">
-					<img src="assets/img/product/product2.jpg"
-						onerror="this.src='//t1a.coupangcdn.com/thumbnails/remote/490x490/image/coupang/common/no_img_1000_1000.png';"
-						alt="thumb image" data-src="assets/img/product/product2.jpg"
-						class="lazy-load-img"> <i class="prod-image__item__border"></i>
-				</div>
-
-				<div class="prod-image__item ">
-					<img src="assets/img/product/product3.jpg"
-						onerror="this.src='//t1a.coupangcdn.com/thumbnails/remote/490x490/image/coupang/common/no_img_1000_1000.png';"
-						alt="thumb image" data-src="assets/img/product/product3.jpg"
-						class="lazy-load-img"> <i class="prod-image__item__border"></i>
-				</div>
-
-				<div class="prod-image__item ">
-					<img src="assets/img/product/product4.jpg"
-						onerror="this.src='//t1a.coupangcdn.com/thumbnails/remote/490x490/image/coupang/common/no_img_1000_1000.png';"
-						alt="thumb image" data-src="assets/img/product/product4.jpg"
-						class="lazy-load-img"> <i class="prod-image__item__border"></i>
-				</div>
-
-				<div class="prod-image__item ">
-					<img
-						src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-						onerror="this.src='//t1a.coupangcdn.com/thumbnails/remote/490x490/image/coupang/common/no_img_1000_1000.png';"
-						alt="thumb image"
-						data-src="//thumbnail8.coupangcdn.com/thumbnails/remote/48x48ex/image/vendor_inventory/ced3/f7009f2bfc2141cfb35cd260a533e0bad59ab322ffad769a54e2a50de747.jpeg"
-						class="lazy-load-img"> <i class="prod-image__item__border"></i>
-				</div>
-
-			</div>
-			
-			
-			<img class="prod-image__detail" src="assets/img/product/product1.jpg"/> 
-
-		</div>
-
-		<div id="prodStickyBanner"
-			class="product-sticky-banner-clickable prod-sticky-banner"></div>
-	</div>
-
+    <div class="wrapper">
+        <div class="scontainer">
+            <ul id="sul" class="slider">
+                <li class="item">1st <img id="slide" src="assets/img/product/product1.jpg" name="slide" width="600" height="350"></li>
+                <li class="item">2nd<img id="slide" src="assets/img/product/product2.jpg" name="slide" width="600" height="350"></li>
+                <li class="item">3rd<img id="slide" src="assets/img/product/product3.jpg" name="slide" width="600" height="350"></li>
+            </ul>
+        </div>
+        <div class="sbtn">
+            <a class="prev" style="text-decoration: none;">&#10094;</a>
+            <a class="next" style="text-decoration: none;">&#10095;</a>
+        </div>
+    </div>
 
 </body>
-
 </html>
+
+		

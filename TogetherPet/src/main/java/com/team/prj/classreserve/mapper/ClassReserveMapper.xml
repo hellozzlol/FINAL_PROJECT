@@ -43,7 +43,7 @@
 			FROM CLASS_RESERVE
 		</selectKey>
 		INSERT INTO CLASS_RESERVE
-		VALUES #{reserveNo},
+		VALUES (#{reserveNo},
 				TO_DATE(#{dt}, 'YYYY-MM-DD HH24:MI:SS'),
 				SYSDATE,
 				#{pay},

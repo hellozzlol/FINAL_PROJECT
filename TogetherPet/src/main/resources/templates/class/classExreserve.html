@@ -109,7 +109,7 @@
 								}
 							})
 							.done(res => {
-								$('#exreserveNo').val(res);
+								$('#reserveNo').val(res);
 								$('#reserveCall').submit();
 							})
 					
@@ -332,7 +332,7 @@
 		<form id="reserveCall" name="reserveCall" action="reserveConfirm" method="post">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			<!-- 예약번호 -->
-			<input type="hidden" name="reserveNo" id="reserveNo">
+			<input type="hidden" th:name="reserveNo" th:id="reserveNo">
 		</form>
 
 </article>
