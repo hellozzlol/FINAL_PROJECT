@@ -37,15 +37,24 @@
 				// 할인액
 				$('#dc').html(sTotal - gTotal);
 			}
+			if(Number($('#my').html())<=0){
+				$('#my').html('0')
+			}
 			// 적립금 사용 동적 제어	
 			$('#getMoney').on('click', function () {
 				let money = Number($('#money').val());
+				let my = Number($('#my').html());
+				
 				if (money < 1000) {
 					alert('적립금은 1,000원 이상 사용 가능합니다.');
 					$('#money').val('');
 					return
 				}
-				let my = Number($('#my').html());
+				if(money>my){
+					alert('보유한 적립금보다 많은 금액을 사용할 수 없습니다.');
+					$('#money').val('');
+					return
+				}
 				$('#my').html(my - money);
 				$('#point').html(money);
 				getTotal();
@@ -54,7 +63,7 @@
 
 			// 주문/결제 
 			$('#insertOrder').on('click', function () {
-				if (confirm('해당 상품으로 주문 및 결제를 진행하시겠습니까')) {
+				if (confirm('해당 상품으로 주문 및 결제를 진행하시겠습니까?')) {
 					let address = $('#address').val();
 					let message = $('#message').val(); // 1. 없음 2. 도착하기 전에 연락 주세요. 3. 경비실에 맡겨주세요. 4. 벨 누르지 말아 주세요.
 					if(message == "1"){
@@ -71,8 +80,6 @@
 					let pay = $('input[name=pay]:checked').val();
 					let userNo = Number($('#userNo').val());
 					let money = $('#point').html();
-					console.log('money' + money);
-					
 					let goods = $('#tb > tr');
 					for (g of goods) {
 						let goodsNo = Number(g.getAttribute('id'));
@@ -80,7 +87,6 @@
 						let minusPrice = totalPrice * 0.9;
 						let amount = Number(g.children[3].children[0].children[0].value);
 						let cartNo = Number(g.getAttribute('data-cn'));
-						console.log('cartNo' + cartNo);
 						
 						$.ajax({
 								url: 'ajaxOrderInsert',
@@ -201,7 +207,6 @@
 						<div class="col-lg-4 col-md-6 col-sm-6">
 							<div class="shopping_coupon_calculate top">
 								<h3 class="border-bottom">배송정보 확인</h3>
-
 								<select id="message" name="message" class="select_option border">
 									<option value="1">배송메시지(없음)</option>
 									<option value="2">도착하기 전에 연락해 주세요.</option>
@@ -210,11 +215,18 @@
 								</select> <input id="name" name="name" class="border" placeholder="받는 사람"
 									type="text" th:value="${session.user.name}"> <input
 									id="call" name="call" class="border" placeholder="연락처"
-									type="text" th:value="${session.user.call}"> <input
-									id="address" name="address" class="border" placeholder="주소"
-									type="text" th:value="${session.user.address}">
-								<button class="btn btn-primary" type="button" id="getAddr">주소
-									변경</button>
+									type="text" th:value="${session.user.call}">
+								<!-- 주소 -->
+								<input id="address" name="address" class="border"
+									placeholder="주소" type="text" th:value="${session.user.address}">
+								<input id="postcode" class="border" placeholder="우편번호"
+									type="text"> <input id="roadAddress" class="border"
+									placeholder="도로명주소" type="text"> <input id="address"
+									class="border" placeholder="상세주소" type="text">
+								<!-- /주소 -->
+
+								<button class="btn btn-primary" onclick="execDaumPostcode()"
+									type="button" id="getAddr">주소 변경</button>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-6 col-sm-6">
@@ -258,7 +270,7 @@
 									<div class="panel-default">
 										<div class="panel_radio">
 											<input id="payment1" name="pay" type="radio"
-												data-target="createp_account" value="transfer" /> <span
+												data-target="createp_account" value="실시간 이체" /> <span
 												class="checkmark"></span>
 										</div>
 
@@ -268,7 +280,7 @@
 									</div>
 									<div class="panel-default">
 										<div class="panel_radio">
-											<input id="payment2" name="pay" type="radio" value="card"
+											<input id="payment2" name="pay" type="radio" value="신용카드"
 												data-target="createp_account" /> <span class="checkmark"></span>
 										</div>
 										<label for="payment2" data-toggle="collapse"
@@ -277,7 +289,7 @@
 									</div>
 									<div class="panel-default">
 										<div class="panel_radio">
-											<input id="payment3" name="pay" type="radio" value="deposit"
+											<input id="payment3" name="pay" type="radio" value="무통장 입금"
 												data-target="createp_account" /> <span class="checkmark"></span>
 										</div>
 										<label for="payment3" data-toggle="collapse"
@@ -286,7 +298,7 @@
 									</div>
 									<div class="panel-default">
 										<div class="panel_radio">
-											<input id="payment4" name="pay" type="radio" value="kakaopay"
+											<input id="payment4" name="pay" type="radio" value="카카오페이"
 												data-target="createp_account" /> <span class="checkmark"></span>
 										</div>
 										<label for="payment4" data-toggle="collapse"
@@ -314,8 +326,35 @@
 			<!-- 주문번호 -->
 			<input type="hidden" name="orderNo" id="orderNo">
 		</form>
+		<script
+			src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script>
+		/* 주소 검색 */
+		function execDaumPostcode() {
+		   	var width = 500;
+		  	var height = 300;
+		  	
+			new daum.Postcode({
+		    	width: width,
+		    	height: height,
+		    	popupTitle:'TogetherPetClass',
+		        oncomplete: function(data) {
+		        	
+		            var roadAddr = data.roadAddress; // 도로명 주소 변수
+		            var extraRoadAddr = ''; // 참고 항목 변수
 
+		            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		            document.getElementById('postcode').value = data.zonecode;
+		            document.getElementById("roadAddress").value = roadAddr;
 
+		        }
+		    }).open({//embed('classAddressIframe'); 팝업아닌 넣어서 표시
+		    	 left: (window.screen.width / 2) - (width / 2),
+		    	 top: (window.screen.height / 2) - (height / 2)
+		    });
+		};
+
+		</script>
 	</article>
 </body>
 </html>

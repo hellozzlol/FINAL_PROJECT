@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>반려동물숙박업체</title>
+<style>
+#row gy-2 gx-3 align-items-center {
+	position: absolute;
+}
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content" style="margin: 50px;">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>Petinfo</li>
+								<li>AccomoList</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+
+
+
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+
+
+
+						<!--shop  area start-->
+						<div class="shop_section shop_reverse">
+
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+
+										<h1>반려동물 동반가능 숙소</h1>
+										<h2>혼자 두지 마세요 , 이제 함께 떠나요🐾</h2>
+										<br>
+										<h4>투게더 펫 은 중계업체입니다 결제/예약관련은 해당 홈페이지 문의 바랍니다.</h4>
+
+										<br> <br> <br>
+
+										<!-- 검색기능 시작  -->
+										<form class="row gy-2 gx-3 align-items-center" id="btn">
+											<div class="col-auto">
+												<select id="key" name="key">
+													<option value="1">지역</option>
+													<option value="2">숙소명</option>
+												</select>
+											</div>
+
+											<div class="col-auto">
+												<input class="form-control" type="text" id="val" name="val">
+											</div>
+											<div class="col-auto">
+												<button type="button" class="btn btn-dark" id="Serachbtn"
+													onclick="searchCall()">검색</button>
+											</div>
+										</form>
+										<!-- 검색기능 끝  -->
+
+										<br> <br> <br>
+
+										<div class="row shop_wrapper ">
+
+											<!--숙소 반복문 스타트! -->
+											<div class="col-lg-4 col-md-4 col-sm-6 col-6"
+												th:each="a:${accomo}">
+												<div class="single_product">
+													<div class="product_thumb">
+														<a
+															href="https://petairline.co.kr/pettour/%EB%B0%98%EB%A0%A4%EA%B2%AC%EA%B3%BC-%EB%96%A0%EB%82%98%EB%8A%94-4%EB%B0%95-6%EC%9D%BC-%ED%91%B8%EC%BC%93%EC%97%AC%ED%96%89-%EB%A1%9C%EC%A6%88%EC%9A%B0%EB%93%9C-%EC%9A%94%ED%8A%B8%ED%88%AC%EC%96%B4/">
+															<img class="primary_img" th:src="${a.aphoto}" alt="tree">
+														</a>
+
+
+														<!--스크랩기능 시작  -->
+														<div class="product_action">
+															<ul>
+																<li class="wishlist"><a href="#"
+																	data-tippy="Wishlist" data-tippy-inertia="true"
+																	data-tippy-delay="50" data-tippy-arrow="true"
+																	data-tippy-placement="left"><i
+																		class="icon-heart icons"></i></a></li>
+															</ul>
+														</div>
+														<!--스크랩기능 끝  -->
+
+
+														<div class="product_content grid_content text-center">
+															<h4 class="product_name">🐶[[${a.name}]]</h4>
+															<div class="price_box">
+																<span class="current_price">🐶[[${a.address}]]</span>
+															</div>
+															<div class="price_box">
+																<span class="current_price">🐶[[${a.price}]]원</span>
+															</div>
+															<div class="product_name">
+																<span class="current_price">👀[[${a.hit}]]</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!--숙소 반복문 끝! -->
+
+
+
+
+											<!-- 페이징시작 -->
+											<div
+												class="pagination_style pagination justify-content-center">
+												<ul class="d-flex">
+													<li><a href="#"> << </a></li>
+													<li><a href="#">1</a></li>
+													<li><a class="current" href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">4</a></li>
+													<li><a href="#">5</a></li>
+													<li><a href="#">>></a></li>
+												</ul>
+											</div>
+											<!-- 페이징 끝-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

@@ -12,4 +12,7 @@ public class GoodsVO {
 	private String name, category, info, uploadState, sellState, categoryId, returnMessage;
 	private Date uploadDate;
 	private double dc;
+	
+	//0925 희수 추가
+	private String thumb, detail;
 }

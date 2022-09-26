@@ -11,6 +11,7 @@
 			   hphoto,
 			   hit
 		 from hospital
+		 order by hospital_no ASC
 	</select>
 
 	<select id="hospitalSelect"

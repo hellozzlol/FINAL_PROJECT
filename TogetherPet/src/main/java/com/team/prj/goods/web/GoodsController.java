@@ -3,10 +3,12 @@ package com.team.prj.goods.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.IsNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
@@ -15,7 +17,6 @@ import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
-import com.team.prj.state.service.StateService;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
@@ -27,11 +28,12 @@ public class GoodsController {
 	@Autowired
 	private OrderService order;
 
-	@GetMapping("/shop")
-	public String goodsSelectAll(Model model, GoodsVO vo) {
-
-		model.addAttribute("goodsList", goods.goodsSelectAll());
-		model.addAttribute("photoList", goods.ThumbList());
+	@RequestMapping("/shop")
+	public String goodsSelectAll(String key, Model model) {
+		if(key==null) {
+			key="1";
+		}
+		model.addAttribute("goodsList", goods.goodsSelectAll(key));
 		model.addAttribute("reviewCount", goods.reviewCount());
 		return "shop/goodsSelectAll";
 	}
@@ -46,8 +48,6 @@ public class GoodsController {
 		// 제품 사진 슬라이드 리스트
 		List<PhotoVO> list = goods.goodsPhotoList(vo);
 		model.addAttribute("photoList", list);
-		// 제품 사진
-		model.addAttribute("detailshot", goods.goodsPhoto(vo));
 		// 리뷰리스트
 		model.addAttribute("reviewList", goods.reviewList(vo));
 		return "shop/goodsSelectOne";
@@ -69,16 +69,6 @@ public class GoodsController {
 		return "shop/order";
 	}
 
-	// 주문 및 결제 하기 (등록)
-	@RequestMapping("/orderInsert")
-	public String orderInsert(OrderVO vo, Model model) {
-		int cnt = order.insertOrder(vo);
-
-		// vo = order.selectOrder(vo);
-		model.addAttribute("order", vo);
-		return "shop/orderConfirm";
-	}
-
 	@RequestMapping("/orderConfirm")
 	public String orderConfirm(OrderVO vo, Model model) {
 		List<OrderVO> oList = order.selectOrder(vo);
@@ -93,8 +83,6 @@ public class GoodsController {
 		
 		// 적립금 업데이트
 		UsersVO u = new UsersVO();
-		System.out.println("===========" + vo.getUserNo());
-		System.out.println("===========" + vo.getMoney());
 		u.setUserNo(vo.getUserNo());
 		u.setMoney(vo.getMoney());
 		order.updateMoney(u);

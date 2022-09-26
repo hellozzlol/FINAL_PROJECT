@@ -369,7 +369,7 @@ function execDaumPostcode() {
 
 <script>
 var serverName = '<%=request.getServerName() %>';
-var serverPort = <%=request.getServerPort() %>;
+var serverPort = '<%=request.getServerPort() %>';
 $(()=>{
 	var fileList;
 	$('#class_thumb').on('propertychange change keyup paste input click', function uploadFiles(e){

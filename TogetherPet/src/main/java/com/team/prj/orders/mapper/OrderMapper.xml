@@ -8,11 +8,7 @@
 
 	<select id="selectOrder"
 		resultType="com.team.prj.orders.service.OrderVO">
-		select order_no, address, message, call, name,
-			   pay, amount, total_price, minus_price, pay_yn,
-			   delivery_no, delivery_state, dt, user_no, goods_no,
-		       minus_yn, minus_date,
-		       (select name from goods where goods_no=(select goods_no from orders where order_no=#{orderNo} )) as goods_name
+		select *
 		from orders
 		where order_no=#{orderNo}
 	</select>
@@ -27,28 +23,36 @@
 		</selectKey>
 		insert into orders
 		values (#{orderNo},
-		#{address},
-		#{message},
-		#{call},
-		#{name},
-		#{pay},
-		#{amount},
-		#{totalPrice},
-		#{totalPrice}*0.9,
-		1,
-		null,
-		1,
-		sysdate,
-		#{userNo},
-		#{goodsNo},
-		0,
-		null,
-		#{cartNo},
-		#{money})
+				#{address},
+				#{message},
+				#{call},
+				#{name},
+				#{pay},
+				#{amount},
+				#{totalPrice},
+				#{totalPrice}*0.9,
+				1,
+				null,
+				1,
+				sysdate,
+				#{userNo},
+				#{goodsNo},
+				0,
+				null,
+				#{cartNo},
+				#{money},
+				(select seller_no from goods where goods_no=#{goodsNo}), 
+				(select name from goods where goods_no=#{goodsNo}))
 	</insert>
 
 	<update id="updateMoney">
 		update users set money=(select money from users where user_no=#{userNo})-#{money} where user_no =
 		#{userNo}
 	</update>
+	
+	<!-- 주문 및 결제시 상품 재고 업데이트 -->
+	<update id="updateGoodsQty">
+		update goods set amount=(select amount from goods where goods_no=#{goodsNo})-#{amount} where goods_no=#{goodsNo}
+	</update>
+	
 </mapper>
