@@ -22,7 +22,6 @@ public class OrderVO {
 	//0927 희수가 추가
 	private String postcode; // 우편번호
 	private String da; // 상세주소
-}
 
 	// 0927 선희 추가
 	private String thumb;

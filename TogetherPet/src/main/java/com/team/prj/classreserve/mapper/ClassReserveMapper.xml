@@ -31,7 +31,8 @@
 		MONEY,
 		CLASS_NAME
 		FROM CLASS_RESERVE
-		WHERE RESERVE_NO =#{reserveNo}
+		WHERE RESERVE_NO
+		=#{reserveNo}
 	</select>
 
 
@@ -47,7 +48,8 @@
 		</selectKey>
 		INSERT INTO CLASS_RESERVE
 		VALUES (#{reserveNo},
-		TO_DATE(#{dt}, 'YYYY-MM-DD HH24:MI:SS'),
+		TO_DATE(#{dt},
+		'YYYY-MM-DD HH24:MI:SS'),
 		SYSDATE,
 		#{pay},
 		1,
@@ -83,10 +85,12 @@
 		WHERE CLASS_OPTION_NO = #{classOptionNo}
 	</update>
 
-	<!-- 0926 희수가 정산때문에 추가 -->
+	<!-- 0927 희수가 정산때문에 추가 -->
 	<update id="updateMinusYN">
-		update class_reserve set minus_yn='1', minus_date=sysdate where to_char( dt,
-		'yyyymmdd' ) = to_char( sysdate, 'yyyymmdd')
+	<!-- 어제날짜를 그담날 정산 -->
+		update class_reserve 
+		set minus_yn='1', minus_date=sysdate 
+		where to_char( dt, 'yyyymmdd' ) = to_char(sysdate-1, 'yyyymmdd')
 	</update>
 
 </mapper>

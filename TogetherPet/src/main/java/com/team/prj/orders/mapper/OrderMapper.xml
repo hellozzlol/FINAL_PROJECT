@@ -17,49 +17,55 @@
 		<selectKey keyProperty="orderNo" resultType="int"
 			order="BEFORE">
 			select case when max(order_no) is null then 1
-			else max(order_no)+1 end
+			else
+			max(order_no)+1 end
 			as order_no
 			from orders
 		</selectKey>
 		insert into orders
 		values (#{orderNo},
-				#{address},
-				#{message},
-				#{call},
-				#{name},
-				#{pay},
-				#{amount},
-				#{totalPrice},
-				round(#{totalPrice}*0.9),
-				1,
-				null,
-				1,
-				sysdate,
-				#{userNo},
-				#{goodsNo},
-				0,
-				null,
-				#{cartNo},
-				#{money},
-				(select seller_no from goods where goods_no=#{goodsNo}), 
-				(select name from goods where goods_no=#{goodsNo}),
-				#{postcode},
-				#{da})
-				
+		#{address},
+		#{message},
+		#{call},
+		#{name},
+		#{pay},
+		#{amount},
+		#{totalPrice},
+		round(#{totalPrice}*0.9),
+		1,
+		null,
+		1,
+		sysdate,
+		#{userNo},
+		#{goodsNo},
+		0,
+		null,
+		#{cartNo},
+		#{money},
+		(select seller_no from goods where goods_no=#{goodsNo}),
+		(select name from goods where goods_no=#{goodsNo}),
+		#{postcode},
+		#{da})
+
 	</insert>
 
 	<update id="updateMoney">
-		update users set money=(select money from users where user_no=#{userNo})-#{money} where user_no =
+		update users set money=(select money from users where
+		user_no=#{userNo})-#{money} where user_no =
 		#{userNo}
 	</update>
-	
+
 	<!-- 주문 및 결제시 상품 재고 업데이트 -->
 	<update id="updateGoodsQty">
-		update goods set amount=(select amount from goods where goods_no=#{goodsNo})-#{amount} where goods_no=#{goodsNo}
+		update goods set amount=(select amount from goods
+		where goods_no=#{goodsNo})-#{amount} where goods_no=#{goodsNo}
 	</update>
-	
+
 	<update id="updateMinusYN">
-		update orders set minus_yn='1', minus_date=sysdate where to_char( dt, 'yyyymmdd' ) = to_char( sysdate, 'yyyymmdd')
+	<!-- 어제날짜를 그담날 정산 -->
+		update orders 
+		set minus_yn='1', minus_date=sysdate 
+		where to_char( dt, 'yyyymmdd' ) = to_char( sysdate-1, 'yyyymmdd')
 	</update>
-	
+
 </mapper>
