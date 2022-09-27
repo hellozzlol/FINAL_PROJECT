@@ -89,13 +89,10 @@ a {
 	color: #fff;
 }
 
-.btn{
- 		
-        margin:auto;
-        display:block;
+.btn {
+	margin: auto;
+	display: block;
 }
-
-
 </style>
 </head>
 <body>
@@ -129,9 +126,29 @@ a {
 						</div>
 
 
+						<!-- 검색기능 시작  -->
+						<form class="row gy-2 gx-3 align-items-center" id="btn">
+							<div class="col-auto">
+								<select id="key" name="key">
+									<option value="1">작성자</option>
+									<option value="2">제목</option>
+									<option value="3">카테고리</option>
+								</select>
+							</div>
+
+							<div class="col-auto">
+								<input class="form-control" type="text" id="val" name="val">
+							</div>
+							<div class="col-auto">
+								<button type="button" class="btn btn-dark" id="Serachbtn"
+									onclick="searchCall()">검색</button>
+							</div>
+						</form>
+						<!-- 검색기능 끝  -->
+						<br> <br> <br>
 						<!-- 커뮤니티 게시판 반복문 스타트 -->
 						<div class="board_list_wrap">
-							<table class="board_list">
+							<table class="board_list" id="list">
 								<thead>
 									<tr align="center">
 										<th>번호</th>
@@ -144,14 +161,15 @@ a {
 									</tr>
 								</thead>
 
-								<tbody>
+								<tbody id="tb">
 									<tr th:each="b : ${boardList}">
 										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
 											th:text="${b.boardNo}"></a></td>
 										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
 											th:text="${b.category}"></a></td>
-										<td th:text="${b.title}"></td>
-										<td th:text="${#dates.format(b.dt, 'yyyy-MM-dd')}"></td>
+										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+											th:text="${b.title}"></a></td>
+										<td th:text="${b.dt}"></td>
 										<td th:text="${b.writer}"></td>
 										<td th:text="${b.hit}"></td>
 									</tr>
@@ -159,31 +177,96 @@ a {
 							</table>
 							<!-- 커뮤니티 게시판 반복문 끝 -->
 
-								<br>
-								<br>
-								<br>
+							<br> <br> <br>
+
+							<!-- 검색아작스 스크립트 시작  -->
+							<script>
+		
+							$("#Serachbtn").on('click', searchCall)
+		
+								var token = $("meta[name='_csrf']").attr("content");
+								var header = $("meta[name='_csrf_header']").attr("content");
+	
+										function searchCall() {
+											  let key = document.getElementById('key').value;
+		     								  let val = document.getElementById('val').value;
+		     
+		     
+		    									 $.ajax({
+		    										url : "boardajaxSearch",
+		   											type : 'post',//method
+		    										beforeSend : function(xhr){
+													xhr.setRequestHeader(header, token)},
+		    										data : {'key' : key, 'val' : val},
+		    										dataType : 'json',
+		    											success : function(response) {
+														console.log(response);
+														htmlView(response);
+													},
+														error : function () {
+														console.log('오류');   
+																			}
+		    															 });
+		     
+		     function htmlView(data) {
+		    	//html로 변환해서 원하는 위치에 출력하도록 구현
+					
+				 $("#tb").remove();
+		         var tbody = $("<tbody id='tb' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchCall("+ item.boardNo +")")
+                    .append(
+		                     $("<td />").text(item.boardNo),
+		                     $("<td />").text(item.category),
+		                     $("<td />").text(item.title),
+		                     $("<td />").text(item.dt),
+		                     $("<td />").text(item.writer),
+		                     $("<td />").text(item.hit),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#list").append(tbody);
+			}
+			
+					     
+					};
+		</script>
+							<!-- 검색아작스 스크립트 끝  -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 							<div id="btn">
-							<button type="button" class="btn btn-dark" onclick="location.href='boardFom'">글등록</button>
+								<button type="button" class="btn btn-dark"
+									onclick="location.href='boardFom'">글등록</button>
 							</div>
-
-							<!-- 페이징시작 -->
-							<div class="pagination_style pagination justify-content-center">
-								<ul class="d-flex">
-									<li><a href="#"> << </a></li>
-									<li><a href="#">1</a></li>
-									<li><a class="current" href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#">>></a></li>
-								</ul>
-							</div>
-							<!-- 페이징 끝-->
-
-
 						</div>
 
+
+						<!-- 페이징시작 -->
+						<div class="pagination_style pagination justify-content-center">
+							<ul class="d-flex">
+								<li><a href="#"> << </a></li>
+								<li><a href="#">1</a></li>
+								<li><a class="current" href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#">>></a></li>
+							</ul>
+						</div>
+						<!-- 페이징 끝-->
 
 					</div>
 				</div>
