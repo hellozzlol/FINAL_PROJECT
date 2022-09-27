@@ -1,11 +1,20 @@
 package com.team.prj.board.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
@@ -14,6 +23,10 @@ import com.team.prj.board.service.BoardVO;
 public class BoardController {
 	@Autowired
 	private BoardService dao;
+
+	
+	@Value("${file.dir}")
+    private String fileDir;
 
 	// 유저 게시판 전체 조회
 	@GetMapping("/boardSelectList")
@@ -56,6 +69,8 @@ public class BoardController {
 	//커뮤니티게시판상세조회
 		@GetMapping("/boardSel")
 		public String boardselect(BoardVO vo, Model model) {
+			System.out.println("=====================" + vo.getBoardNo());
+			
 			model.addAttribute("boardSel",dao.boardSelect(vo));
 			dao.boardHitUpdate(vo);//조회수증가
 			return "board/boardSel";
@@ -66,13 +81,42 @@ public class BoardController {
 		public String boardform() {
 			return "board/boardFom";
 		}
-	//커뮤니티 글 등록	
-			
-	
-	/*
-	 * @PostMapping("/boardInsert") public String boardInsart() { return
-	 * "redirect:boardList"; }
-	 */
 		
-	
+		
+	//커뮤니티 글 등록	
+		@PostMapping("/boardIns")
+		
+		public String boardInsert(BoardVO vo ,
+				@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+			
+			//file UpLoad 처리해야함.
+			String saveFolder  = (""); //저장할 공간 변수 명 
+			System.out.println(saveFolder);
+			File sfile = new File(saveFolder);//물리적 저장할 위치
+			String oFileName = file.getOriginalFilename();//넘어온 파일의 이름 .원래파일네임
+			if(!oFileName.isEmpty()) {
+				
+				//파일명 충돌방지를 위한 별명 만듦
+				String sFileName = UUID.randomUUID().toString() 
+						+ oFileName.substring(oFileName.lastIndexOf(".")); //파일확장자찾는것 //랜덤파일네임
+				String path = fileDir+"/"+sFileName;
+				file.transferTo(new File(path)); //파일을 물리적 위치에 저장한다.
+						
+				vo.setAttech(oFileName);
+				vo.setAttechDir(saveFolder +"/"+sFileName);
+			}
+		    
+			dao.boardInsert(vo);
+			return "redirect:boardList";
+		}
+			
+		
+		//검색 아..작..스..처..리..리ㅣㅣ리ㅣ리리리리리이이이ㅣ잉
+		
+		@RequestMapping("/boardSearch")
+		
+		public String boarSearch(BoardVO vo,String key, String val, Model model) {
+		return "board/boardSearch";
+
+		}	
 }

@@ -43,4 +43,10 @@ public class BoardServiceImpl implements BoardService {
 		return map.boardHitUpdate(vo);
 	}
 
+	@Override
+	public List<BoardVO> boardSearch(String key, String val) {
+		// 검색기능
+		return map.boardSearch(key, val);
+	}
+
 }
