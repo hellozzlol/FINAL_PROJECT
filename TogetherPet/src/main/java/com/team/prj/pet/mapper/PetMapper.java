@@ -5,7 +5,8 @@ import java.util.List;
 import com.team.prj.pet.service.PetVO;
 
 public interface PetMapper {
-List<PetVO> petSelectList();
+	List<PetVO> petSelectList(PetVO vo);
+	
 	
 	PetVO petSelect(PetVO vo);
 	

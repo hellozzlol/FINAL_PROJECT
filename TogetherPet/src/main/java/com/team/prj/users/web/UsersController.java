@@ -17,6 +17,8 @@ import com.team.prj.calendar.service.CalendarService;
 import com.team.prj.calendar.service.CalendarVO;
 import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.classes.service.ClassVO;
+import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentService;
 import com.team.prj.like.service.LikesService;
@@ -24,10 +26,11 @@ import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetService;
 import com.team.prj.pet.service.PetVO;
-import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapService;
+import com.team.prj.seller.service.SellerVO;
 import com.team.prj.state.service.StateService;
 import com.team.prj.tutor.service.TutorService;
+import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
@@ -60,6 +63,8 @@ public class UsersController {
 	private CalendarService cal; // 캘린더
 	@Autowired
 	private PetService pet; // 반려동물 정보
+	@Autowired
+	private ClassReserveService cr; // 수강내역
 
 	// 개인 회원 리스트
 	@RequestMapping("/users/usersSelect")
@@ -93,18 +98,13 @@ public class UsersController {
 	}
 
 	// 마이페이지 주문 내역
-//	@RequestMapping("/users/usersOrderList")
-//	public String orderList(OrderVO vo, Model model, HttpServletRequest request) {
-//		HttpSession session = request.getSession();
-//		UsersVO u = (UsersVO) session.getAttribute("user");
-//		vo.setUserNo(u.getUserNo());
-//		List<OrderVO> list = user.orderList(vo);
-//		model.addAttribute("orderList", list);
-//		return "users/usersOrderList";
-//	}
 	@RequestMapping("/users/usersOrderList")
 	public String orderList(OrderVO ovo, Model model, HttpServletRequest request) {
-		model.addAttribute("orderList", user.orderList(ovo));
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		ovo.setUserNo(vo.getUserNo());
+		List<OrderVO> list = user.orderList(ovo);
+		model.addAttribute("orderList", list);
 		return "users/usersOrderList";
 	}
 
@@ -136,10 +136,12 @@ public class UsersController {
 
 	// 마이페이지 클래스 수강내역
 	@RequestMapping("/users/usersClassList")
-	public String userClass(ClassReserveVO vo, Model model, HttpServletRequest request) {
+	public String userClass(ClassReserveVO crvo, Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		UsersVO u = (UsersVO) session.getAttribute("user");
-		model.addAttribute("classList", user.classList(vo));
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		crvo.setUserNo(vo.getUserNo());
+		List<ClassVO> list = user.classList(crvo);
+		model.addAttribute("classList", list);
 		return "users/usersClassList";
 	}
 
@@ -189,33 +191,53 @@ public class UsersController {
 	public String calendarInsert(CalendarVO vo) {
 		return "redirect:calendar/calendarSelect";
 	}
-
+	
 	// 반려동물 전체 리스트
 	@RequestMapping("/pet/petSelectList")
-	public String petSelectList(Model model) {
-		model.addAttribute("petList", pet.petSelectList());
+	public String petSelectList(HttpServletRequest request, Model model, PetVO pvo) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		pvo.setUserNo(vo.getUserNo());
+		model.addAttribute("petList", pet.petSelectList(pvo));
 		return "pet/petSelectList";
 	}
 
 	// 반려동물 단건 조회
 	@RequestMapping("/pet/petSelect")
-	public String petSelect(PetVO vo, Model model) {
-		model.addAttribute("petList", pet.petSelect(vo));
+	public String petSelect(HttpServletRequest request, PetVO pvo, Model model) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		pvo.setUserNo(vo.getUserNo());
+		model.addAttribute("petList", pet.petSelect(pvo));
 		return "pet/petSelect";
 	}
-
+	
 	// 반려동물 정보 수정 폼 호출
 	@RequestMapping("/pet/petUpdateForm")
-	public String petUpdateForm(PetVO vo, Model model) {
-		model.addAttribute("petList", pet.petSelectList());
+	public String petUpdateForm(HttpServletRequest request, PetVO pvo, Model model) {
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		pvo.setUserNo(vo.getUserNo());
+		model.addAttribute("petList", pet.petSelect(pvo));
 		return "pet/petUpdateForm";
 	}
 
 	// 반려동물 정보 수정 처리
+//	@PostMapping("/pet/petUpdate")
+//	public String petUpdate(PetVO pvo, HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		session.setAttribute("pet", pet.petUpdate(pvo));
+//		return "redirect:/pet/petSelectList";
+//	}
+	
 	@PostMapping("/pet/petUpdate")
-	public String petUpdate(PetVO vo, Model model) {
-		model.addAttribute("petList", pet.petSelect(vo));
-		return "redirect:pet/petSelectList";
+	public String petUpdate(PetVO pvo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		System.out.println("=================" + pvo==null);
+		pet.petUpdate(pvo);
+		pvo = pet.petSelect(pvo);
+		session.setAttribute("pet", pvo);
+		return "redirect:/pet/petSelectList";
 	}
 
 	// 반려동물 정보 등록 폼 호출
