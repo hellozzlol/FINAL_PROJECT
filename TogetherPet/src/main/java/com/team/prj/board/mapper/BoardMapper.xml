@@ -5,6 +5,7 @@
 	<select id="boardSelectList"
 		resultType="com.team.prj.board.service.BoardVO">
 		select * from board
+		order by board_no DESC
 	</select>
 
 
@@ -16,6 +17,15 @@
 		where board_no = #{boardNo}
 	</select>
 
+	<!-- 그룹별 사진 불러오기  -->
+	<select id="boardPhotoList"
+	parameterType="com.team.prj.photo.service.PhotoVO">
+	select * 
+	from photo
+	where group_no =#{groupNo}
+	and name='리스트'
+	
+	</select>
 	<insert id="boardInsert"
 		parameterType="com.team.prj.board.service.BoardVO">
 		<selectKey keyProperty="boardNo" order="BEFORE"
@@ -33,12 +43,14 @@
 		,#{title}
 		,#{content}
 		,#{dt}
-		,#{likes}
-		,#{hit}
+		,0
+		,0
 		,#{category}
-		,#{groupNo}
-		,#{userNo})
+		,100
+		,#{userNo}
 		,#{writer}
+		,#{attech}
+		,#{attechDir})
 	</insert>
 
 	<update id="boardUpdate"
@@ -63,7 +75,16 @@
 		</update>
 	
 	
-	
+		<select id="boardSearch" resultType="com.team.prj.board.service.BoardVO">
+		select *
+		from board
+		where
+		<choose>
+		<when test="key == 1"> writer like '%' || #{val}||'%'</when>
+		<when test="key == 2"> title like '%' || #{val}||'%'</when>
+	    <when test="key == 3"> category like '%' || #{val}||'%'</when>
+		</choose>
+		</select>
 	
 	
 	

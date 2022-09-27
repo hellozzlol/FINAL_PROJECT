@@ -11,6 +11,7 @@ import com.team.prj.comment.service.CommentVO;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
+import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.tutor.service.TutorVO;
 
@@ -46,11 +47,12 @@ public class UsersVO {
 	private CalendarVO cal;
 	private TutorVO tutor;
 	private ClassReserveVO cr;
-	
+
 	//0927 희수가 추가
 	private String postcode; // 우편번호
 	private String da; // 상세주소
-	
 
+	private String pay;
+	private PetVO pet;
 
 }

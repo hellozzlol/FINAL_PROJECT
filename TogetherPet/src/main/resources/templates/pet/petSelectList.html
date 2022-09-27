@@ -30,6 +30,11 @@
 .petrow {
 	padding-top: 30px;
 }
+.col-form-label {
+	text-align: center;
+	font-weight: bold;
+	font-size: 15px;
+}
 </style>
 </head>
 
@@ -54,11 +59,11 @@
 				</div>
 				<br>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12" th:each="list : ${petList}">
 						<!-- Horizontal -->
-						<div class="card mb-3" th:each="list : ${petList}">
+						<div class="card mb-3">
 							<div class="row petrow">
-								<div class="col-md-4">
+								<div class="col-md-4" align="center" style="display: block; margin: auto; border-right: 1px solid lightgray;">
 									<a th:href="@{/pet/petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
 										src="/admin/assets/img/elements/dog.png" alt="Card image"
@@ -71,15 +76,22 @@
 											<input type="hidden" th:name="${_csrf.parameterName}"
 												th:value="${_csrf.token}">
 											<div class="row mb-2">
-												<label class="col-sm-2 col-form-label" for="name">이름</label>
-												<div class="col-sm-10">
+												<label class="col-sm-3 col-form-label" for="name">동물등록번호</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" id="petNo"
+														name="petNo" th:value="${list.petNo}" disabled="disabled" />
+												</div>
+											</div>
+											<div class="row mb-2">
+												<label class="col-sm-3 col-form-label" for="name">이름</label>
+												<div class="col-sm-9">
 													<input class="form-control" type="text" id="name"
 														name="name" th:value="${list.name}" disabled="disabled" />
 												</div>
 											</div>
 											<div class="row mb-2">
-												<label class="col-sm-2 col-form-label" for="birth">생일</label>
-												<div class="col-sm-10">
+												<label class="col-sm-3 col-form-label" for="birth">생일</label>
+												<div class="col-sm-9">
 													<input class="form-control" type="text" id="birth"
 														name="birth"
 														th:value="${#dates.format(list.birth, 'yyyy-MM-dd')}"
@@ -87,16 +99,16 @@
 												</div>
 											</div>
 											<div class="row mb-2">
-												<label class="col-sm-2 col-form-label" for="gender">성별</label>
-												<div class="col-sm-10">
+												<label class="col-sm-3 col-form-label" for="gender">성별</label>
+												<div class="col-sm-9">
 													<input type="text" id="gender" name="gender"
 														class="form-control" th:value="${list.gender}"
 														disabled="disabled" />
 												</div>
 											</div>
 											<div class="row mb-2">
-												<label class="col-sm-2 col-form-label" for="gender">타입</label>
-												<div class="col-sm-10">
+												<label class="col-sm-3 col-form-label" for="gender">타입</label>
+												<div class="col-sm-9">
 													<input type="text" id="type" name="type"
 														class="form-control" th:value="${list.type}"
 														disabled="disabled" />

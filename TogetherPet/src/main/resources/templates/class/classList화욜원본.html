@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout_classList}">
+	layout:decorate="~{layout/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -10,6 +10,260 @@
 	th:content="${_csrf.headerName}" />
 
 <!--script src="http://code.jquery.com/jquery-latest.min.js"></script>   -->
+<style>
+#cl1 {
+	width: 500px;
+}
+
+#cl2 {
+	padding-bottom: 50px;
+}
+
+#city {
+	text-align: center;
+	font-size: large;
+}
+
+.header_search {
+	height: 40px;
+	width: 40px;
+	border: 1px solid #ffffff;
+	background: #ffffff;
+}
+
+.searchinput {
+	font-size: 16px;
+	width: 325px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+
+.searchbtn {
+	width: 50px;
+	height: 50px;
+	outline: none;
+	float: right;
+}
+
+/*===================상단 검색창 css=====================*/
+#cl2 {
+	float: left;
+}
+
+#cl1{
+	float: right;
+}
+
+#cl3 {
+ 	clear: both;
+}
+
+#cate {
+	float: left;
+	padding:2em;
+}
+
+#classSearch{
+
+}
+
+
+input[type=checkbox] {
+	display: none;
+}
+
+
+#chk1:checked~#a1{
+	color: orange;
+}
+#chk1:checked~#i1{
+	transform: scale(1.05);
+}
+#img1 img{
+	transition: all 0.2s linear;
+}
+#img1:hover img{
+	transform: scale(1.05);
+}
+#img1:hover a{
+	color: orange;
+}
+
+
+
+
+#chk2:checked~#a2{
+	color: orange;
+}
+#img2 img{
+	transition: all 0.2s linear;
+}
+#img2:hover img{
+	transform: scale(1.05);
+}
+#img2:hover a{
+	color: orange;
+}
+
+
+#chk3:checked~#a3{
+	color: orange;
+}
+#img3 img{
+	transition: all 0.2s linear;
+}
+#img3:hover img{
+	transform: scale(1.05);
+}
+#img3:hover a{
+	color: orange;
+}
+
+
+#chk4:checked~#a4{
+	color: orange;
+}
+#img4 img{
+	transition: all 0.2s linear;
+}
+#img4:hover img{
+	transform: scale(1.05);
+}
+#img4:hover a{
+	color: orange;
+}
+
+
+#chk5:checked~#a5{
+	color: orange;
+}
+#img5 img{
+	transition: all 0.2s linear;
+}
+#img5:hover img{
+	transform: scale(1.05);
+}
+#img5:hover a{
+	color: orange;
+}
+
+
+
+input[id="chk1"] + label {
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk2] + label {
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk3"] + label {
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk4"] + label {
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk5"] + label {
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  border: none;
+  cursor: pointer;
+}
+
+
+/*=============== 나이스 셀렉트 안먹히는 부분 ================*/
+.nice-select {
+	-webkit-tap-highlight-color: transparent;
+	background-color: #fff;
+	border-radius: 5px;
+	border: solid 1px #e8e8e8;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	clear: both;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: normal;
+	height: 42px;
+	line-height: 40px;
+	outline: none;
+	padding-left: 18px;
+	padding-right: 30px;
+	position: relative;
+	text-align: left !important;
+	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	width: auto;
+}
+
+.nice-select:hover {
+	border-color: #dbdbdb;
+}
+
+.nice-select:active, .nice-select.open, .nice-select:focus {
+	border-color: #999;
+}
+
+.nice-select:after {
+	border-bottom: 2px solid #999;
+	border-right: 2px solid #999;
+	content: '';
+	display: block;
+	height: 5px;
+	margin-top: -4px;
+	pointer-events: none;
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	-webkit-transform-origin: 66% 66%;
+	transform-origin: 66% 66%;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+	-webkit-transition: all 0.15s ease-in-out;
+	transition: all 0.15s ease-in-out;
+	width: 5px;
+}
+
+.nice-select.open:after {
+	-webkit-transform: rotate(-135deg);
+	transform: rotate(-135deg);
+}
+
+.nice-select.open .list {
+	opacity: 1;
+	pointer-events: auto;
+	-webkit-transform: scale(1) translateY(0);
+	transform: scale(1) translateY(0);
+}
+
+
+</style>
+
+
 
 <title>원데이 클래스 목록</title>
 </head>
@@ -44,161 +298,31 @@
 
 									<form method="get" id="classSearchForm" name="classSearchForm">
 
-										
-										<!--<div class="sorting_by d-flex align-items-center" id="cl2">
-											<span>지역</span>
+										<!--
+										<div class="filter__list widget_color" id="cl2">
+											<h3>지역</h3>
+											<div>
 												<select name="addressRegion" id="addressRegion1"></select> 
 												<select name="address" id="addressDo1"></select>
-										</div>  -->
-										
-										
-										<div class="filter__list widget_color" id="cl1" style="width: 50%;">
-											<h3>지역</h3>
+											</div>
+										</div>-->
 
-											<div id="addr">
-												<div id="img6">
-													<input type="radio" name="address" value="서울" id="chk6">
-													<label for="chk6">
-														<img src="https://mochaclass.com/static/media/location1_default.0894fd94.svg" alt="서울" id="i6">
-														<img src="https://mochaclass.com/static/media/location1_over.97f5af5d.svg"  alt="서울" id="i6-1">
-													</label>
-													<br><a id="a6">서울</a>
-												</div>
-											</div>
 
-											<div id="addr">
-												<div id="img7">
-													<input type="radio" name="address" value="경기" id="chk7">
-													<label for="chk7">
-														<img src="https://mochaclass.com/static/media/location2_default.2d21abc0.svg" alt="경기" id="i7">
-														<img src="https://mochaclass.com/static/media/location2_over.b610d402.svg" alt="경기" id="i7-1">
-													</label>
-													<br><a id="a7">경기</a>
-												</div>
-											</div>
-
-											<div id="addr">
-												<div id="img8">
-													<input type="radio" name="address" value="부산" id="chk8">
-													<label for="chk8">
-														<img src="https://mochaclass.com/static/media/location3_default.d80d2d02.svg" alt="부산" id="i8">
-														<img src="https://mochaclass.com/static/media/location3_over.e21b9673.svg" alt="부산" id="i8-1">
-													</label>
-													<br><a id="a8">부산</a>
-												</div>
-											</div>
-
-											<div id="addr">
-												<div id="img9">
-													<input type="radio" name="address" value="인천" id="chk9">
-													<label for="chk9">
-														<img src="	https://mochaclass.com/static/media/location4_default.57b7f746.svg" alt="인천" id="i9">
-														<img src="https://mochaclass.com/static/media/location4_over.f45f35fd.svg" alt="인천" id="i9-1">
-													</label>
-													<br><a id="a9">인천</a>
-												</div>
-											</div>
-
-											<div id="addr">
-												<div id="img10">
-													<input type="radio" name="address" value="대구" id="chk10">
-													<label for="chk10">
-														<img src="https://mochaclass.com/static/media/location5_default.388fe582.svg" alt="대구" id="i10">
-														<img src="https://mochaclass.com/static/media/location5_over.fb9bf27e.svg" alt="대구" id="i10-1">
-													</label>
-													<br><a id="a10">대구</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img11">
-													<input type="radio" name="address" value="울산" id="chk11">
-													<label for="chk11">
-														<img src="	https://mochaclass.com/static/media/location6_default.9babe2f2.svg" alt="울산" id="i11">
-														<img src="https://mochaclass.com/static/media/location6_over.3cd7c8a6.svg" alt="울산" id="i11-1">
-													</label>
-													<br><a id="a11">울산</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img12">
-													<input type="radio" name="address" value="광주" id="chk12">
-													<label for="chk12">
-														<img src="	https://mochaclass.com/static/media/location7_default.eb889b28.svg" alt="광주" id="i12">
-														<img src="https://mochaclass.com/static/media/location6_over.3cd7c8a6.svg" alt="광주" id="i12-1">
-													</label>
-													<br><a id="a12">광주</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img13">
-													<input type="radio" name="address" value="대전" id="chk13">
-													<label for="chk13">
-														<img src="	https://mochaclass.com/static/media/location8_default.4d3d4dfa.svg" alt="대전" id="i13">
-														<img src="https://mochaclass.com/static/media/location8_over.878e58e6.svg" alt="대전" id="i13-1">
-													</label>
-													<br><a id="a13">대전</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img14">
-													<input type="radio" name="address" value="경상남도" id="chk14">
-													<label for="chk14">
-														<img src="	https://mochaclass.com/static/media/location9_default.92e5b652.svg" alt="경상남도" id="i14">
-														<img src="https://mochaclass.com/static/media/location9_over.a07f5aec.svg" alt="경상남도" id="i14-1">
-													</label>
-													<br><a id="a14">경상남도</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img15">
-													<input type="radio" name="address" value="경상북도" id="chk15">
-													<label for="chk15">
-														<img src="https://mochaclass.com/static/media/location10_default.ee80bfb5.svg" alt="경상북도" id="i15">
-														<img src="https://mochaclass.com/static/media/location10_over.76d3f6e2.svg" alt="경상북도" id="i15-1">
-													</label>
-													<br><a id="a15">경상북도</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img16">
-													<input type="radio" name="address" value="전라남도" id="chk16">
-													<label for="chk16">
-														<img src="	https://mochaclass.com/static/media/location11_default.4c2666de.svg" alt="전라남도" id="i16">
-														<img src="https://mochaclass.com/static/media/location11_over.221d6521.svg" alt="전라남도" id="i16-1">
-													</label>
-													<br><a id="a16">전라남도</a>
-												</div>
-											</div>
-											
-											<div id="addr">
-												<div id="img17">
-													<input type="radio" name="address" value="전라북도" id="chk17">
-													<label for="chk17">
-														<img src="https://mochaclass.com/static/media/location12_default.52013261.svg" alt="전라북도" id="i17">
-														<img src="https://mochaclass.com/static/media/location12_over.c2a687ed.svg" alt="전라북도" id="i17-1">
-													</label>
-													<br><a id="a17">전라북도</a>
-												</div>
-											</div>
-											
-											
+										<div class="sorting_by d-flex align-items-center" id="cl2">
+											<span>지역</span>
+												<select name="addressRegion" id="addressRegion1" class="nice-select"></select> 
+												<select name="address" id="addressDo1" class="nice-select"></select>
 										</div>
 										
 												
-										<div class="filter__list widget_color" id="cl1" style="width: 50%;">
+										<div class="filter__list widget_color" id="cl1" style="width: 80%;">
 											<h3>카테고리</h3>
 
 											<div id="cate">
 												<div id="img1">
 													<input type="checkbox" name="categories" value="FOOD" id="chk1" >
 													<label for="chk1"><img src="https://mochaclass.com/static/media/cook.c9477baa.svg" alt="펫 푸드" id="i1"></label>
-													<br><a id="a1">펫 푸드</a>
+													<br><a id="a1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;펫 푸드</a>
 												</div>
 											</div>
 
@@ -206,7 +330,7 @@
 												<div id="img2">
 													<input type="checkbox" name="categories" value="HAND" id="chk2">
 													<label for="chk2"><img src="https://mochaclass.com/static/media/craft.13dd03d8.svg" alt="펫 핸드메이드"></label>
-													<br><a id="a2">펫 핸드메이드</a>
+													<br><a id="a2">&nbsp;펫 핸드메이드</a>
 												</div>
 											</div>
 
@@ -214,7 +338,7 @@
 												<div id="img3">
 													<input type="checkbox" name="categories" value="BEAUTY" id="chk3">
 													<label for="chk3"><img src="https://mochaclass.com/static/media/pet.6855bdf3.svg" alt="펫 미용"></label>
-													<br><a id="a3">펫 미용</a>
+													<br><a id="a3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;펫 미용</a>
 												</div>
 											</div>
 
@@ -222,7 +346,7 @@
 												<div id="img4">
 													<input type="checkbox" name="categories" value="DRAWING" id="chk4">
 													<label for="chk4"><img src="https://mochaclass.com/static/media/drawing.04d157cf.svg" alt="펫 드로잉"></label>
-													<br><a id="a4">펫 드로잉</a>
+													<br><a id="a4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;펫 드로잉</a>
 												</div>
 											</div>
 
@@ -230,14 +354,58 @@
 												<div id="img5">
 													<input type="checkbox" name="categories" value="ETC" id="chk5">
 													<label for="chk5"><img src="https://mochaclass.com/static/media/flower.107080ef.svg" alt="기타"></label>
-													<br><a id="a5">기타</a>
+													<br><a id="a5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;기타</a>
 												</div>
 											</div>
+
+											<!-- 
+											<ul>
+												<li><input type="checkbox" name="categories"
+													value="FOOD"> <span class="checkmark color1"><img
+														src="https://mochaclass.com/static/media/cook.c9477baa.svg"></span>
+													<br>
+												<br>
+												<br>
+												<br> 펫 푸드</li>
+												<li><input type="checkbox" name="categories"
+													value="HAND"> <span class="checkmark color1"><img
+														class="cateimg"
+														src="https://mochaclass.com/static/media/craft.13dd03d8.svg"></span>
+													<br>
+												<br>
+												<br>
+												<br> 펫 핸드메이드</li>
+												<li><input type="checkbox" name="categories"
+													value="BEAUTY"> <span class="checkmark color1"><img
+														class="cateimg"
+														src="https://mochaclass.com/static/media/pet.6855bdf3.svg"></span>
+													<br>
+												<br>
+												<br>
+												<br> 펫 미용</li>
+												<li><input type="checkbox" name="categories"
+													value="DRAWING"> <span class="checkmark color1"><img
+														class="cateimg"
+														src="https://mochaclass.com/static/media/drawing.04d157cf.svg"></span>
+													<br>
+												<br>
+												<br>
+												<br> 펫 드로잉</li>
+												<li><input type="checkbox" name="categories"
+													value="ETC"> <span class="checkmark color1"><img
+														class="cateimg"
+														src="https://mochaclass.com/static/media/flower.107080ef.svg"></span>
+													<br>
+												<br>
+												<br>
+												<br> 기타</li>
+
+											</ul> -->
 											
 										</div>
 
 										<div id="cl3">
-											<button type="button" id="classSearch" class="button btn btn-primary">클래스 검색하기</button>
+											<button type="button" id="classSearch">클래스 검색하기</button>
 											<br><br><br>
 										</div>
 									</form>
@@ -269,7 +437,7 @@
 										클래스가 회원님의 등록을 기다리고 있어요!</span>
 								</p>
 							</div>
-							<div class="sorting_by d-flex align-items-center">
+							<div class=" sorting_by d-flex align-items-center">
 								<span>SORT BY :</span> <select name="orderby" id="short"
 									class="select_option border">
 									<option selected value="1">최신순</option>
@@ -394,7 +562,7 @@
 		<!--shop  area end-->
 
 
-<script>
+		<script>
 
 		$(function() {
 		 	$('#addressRegion1').niceSelect('destroy');
@@ -506,7 +674,7 @@
 		});
 		
 		// 2. 셀렉트 주소 값들을 배열에 담는다.
-		var addressCkbox = $("input[name='address']:checked").val();
+		var addressCkbox = $("select[name='address']").val();
 		//each(function(i) {
 		//	addressCkbox.push($(this).val());    
 		//});
@@ -599,6 +767,7 @@
 	};
 
 	</script>
+
 	</article>
 </body>
 </html>

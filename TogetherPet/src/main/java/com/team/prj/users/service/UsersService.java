@@ -8,6 +8,7 @@ import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
 import com.team.prj.orders.service.OrderVO;
+import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
 

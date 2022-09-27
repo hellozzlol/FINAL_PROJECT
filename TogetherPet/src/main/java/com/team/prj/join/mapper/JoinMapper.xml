@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.join.mapper.JoinMapper">
 
-<!--
+
 		<insert id="usersInsert"
 		parameterType="com.team.prj.users.service.UsersVO">
 		<selectKey keyProperty="userNo" order="BEFORE"
@@ -28,24 +28,24 @@
 		,3000
 		,1
 		,SYSDATE)
-		</insert> -->
+		</insert> 
 
 	
 
 	<!-- 아이디 중복체크 -->
-	<select id="idCheck" resultType="int" parameterType="String">
+	<select id="idCheck" resultType="int" parameterType="com.team.prj.users.service.UsersVO">
 		select count(id)
-		from users
+		from login
 		where id = #{id}
 	</select>
 	
-	
-	<!-- 이메일 중복체크 
-	<select id="emailChk" resultType="int">
+		
+	<!-- 닉네임 중복체크 -->
+	<select id="nickCheck" resultType="int" parameterType="com.team.prj.users.service.UsersVO">
 		select count(*)
 		from users
-		where email = #{email}
-	</select> -->
+		where nickname = #{nickname}
+	</select>
 
 
 
