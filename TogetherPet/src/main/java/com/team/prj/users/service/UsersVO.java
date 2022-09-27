@@ -46,6 +46,11 @@ public class UsersVO {
 	private CalendarVO cal;
 	private TutorVO tutor;
 	private ClassReserveVO cr;
+	
+	//0927 희수가 추가
+	private String postcode; // 우편번호
+	private String da; // 상세주소
+	
 
 
 }
