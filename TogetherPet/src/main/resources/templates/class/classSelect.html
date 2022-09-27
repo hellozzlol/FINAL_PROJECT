@@ -8,8 +8,8 @@
 
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
-	th:content="${_csrf.headerName}" />  
-	
+	th:content="${_csrf.headerName}" />
+
 
 <!--<script src="http://code.jquery.com/jquery-latest.min.js"></script>  -->
 <!--<script src="assets/js/jquery-ui.calander.min.js"></script>  -->
@@ -18,7 +18,8 @@
 <title>클래스 자세히보기</title>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
@@ -95,25 +96,39 @@
 						//결제페이지로 이동함
 						jc('#addExreserve').on('click', function(){
 							if(confirm('해당 클래스를 신청하시겠습니까?')){	
-								//클래스 옵션 체크값 선언 후 체크값 추출
-								var option =  jc('input:radio[name="radioNo"]:checked').val();
-								alert(option);
 								var token = jc("meta[name='_csrf']").attr("content");
 			    				var header = jc("meta[name='_csrf_header']").attr("content");
 								
+								//클래스 옵션 체크값 선언 후 체크값 추출
+								var option =  jc('input:radio[name="radioNo"]:checked').val();
 								//폼에 추출한 값 넣어주기?
 								jc("#classOptionNo").val(option);
+								alert(option);
 								
 								jc('#exreserveCall').submit();
+								
 								
 							}
 						})
 						
 						
 						
+						/*jc.ajax('classReserveInsert', {
+									type: 'post',
+									data: {userNo:userNo, classNo:classNo, classOptionNo:classOptionNo},
+									dataType: 'text',
+									beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token)},
+								})
+								.done(res => {
+									if(confirm(res)){
+										//폼에 추출한 값 넣어주기?
+										jc("#classOptionNo").val(option);
+										jc('#exreserveCall').submit();
+									}
+								})*/
 						
-						
-						// 별점 클릭 시 별점 조정
+						/* 별점 클릭 시 별점 조정
 						jc(document).on('click', '.fa-star', function(evt){
 							console.log('실행');
 							var idxS = jc(this).index();
@@ -127,7 +142,7 @@
 							jc('#star').val(idxS+1);
 							jc('.star-txt').html('<span>'+ (idxS+1) +'</span><span>점</span>');
 							
-						});
+						});*/
 						
 						
 	});
@@ -459,93 +474,93 @@
 }
 
 /*=================이미지 슬라이더================*/
-#sul{
-    list-style:none;
+#sul {
+	list-style: none;
 }
 
 #parent {
-	width:500px;
-    height:600px;
+	width: 500px;
+	height: 600px;
 }
 
-#parent img{
-	display:block;
-	width:100%;
-	height:auto;
+#parent img {
+	display: block;
+	width: 100%;
+	height: auto;
 }
 
-.scontainer{
-    width:500px;
-    height:600px;
-    position: relative;
-    overflow: hidden;
-}
-.slider{
-    display: flex;
-    position:absolute;
-    top:0;
-    left:0;
-}
-
-.sbtn{
+.scontainer {
+	width: 500px;
+	height: 600px;
 	position: relative;
-	top:-40%;
-    font-size: 50px;
-    color: #d3d3d3;
-}
-.prev{
-    position:absolute;
-    top:20%;
-    left:-7%;
-}
-.next{
-    position:absolute;
-    top:20%;
-    right:5%;
-}
-.scontainer #sul{
-    -webkit-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
-    -o-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
-    transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+	overflow: hidden;
 }
 
+.slider {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
+.sbtn {
+	position: relative;
+	top: -40%;
+	font-size: 50px;
+	color: #d3d3d3;
+}
+
+.prev {
+	position: absolute;
+	top: 20%;
+	left: -7%;
+}
+
+.next {
+	position: absolute;
+	top: 20%;
+	right: 5%;
+}
+
+.scontainer #sul {
+	-webkit-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+	-o-transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+	transition: all 0.25s cubic-bezier(1, .01, .32, 1);
+}
 
 /*================ 별점 ===============*/
-
 .star-point:before {
-  	display: none;
+	display: none;
 }
 
-.star-point{
-	font-size:54px;
-	text-align:center;
-	letter-spacing:-3px;
+.star-point {
+	font-size: 54px;
+	text-align: center;
+	letter-spacing: -3px;
 }
 
-.star-point .fa-star{
-	cursor:pointer;
-	color:#d3d3d3;
+.star-point .fa-star {
+	cursor: pointer;
+	color: #d3d3d3;
 }
 
-.star-txt{
-	height:41px;
-	padding-top:8px;
-	text-align:center;
-	color:#999;
-	font-size:16px;
+.star-txt {
+	height: 41px;
+	padding-top: 8px;
+	text-align: center;
+	color: #999;
+	font-size: 16px;
 }
 
-.star-txt > span:first-child{
-	color:#ff385c;
-	font-size:27px;
+.star-txt>span:first-child {
+	color: #ff385c;
+	font-size: 27px;
 	font-weight: 700;
 }
 
-
-.star-txt > span:nth-child(2){
-	color:#ff385c;
-	font-size:18px;
+.star-txt>span:nth-child(2) {
+	color: #ff385c;
+	font-size: 18px;
 	font-weight: 700;
 }
 </style>
@@ -602,16 +617,15 @@
 
 					<div class="price_box">
 						<span class="current_price" style="font-size: x-large;">
-						KRW [[${#numbers.formatInteger(clas.price,3,'COMMA')}]]</span>
+							KRW [[${#numbers.formatInteger(clas.price,3,'COMMA')}]]</span>
 					</div>
 
 					<!-- 이미지 슬라이더 반복-->
 					<div class="col-lg-6 col-md-6" id="content">
-					 	<div class="scontainer">
+						<div class="scontainer">
 							<ul id="sul" class="slider">
-								<li class="item" th:each="ph:${photoList}" id="parent">
-									<img id="slide" th:src="${ph.dir}" name="slide">
-								</li>
+								<li class="item" th:each="ph:${photoList}" id="parent"><img
+									id="slide" th:src="${ph.dir}" name="slide"></li>
 							</ul>
 						</div>
 						<div class="sbtn">
@@ -619,15 +633,14 @@
 								class="next" style="text-decoration: none;">&#10095;</a>
 						</div>
 					</div>
-					
-					
+
+
 					<div class="col-lg-6 col-md-6">
 						<div class="product_d_right">
-							<form action="#">
 								<!-- -------------------예약달력-------------------->
 								<div class="product_variant">
 									<div class="variant_quantity_btn d-flex">
-									
+
 										<div id="rightdiv">
 											<div id="rightConBox">
 												<div id="datestr" style="display: none;">
@@ -640,53 +653,66 @@
 													<div id="datepicker" class="datepicker"></div>
 												</div>
 												<!--  <form method="post" id="payfrm" name="payfrm">-  -->
-					
-													<div id="selectdateBB" style="margin-top: 10px;">
-														<!-- 해당날짜에 선택된 강의옵션목록 -->
-														<div style="margin-top: 10px; width: 300px; color: #666; text-align: center;"
-															id=>개설 된 클래스</div>
-														<div id="selectClassListd" style="margin-top: 10px;">
-															
-														</div>
-														<div id="result999"></div>
+
+												<div id="selectdateBB" style="margin-top: 10px;">
+													<!-- 해당날짜에 선택된 강의옵션목록 -->
+													<div
+														style="margin-top: 10px; width: 300px; color: #666; text-align: center;"
+														id=>개설 된 클래스</div>
+													<div id="selectClassListd" style="margin-top: 10px;">
+
 													</div>
-													<!--  장바구니,결제하기 -> 옵션클래스번호가지고이동  -->
-													<!--<div id="buttonhomec"><input type="button" value="장바구니" id="gobasketB" style="border-radius:5px;"/><input type="button" value="클래스 신청하기" id="gopayB" style="border-radius:5px;"/></div -->
+													<div id="result999"></div>
+												</div>
+												<!--  장바구니,결제하기 -> 옵션클래스번호가지고이동  -->
+												<!--<div id="buttonhomec"><input type="button" value="장바구니" id="gobasketB" style="border-radius:5px;"/><input type="button" value="클래스 신청하기" id="gopayB" style="border-radius:5px;"/></div -->
 												<!--  </form>-->
+																							
 											
-			
-												
+												<form id="exreserveCall" name="exreserveCall" action="classExreserve" method="post">
+												<input type="hidden" th:name="${_csrf.parameterName}"
+													th:value="${_csrf.token}"> 
+												<input type="hidden" name="classNo" id="classNo" th:value="${clas.classNo}">
+												<input type="hidden" name="classOptionNo" id="classOptionNo">
+												<input type="hidden" name="userNo" id="userNo"
+													th:value="${session.user.userNo}">
+	
+												<br>
+												<button class="button btn btn-primary" id="addExreserve">
+													클래스 신청하기</button>
+												<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+												</form>
+
 												<input type="text" id="inputdatebox"
 													style="visibility: hidden;" />
 											</div>
 										</div>
-										
+
 									</div>
-								</div>
 								<!----------------- 예약달력 ------------------>
 
-
+<!-- 
 								<div class="product_variant">
-									<div class="variant_quantity_btn d-flex" >
-
-										<!-- 테스트용 폼 -->
-										<form id="exreserveCall" name="exreserveCall" method="post" action="classExreserve">
-											<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
+									<div class="variant_quantity_btn d-flex">		
+										<form id="exreserveCall" name="exreserveCall" action="classExreserve" method="post">
+											<input type="hidden" th:name="${_csrf.parameterName}"
+												th:value="${_csrf.token}"> 
 											<input type="hidden" name="classNo" id="classNo" th:value="${clas.classNo}">
 											<input type="hidden" name="classOptionNo" id="classOptionNo">
-											<input type="hidden" name="userNo" id="userNo" th:value="${session.user.userNo}">
-		
-											<button class="button btn btn-primary" id="addExreserve">클래스 신청하기</button>
+											<input type="hidden" name="userNo" id="userNo"
+												th:value="${session.user.userNo}">
+
+										
+											<button class="button btn btn-primary" id="addExreserve">
+												클래스 신청하기</button>
 											<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
 										</form>
-
 									</div>
-								</div>
-								
-								
-								
-								
+								</div>-->
+
+
+
+
 
 								<div class="priduct_social d-flex" style="padding-left: 1.5em;">
 									<span>SHARE: </span>
@@ -700,7 +726,7 @@
 												class="ion-social-instagram-outline"></i></a></li>
 									</ul>
 								</div>
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -714,12 +740,13 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="product_d_inner">
-						
+
 							<!-- 클래스 목차 메뉴바 -->
 							<div class="product_info_button border-bottom">
 								<ul class="nav" role="tablist">
 									<li><a class="active" data-toggle="tab" href="#info"
-										role="tab" aria-controls="info" aria-selected="false">클래스 소개</a></li>
+										role="tab" aria-controls="info" aria-selected="false">클래스
+											소개</a></li>
 									<li><a data-toggle="tab" href="#additional" role="tab"
 										aria-controls="additional" aria-selected="false">튜터 소개</a></li>
 									<li><a data-toggle="tab" href="#reviews" role="tab"
@@ -728,108 +755,107 @@
 										aria-controls="maps" aria-selected="false">오시는 길</a></li>
 								</ul>
 							</div>
-							
+
 							<div class="tab-content">
-									<!-- 클래스 소개글 -->
-									<div class="tab-pane fade show active" id="info" role="tabpanel">
-										<div class="product_info_content">
-											<p>[[${clas.intro}]]</p>
-											<ul>
-												<li>Length: 74cm</li>
-												<li>Regular fit</li>
-												<li>Notched lapels</li>
-												<li>Twin button front fastening</li>
-												<li>Front patch pockets; chest pocket</li>
-												<li>Internal pockets</li>
-											</ul>
-										</div>
+								<!-- 클래스 소개글 -->
+								<div class="tab-pane fade show active" id="info" role="tabpanel">
+									<div class="product_info_content">
+										<p>[[${clas.intro}]]</p>
+										<ul>
+											<li>Length: 74cm</li>
+											<li>Regular fit</li>
+											<li>Notched lapels</li>
+											<li>Twin button front fastening</li>
+											<li>Front patch pockets; chest pocket</li>
+											<li>Internal pockets</li>
+										</ul>
 									</div>
-									
-									<!-- 튜터 소개글 -->
-									<div class="tab-pane fade" id="additional" role="tabpanel">
-										<div class="product_info_content">
-											<p>튜터소개</p>
-											<ul>
-												<li>Length: 74cm</li>
-												<li>Regular fit</li>
-												<li>Notched lapels</li>
-												<li>Twin button front fastening</li>
-												<li>Front patch pockets; chest pocket</li>
-												<li>Internal pockets</li>
-											</ul>
-										</div>
-									</div>
-									
-									<!-- 리뷰 -->
-									<div class="tab-pane fade" id="reviews" role="tabpanel">
-										<div class="reviews_wrapper">
-											<h2>1개의 리뷰가 있습니다.</h2>
-											<div class="reviews_comment_box">
-												<div class="comment_thmb">
-													<img src="assets/img/blog/comment2.jpg" alt="">
-												</div>
-												<div class="comment_text">
-													<div class="reviews_meta">
+								</div>
 
-														<p>
-															<strong>admin </strong>- September 12, 2018
-														</p>
-														<span>roadthemes</span>
-													</div>
-												</div>
-	
-											</div>
-											<div class="product_ratting mb-10">
-												<h2 class="star-txt">별점을 선택해주세요</h2>
-													<div class="star-point">
-														<i class="fa-star">★</i> 
-														<i class="fa-star">★</i> 
-														<i class="fa-star">★</i> 
-														<i class="fa-star">★</i> 
-														<i class="fa-star">★</i>
-													</div>
-												<input type="hidden" id="star" name="star" value="0"/>
-
-											</div>
-											<div class="product_review_form">
-												<form action="#">
-													<div class="row">
-														<div class="comment_title col-12">
-															<h2>수강 후기를 작성해주세요</h2>
-															<div class="col-lg-6 col-md-6">
-																<!-- 수강자명 -->
-																<input id="author" type="text" th:value="${session.user.name}" readonly>
-															</div>
-															<br>
-															<textarea name="comment" id="review_comment"></textarea>
-														</div>
-	
-													</div>
-													<button type="submit">작성하기</button>
-												</form>
-											</div>
-										</div>
+								<!-- 튜터 소개글 -->
+								<div class="tab-pane fade" id="additional" role="tabpanel">
+									<div class="product_info_content">
+										<p>튜터소개</p>
+										<ul>
+											<li>Length: 74cm</li>
+											<li>Regular fit</li>
+											<li>Notched lapels</li>
+											<li>Twin button front fastening</li>
+											<li>Front patch pockets; chest pocket</li>
+											<li>Internal pockets</li>
+										</ul>
 									</div>
-	
-									<!-- 오시는길 -->
-									<div class="tab-pane fade" id="maps" role="tabpanel">
-										<div class="product_d_table">
+								</div>
+
+								<!-- 리뷰 -->
+								<div class="tab-pane fade" id="reviews" role="tabpanel">
+									<div class="reviews_wrapper">
+										<h2>1개의 리뷰가 있습니다.</h2>
+										<div class="reviews_comment_box">
+											<div class="comment_thmb">
+												<img src="assets/img/blog/comment2.jpg" alt="">
+											</div>
+											<div class="comment_text">
+												<div class="reviews_meta">
+
+													<p>
+														<strong>admin </strong>- September 12, 2018
+													</p>
+													<span>roadthemes</span>
+												</div>
+											</div>
+
+										</div>
+										<div class="product_ratting mb-10">
+											<h2 class="star-txt">별점을 선택해주세요</h2>
+											<div class="star-point">
+												<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+													class="fa-star">★</i> <i class="fa-star">★</i> <i
+													class="fa-star">★</i>
+											</div>
+											<input type="hidden" id="star" name="star" value="0" />
+
+										</div>
+										<div class="product_review_form">
 											<form action="#">
-												<table>
-													<tbody>
-														<tr>
-															<td class="first_child">주소</td>
-															<td>[[${clas.address}]]</td>
-														</tr>
-														<tr>
-															<td class="first_child">상세주소</td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
-												<br>
-													
-												<div id="map" style="width: auto; height: 400px; margin: auto;"></div>
+												<div class="row">
+													<div class="comment_title col-12">
+														<h2>수강 후기를 작성해주세요</h2>
+														<div class="col-lg-6 col-md-6">
+															<!-- 수강자명 -->
+															<input id="author" type="text"
+																th:value="${session.user.name}" readonly>
+														</div>
+														<br>
+														<textarea name="comment" id="review_comment"></textarea>
+													</div>
+
+												</div>
+												<button type="submit">작성하기</button>
+											</form>
+										</div>
+									</div>
+								</div>
+
+								<!-- 오시는길 -->
+								<div class="tab-pane fade" id="maps" role="tabpanel">
+									<div class="product_d_table">
+										<form action="#">
+											<table>
+												<tbody>
+													<tr>
+														<td class="first_child">주소</td>
+														<td>[[${clas.address}]]</td>
+													</tr>
+													<tr>
+														<td class="first_child">상세주소</td>
+														<td></td>
+													</tr>
+												</tbody>
+											</table>
+											<br>
+
+											<!-- <div id="map" style="width: auto; height: 400px; margin: auto;"></div>
 												<script type="text/javascript"
 													src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0&libraries=services,clusterer,drawing"></script>
 												<script>
@@ -894,10 +920,10 @@
 												
 													// 클러스터러에 마커들을 추가합니다
 													clusterer.addMarkers(markers);
-												</script>
-											</form>
-										</div>
+												</script>-->
+										</form>
 									</div>
+								</div>
 
 
 
@@ -909,7 +935,7 @@
 		</div>
 		<!--product info end-->
 
-<script>
+		<script>
 document.addEventListener('DOMContentLoaded', function() {
 		var slideWrapper = document.querySelector('.scontainer');
 		var slides = document.querySelectorAll('.item');
@@ -957,7 +983,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 
-</article>
+	</article>
 
 </body>
 

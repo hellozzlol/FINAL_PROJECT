@@ -117,6 +117,539 @@
 </script>
 
 
+<style>
+#cl1 {
+	width: 500px;
+}
+
+#cl2 {
+	padding-bottom: 50px;
+}
+
+#city {
+	text-align: center;
+	font-size: large;
+}
+
+.header_search {
+	height: 40px;
+	width: 40px;
+	border: 1px solid #ffffff;
+	background: #ffffff;
+}
+
+.searchinput {
+	font-size: 16px;
+	width: 325px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+
+.searchbtn {
+	width: 50px;
+	height: 50px;
+	outline: none;
+	float: right;
+}
+
+/*===================상단 검색창 css=====================*/
+
+#cate > a {
+	color: gray;
+}
+
+#addr > a {
+	color: gray;
+}
+
+#classSearch {
+	float: right;
+	width: 30em;
+}
+
+#cl1{
+	float: left;
+	
+}
+#cl2 {
+	float: left;
+}
+
+
+
+#cate {
+	float: left;
+	padding:1em;
+}
+
+#addr {
+	float: left;
+	padding:1em;
+}
+
+
+input[type=checkbox] {
+	display: none;
+}
+
+input[type=radio] {
+	display: none;
+}
+
+/*---카테고리---*/
+#chk1:checked~#a1{
+	color: orange;
+}
+#chk1:checked~#i1{
+	transform: scale(1.05);
+}
+#img1 img{
+	transition: all 0.2s linear;
+}
+#img1:hover img{
+	transform: scale(1.05);
+}
+#img1:hover a{
+	color: orange;
+}
+
+
+
+
+#chk2:checked~#a2{
+	color: orange;
+}
+#img2 img{
+	transition: all 0.2s linear;
+}
+#img2:hover img{
+	transform: scale(1.05);
+}
+#img2:hover a{
+	color: orange;
+}
+
+
+#chk3:checked~#a3{
+	color: orange;
+}
+#img3 img{
+	transition: all 0.2s linear;
+}
+#img3:hover img{
+	transform: scale(1.05);
+}
+#img3:hover a{
+	color: orange;
+}
+
+
+#chk4:checked~#a4{
+	color: orange;
+}
+#img4 img{
+	transition: all 0.2s linear;
+}
+#img4:hover img{
+	transform: scale(1.05);
+}
+#img4:hover a{
+	color: orange;
+}
+
+
+#chk5:checked~#a5{
+	color: orange;
+}
+#img5 img{
+	transition: all 0.2s linear;
+}
+#img5:hover img{
+	transform: scale(1.05);
+}
+#img5:hover a{
+	color: orange;
+}
+/*---카테고리---*/
+
+
+/*---지역---*/
+input[id="chk6"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i6-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk6"] + label:hover #i6-1{
+	display: block;
+}
+#img6:hover a{
+	color: orange;
+} 
+#chk6:checked~#a6{
+	color: orange;
+}
+
+
+
+
+input[id="chk7"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i7-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk7"] + label:hover #i7-1{
+	display: block;
+}
+#img7:hover a{
+	color: orange;
+} 
+#chk7:checked~#a7{
+	color: orange;
+}
+
+
+
+
+input[id="chk8"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i8-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk8"] + label:hover #i8-1{
+	display: block;
+}
+#img8:hover a{
+	color: orange;
+} 
+#chk8:checked~#a8{
+	color: orange;
+}
+
+
+
+input[id="chk9"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i9-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk9"] + label:hover #i9-1{
+	display: block;
+}
+#img9:hover a{
+	color: orange;
+} 
+#chk9:checked~#a9{
+	color: orange;
+}
+
+
+
+input[id="chk10"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i10-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk10"] + label:hover #i10-1{
+	display: block;
+}
+#img10:hover a{
+	color: orange;
+} 
+#chk10:checked~#a10{
+	color: orange;
+}
+
+
+input[id="chk11"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i11-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk11"] + label:hover #i11-1{
+	display: block;
+}
+#img11:hover a{
+	color: orange;
+} 
+#chk11:checked~#a11{
+	color: orange;
+}
+
+
+
+input[id="chk12"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i12-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk12"] + label:hover #i12-1{
+	display: block;
+}
+#img12:hover a{
+	color: orange;
+} 
+#chk12:checked~#a12{
+	color: orange;
+}
+
+
+input[id="chk13"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i13-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk13"] + label:hover #i13-1{
+	display: block;
+}
+#img13:hover a{
+	color: orange;
+} 
+#chk13:checked~#a13{
+	color: orange;
+}
+
+
+
+input[id="chk14"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i14-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk14"] + label:hover #i14-1{
+	display: block;
+}
+#img14:hover a{
+	color: orange;
+} 
+#chk14:checked~#a14{
+	color: orange;
+}
+
+
+
+input[id="chk15"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i15-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk15"] + label:hover #i15-1{
+	display: block;
+}
+#img15:hover a{
+	color: orange;
+} 
+#chk15:checked~#a15{
+	color: orange;
+}
+
+
+
+
+input[id="chk16"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i16-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk16"] + label:hover #i16-1{
+	display: block;
+}
+#img16:hover a{
+	color: orange;
+} 
+#chk16:checked~#a16{
+	color: orange;
+}
+
+
+
+input[id="chk17"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  
+  margin: 0px auto;
+  position: relative;
+}
+#i17-1 {
+ 	position: absolute;
+  	top: 0px;
+ 	left: 0px;
+ 	display: none;
+}
+input[id="chk17"] + label:hover #i17-1{
+	display: block;
+}
+#img17:hover a{
+	color: orange;
+} 
+#chk17:checked~#a17{
+	color: orange;
+}
+/*--------------------*/
+input[id="chk1"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk2"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk3"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk4"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+}
+input[id="chk5"] + label {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+}
+ /*----------------------*/
+
+</style>
+
 </head>
 
 <body>
