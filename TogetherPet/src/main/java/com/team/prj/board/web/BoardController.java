@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,6 +110,19 @@ public class BoardController {
 			return "redirect:boardList";
 		}
 			
+		
+		//커뮤니티 글 삭제
+		
+		@GetMapping("/boardDelete")
+		
+		public String boradDelete(BoardVO vo, Model model, @RequestParam("boardNo") int boardNo) {
+			System.out.println("=====================" + vo.getBoardNo());
+			vo.setBoardNo(Integer.parseInt(("boardNo")));
+			dao.boardDelete(vo);
+			return "redirect:boardList";
+			
+		}
+		
 		
 		//검색 아..작..스..처..리..리ㅣㅣ리ㅣ리리리리리이이이ㅣ잉
 		

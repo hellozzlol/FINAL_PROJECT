@@ -170,7 +170,7 @@ a {
 										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
 											th:text="${b.title}"></a></td>
 										<td th:text="${b.dt}"></td>
-										<td th:text="${b.writer}"></td>
+										<td th:text="${b.nickname}"></td>
 										<td th:text="${b.hit}"></td>
 									</tr>
 								</tbody>
@@ -221,7 +221,7 @@ a {
 		                     $("<td />").text(item.category),
 		                     $("<td />").text(item.title),
 		                     $("<td />").text(item.dt),
-		                     $("<td />").text(item.writer),
+		                     $("<td />").text(item.nickname),
 		                     $("<td />").text(item.hit),
 		                         
 		                  );

@@ -304,6 +304,11 @@ a {
 background-color:dark;
 text-align: center;
 }
+
+.btnn{
+text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -358,7 +363,7 @@ text-align: center;
 										<dl>
 											<dt>제목</dt>
 											<dd>
-												<input type="text" id="title" name="title">
+												<input type="text" id="title" name="title" >
 											</dd>
 										</dl>
 									</div>
@@ -368,7 +373,7 @@ text-align: center;
 										<dl>
 											<dt>글쓴이</dt>
 											<dd>
-												<input type="text" id="writer" name="writer" th:value="${session.writer}">
+												<input type="text" id="nickname" name="nickname">
 											</dd>
 										</dl>
 
@@ -385,6 +390,17 @@ text-align: center;
 												<input type="file" id="file" name="file">
 											</dd>
 										</dl>
+										
+										<dl>
+											<dt>유저번호</dt>
+											<dd>
+												<!-- <input type="text" id="userNo" name="userNo" 
+												th:value="${session.user.id}" disabled="disabled"> -->
+												<input type="text" id="userNo" name="userNo" 
+												>
+											</dd>
+										</dl>
+										
 									</div>
 									
 									
@@ -392,10 +408,15 @@ text-align: center;
 										<textarea placeholder="내용 입력" id="editor" name="content"></textarea>
 									</div>
 								</div>
-
-								<div>
+											
+											<br>
+											<br>
+											<br>
+											
+								<div class="btnn">
 									<button type="submit" value="등록" class="btn btn-primary">등록</button>
-									<a href="boardList" class="btn btn-primary2">취소</a>
+									<!-- <button type="reset" value="취소" class="btn btn-primary">취소</button> -->
+									<a href="boardList" class="btn btn-primary">취소</a>
 								</div>
 								
 							</div>
