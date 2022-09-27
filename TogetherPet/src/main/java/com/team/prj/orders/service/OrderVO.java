@@ -18,4 +18,7 @@ public class OrderVO {
 	//0925 희수 추가
 	private int sellerNo;
 	private String goodsName;
+	
+	// 0927 선희 추가
+	private String thumb;
 }

@@ -22,4 +22,8 @@ public class ClassReserveVO {
 	String name; //유저이름
 	int money; //적립금
 	String className; //클래스 이름
+	
+	// 0927 선희 추가
+	private String address;
+	private String tName;
 }

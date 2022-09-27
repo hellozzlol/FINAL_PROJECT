@@ -13,8 +13,8 @@ public class PetServiceImpl implements PetService {
 	private PetMapper map;
 	
 	@Override
-	public List<PetVO> petSelectList() {
-		return map.petSelectList();
+	public List<PetVO> petSelectList(PetVO vo) {
+		return map.petSelectList(vo);
 	}
 
 	@Override

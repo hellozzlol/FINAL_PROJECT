@@ -45,11 +45,15 @@
 					<h3>내 수강내역</h3>
 				</div>
 				<br>
-
+				
+				<div>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>전체 수강 목록([[${#lists.size(classList)}]]개)</strong></button>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>수강 중</strong></button>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>수강 완료</strong></button>
+				</div><br>
+				
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<h5 class="card-header" style="font-weight: bold;">수강 클래스 수
-						[[${#lists.size(classList)}]]</h5>
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
@@ -65,10 +69,10 @@
 								<tr th:each="list : ${classList}">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
 										<strong>[[${list.name}]]</strong></td>
-									<td>[[${list.name}]]</td>
-									<td>[[${#dates.format(list.timeStart, 'yyyy-MM-dd')}]]</td>
+									<td>[[${list.tName}]]</td>
+									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>
 									<td>[[${list.address}]]</td>
-									<td></td>
+									<td>[[${list.pay}]]</td>
 								</tr>
 							</tbody>
 						</table>
