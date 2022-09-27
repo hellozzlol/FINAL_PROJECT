@@ -73,30 +73,27 @@
 					<table id="usersList" Class="table" >
 						<thead>
 							<tr>
+								<th>선택</th>
 								<th>회원번호</th>
 								<th>아이디</th>
 								<th>이름</th>
 								<th>닉네임</th>
 								<th>상태</th>
-								<th>변경</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="u:${users}">
+								<td><input type="checkbox" id="ckbox"></td>
 								<td th:text="${u.userNo}"></td>
 								<td th:text="${u.id}"></td>
 								<td th:text="${u.name}"></td>
 								<td th:text="${u.nickname}"></td>
 								<td th:text="${u.state}"></td>
-								<td>
-									<select name="state" id="state">
- 		    							<option value="활동정지">활동 정지</option>
-									</select>
-								</td>
 							</tr>
 						</tbody>
 					</table>
 			</div>	
+			<button>변경</button> 
 	</article>
 
 </body>
