@@ -11,12 +11,19 @@
 <title>Insert title here</title>
 <script>
 		document.addEventListener('DOMContentLoaded', function () {
-			// 총액 계산
-			getTotal();
-			
-			//
 			var token = $("meta[name='_csrf']").attr("content");
 		    var header = $("meta[name='_csrf_header']").attr("content");
+			
+		    // 장바구니가 비워져있으면
+		    if($('#cartSize').html()=='0'){
+		    	$('#tb').html('');
+		    	$('#th').html('');
+		    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
+		    	$('.grand_totall_area').html('').css('background-color', 'white');
+		    }
+		    
+		    // 총액 계산
+			getTotal();
 
 			function getTotal() {
 
@@ -133,14 +140,17 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="cart_page_tabel">
+									<div id="cartSize" style="display: none" th:text="${#lists.size(cartList)}">
+										</div>
 									<table>
-										<thead>
+										<thead id="th">
 											<tr>
 												<th>product</th>
 												<th>information</th>
 												<th>Price</th>
 												<th>Quantity</th>
 												<th>Total</th>
+												<th id="cartSize" style="display: none">[[${#lists.size(cartList)}]]</th>
 											</tr>
 										</thead>
 										<tbody id="tb">

@@ -2,6 +2,9 @@ package com.team.prj.goods.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.IsNull;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
@@ -27,7 +31,9 @@ public class GoodsController {
 	private CartService cart;
 	@Autowired
 	private OrderService order;
-
+	@Autowired
+	private UsersService user; // 개인회원
+	
 	@RequestMapping("/shop")
 	public String goodsSelectAll(String key, Model model) {
 		if(key==null) {
@@ -70,7 +76,7 @@ public class GoodsController {
 	}
 
 	@RequestMapping("/orderConfirm")
-	public String orderConfirm(OrderVO vo, Model model) {
+	public String orderConfirm(OrderVO vo, Model model, HttpServletRequest request) {
 		List<OrderVO> oList = order.selectOrder(vo);
 		vo = oList.get(0);
 		
@@ -86,6 +92,9 @@ public class GoodsController {
 		u.setUserNo(vo.getUserNo());
 		u.setMoney(vo.getMoney());
 		order.updateMoney(u);
+		u = user.usersSelect(u);
+		HttpSession session = request.getSession();
+		session.setAttribute("user", u);
 		
 		model.addAttribute("orderList", oList);
 		model.addAttribute("order", vo);

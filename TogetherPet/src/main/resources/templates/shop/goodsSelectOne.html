@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout2}">
 
 <head>
-	<meta charset="UTF-8">
-	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
-	<title>Insert title here</title>
-	<script>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>Insert title here</title>
+<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
@@ -186,6 +188,7 @@
 			// 재고 없을 때
 			let amount = Number($("#amount").html());
 			if (amount <= 0) {
+				$("#amount").html(0);
 				$("#stock").html("Not in Stock").css("color", "red")
 			}
 
@@ -220,6 +223,14 @@
 							}
 						})
 				}
+			})
+			
+			// 이미지 변경
+			$('.zoom_tab_img').on('click', '.imgClick', function(){
+				let img = $(this);
+				let src = img[0].children[0].getAttribute('src');
+				$('#zoom').attr('src', src);
+				
 			})
 		})
 	</script>
@@ -257,42 +268,14 @@
 								<div class="zoom_tab_img">
 									<!-- 반복되는 구간 -->
 									<div th:each="ph:${photoList}">
-										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img th:src="${ph.dir}"
-												alt="tab-thumb"></a>
-									</div>
-									<div th:each="ph:${photoList}">
-										<a class="zoom_tabimg_list" href="javascript:void(0)"> <img th:src="${ph.dir}"
-												alt="tab-thumb"></a>
+										<a class="imgClick"><img
+											th:src="${ph.dir}" alt="tab-thumb"></a>
 									</div>
 									<!-- 반복되는 구간 -->
-
-
 								</div>
 								<div class="product_zoom_main_img">
 									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통1.png"
-											src="assets/img/product/big-product/물통1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통2.png"
-											src="assets/img/product/big-product/물통2.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통3.png"
-											src="assets/img/product/big-product/물통3.png" alt="">
-									</div>
-
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통1.png"
-											src="assets/img/product/big-product/물통1.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통2.png"
-											src="assets/img/product/big-product/물통2.png" alt="">
-									</div>
-									<div class="product_zoom_thumb">
-										<img data-image="assets/img/product/big-product/물통3.png"
-											src="assets/img/product/big-product/물통3.png" alt="">
+										<img id="zoom" th:src="${goods.thumb}" alt="">
 									</div>
 
 								</div>
@@ -401,7 +384,7 @@
 							</div>
 							<div class="tab-content">
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
-									<div class="product_info_content">
+									<div class="product_info_content" align="center">
 										<!-- 상세 사진  -->
 										<img th:src="${goods.detail}"></img>
 									</div>

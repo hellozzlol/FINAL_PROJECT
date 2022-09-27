@@ -43,4 +43,10 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return map.updateGoodsQty(vo);
 	}
+
+	@Override
+	public int updateMinusYN() {
+		// TODO Auto-generated method stub
+		return map.updateMinusYN();
+	}
 }

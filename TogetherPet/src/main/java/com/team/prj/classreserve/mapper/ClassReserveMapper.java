@@ -15,4 +15,7 @@ public interface ClassReserveMapper {
 	//int classReserveDelete(ClassReserveVO vo); //클래스예약내역 삭제
 	int updateMoney(UsersVO vo);
 	int updateHeadCount(ClassOptionVO vo);//클래스 옵션에 정원 카운트 +1
+	
+	//0927 희수가 정산때문에 추가
+	int updateMinusYN();
 }

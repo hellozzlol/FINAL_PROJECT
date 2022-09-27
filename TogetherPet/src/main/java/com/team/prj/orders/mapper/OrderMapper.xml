@@ -30,7 +30,7 @@
 				#{pay},
 				#{amount},
 				#{totalPrice},
-				#{totalPrice}*0.9,
+				round(#{totalPrice}*0.9),
 				1,
 				null,
 				1,
@@ -42,7 +42,10 @@
 				#{cartNo},
 				#{money},
 				(select seller_no from goods where goods_no=#{goodsNo}), 
-				(select name from goods where goods_no=#{goodsNo}))
+				(select name from goods where goods_no=#{goodsNo}),
+				#{postcode},
+				#{da})
+				
 	</insert>
 
 	<update id="updateMoney">
@@ -53,6 +56,10 @@
 	<!-- 주문 및 결제시 상품 재고 업데이트 -->
 	<update id="updateGoodsQty">
 		update goods set amount=(select amount from goods where goods_no=#{goodsNo})-#{amount} where goods_no=#{goodsNo}
+	</update>
+	
+	<update id="updateMinusYN">
+		update orders set minus_yn='1', minus_date=sysdate where to_char( dt, 'yyyymmdd' ) = to_char( sysdate, 'yyyymmdd')
 	</update>
 	
 </mapper>

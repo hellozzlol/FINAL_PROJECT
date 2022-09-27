@@ -14,4 +14,7 @@ public interface ClassReserveService {
 	//int classReserveDelete(ClassReserveVO vo); //클래스예약내역 삭제
 	int updateMoney(UsersVO vo); //유저 적립금 포인트 업데이트
 	int updateHeadCount(ClassOptionVO vo);//클래스 옵션에 정원 카운트 +1
+	
+	//0927 희수가 정산때문에 추가
+	int updateMinusYN();
 }

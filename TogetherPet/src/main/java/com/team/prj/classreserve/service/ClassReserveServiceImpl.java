@@ -48,4 +48,10 @@ public class ClassReserveServiceImpl implements ClassReserveService {
 		return map.updateHeadCount(vo);
 	}
 
+	@Override
+	public int updateMinusYN() {
+		// TODO Auto-generated method stub
+		return map.updateMinusYN();
+	}
+
 }
