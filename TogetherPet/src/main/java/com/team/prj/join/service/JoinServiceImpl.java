@@ -60,31 +60,21 @@ public class JoinServiceImpl implements JoinService {
 	// id 중복체크
 	@Override
 	public int idCheck(String id){
-		int result=0;
-		try {
-			result = jm.idCheck(id);
-			System.out.println("============= Service_impl_result" + result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
+		return jm.idCheck(id);
 	}
 
 	// 닉네임 중복체크
 	@Override
-	public int nickCheck(String nickname) throws Exception {
-		int result = jm.nickCheck(nickname);
-		return result;
+	public int nickCheck(String nickname) {
+		return jm.nickCheck(nickname);
 	}
+
 
 	// 일반회원 등록
 	@Override
 	public int usersInsert(UsersVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return jm.usersInsert(vo);
 	}
-
 
 	
 
