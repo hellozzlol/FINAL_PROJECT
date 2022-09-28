@@ -19,35 +19,12 @@ public class JoinController {
 	@Autowired
 	private JoinService js;
 	
-	
-	@PostMapping("userJoinForm")
-	public String usersInsert(UsersVO vo, Model model) {
-		int u = js.usersInsert(vo);
-		if (u !=0 ) {
-			model.addAttribute("message", "정상적으로 추가 됨");
-		}else {
-			model.addAttribute("message", "멤버 추가 실패");
-		}
-		return "loginForm";
+	// 회원등록
+	@PostMapping("/admin/userJoinForm")
+	public String usersInsert(UsersVO vo) {
+		js.usersInsert(vo);
+		return "redirect:/loginForm";
 	}
-	
-
-//	@RequestMapping(value = "/userJoinForm", method=RequestMethod.POST)
-//	public String registerPOST(UsersVO usersVO, String id, String nickname) throws Exception{
-//		int idResult = js.idCheck(id);
-//		int nickResult = js.nickCheck(nickname);
-//		System.out.println("??????????");
-//		try {
-//			if(idResult == 1 || nickResult == 1 ) {
-//				return "admin/userJoinForm";
-//			}else if(idResult == 0 && nickResult == 0 ) {
-//				js.usersInsert(usersVO);
-//			}
-//		}catch(Exception e) {
-//			throw new RuntimeException();
-//		}
-//		return "redirect:/";
-//	}
 	
 	
 }

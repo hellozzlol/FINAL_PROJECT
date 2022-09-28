@@ -229,6 +229,21 @@
 						);
 				})
 				
+				
+				// 비밀번호 확인
+				$('#passwordChk').blur(function(){
+					if($("#passwordChk").val() == $("#password").val()){
+						$(".successChk").text("비밀번호가 일치합니다.");
+						$(".successChk").css("color", "blue");
+						$("#doubleChk").val("true");
+					}else{
+						$(".successChk").text("비밀번호가 일치하지 않습니다.");
+						$(".successChk").css("color", "red");
+						$("#doubleChk").val("false");
+					}
+				});
+				
+				
 			})
 		</script>
 		<div class="container">
@@ -249,34 +264,41 @@
 
 										<button class="btn btn-outline-primary" type="button" id="idCheck"
 											value="N">중복확인</button>
-										<br>
-											
+									</div>
 									<span class="id_ok" style="display:none" >사용 가능한 아이디입니다.</span>
 									<span class="id_used" style="display:none" >사용 중인 아이디입니다.</span>											
-									</div>
 									<br>
-
-
+									
 									<div class="form-password-toggle">
-										<label class="form-label" for="basic-default-password12">비밀번호</label>
+										<label class="form-label" for="basic-default-password12" >이름</label>
 										<div class="input-group">
-											<input type="password" class="form-control" id="basic-default-password12" 
-												aria-describedby="basic-default-password2" autocomplete="off" required maxlength="10" /> 
+											<input type="text" class="form-control" id="name" 
+												aria-describedby="basic-default-password2" autocomplete="off" required maxlength="10" name="name" /> 
 										</div>
 									</div>
 									<br>
 
 									<div class="form-password-toggle">
-										<label class="form-label" for="basic-default-password12">비밀번호
-											확인</label>
+										<label class="form-label" for="basic-default-password12" >비밀번호</label>
 										<div class="input-group">
-											<input type="password" class="form-control" id="userpasschk" placeholder="동일하게 입력해주세요."
-												aria-describedby="basic-default-password2" autocomplete="off" required maxlength="10"/> 
+											<input type="password" class="form-control" id="password" placeholder="10자 이내로 설정해주세요."
+												aria-describedby="basic-default-password2" autocomplete="off" required maxlength="10" name="password" /> 
 										</div>
+									</div>
+									<br>
+
+									<div class="form-password-toggle">
+										<label class="form-label" for="basic-default-password12">비밀번호 확인</label>
+										<div class="input-group">
+											<input type="password" class="form-control" id="passwordChk" placeholder="동일하게 입력해주세요."
+												aria-describedby="basic-default-password2" autocomplete="off" required maxlength="10"/>
+										</div>
+											<span class="point successChk"></span> 
+											<input type="hidden" id="pwDoubleChk"/>
 									</div>
 									<br> <label class="form-label" for="basic-default-password12">이메일</label>
 									<div class="input-group">
-										<input type="email" class="form-control" placeholder="" id="memail" name="memail"
+										<input type="email" class="form-control" placeholder="" id="memail" name="email"
 											aria-label="Recipient's username" aria-describedby="button-addon2" />
 										<button class="btn btn-outline-primary" type="button"
 											id="sendCode">인증코드전송</button>
@@ -295,17 +317,17 @@
 										<input type="text" class="form-control" id="nickname" name="nickname"
 											aria-label="Recipient's username" aria-describedby="button-addon2" />
 										<button class="btn btn-outline-primary" type="button" id="nickCheck"
-											vlaue="N">중복확인</button>
+											value="N">중복확인</button>
+									</div>
 										<span class="nick_ok" style="display:none">사용 가능한 닉네임입니다.</span>
 										<span class="nick_used" style="display:none">사용 중인 닉네임입니다.</span>
-									</div>
 									<br>
 
 
 									<div>
 										<label for="defaultFormControlInput" class="form-label">연락처</label>
 										<input type="text" class="form-control" id="defaultFormControlInput"
-											placeholder="" />
+											placeholder="" name="call"/>
 									</div>
 									<br>
 
@@ -313,10 +335,10 @@
 
 										<label class="form-label" for="basic-default-password12">주소</label><br>
 
-										<input type="text" id="postcode" placeholder="우편번호"> <input type="button"
+										<input type="text" id="postcode" placeholder="우편번호" name="postcode"> <input type="button"
 											onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-										<input type="text" id="address" placeholder="주소"><br>
-										<input type="text" id="detailAddress" placeholder="상세주소">
+										<input type="text" id="address" placeholder="주소" name="address"><br>
+										<input type="text" id="detailAddress" placeholder="상세주소" name="da">
 										<input type="text" id="extraAddress" placeholder="참고항목"><br>
 
 

@@ -3,6 +3,7 @@ package com.team.prj.join.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.join.mapper.JoinMapper;
@@ -73,6 +74,11 @@ public class JoinServiceImpl implements JoinService {
 	// 일반회원 등록
 	@Override
 	public int usersInsert(UsersVO vo) {
+		// 비밀번호 암호화
+		BCryptPasswordEncoder Pencoder = new BCryptPasswordEncoder();
+		String result = Pencoder.encode(vo.getPassword());
+		vo.setPassword(result);
+				
 		return jm.usersInsert(vo);
 	}
 
