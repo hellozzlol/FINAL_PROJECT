@@ -528,12 +528,6 @@
 		function htmlView(datas) {
 			$(".shop_wrapper").empty(); 
 			$(".clst").empty();
-			
-			var length = datas.length;
-			var newlength = `<span class="classlist"> ${length} 개의
-				클래스가 회원님의 등록을 기다리고 있어요!</span>`
-			$(".clst").append(newlength);
-				
 			for (c of datas){
 			var result = `<div class="col-lg-4 col-md-4 col-sm-6 col-6" id="point">
 				
@@ -552,28 +546,32 @@
 													class="icon-heart icons"></i></a></li>
 										</ul>
 									</div>
+									<div class="product_label">
+										<span style="width: 120%;">${c.category}</span>
+									</div>
 								</div>				
 			
 								<!-----센터설명------>
 								<div class="product_content grid_content text-center">
-									<div class="clas1">
-										<button class="catebtn">${c.category}</button>
-										<br>
-										<h4 class="product_name">
-											<a class="clasname" href="/classSelect?classNo=${c.classNo}">${c.name}</a>
-										</h4>
+									<div class="product_ratting"> <!-- 별점 -->
+										<ul class="d-flex justify-content-center">
+											<li><a href="#"><i class="ion-android-star"></i></a></li>
+											<li><a href="#"><i class="ion-android-star"></i></a></li>
+											<li><a href="#"><i class="ion-android-star"></i></a></li>
+											<li><a href="#"><i class="ion-android-star"></i></a></li>
+											<li><a href="#"><i class="ion-android-star"></i></a></li>
+											<li><span>(2)</span></li>
+										</ul>
 									</div>
-									
-									<div class="clas2">
-										<h4 class="product_name">
-											<a href="/classSelect?classNo=${c.classNo}">🗺 ${c.address}</a>
-										</h4>
-										<div class="price_box">
-											<span class="current_price">KRW ${c.price}</span>
-										</div>
-										
+									<h4 class="product_name">
+										<a href="/classSelect?classNo=${c.classNo}">${c.name}</a>
+									</h4>
+									<h4 class="product_name">
+										<a href="/classSelect?classNo=${c.classNo}">${c.address}</a>
+									</h4>
+									<div class="price_box">
+										<span class="current_price">${c.price}원</span>
 									</div>
-									
 									<div class="add_to_cart">
 										<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
 											data-tippy-inertia="true" data-tippy-delay="50"
@@ -584,8 +582,8 @@
 			
 							</div>
 						</div>`	
-				$(".shop_wrapper").append(result); 
-
+				$(".shop_wrapper").append(result); 	
+				//$(".clst").append(".classlist");
 			}
 		}		
 	};
