@@ -15,4 +15,6 @@ public class GoodsVO {
 	
 	//0925 희수 추가
 	private String thumb, detail;
+	
+	private Date dt; // 0928 선희 추가
 }
