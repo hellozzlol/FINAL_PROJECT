@@ -72,5 +72,49 @@
 		select *
 		from goods
 		where seller_no = #{sellerNo}
+		order by goods_no
+	</select>
+	
+	<!-- 판매자 상품 등록 -->
+	<insert id="goodsInsert" parameterType="com.team.prj.goods.service.GoodsVO">
+		<selectKey keyProperty="goodsNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(goods_no) IS NULL
+			THEN 1
+			ELSE max(goods_no)
+			+ 1
+			END AS no
+			FROM goods
+		</selectKey>
+		
+		INSERT INTO GOODS
+		VALUES(#{goodsNo},
+			#{name},
+			#{amount},
+			#{category},
+			#{price},
+			#{info},
+			#{upload_state},
+			sysdate,
+			#{sellState},
+			#{hit},
+			#{sellerNo},
+			#{dc},
+			#{categoryId},
+			#{groupNo},
+			#{returnMessage},
+			#{thumb},
+			#{detail})
+	</insert>
+	
+	<!-- 사진 불러오기 -->
+	<select id="photoList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		select *
+		from photo
+		where group_no = #{groupNo}
+		and name = '리스트'
 	</select>
 </mapper>

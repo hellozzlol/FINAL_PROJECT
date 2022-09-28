@@ -332,7 +332,7 @@
 											th:value="${goods.goodsNo}">
 										<!-- 유저번호 -->
 										<input type="hidden" name="userNo" id="userNo"
-											th:value="${session.user.userNo}">
+											th:value="${#authentication.principal.login.no}">
 										<button class="button btn btn-primary" type="button"
 											id="addCart">
 											<i class="ion-android-add"></i> Add To Cart

@@ -1,13 +1,19 @@
 package com.team.prj.seller.web;
 
+import java.io.File;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.service.SellerService;
@@ -17,6 +23,8 @@ import com.team.prj.seller.service.SellerVO;
 public class SellerController {
 	@Autowired
 	private SellerService seller;
+	@Value("${file.dir}")
+	private String fileDir;
 
 	// 판매자 회원 전체 조회
 	@RequestMapping("/seller/sellerSelectList")
@@ -92,12 +100,34 @@ public class SellerController {
 	public String sellerGoodsInsert() {
 		return "seller/sellerGIForm";
 	}
-	
+
 	// 판매 상품 등록 처리
 	@PostMapping("/seller/sellerGI")
-	public String goodsInsert() {
+	public String goodsInsert(Model model, HttpServletRequest request, GoodsVO gvo,
+			@RequestPart(value = "file", required = false) MultipartFile file) {
+		HttpSession session = request.getSession();
+		SellerVO svo = new SellerVO();
+		gvo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("goodsList", seller.goodsList(gvo));
+
+		// file UpLoad 처리해야함.
+//		String saveFolder = (""); // 저장할 공간 변수 명
+//		System.out.println(saveFolder);
+//		File sfile = new File(saveFolder);// 물리적 저장할 위치
+//		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름.원래파일네임
+//		if (!oFileName.isEmpty()) {
+//
+//			// 파일명 충돌방지를 위한 별명 만듦
+//			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것,
+//																												// 랜덤파일네임
+//			String path = fileDir + "/" + sFileName;
+//			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장
+//
+//			gvo.set(oFileName);
+//			gvo.setAttachDir(saveFolder + "/" + sFileName);
+//		}
 		
-		
+		seller.goodsInsert(gvo);
 		return "redirect:/seller/sellerGoodsList";
 	}
 
@@ -107,7 +137,7 @@ public class SellerController {
 		HttpSession session = request.getSession();
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		gvo.setSellerNo(svo.getSellerNo());
-		model.addAttribute("sellerList", seller.sellerSelectList());
+		model.addAttribute("sellerList", seller.goodsList(gvo));
 		return "seller/sellerGoodsList";
 	}
 

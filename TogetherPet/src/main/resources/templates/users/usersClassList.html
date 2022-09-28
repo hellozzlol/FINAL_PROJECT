@@ -52,6 +52,7 @@
 					<button type="button" class="btn rounded-pill btn-secondary"><strong>수강 완료</strong></button>
 				</div><br>
 				
+				<p>* 클래스명 클릭시 상세 페이지로 이동합니다.</p>
 				<!-- Hoverable Table rows -->
 				<div class="card">
 					<div class="table-responsive text-nowrap">
@@ -66,8 +67,8 @@
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${classList}" th:onClick="|location.href='@{/classSelect(classNo=${list.classNo})}'|">
-									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
+								<tr th:each="list : ${classList}">
+									<td th:onClick="|location.href='@{/classSelect(classNo=${list.classNo})}'|"><i class="fab fa-angular fa-lg text-danger me-3"></i>
 										<strong>[[${list.name}]]</strong>
 									</td>
 									<td>[[${list.tName}]]</td>

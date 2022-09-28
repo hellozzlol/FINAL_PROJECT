@@ -49,6 +49,12 @@ public class SellerServiceImpl implements SellerService {
 		return map.goodsList(vo);
 	}
 
+	// 판매자 상품 등록
+	@Override
+	public int goodsInsert(GoodsVO vo) {
+		return map.goodsInsert(vo);
+	}
+
 	
 
 }

@@ -22,4 +22,7 @@ public interface SellerService {
 
 	// 판매자 상품 조회
 	List<GoodsVO> goodsList(GoodsVO vo);
+	
+	// 판매자 상품 등록
+	int goodsInsert(GoodsVO vo);
 }
