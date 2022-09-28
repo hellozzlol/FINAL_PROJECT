@@ -23,32 +23,6 @@
 </style>
 
 <script type="text/javascript">
-	/* function check() {
-		if (document.fr.password.value == "") {
-			alert("비밀번호를 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.email.value == "") {
-			alert("이메일을 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.address.value == "") {
-			alert("주소를 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.nickname.value == "") {
-			alert("닉네임을 입력하세요.");
-			return false;
-		}
-
-		if (document.fr.call.value == "") {
-			alert("전화번호를 입력하세요.");
-			return false;
-		}
-	} */
 	// 주소 검색
 	function execDaumPostcode() {
 		new daum.Postcode({
@@ -160,7 +134,7 @@
 										th:value="${session.seller.sellerNo}">
 									<div class="row">
 										<div class="mb-3 col-md-6">
-											<label class="col-sm-2 col-form-label" for="companyNo">사업자번호</label><br>
+											<label class="col-sm-3 col-form-label" for="companyNo">사업자번호</label><br>
 											<input
 												class="form-control" type="text" id="companyNo"
 												name="companyNo" placeholder="Email"

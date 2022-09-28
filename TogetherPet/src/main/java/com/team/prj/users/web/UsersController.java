@@ -1,16 +1,22 @@
 package com.team.prj.users.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team.prj.board.service.BoardService;
 import com.team.prj.calendar.service.CalendarService;
@@ -22,15 +28,15 @@ import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentService;
 import com.team.prj.like.service.LikesService;
+import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetService;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.scrap.service.ScrapService;
-import com.team.prj.seller.service.SellerVO;
+import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.state.service.StateService;
 import com.team.prj.tutor.service.TutorService;
-import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
@@ -65,6 +71,9 @@ public class UsersController {
 	private PetService pet; // 반려동물 정보
 	@Autowired
 	private ClassReserveService cr; // 수강내역
+
+	@Value("${file.dir}")
+	private String fileDir;
 
 	// 개인 회원 리스트
 	@RequestMapping("/users/usersSelect")
@@ -161,15 +170,31 @@ public class UsersController {
 
 	// 스크랩 전체 조회
 	@RequestMapping("/users/usersScrapList")
-	public String userScrap(Model model) {
-		model.addAttribute("scrapList", scrap.scrapSelectList());
+	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("scrapList", user.scrapList(svo));
 		return "users/usersScrapList";
 	}
-
-	// 위시리스트
+	
+	
+//	@RequestMapping("/users/usersScrapList")
+//	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo) {
+//		HttpSession session = request.getSession();
+//		UsersVO uvo = (UsersVO) session.getAttribute("user");
+//		svo.setUserNo(uvo.getUserNo());
+//		model.addAttribute("scrapList", user.scrapList(svo));
+//		return "users/usersScrapList";
+//	}
+	
+	// 위시리스트 조회
 	@RequestMapping("/users/usersWishList")
-	public String userLike(Model model) {
-		model.addAttribute("wishList", like.likeSelectList());
+	public String userLike(LikesVO lvo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		lvo.setUserNo(uvo.getUserNo());
+		model.addAttribute("wishList", user.likeList(lvo));
 		return "users/usersWishList";
 	}
 
@@ -191,14 +216,15 @@ public class UsersController {
 	public String calendarInsert(CalendarVO vo) {
 		return "redirect:calendar/calendarSelect";
 	}
-	
+
 	// 반려동물 전체 리스트
 	@RequestMapping("/pet/petSelectList")
 	public String petSelectList(HttpServletRequest request, Model model, PetVO pvo) {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
-		model.addAttribute("petList", pet.petSelectList(pvo));
+		List<PetVO> pl = pet.petSelectList(pvo);
+		model.addAttribute("petList", pl);
 		return "pet/petSelectList";
 	}
 
@@ -211,7 +237,7 @@ public class UsersController {
 		model.addAttribute("petList", pet.petSelect(pvo));
 		return "pet/petSelect";
 	}
-	
+
 	// 반려동물 정보 수정 폼 호출
 	@RequestMapping("/pet/petUpdateForm")
 	public String petUpdateForm(HttpServletRequest request, PetVO pvo, Model model) {
@@ -223,20 +249,16 @@ public class UsersController {
 	}
 
 	// 반려동물 정보 수정 처리
-//	@PostMapping("/pet/petUpdate")
-//	public String petUpdate(PetVO pvo, HttpServletRequest request) {
-//		HttpSession session = request.getSession();
-//		session.setAttribute("pet", pet.petUpdate(pvo));
-//		return "redirect:/pet/petSelectList";
-//	}
-	
 	@PostMapping("/pet/petUpdate")
 	public String petUpdate(PetVO pvo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		System.out.println("=================" + pvo==null);
+		UsersVO vo = (UsersVO) session.getAttribute("user");
+		pvo.setUserNo(vo.getUserNo());
+		System.out.println("======================1"+pvo.getBirth());
 		pet.petUpdate(pvo);
 		pvo = pet.petSelect(pvo);
 		session.setAttribute("pet", pvo);
+		System.out.println("======================"+pvo.getBirth());
 		return "redirect:/pet/petSelectList";
 	}
 
@@ -247,34 +269,33 @@ public class UsersController {
 	}
 
 	// 반려동물 정보 등록 처리
-//	@PostMapping("/pet/petInsert")
-//	public String petInsert(PetVO vo, @RequestPart(value = "file", required = false) MultipartFile file)
-//			throws IllegalStateException, IOException {
-//		// 파일 업로드 처리
-//		String saveFolder = servletContext.getRealPath("/fileUpload"); // 파일 저장할 폴더 변수명
-//		File sfile = new File(saveFolder); // 물리적 저장 위치
-//		String ofileName = file.getOriginalFilename(); // 넘어온 파일명
-//		PhotoVO pvo = new PhotoVO();
-//		if (!ofileName.isEmpty()) {
-//			String sfileName = UUID.randomUUID().toString() + ofileName.substring(ofileName.lastIndexOf(".")); // 파일명
-//			file.transferTo(new File(sfile, sfileName)); // 파일 전송, 물리적 위치에 저장
-//			pvo.setName(ofileName);
-//			pvo.setDir(saveFolder + File.separator + sfileName);
-//			// File.separator(파일의 경로를 분리해주는 메소드) == //
-//		}
-//		pet.petInsert(vo);
-//		return "redirect:pet/petSelectList";
-//	}
-
 	@PostMapping("/pet/petInsert")
-	public String memberInsert(PetVO vo, Model model) {
-		int m = pet.petInsert(vo);
-		if (m != 0) {
-			model.addAttribute("message", "정상적으로 등록되었습니다.");
-		} else {
-			model.addAttribute("message", "등록이 실패했습니다.");
+	public String petInsert(Model model, HttpServletRequest request, PetVO pvo, @RequestPart(value="file",required = false)  MultipartFile file)
+			throws IllegalStateException, IOException {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		pvo.setUserNo(uvo.getUserNo());
+		
+		model.addAttribute("petList", pet.petSelect(pvo));
+
+		// file UpLoad 처리해야함.
+		String saveFolder = (""); // 저장할 공간 변수 명
+		System.out.println(saveFolder);
+		File sfile = new File(saveFolder);// 물리적 저장할 위치
+		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름.원래파일네임
+		if (!oFileName.isEmpty()) {
+
+			// 파일명 충돌방지를 위한 별명 만듦
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것, 랜덤파일네임
+			String path = fileDir + "/" + sFileName;
+			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장
+
+			pvo.setAttach(oFileName);
+			pvo.setAttachDir(saveFolder + "/" + sFileName);
 		}
-		return "redirect:pet/petSelectList";
+
+		pet.petInsert(pvo);
+		return "redirect:/pet/petSelectList";
 	}
 
 }

@@ -7,8 +7,8 @@ import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
-import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
 
@@ -34,14 +34,17 @@ public interface UsersService {
 	// 수강내역 조회
 	List<ClassVO> classList(ClassReserveVO vo);
 	
+	// 위시리스트 조회
+	List<LikesVO> likeList(LikesVO vo);
+	
+	// 내 스크랩조회
+	List<ScrapVO> scrapList(ScrapVO vo);
+	
 	// 작성 글조회
 	List<BoardVO> boardSelectList(int boardNo, int userNo, String category);
 	
 	// 작성 댓글조회
 	List<CommentVO> commentSelectList(int commentNo, int userNo, String category);
-	
-	// 내 스크랩조회
-	List<ScrapVO> scrapSelectList(int boardNo, int userNo, String category);
 	
 	// 전체 리스트
 	List<UsersVO> usersSelectList();

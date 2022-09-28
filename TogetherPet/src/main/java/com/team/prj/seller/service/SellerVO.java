@@ -2,6 +2,8 @@ package com.team.prj.seller.service;
 
 import java.util.Date;
 
+import com.team.prj.goods.service.GoodsVO;
+
 import lombok.Data;
 
 @Data
@@ -18,4 +20,8 @@ public class SellerVO {
 	String author; // 권한
 	int groupNo; // 그룹번호
 	Date dt; // 가입일자
+	String attach; // 사진 0928 선희 추가
+	String attachDir; // 사진 위치 0928 선희 추가
+	
+	private GoodsVO goods; // 0928 선희 추가
 }

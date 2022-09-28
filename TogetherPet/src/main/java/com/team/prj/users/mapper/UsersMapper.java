@@ -5,9 +5,11 @@ import java.util.List;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveVO;
+import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.users.service.UsersVO;
 
 public interface UsersMapper {
@@ -38,4 +40,9 @@ public interface UsersMapper {
 	// 수강내역 조회
 	List<ClassVO> classList(ClassReserveVO vo);
 
+	// 위시리스트 조회
+	List<LikesVO> likeList(LikesVO vo);
+
+	// 내 스크랩조회
+	List<ScrapVO> scrapList(ScrapVO vo);
 }

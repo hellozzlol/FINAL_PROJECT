@@ -10,6 +10,7 @@ import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
@@ -75,12 +76,6 @@ public class UsersServiceImpl implements UsersService {
 		return null;
 	}
 
-	// 내 스크랩 내역 조회
-	@Override
-	public List<ScrapVO> scrapSelectList(int boardNo, int userNo, String category) {
-		return null;
-	}
-
 	// 장바구니 조회
 	@Override
 	public List<CartVO> cartList(CartVO vo) {
@@ -91,6 +86,18 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public List<ClassVO> classList(ClassReserveVO vo) {
 		return map.classList(vo);
+	}
+	
+	// 위시리스트 조회
+	@Override
+	public List<LikesVO> likeList(LikesVO vo) {
+		return map.likeList(vo);
+	}
+
+	// 전체 스크랩 내역 조회
+	@Override
+	public List<ScrapVO> scrapList(ScrapVO vo) {
+		return map.scrapList(vo);
 	}
 
 	
