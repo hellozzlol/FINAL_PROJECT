@@ -11,12 +11,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 public class MailConfig {
 
 	@Bean
-	public JavaMailSender javaMailService() {
+	public JavaMailSender emailSender() {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		
 		javaMailSender.setHost("smtp.naver.com"); // 메인 도메인 서버
 		javaMailSender.setUsername("hyee1021"); // 네이버 ID
-		javaMailSender.setPassword(""); // 네이버 비밀번호
+		javaMailSender.setPassword("pet2022!!"); // 네이버 비밀번호
 		
 		javaMailSender.setPort(465); // 메일 인증서버포트
 		javaMailSender.setJavaMailProperties(getMailProperties()); // 메일 인증서버 정보 가져오기

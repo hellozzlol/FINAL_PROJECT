@@ -31,7 +31,7 @@ public interface JoinService {
 	
 
 	int idCheck(String id); // id 중복체크	
-	int nickCheck(String nickname) throws Exception; // 닉네임 중복체크
+	int nickCheck(String nickname); // 닉네임 중복체크
 	
 	
 	// company 중복체크 만들어야함 - 튜터, 판매자

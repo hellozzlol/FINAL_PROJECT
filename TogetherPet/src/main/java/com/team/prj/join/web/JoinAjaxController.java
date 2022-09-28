@@ -1,25 +1,54 @@
 package com.team.prj.join.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.join.service.JoinService;
+import com.team.prj.join.service.RegisterMail;
 
 @RestController
+@RequestMapping("/join")
 public class JoinAjaxController {
 	@Autowired
 	private JoinService js;
+	
+	@Autowired
+	private RegisterMail rm;
 	
 	// id 중복체크
 	@ResponseBody
 	@RequestMapping("/idCheck")
 	public int idCheck(String id){
-		System.out.println("====================" + id);
+		System.out.println("===JoinAjaxCont" + id);
 		int result = js.idCheck(id);
 		return result;
 	}
 
+	// 닉네임 중복체크
+	@ResponseBody
+	@RequestMapping("/nickCheck")
+	public int nickCheck(String nickname) {
+		System.out.println("===JoinAjaxCont" + nickname);
+		int result = js.nickCheck(nickname);
+		return result;
+	}
+	
+	
+	
+	// 이메일 인증
+	@ResponseBody
+	@PostMapping("/sendCode")
+	public String mailConfirm(String email) throws Exception{
+		String code="";
+		try {
+			code = rm.sendSimpleMessage(email);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("인증코드: " + code);
+		return code;
+	}
 }
