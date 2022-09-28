@@ -30,9 +30,10 @@
 							jb('.datepicker').datepicker(
 									{ 	dateFormat : "yy-mm-dd",
 										dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
-										mindate : "-0m",
-										maxdate : "+5m"
-									})
+										minDate : "0m",
+										maxDate : "+5m"
+									}
+									)
 							
 							//jb('.datepicker').datepicker('setdate', 'today');
 						})
@@ -52,6 +53,7 @@
 								jc("#selectClassListd").empty();
 								var maxheadcount = `[[${clas.maxHeadcount}]]` //jc(this).(".maxhd").val(); //이 클래스의 최대인원		
 								var params = {"sdate" : jc(this).val(),"no":`[[${clas.classNo}]]` };
+
 								console.log(maxheadcount)
 								console.log(params);	    	
 								
@@ -66,10 +68,9 @@
 										}
 								});
 								
-								
 								function htmlView(list) {
 									for (c of list) {
-										if(maxheadcount != `${c.all_headcount}`){//name변경 checkedclassoption
+										if( maxheadcount > `${c.allHeadcount}`){//name변경 checkedclassoption
 											var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
 												<div class='startdiv'>${c.startDt}</div>
 												<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 : ${c.allHeadcount}</div>
@@ -79,10 +80,10 @@
 					    					//var a = c.class_option_no;	 	    					
 					    				 } else {
 					    					 var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
-													<div class='startdiv'>${c.startDt}</div>
-													<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 :  ${c.allHeadcount}</div>
-													<div class='classoptionno'>${c.classOptionNo}</div>
-													<div class='inend'>신청마감</div> 
+													<div class='startdiv'  style='color: #a0a0a0;'>${c.startDt}</div>
+													<div class='headcountdiv'  style='color: #a0a0a0;'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 :  ${c.allHeadcount}</div>
+													<div class='classoptionno'  style='color: #a0a0a0;'>${c.classOptionNo}</div>
+													<div class='inend'  style='color: #a0a0a0;'>&nbsp; 정원마감</div> 
 												</div>`
 		 
 					    				 }
@@ -676,11 +677,7 @@
 												<input type="hidden" name="classOptionNo" id="classOptionNo">
 												<input type="hidden" name="userNo" id="userNo"
 													th:value="${session.user.userNo}">
-	
-												<br>
-												<button class="button btn btn-primary" id="addExreserve">
-													클래스 신청하기</button>
-												<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+
 												</form>
 
 												<input type="text" id="inputdatebox"
@@ -688,6 +685,13 @@
 											</div>
 										</div>
 
+									</div>
+									<div class="variant_quantity_btn d-flex">
+										<button class="button btn btn-primary" id="addExreserve">
+											클래스 신청하기</button>
+										<a class="wishlist" href="#">
+											<i class="ion-ios-heart"></i>
+										</a>
 									</div>
 								<!----------------- 예약달력 ------------------>
 

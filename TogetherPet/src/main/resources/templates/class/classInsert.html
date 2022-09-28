@@ -165,29 +165,35 @@ $(function(){
 	$(".flatpickrCalender").flatpickr({
 		inline : true,
 		mode: "single",
-		dateFormat: " Y - m - d ",
+		dateFormat: "Y-m-d ",
 		minDate:"today",
 		maxDate: new Date().fp_incr(180),
 		altInput: true,
 		onChange(selectedDates, dateStr, instance) {
-            var testing1;
-        	 	
+            	var testing1;
+        	 
         	   classDateDivCount++;
+        	   
         	   
             	testing1 = "<div class='putDateTime2' id='dateTimeDivDel'>";
             	testing1 += "<div title='cancel' class='dateCancelButton' onclick='deleteDivDate(this, "+classDateDivCount+");'>";
-            	testing1 += "<div value='"+classDateDivCount+"'></div><img src='<%=request.getContextPath()%>/img/kimin/xbu.png'>"
+            	testing1 += "<div value='"+classDateDivCount+"'></div>"; //<img src='<%=request.getContextPath()%>/img/kimin/xbu.png'>
             	testing1 += "</div>";
-            	testing1 += ""+dateStr+"";
-				testing1 += "<input type='time' id='startTime' value='09:30' onchange='inputStartTime($(this).val())'>";
-				testing1 +=  "<img src='<%=request.getContextPath()%>/img/kimin/~.png'>"
-				testing1 += "<input type='time' id='endTime' value='17:30' onchange='inputEndTime($(this).val())'>";
+            	testing1 += "<a id='dateStr' value='"+dateStr+"'>"+dateStr+"</a>";
+				testing1 += "<input type='time' id='startTime' value=''>"; // onchange='startTimeInput($(this).val())'
+				//testing1 +=  "<img src='<%=request.getContextPath()%>/img/kimin/~.png'>"
+				testing1 += "<input type='time' id='endTime' value=''>"; // onchange='startTimeInput($(this).val())'
 				testing1 += "</div>";
 				
 				
             	$('#putDateTime').append(testing1);
-            		
-            	startTimeInput($('#startTime').val(),$('#endTime').val(),dateStr);
+            	
+            	//var startTime = $('#startTime').val();
+            	//var endTile = $('#endTime').val();
+            	//var day = dateStr;
+            	//startTimeInput($('#startTime').val(), $('#endTime').val(), dateStr);
+            	
+            	
             if(classDateDivCount >= 9){
             	//alert("선택"+count+"를 초과하였습니다\n"+count+"개를 취소해 주십시오.");
             	alert("10개를 모두 선택하였습니다\n");
@@ -265,29 +271,99 @@ $(function(){
 		}
 	});
 });
-		var clickCount;
-		var arry = new Array();
-		var arryStart = new Array();
-		var arryEnd = new Array();
+
+////////////////////////////////클래스 인서트 ajax ///////////////////////////////
+$('').on('click', function() {
+
+	if(confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
 		
-		var startTime;
-		var endTime;
-		var lastTime;
+		//let classNo = 
+		let name = $('#name').val();
+		let category = $('#category').val();
+		let intro = $('#intro').val();
+		let price = $('#price').val();
+		//let uploadState
+		//let uploadDate
+		//let hit
+		let maxHeadcount = $('#maxHeadcount').val();
+		//let tutorNo 
+		//let groupNo
+		let address = $('#address').val();
+		let postcode = $('#postcode').val();
+		let da = $('#da').val();
 		
-		function startTimeInput(start, end, day){
-			startTime = (day + start);
-			endTime = (day + end);
-			lastTime = (startTime + endTime);
-			//arry[classDateDivCount] = lastTime;
-			arryStart[classDateDivCount] = startTime;
-			arryEnd[classDateDivCount] = endTime;
-			
-		}
+		let latitude = $('#latitude').val();
+		let longitude = $('#longitude').val();
+		//let returnMessage 
+		//let thumb
+		//let detail
+				$.ajax({
+						url: '', //controller페이지에서 만들기
+						type: 'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						data: {
+							name:name,
+							category:category,
+							intro:intro,
+							price:price,
+							maxHeadcount:maxHeadcount,
+							address:address,
+							postcode:postcode,
+							da:da,
+							latitude:latitude,
+							longitude:longitude
+						}
+					}).done(res => {
+						$('#classNo').val(res);
+						$().submit() //class option 인서트 실행
+					})
 		
+		
+	}
+	
+	
+	
+})
+///////////////////////// class option 제출 //////////////////////////
+
+
 		function startTimeRealInput(){
-			$('#classDateRealStart').val(arryStart);
-			$('#classDateRealEnd').val(arryEnd);
+        	var day = $('#dateStr').html();
+			var arySdt = [];
+			var aryEdt = [];
+			var jsonArr = [];
+			var allHeadcount = 
+			
+			$('input[id="startTime"]').each(function(i){
+				arySdt.push(day + $(this).val());
+			})
+			$('input[id="endTime"]').each(function(i){
+				aryEdt.push(day + $(this).val());
+			})
+			
+			console.log(arySdt);
+			console.log(aryEdt);
+			
+			for(var i=0; i<arySdt.length; i++) {
+				jsonArr.push({
+					startDt: arySdt[i],
+					endDt: aryEdt[i]
+				})
+			}
+			
+			//$('#classDateRealStart').val(arryStart);
+			//console.log("startTimeRealInput function : 시작시간배열");
+			//$('#classDateRealEnd').val(arryEnd);
+			//console.log("startTimeRealInput function : 마치는시간배열");
+
 		}
+		
+		
+		
 
 //////////////////////////////////// 날짜 선택 지우기 div
 		function deleteDivDate(del, index){
@@ -347,6 +423,9 @@ function execDaumPostcode() {
 
                     // 해당 주소에 대한 좌표를 받아서
                     var coords = new daum.maps.LatLng(result.y, result.x);
+                    $('#latitude').val(result.x);
+                    $('#longitude').val(result.x);
+                    
                     // 지도를 보여준다.
                     mapContainer.style.display = "block";
                     map.relayout();
@@ -373,9 +452,14 @@ var serverPort = '<%=request.getServerPort() %>';
 $(()=>{
 	var fileList;
 	$('#class_thumb').on('propertychange change keyup paste input click', function uploadFiles(e){
-			var file = $('#fileButton')[0].files[0]
+			var file1 = $('#fileButton')[0].files[0]
+			var file2 = $('#fileButton')[0].files[1]
+			var file3 = $('#fileButton')[0].files[2]
+			var file4 = $('#fileButton')[0].files[3]
+			var files = [file1, file2, file3, file4];
 			var form_data = new FormData();
-	      	form_data.append('file', file);
+			
+	      	form_data.append('files', files);
 	      	$.ajax({
 	        	data: form_data
 	        	,type: "POST"
@@ -631,7 +715,7 @@ input[type="checkbox"]:after {
 
 .classImgDiv {
 	width: 100%;
-	height: 500px;
+	height: 600px;
 	border: 2px solid lightgray;
 	border-radius: 8px;
 	margin-top: 20px;
@@ -645,7 +729,7 @@ input[type="checkbox"]:after {
 	border: 2px dotted lightgray;
 	border-radius: 8px;
 	display: inline-block;
-	height: 430px;
+	height: 250px;
 	margin: 0 auto;
 }
 
@@ -1028,8 +1112,7 @@ input[type="checkbox"]:after {
 								</div>
 								
 								
-								
-								<div class="classCommonDiv" id="f2">
+								<!--<div class="classCommonDiv" id="f2">
 									<span><kimin>*</kimin> 2) 클래스 간단 소개 <kimin>(필수)</kimin></span>
 								</div>
 								<div>
@@ -1041,30 +1124,29 @@ input[type="checkbox"]:after {
 										<li>제목을 보완해 줄 수 있는 설명을 적어주세요</li>
 										<li>다음 스텝에서 자세한 클래스 소개란이 있으므로 간단히 작성해 주셔도 좋습니다</li>
 									</ul>
-								</div>
+								</div>  -->
 								
 								
 								
 								<div class="classCommonDiv" id="f3">
-									<span><kimin>*</kimin> 3) 클래스 카테고리 <kimin>(필수)</kimin></span>
+									<span><kimin>*</kimin> 2) 클래스 카테고리 <kimin>(필수)</kimin></span>
 								</div>
 
 								<div class="classCategoryDiv" id="forEach">
 									<ul>
-										<li >
-											펫 푸드<input type="checkbox" value="food">
-											펫 드로잉<input type="checkbox" value="drawing">
-											펫 핸드메이드<input type="checkbox" value="hand">
-											펫 미용<input type="checkbox" value="beauty">
-											기타 <input type="checkbox" value="etc">
-										</li>
+										<li>펫 푸드<input id="category" type="checkbox" value="food"></li>
+										<li>펫 드로잉<input id="category" type="checkbox" value="drawing"></li>
+										<li>펫 핸드메이드<input id="category" type="checkbox" value="hand"></li>
+										<li>펫 미용<input id="category" type="checkbox" value="beauty"></li>
+										<li>기타 <input id="category" type="checkbox" value="etc"></li>										
 										<!--<c:forEach var="vo" items="${cate }">-->
 										<!--<li ><input type="checkbox"  value=" ${vo.category1_no }" class="categoryL" > ${vo.category_name }</li> <!-- 반복문 -->
 										<!--</c:forEach>-->
 									</ul>
 								</div>
 								
-								<input type="text" name="category_no" class="categoryPutInput"
+								
+								<!-- <input type="text" name="category_no" class="categoryPutInput"
 									id="categoryReal">
 								<div id="smallCategoryDiv">
 									<div class="classCommonDiv">
@@ -1075,21 +1157,35 @@ input[type="checkbox"]:after {
 
 										</ul>
 									</div>
-								</div>
+								</div> -->
 								
 								
 								
 								<div class="classCommonDiv" id="f4">
-									<span><kimin>*</kimin> 4) 클래스 썸네일 <kimin>(필수)</kimin></span>
+									<span><kimin>*</kimin> 3) 클래스 이미지 슬라이드<kimin>(필수)</kimin></span>
 								</div>
 								<div class="classImgDiv">
 									<div id="imgThumbDiv">
 										<!--  img src="<%=request.getContextPath()%>/img/kimin/uploadimg.jpg" id="previewImg" -->
 									</div>
+									<div id="imgThumbDiv">
+										<!--  img src="<%=request.getContextPath()%>/img/kimin/uploadimg.jpg" id="previewImg" -->
+									</div>
+									<br>
+									<div id="imgThumbDiv">
+										<!--  img src="<%=request.getContextPath()%>/img/kimin/uploadimg.jpg" id="previewImg" -->
+									</div>
+									<div id="imgThumbDiv">
+										<!--  img src="<%=request.getContextPath()%>/img/kimin/uploadimg.jpg" id="previewImg" -->
+									</div>
+									
 									<div class="filebox">
 										<input type="button" class="imgThumbFileName" value="확인" id="class_thumb"> 
 										<input type="hidden" name="group_no" id="thumb_image"> 
 											<label for="fileButton">업로드</label> 
+										<input type="file" id="fileButton" name="group_no" required>
+										<input type="file" id="fileButton" name="group_no" required>
+										<input type="file" id="fileButton" name="group_no" required>
 										<input type="file" id="fileButton" name="group_no" required>
 									</div>
 
@@ -1099,7 +1195,7 @@ input[type="checkbox"]:after {
 										<li class="dsctitle">작성 Tip</li>
 										<li>이미지 비율 가로=1 : 세로=1.2 를 추천드립니다</li>
 										<li>너무 큰 용량은 업로드 되지 않을 수 있습니다</li>
-										<li>클래스 소개에서 여러장의 이미지를 소개글과 추가 할 수 있습니다</li>
+										<li>첫 번째 이미지는 클래스의 썸네일이 됩니다.</li>
 									</ul>
 								</div>
 								
@@ -1110,7 +1206,7 @@ input[type="checkbox"]:after {
 								</div>
 								<div>
 									<div id="summernoteForm">
-										<textarea id="summernote" name="class_content"></textarea>
+										<textarea id="summernote" name="intro"></textarea>
 									</div>
 								</div>
 								<div>
@@ -1119,15 +1215,13 @@ input[type="checkbox"]:after {
 										<li>클래스를 자세히 설명해 주세요</li>
 										<li>최소 2줄 이상 작성해 주세요</li>
 										<li>내용 복사 & 붙여넣기의 경우 일부 화면이 깨질 수 있습니다</li>
-										<li>사진을 첨부 할 수 있습니다</li>
 									</ul>
 								</div>
-								<input type="text" id="classDateRealStart" name="start_date">
-								<input type="text" id="classDateRealEnd" name="end_date">
-								
 								
 								
 								<!-- ////////////////////// -->
+								<input type="text" id="classDateRealStart" name="start_date">
+								<input type="text" id="classDateRealEnd" name="end_date">
 								<div class="classCommonDiv" id="f6">
 									<span><kimin>*</kimin> 6) 클래스 일정 <kimin>(필수)</kimin></span>
 								</div>
@@ -1158,9 +1252,11 @@ input[type="checkbox"]:after {
 									<div id="classAddressInnerDiv">
 										<input type="text" id="postcode" placeholder="우편번호" name="class_post_no" readonly="readonly"> 
 										<input type="button" onclick="execDaumPostcode()" value="주소검색" class="buttonClass"><br> 
-										<input type="text" id="roadAddress" placeholder="도로명주소" name="address" readonly="readonly"> 
+										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"> 
 										<span id="guide" style="color: #999; display: none"></span> 
-										<input type="text" id="detailAddress" placeholder="상세주소" name="address" />
+										<input type="text" id="da" placeholder="상세주소" name="address" />
+										<input type="hidden" id="latitude" name="latitude" />
+										<input type="hidden" id="longitude" name="longitude" />
 										<!-- 구글맵 -->
 										<input id="serchOnGoogle" type="button" value="지도에 위치표시 하기" onclick="mapSearch()" />
 									</div>
@@ -1195,6 +1291,9 @@ input[type="checkbox"]:after {
 										<li>검색결과가 정확 하지 않으면 수정해 주세요</li>
 									</ul>
 								</div>
+								
+								
+								
 								<div class="classCommonDiv" id="f8">
 									<span><kimin>*</kimin> 8) 클래스 수강료 및 최대인원 <kimin>(필수)</kimin></span>
 								</div>
@@ -1202,7 +1301,7 @@ input[type="checkbox"]:after {
 									<span> 수강료 : </span>
 									<input type="text" name="price" class="inputCommonClass" placeholder="희망 수강료를 입력하세요" id="class_fee">
 									<kimin2>원</kimin2>
-									<span> 최대인원 : </span><input type="text" name="max_headcount"
+									<span> 최대인원 : </span><input type="text" name="maxHeadcount"
 										class="inputCommonClass" placeholder="수강가능 최대인원을 입력하세요"
 										id="class_nop">
 									<kimin2>명</kimin2>
@@ -1215,6 +1314,9 @@ input[type="checkbox"]:after {
 										<li>ex)200,000 ex)30 --->원, 명은 입력하지마세요</li>
 									</ul>
 								</div>
+								
+								
+								
 								<div class="classCommonDiv" id="f9">
 									<span>* 9) 검색 #태그 </span>
 								</div>

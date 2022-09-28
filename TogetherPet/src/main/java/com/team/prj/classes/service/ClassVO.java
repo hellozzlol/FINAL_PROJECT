@@ -38,4 +38,7 @@ public class ClassVO {
 	
 	String thumb; //썸네일
 	String detail; //상세보기 
+	
+	int postcode; //우편번호
+	String da; //상세주소
 }
