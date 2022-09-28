@@ -3,10 +3,8 @@
 <mapper namespace="com.team.prj.join.mapper.JoinMapper">
 
 
-		<insert id="usersInsert"
-		parameterType="com.team.prj.users.service.UsersVO">
-		<selectKey keyProperty="userNo" order="BEFORE"
-			resultType="int">
+		<insert id="usersInsert" parameterType="com.team.prj.users.service.UsersVO">
+		<selectKey keyProperty="userNo" order="BEFORE" resultType="int">
 			SELECT
 			CASE WHEN max(user_no) IS NULL
 			THEN 1
@@ -15,19 +13,23 @@
 			FROM users
 		</selectKey>
 
-		INSERT INTO USERS
+		INSERT INTO USERS (user_no, id, password, name, nickname, email, call, address, author, money, group_no, dt, state, postcode, da)
 		VALUES(#{userNo}
-		,#{id}
-		,#{password}
-		,#{name}
-		,#{nickname}
-		,#{email}
-		,#{call}
-		,#{address}
+		,#{id, jdbcType=VARCHAR}
+		,#{password, jdbcType=VARCHAR}
+		,#{name, jdbcType=VARCHAR}
+		,#{nickname, jdbcType=VARCHAR}
+		,#{email, jdbcType=VARCHAR}
+		,#{call, jdbcType=VARCHAR}
+		,#{address, jdbcType=VARCHAR}
 		,'USER'
 		,3000
 		,1
-		,SYSDATE)
+		,SYSDATE
+		,'활동중'
+		,#{postcode, jdbcType=VARCHAR}
+		,#{da, jdbcType=VARCHAR}
+		)
 		</insert> 
 
 	
@@ -43,7 +45,7 @@
 	<!-- 닉네임 중복체크 -->
 	<select id="nickCheck" resultType="int" parameterType="com.team.prj.users.service.UsersVO">
 		select count(*)
-		from users
+		from login
 		where nickname = #{nickname}
 	</select>
 

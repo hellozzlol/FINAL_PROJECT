@@ -110,13 +110,14 @@ public class adminController {
 		return "admin/loginForm";
 	}
 	
-	// 일반회원 가입
-	@GetMapping("/userJoinForm")
-	public String userJoinForm(Model model) {
-		
-		return "admin/userJoinForm";
-	}
 	
+	// 일반회원 가입
+		@GetMapping("/userJoinForm")
+		public String userJoinForm(Model model) {
+			
+			return "admin/userJoinForm";
+		}
+
 	
 	// 출근 등록
 	@RequestMapping("/admin/workIn")
