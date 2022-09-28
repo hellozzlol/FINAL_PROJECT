@@ -279,12 +279,14 @@
 	<article layout:fragment="content"></article>
 	<!-- 0926 희수가 추가 -->
 	<div sec:authorize="isAuthenticated()">
-		<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
-			method="post">
-			<input type="hidden" th:name="${_csrf.parameterName}"
-				th:value="${_csrf.token}"> <input type="hidden"
-				name="userNo" id="userNo" th:value="${session.user.userNo}">
-		</form>
+		<div th:if=${session.user}>
+			<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
+				method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}"> <input type="hidden"
+					name="userNo" id="userNo" th:value="${session.user.userNo}">
+			</form>
+		</div>
 	</div>
 	<!-- goods body end -->
 

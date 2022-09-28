@@ -66,9 +66,10 @@
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${classList}">
+								<tr th:each="list : ${classList}" th:onClick="|location.href='@{/classSelect(classNo=${list.classNo})}'|">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-										<strong>[[${list.name}]]</strong></td>
+										<strong>[[${list.name}]]</strong>
+									</td>
 									<td>[[${list.tName}]]</td>
 									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>
 									<td>[[${list.address}]]</td>

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 
@@ -91,10 +92,21 @@ public class SellerController {
 	public String sellerGoodsInsert() {
 		return "seller/sellerGIForm";
 	}
+	
+	// 판매 상품 등록 처리
+	@PostMapping("/seller/sellerGI")
+	public String goodsInsert() {
+		
+		
+		return "redirect:/seller/sellerGoodsList";
+	}
 
 	// 판매 상품 조회
 	@RequestMapping("/seller/sellerGoodsList")
-	public String sellerGoodsList(Model model) {
+	public String sellerGoodsList(Model model, HttpServletRequest request, GoodsVO gvo) {
+		HttpSession session = request.getSession();
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		gvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerGoodsList";
 	}

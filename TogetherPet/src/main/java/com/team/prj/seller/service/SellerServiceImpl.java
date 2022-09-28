@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.mapper.SellerMapper;
 
 @Service
@@ -41,5 +42,13 @@ public class SellerServiceImpl implements SellerService {
 	public int sellerDelete(SellerVO vo) {
 		return map.sellerDelete(vo);
 	}
+
+	// 판매자 상품 조회
+	@Override
+	public List<GoodsVO> goodsList(GoodsVO vo) {
+		return map.goodsList(vo);
+	}
+
+	
 
 }

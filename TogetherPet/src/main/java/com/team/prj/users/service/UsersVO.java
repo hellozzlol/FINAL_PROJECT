@@ -13,6 +13,7 @@ import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.tutor.service.TutorVO;
 
 import lombok.Getter;
@@ -33,7 +34,8 @@ public class UsersVO {
 	int money; // 적립금
 	int groupNo; // 그룹번호
 	Date dt; // 가입일자
-
+	String attach; // 사진 0928 선희 추가
+	String attachDir; // 사진 위치 0928 선희 추가
 	String state; // 0924/JH / 0925 DB에 추가함
 
 	private OrderVO order;
@@ -47,12 +49,14 @@ public class UsersVO {
 	private CalendarVO cal;
 	private TutorVO tutor;
 	private ClassReserveVO cr;
+	private ScrapVO scrap;
 
 	//0927 희수가 추가
 	private String postcode; // 우편번호
 	private String da; // 상세주소
-
-	private String pay;
-	private PetVO pet;
-
+	
+	private String pay; // 0927 선희 추가
+	private PetVO pet; // 0927 선희 추가
+	private int petNo; // 0928 선희 추가
+	private int classNo; // 0928 선희 추가
 }
