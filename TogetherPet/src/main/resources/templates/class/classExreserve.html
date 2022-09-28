@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout2}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout2}">
 
 <head>
 <meta charset="UTF-8">
@@ -12,7 +13,8 @@
 
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-			
+			console.log("==========?????????" , Number($('#userNo').val()))	
+		
 			getTotal();
 			// 총액 계산			
 			function getTotal() {
@@ -57,6 +59,7 @@
 			// 주문/결제 
 			$('#insertReserve').on('click', function () {
 				
+				console.log("????????????????" + document.getElementById('userNo'));
 				
 				if (confirm('해당 상품으로 주문 및 결제를 진행하시겠습니까')) {
 					var token = $("meta[name='_csrf']").attr("content");
@@ -74,12 +77,13 @@
 					
 					let pay = $('input[name=pay]:checked').val();
 					let userNo = Number($('#userNo').val());
+					
+					
 					let money = $('#point').html();
 					console.log('money' + money);
 					//let clas = $('#tb > tr');
 					let totalPrice = $('#gTotal').text();
-					let minusPrice = totalPrice * 0.9;
-
+					
 						//let classNo = Number(g.getAttribute('id'));
 						//let totalPrice = Number(g.children[4].children[0].children[0].innerHTML);
 						//let minusPrice = totalPrice * 0.9;
@@ -101,7 +105,7 @@
 									userNo: userNo,
 									classNo: classNo,
 									totalPrice: totalPrice,
-									minusPrice: minusPrice,
+									
 									exreserveNo: exreserveNo,
 									money: money,
 									dt: dt,
@@ -124,7 +128,7 @@
 </head>
 
 <body>
-<article layout:fragment="content">
+	<article layout:fragment="content">
 
 		<br> <br> <br> <br>
 		<!--breadcrumbs area start-->
@@ -165,8 +169,8 @@
 									</thead>
 									<tbody id="tb">
 										<!-- tr 반복  -->
-										<tr th:each="e:${exreserve}" class="border-top" th:id="${e.classNo}"
-											th:data-cn="${e.exreserveNo}">											
+										<tr th:each="e:${exreserve}" class="border-top"
+											th:id="${e.classNo}" th:data-cn="${e.exreserveNo}">
 											<td>
 												<div class="cart_product_thumb">
 													<img src="assets/img/product/product4.jpg" alt="">
@@ -177,29 +181,28 @@
 													<h4 id="className" name="className">[[${e.name}]]</h4>
 												</div>
 											</td>
-																																	
-											<td id="classOptionNo" name="classOptionNo" class="border" type="text"
-												th:text="${e.classOptionNo}" style="display:none;">
-											</td>
+
+											<td id="classOptionNo" name="classOptionNo" class="border"
+												type="text" th:text="${e.classOptionNo}"
+												style="display: none;"></td>
 											<td id="classNo" name="classNo" class="border" type="text"
-												th:text="${e.classNo}" style="display:none;">
-											</td>
-											<td id="exreserveNo" name="exreserveNo" class="border" type="text"
-												th:text="${e.exreserveNo}" style="display:none;">
-											</td>
-											
+												th:text="${e.classNo}" style="display: none;"></td>
+											<td id="exreserveNo" name="exreserveNo" class="border"
+												type="text" th:text="${e.exreserveNo}"
+												style="display: none;"></td>
+
 											<td>
 												<div class="cart_product_text">
-													<h4 id="dt" name="dt" >[[${e.startDt}]]</h4>
+													<h4 id="dt" name="dt">[[${e.startDt}]]</h4>
 												</div>
-											</td>	
+											</td>
 											<td>
 												<div class="cart_product_text">
 													<h4>[[${e.endDt}]]</h4>
 												</div>
 											</td>
 											<td>
-											<div class="cart_product_address">
+												<div class="cart_product_address">
 													<span>[[${e.address}]]</span>
 												</div>
 											</td>
@@ -220,122 +223,120 @@
 				</div>
 				<!-- 배송정보 입력, 적립금 사용, 결제수단 입력, 최종 결제 금액, 결제하기-->
 				<!--coupon code area start-->
-				
-					<div class="cart_page_bottom">
-						<div class="row">
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="shopping_coupon_calculate top">
-									<h3 class="border-bottom">수강생 등록 정보 확인</h3>
-									
-									<input id="name" name="name" class="border" placeholder="수강생 이름" type="text"
-										th:value="${session.user.name}"> 
-									<input id="call" name="name" class="border" placeholder="연락처" type="text"
-										th:value="${session.user.call}">
-								</div>
+
+				<div class="cart_page_bottom">
+					<div class="row">
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="shopping_coupon_calculate top">
+								<h3 class="border-bottom">수강생 등록 정보 확인</h3>
+								<input type="hidden" id="userNo" th:value="${session.user.userNo}">
+								<input id="name" name="name" class="border" placeholder="수강생 이름"
+									type="text" th:value="${session.user.name}"> <input
+									id="call" name="name" class="border" placeholder="연락처"
+									type="text" th:value="${session.user.call}">
 							</div>
-							
-
-							
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="shopping_coupon_calculate">
-									<h3 class="border-bottom">적립금</h3>
-									<p>1,000원 이상 사용 가능합니다.</p>
-									<p>
-										내 적립금 : <span id="my">[[${session.user.money}]]</span>원
-									</p>
-									<input id="money" class="border" placeholder="사용할 적립금을 입력하세요."
-										type="text">
-									<button class="btn btn-primary" type="button" id="getMoney">사용하기</button>
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-6 col-sm-6">
-								<div class="order_table_right">
-									<h3>주문 및 결제 확인</h3>
-									<div class="order_table table-responsive">
-										<table>
-											<tbody>
-												<tr>
-													<td>적립금</td>
-													<td id="point" class="text-right">0</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td>Sub Total</td>
-													<td id="sTotal" class="text-right"></td>
-												</tr>
-												<tr class="order_total">
-													<th>Grand Total</th>
-													<td id="gTotal" class="text-right"></td>
-												</tr>
-											</tfoot>
-										</table>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment1" name="pay" type="radio"
-													data-target="createp_account" value="transfer" /> <span
-													class="checkmark"></span>
-											</div>
-
-											<label for="payment1" data-toggle="collapse"
-												data-target="#panel1">실시간 이체</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment2" name="pay" type="radio" value="card"
-													data-target="createp_account" /> <span class="checkmark"></span>
-											</div>
-											<label for="payment2" data-toggle="collapse"
-												data-target="#method2">신용카드</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment3" name="pay" type="radio" value="deposit"
-													data-target="createp_account" /> <span class="checkmark"></span>
-											</div>
-											<label for="payment3" data-toggle="collapse"
-												data-target="#method3">무통장 입금</label>
-
-										</div>
-										<div class="panel-default">
-											<div class="panel_radio">
-												<input id="payment4" name="pay" type="radio"
-													value="kakaopay" data-target="createp_account" /> <span
-													class="checkmark"></span>
-											</div>
-											<label for="payment4" data-toggle="collapse"
-												data-target="#method4">카카오페이</label>
-										</div>
-									</div>
-									<div class="place_order_btn">
-										<input type="hidden" id="userNo" name="userNo"
-											th:val="${session.user.userNo}"><input type="hidden"
-											th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-										<a class="btn btn-primary" id="insertReserve">주문 및 결제</a>
-										<br><br>
-										
-									</div>
-																		
-									
-								</div>
-							</div>
-
 						</div>
+
+
+
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="shopping_coupon_calculate">
+								<h3 class="border-bottom">적립금</h3>
+								<p>1,000원 이상 사용 가능합니다.</p>
+								<p>
+									내 적립금 : <span id="my">[[${session.user.money}]]</span>원
+								</p>
+								<input id="money" class="border" placeholder="사용할 적립금을 입력하세요."
+									type="text">
+								<button class="btn btn-primary" type="button" id="getMoney">사용하기</button>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="order_table_right">
+								<h3>주문 및 결제 확인</h3>
+								<div class="order_table table-responsive">
+									<table>
+										<tbody>
+											<tr>
+												<td>적립금</td>
+												<td id="point" class="text-right">0</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td>Sub Total</td>
+												<td id="sTotal" class="text-right"></td>
+											</tr>
+											<tr class="order_total">
+												<th>Grand Total</th>
+												<td id="gTotal" class="text-right"></td>
+											</tr>
+										</tfoot>
+									</table>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment1" name="pay" type="radio"
+												data-target="createp_account" value="transfer" /> <span
+												class="checkmark"></span>
+										</div>
+
+										<label for="payment1" data-toggle="collapse"
+											data-target="#panel1">실시간 이체</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment2" name="pay" type="radio" value="card"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment2" data-toggle="collapse"
+											data-target="#method2">신용카드</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment3" name="pay" type="radio" value="deposit"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment3" data-toggle="collapse"
+											data-target="#method3">무통장 입금</label>
+
+									</div>
+									<div class="panel-default">
+										<div class="panel_radio">
+											<input id="payment4" name="pay" type="radio" value="kakaopay"
+												data-target="createp_account" /> <span class="checkmark"></span>
+										</div>
+										<label for="payment4" data-toggle="collapse"
+											data-target="#method4">카카오페이</label>
+									</div>
+								</div>
+								<div class="place_order_btn">
+									<a class="btn btn-primary" id="insertReserve">주문 및 결제</a> <br>
+									<br>
+
+								</div>
+
+
+							</div>
+						</div>
+
 					</div>
-				
+				</div>
+
 				<!--coupon code area end-->
 			</div>
 		</div>
 		<!--shopping cart area end -->
-		<form id="reserveCall" name="reserveCall" action="reserveConfirm" method="post">
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+		<form id="reserveCall" name="reserveCall" action="reserveConfirm"
+			method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
 			<!-- 예약번호 -->
 			<input type="hidden" th:name="reserveNo" th:id="reserveNo">
 		</form>
 
-</article>
+	</article>
 
 </body>
 

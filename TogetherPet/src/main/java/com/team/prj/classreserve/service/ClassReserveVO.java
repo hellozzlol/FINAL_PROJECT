@@ -15,7 +15,7 @@ public class ClassReserveVO {
 	int classNo;
 	int minusPrice;
 	int totalPrice;
-	int minusYn;
+	
 	Date minusDate;
 	int classOptionNo;
 	String call; //유저전화번호
@@ -26,4 +26,8 @@ public class ClassReserveVO {
 	// 0927 선희 추가
 	private String address;
 	private String tName;
+	
+	// 0928 희수 minusYn 타입 수정 (int > String)
+	String minusYn;
+	
 }
