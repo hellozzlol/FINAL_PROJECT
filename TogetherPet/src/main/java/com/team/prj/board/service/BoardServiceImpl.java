@@ -5,13 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.team.prj.board.mapper.BoardMapper;
+
 
 @Service
 public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardMapper map;
 	
+
 	@Override
 	public List<BoardVO> boardSelectList() {
 		return map.boardSelectList();
@@ -22,7 +25,6 @@ public class BoardServiceImpl implements BoardService {
 		return map.boardSelect(vo);
 	}
 
-	@Override
 	public int boardInsert(BoardVO vo) {
 		return map.boardInsert(vo);
 	}
@@ -48,5 +50,16 @@ public class BoardServiceImpl implements BoardService {
 		// 검색기능
 		return map.boardSearch(key, val);
 	}
+
+	/*
+	 * @Override public List<BoardVO> findAll(BoardVO vo) { // 페이징 return
+	 * map.findAll(vo); }
+	 */
+
+
+
+
+	
+	
 
 }
