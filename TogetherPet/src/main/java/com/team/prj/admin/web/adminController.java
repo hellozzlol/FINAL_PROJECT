@@ -99,12 +99,7 @@ public class adminController {
 		return "admin/postManage";
 	}
 	
-	// 매출 조회
-	@GetMapping("/manager/salesCheck")
-	public String salesCheck(Model model) {
-		
-		return "admin/salesCheck";
-	}
+
 	
 	
 	
