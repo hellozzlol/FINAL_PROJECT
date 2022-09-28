@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
+import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class BoardController {
@@ -61,16 +65,20 @@ public class BoardController {
 	
 	//커뮤니티게시판조회
 	@GetMapping("/boardList")
-	public String boardList(Model model) {
-		model.addAttribute("boardList", dao.boardSelectList());
-		return "board/boardList";
-	}
-
+	public String boardList(BoardVO vo,Model model,HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			/* model.addAttribute("boardList", dao.boardSelectList()); */
+			model.addAttribute("pageInfo",PageInfo.of(dao.boardSelectList()));
+			return "board/boardList";
+		}
+	
+	
 	//커뮤니티게시판상세조회
 		@GetMapping("/boardSel")
 		public String boardselect(BoardVO vo, Model model) {
 			System.out.println("=====================" + vo.getBoardNo());
-			
 			model.addAttribute("boardSel",dao.boardSelect(vo));
 			dao.boardHitUpdate(vo);//조회수증가
 			return "board/boardSel";
@@ -87,12 +95,17 @@ public class BoardController {
 		@PostMapping("/boardIns")
 		
 		public String boardInsert(BoardVO vo ,
-				@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+				@RequestParam("file") MultipartFile file,HttpServletRequest request) throws IllegalStateException, IOException {
 			
+		     HttpSession session = request.getSession();
+		      UsersVO uvo = (UsersVO) session.getAttribute("user");
+		      vo.setUserNo(uvo.getUserNo());
+		      vo.setNickname(uvo.getNickname());
 			//file UpLoad 처리해야함.
 			String saveFolder  = (""); //저장할 공간 변수 명 
 			System.out.println(saveFolder);
 			File sfile = new File(saveFolder);//물리적 저장할 위치
+			System.out.println(sfile);
 			String oFileName = file.getOriginalFilename();//넘어온 파일의 이름 .원래파일네임
 			if(!oFileName.isEmpty()) {
 				
@@ -113,18 +126,26 @@ public class BoardController {
 		
 		//커뮤니티 글 삭제
 		
-		@GetMapping("/boardDelete")
+		@PostMapping("/boardDelete")
 		
-		public String boradDelete(BoardVO vo, Model model, @RequestParam("boardNo") int boardNo) {
+		public String boradDelete(BoardVO vo, Model model, /* @RequestParam("boardNo") */ int boardNo) {
 			System.out.println("=====================" + vo.getBoardNo());
-			vo.setBoardNo(Integer.parseInt(("boardNo")));
+			//vo.setBoardNo(Integer.parseInt(("boardNo")));
 			dao.boardDelete(vo);
 			return "redirect:boardList";
 			
 		}
 		
 		
-		//검색 아..작..스..처..리..리ㅣㅣ리ㅣ리리리리리이이이ㅣ잉
+		
+		
+		//커뮤니티 글 수정
+		
+		
+		
+		
+		
+		//검색 아작스
 		
 		@RequestMapping("/boardSearch")
 		
