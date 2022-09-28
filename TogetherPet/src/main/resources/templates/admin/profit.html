@@ -344,8 +344,77 @@
 													</thead>
 													<tbody>
 														<tr>
-															<td>[[${monthlyList.m09}]]</td>	
-															<td>>??</td>
+															<td>2022년 1월</td>
+															<td
+																th:text="${monthlyList.M01==0}? '0' : ${#numbers.formatInteger(monthlyList.M01, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 2월</td>
+															<td
+																th:text="${monthlyList.M02==0}? '0' : ${#numbers.formatInteger(monthlyList.M02, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 3월</td>
+															<td
+																th:text="${monthlyList.M03==0}? '0' : ${#numbers.formatInteger(monthlyList.M03, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 4월</td>
+															<td
+																th:text="${monthlyList.M04==0}? '0' : ${#numbers.formatInteger(monthlyList.M04, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 5월</td>
+															<td
+																th:text="${monthlyList.M05==0}? '0' : ${#numbers.formatInteger(monthlyList.M05, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 6월</td>
+															<td
+																th:text="${monthlyList.M06==0}? '0' : ${#numbers.formatInteger(monthlyList.M06, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 7월</td>
+															<td
+																th:text="${monthlyList.M07==0}? '0' : ${#numbers.formatInteger(monthlyList.M07, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 8월</td>
+															<td
+																th:text="${monthlyList.M08==0}? '0' : ${#numbers.formatInteger(monthlyList.M08, 3,
+																'COMMA')}"></td>
+														</tr>
+
+														<tr>
+															<td>2022년 9월</td>
+															<td
+																th:text="${monthlyList.M09==0}? '0' : ${#numbers.formatInteger(monthlyList.M09, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 10월</td>
+															<td
+																th:text="${monthlyList.M10==0}? '0' : ${#numbers.formatInteger(monthlyList.M10, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 11월</td>
+															<td
+																th:text="${monthlyList.M11==0}? '0' : ${#numbers.formatInteger(monthlyList.M11, 3,
+																'COMMA')}"></td>
+														</tr>
+														<tr>
+															<td>2022년 12월</td>
+															<td
+																th:text="${monthlyList.M12==0}? '0' : ${#numbers.formatInteger(monthlyList.M12, 3,
+																'COMMA')}"></td>
 														</tr>
 													</tbody>
 												</table>
@@ -409,7 +478,14 @@
 				}
 
 				],
+			});
 
+			$('#monthly').DataTable({
+				lengthChange : false,
+				pageLength : 10,
+				//lengthMenu : [ 10, 20, 30, 40, 50 ],
+				info : true,
+				searching: false
 			});
 		</script>
 	</article>

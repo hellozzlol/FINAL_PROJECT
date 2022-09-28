@@ -1,5 +1,7 @@
 package com.team.prj.admin.web;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,14 @@ public class ProfitController {
 		String end = null;
 		String key = null;
 		model.addAttribute("profitList", ps.profitList(start, end));
-		model.addAttribute("monthlyList", ps.monthlyList(key));
+		Map map = ps.monthlyList(key);
+		model.addAttribute("monthlyList", map);
+		System.out.println("==========================" + map.size());
+		System.out.println("==========================" + map.toString());
+		System.out.println("==========================" + map.get("M09"));
+		
+		
+		
 		return "admin/profit";
 	}
 }
