@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.board.mapper.BoardMapper">
 
+		<!-- 게시판리스트조회  -->
 	<select id="boardSelectList"
 		resultType="com.team.prj.board.service.BoardVO">
 		select * from board
@@ -9,6 +10,7 @@
 	</select>
 
 
+	<!-- 게시판단건조회  -->
 	<select id="boardSelect"
 		resultType="com.team.prj.board.service.BoardVO"
 		parameterType="com.team.prj.board.service.BoardVO">
@@ -26,6 +28,7 @@
 	and name='리스트'
 	
 	</select>
+	<!-- 게시판글등록  -->
 	<insert id="boardInsert"
 		parameterType="com.team.prj.board.service.BoardVO">
 		<selectKey keyProperty="boardNo" order="BEFORE"
@@ -49,32 +52,36 @@
 		,100
 		,#{userNo}
 		,#{nickname}
-		,#{attech}
-		,#{attechDir})
+		,#{attech, jdbcType = VARCHAR}
+		,#{attechDir, jdbcType = VARCHAR})
 	</insert>
+
+		<!-- 게시판수정 -->
 
 	<update id="boardUpdate"
 		parameterType="com.team.prj.board.service.BoardVO">
 		update board
 		set title = #{title}
 		,content = #{content}
-		,dt = #{dt}
+		,attech = #{attech}
+		,attechDir = #{attechDir}
 		,category = #{category}
 		where board_no = #{boardNo}
 	</update>
 
+	<!-- 게시판삭제 -->
 	<delete id="boardDelete">
 		delete from board
 		where board_no = #{boardNo}
 	</delete>
 	
-	
+		<!-- 게시판조회수 -->
 	
 		<update id="boardHitUpdate">
 			UPDATE board SET HIT = HIT + 1 WHERE board_no = #{boardNo}
 		</update>
 	
-	
+		<!-- 게시판검색 -->
 		<select id="boardSearch" resultType="com.team.prj.board.service.BoardVO">
 		select *
 		from board

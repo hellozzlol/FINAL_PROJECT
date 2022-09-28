@@ -48,22 +48,21 @@
 		</selectKey>
 		INSERT INTO CLASS_RESERVE
 		VALUES (#{reserveNo},
-		TO_DATE(#{dt},
-		'YYYY-MM-DD HH24:MI:SS'),
-		SYSDATE,
-		#{pay},
-		1,
-		#{userNo},
-		#{classNo},
-		#{totalPrice},
-		#{totalPrice}*0.9,
-		0,
-		null,
-		#{classOptionNo},
-		#{call},
-		#{name},
-		#{money},
-		#{className}
+				TO_DATE(#{dt},'YYYY-MM-DD HH24:MI:SS'),
+				SYSDATE,
+				#{pay},
+				1,
+				#{userNo},
+				#{classNo},
+				#{totalPrice}*0.9,
+				#{totalPrice},
+				0,
+				null,
+				#{classOptionNo},
+				#{call},
+				#{name},
+				#{money},
+				#{className}
 		)
 
 	</insert>

@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+
+
+
+
 public interface BoardService {
 	List<BoardVO> boardSelectList();
 	
@@ -17,6 +21,18 @@ public interface BoardService {
 	
 	//조회수 증가
 	int boardHitUpdate(BoardVO vo);
+	
 	//검색기능
 		List<BoardVO> boardSearch (@Param("key")String key, @Param("val") String val);
+
+		
+		/*
+		 * //페이징 처리 List<BoardVO> findAll(BoardVO vo);
+		 * 
+		 */
+	
+	
+	
+	
+		
 }

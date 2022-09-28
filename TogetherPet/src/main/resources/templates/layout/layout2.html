@@ -80,7 +80,7 @@
 		
 		let userNo = $('#userNo').val();
 		$.ajax({
-			url: 'ajaxCartCount',
+			url: '/ajaxCartCount',
 			type: 'post',
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader(header, token)

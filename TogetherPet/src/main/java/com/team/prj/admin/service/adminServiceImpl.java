@@ -29,4 +29,5 @@ public class adminServiceImpl implements adminService {
 		return map.adminUpdate(vo);
 	}
 
+
 }

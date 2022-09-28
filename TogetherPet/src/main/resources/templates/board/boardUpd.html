@@ -374,7 +374,7 @@ text-align: center;
 											<dt>글쓴이</dt>
 											 <dd>
 												<input type="text" id="nickname" name="nickname" th:value="${session.user.nickname}"
-												disabled="disabled">
+												disabled="disabled" readonly="readonly">
 												<!-- <input type="text" id="nickname" name="nickname"> -->
 											</dd> 
 											
@@ -383,7 +383,7 @@ text-align: center;
 										<dl>
 											<dt>작성일자</dt>
 											<dd>
-												<input type="date" id="dt" name="dt">
+												<input type="date" id="dt" name="dt" readonly="readonly">
 											</dd>
 										</dl>
 
@@ -398,7 +398,7 @@ text-align: center;
 											<dt></dt>
 											<dd>
 												<input type="hidden" id="userNo" name="userNo" 
-												th:value="${session.user.userNo}" disabled="disabled"> 
+												th:value="${session.user.userNo}" disabled="disabled" readonly="readonly"> 
 											<!-- <input type="text" id="userNo" name="userNo">  -->
 											</dd>
 										</dl>
@@ -416,7 +416,7 @@ text-align: center;
 											<br>
 											
 								<div class="btnn">
-									<button type="submit" value="등록" class="btn btn-primary">등록</button>
+									<button type="submit" value="수정" class="btn btn-primary">등록</button>
 									<!-- <button type="reset" value="취소" class="btn btn-primary">취소</button> -->
 									<a href="boardList" class="btn btn-primary">취소</a>
 								</div>

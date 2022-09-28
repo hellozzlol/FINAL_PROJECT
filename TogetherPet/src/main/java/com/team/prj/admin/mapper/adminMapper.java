@@ -2,6 +2,9 @@ package com.team.prj.admin.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.admin.service.adminVO;
 
 public interface adminMapper {
