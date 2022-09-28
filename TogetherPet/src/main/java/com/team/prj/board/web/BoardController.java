@@ -139,7 +139,43 @@ public class BoardController {
 		
 		
 		
-		//커뮤니티 글 수정
+		//커뮤니티 글 수정폼불러오기
+		
+		@RequestMapping("/boardUpdateForm")
+		
+		public String boardUpdateForm(BoardVO vo , Model model) {
+			model.addAttribute("boardSel",dao.boardSelect(vo));
+			return "board/boardUpdateForm";
+		}
+		
+		
+		//커뮤니티 글 수정하기
+		
+		@PostMapping("/boardUpdate")
+		
+		public String boardUpdate(BoardVO vo, MultipartFile file, HttpServletRequest request) 
+			throws IllegalStateException, IOException {
+				System.out.println("======="+request.getParameter("boardNo"));
+				if(!file.getOriginalFilename().isEmpty()) {
+					String boardupd = System.getProperty("user.dir") + "/src/main/resources/static/files"; // 프로젝트 경로
+					UUID uuid = UUID.randomUUID();
+					String filename = uuid + "_" + file.getOriginalFilename();
+					File saveFile = new File(boardupd, filename);
+					file.transferTo(saveFile);
+					vo.setAttech(filename);
+					String path = "/files/" + filename;
+					vo.setAttechDir(path);
+				}
+				
+				dao.boardInsert(vo);
+				return "redirect:boardList";
+				
+		}
+		
+		
+		
+		
+		
 		
 		
 		
