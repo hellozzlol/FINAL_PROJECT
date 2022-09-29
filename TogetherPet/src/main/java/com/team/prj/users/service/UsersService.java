@@ -58,5 +58,9 @@ public interface UsersService {
 	
 	// 반품 신청 등록
 	int cancelInsert(StateVO vo);
+	
+	
+	// 일반회원 상태 변경 / 0929 지혜 추가
+	int usersStateUpdate(UsersVO vo);
 
 }

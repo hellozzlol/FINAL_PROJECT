@@ -19,7 +19,7 @@ public class JoinAjaxController {
 	@Autowired
 	private RegisterMail rm;
 	
-	// id 중복체크
+	// 일반회원id 중복체크
 	@ResponseBody
 	@RequestMapping("/idCheck")
 	public int idCheck(String id){
@@ -27,6 +27,27 @@ public class JoinAjaxController {
 		int result = js.idCheck(id);
 		return result;
 	}
+	
+	// 튜터id 중복체크
+	@ResponseBody
+	@RequestMapping("/tCheck")
+	public int tCheck(String id){
+		System.out.println("===JoinAjaxCont" + id);
+		int result = js.tCheck(id);
+		return result;
+	}
+	
+	
+	// 판매자id 중복체크
+	@ResponseBody
+	@RequestMapping("/sCheck")
+	public int sCheck(String id){
+		System.out.println("===JoinAjaxCont" + id);
+		int result = js.sCheck(id);
+		return result;
+	}
+	
+	
 
 	// 닉네임 중복체크
 	@ResponseBody

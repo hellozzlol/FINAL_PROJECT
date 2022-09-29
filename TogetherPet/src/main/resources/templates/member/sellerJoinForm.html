@@ -4,9 +4,9 @@
 
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원가입 - 판매자 회원</title>
 <style>
 	#abc {
@@ -226,7 +226,7 @@
 			<div class="row">
 				<div id="abc">
 					<input type="hidden" id="mcode" value="">
-					<form action="/admin/userJoinForm" method="post">
+					<form action="/member/sellerJoinForm" method="post">
 						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 						<div class="col-md-6">
 							<div class="card mb-4">
@@ -289,7 +289,7 @@
 										<label class="form-label" for="basic-default-password12" >사업자등록번호</label>
 										<div class="input-group">
 											<input type="text" class="form-control" id="companyno" 
-												aria-describedby="basic-default-password2" autocomplete="off" name="company_no" required/> 
+												aria-describedby="basic-default-password2" autocomplete="off" name="companyNo" required/> 
 										</div>
 									</div>
 																		
@@ -319,7 +319,7 @@
 									</div>
 									<br>
 
-상호명, 대표자명, 사업자 등록번호
+
 		
 
 
