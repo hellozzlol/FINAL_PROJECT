@@ -112,5 +112,13 @@ public class UsersServiceImpl implements UsersService {
 		return map.orderCanList(vo);
 	}
 
+	
+	// 일반회원 상태 변경 / 0929 지혜 추가
+	@Override
+	public int usersStateUpdate(UsersVO vo) {
+		return map.usersStateUpdate(vo);
+	}
+
+
 
 }

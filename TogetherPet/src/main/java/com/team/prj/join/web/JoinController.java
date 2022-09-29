@@ -5,14 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.join.service.JoinService;
-import com.team.prj.join.service.RegisterMail;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersVO;
@@ -69,16 +63,16 @@ public class JoinController {
 	}
 	
 	// 튜터 회원등록
-	@PostMapping("/admin/tutorJoinForm")
+	@PostMapping("/member/tutorJoinForm")
 	public String tutorInsert(TutorVO vo) {
-		
+		js.tutorInsert(vo);
 		return "redirect:/loginForm";
 	}
 	
 	// 판매자 회원등록
-	@PostMapping("/admin/sellerJoinForm")
+	@PostMapping("/member/sellerJoinForm")
 	public String sellerInsert(SellerVO vo) {
-		
+		js.sellerInsert(vo);
 		return "redirect:/loginForm";
 	}
 	

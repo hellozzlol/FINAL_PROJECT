@@ -176,5 +176,12 @@
 	<delete id="usersDelete">
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
+	
+	
+	<!-- 일반회원 상태 변경 / 0929 지혜 추가 
+	<update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO">
+		update users 
+		ser state = case wher (select state from users where user_no = #{userNo} = )
+	</update> -->
 
 </mapper>

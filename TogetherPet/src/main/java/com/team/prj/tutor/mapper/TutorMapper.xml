@@ -14,6 +14,7 @@
 		where tutor_no = #{tutorNo}
 	</select>
 	
+	<!-- 튜터 등록 0929 JH 주석처리
 	<insert id="tutorInsert">
 		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
 			SELECT 
@@ -36,7 +37,7 @@
 				,'TUTOR'
 				,1
 				,SYSDATE)
-	</insert>
+	</insert> -->
 	
 	<update id="tutorUpdate">
 		update tutor

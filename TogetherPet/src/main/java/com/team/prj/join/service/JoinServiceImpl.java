@@ -57,15 +57,23 @@ public class JoinServiceImpl implements JoinService {
 	// 튜터회원 등록
 	@Override
 	public int tutorInsert(TutorVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 비밀번호 암호화 (DB)
+		BCryptPasswordEncoder Pencoder = new BCryptPasswordEncoder();
+		String result = Pencoder.encode(vo.getPassword());
+		vo.setPassword(result);
+				
+		return jm.tutorInsert(vo);
 	}
 
 	// 판매자회원 등록
 	@Override
 	public int sellerInsert(SellerVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 비밀번호 암호화 (DB)
+		BCryptPasswordEncoder Pencoder = new BCryptPasswordEncoder();
+		String result = Pencoder.encode(vo.getPassword());
+		vo.setPassword(result);
+				
+		return jm.sellerInsert(vo);
 	}
 
 	

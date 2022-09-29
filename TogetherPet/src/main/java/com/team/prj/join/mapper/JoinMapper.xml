@@ -32,7 +32,64 @@
 		)
 		</insert> 
 
+
+	<!-- 판매자 등록 -->
+	<insert id="sellerInsert" parameterType="com.team.prj.seller.service.SellerVO">
+		<selectKey keyProperty="sellerNo" order="BEFORE" resultType="int">
+			SELECT
+			CASE WHEN max(seller_no) IS NULL
+			THEN 1
+			ELSE max(seller_no) + 1
+			END AS no
+			FROM seller
+		</selectKey>
+
+		INSERT INTO seller (seller_no, id, password, name, company, email, call, address, company_no, author, group_no, dt, state, postcode, da)
+		VALUES(#{sellerNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{company}
+				,#{email}
+				,#{call}
+				,#{address}
+				,#{companyNo}
+				,'SELLER'
+				,10
+				,SYSDATE
+				,'활동중'
+				,#{postcode}
+				,#{da}
+				)
+	</insert>
 	
+	    <!-- 튜터 등록 -->
+		<insert id="tutorInsert" parameterType="com.team.prj.tutor.service.TutorVO">
+			<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(tutor_no) IS NULL 
+			    THEN 1
+			    ELSE max(tutor_no) + 1 
+			    END AS no
+			FROM tutor
+		</selectKey>
+		
+		INSERT INTO tutor (tutor_no, id, password, name, company, email, call, address, author, group_no, dt, state, postcode, da)
+		VALUES(#{tutorNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{company}
+				,#{email}
+				,#{call}
+				,#{address}
+				,'TUTOR'
+				,10
+				,SYSDATE
+				,'활동중'
+				,#{postcode}
+				,#{da})
+	</insert>
 
 	<!-- 일반 회원 아이디 중복체크 -->
 	<select id="idCheck" resultType="int" parameterType="com.team.prj.users.service.UsersVO">
