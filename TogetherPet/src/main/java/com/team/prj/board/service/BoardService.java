@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.team.prj.comment.service.CommentVO;
+
 
 
 
@@ -31,7 +33,16 @@ public interface BoardService {
 		 * 
 		 */
 	
-	
+		//댓글기능
+		List<CommentVO> commentList (CommentVO vo);
+		
+		int commentInsert(CommentVO vo);
+		
+		int commentUpdate(CommentVO vo);
+		
+		int commentDelete(CommentVO vo);
+		
+		
 	
 	
 		
