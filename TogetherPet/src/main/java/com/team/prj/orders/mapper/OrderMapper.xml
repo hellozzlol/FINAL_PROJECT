@@ -61,11 +61,12 @@
 		where goods_no=#{goodsNo})-#{amount} where goods_no=#{goodsNo}
 	</update>
 
+	<!-- 0927 희수가 정산때문에 추가 : 어제날짜건을 정산 -->
+	<!-- 0928 희수 수정 : 판매완료건을 정산-->	
 	<update id="updateMinusYN">
-	<!-- 어제날짜를 그담날 정산 -->
-		update orders 
-		set minus_yn='1', minus_date=sysdate 
-		where to_char( dt, 'yyyymmdd' ) = to_char( sysdate-1, 'yyyymmdd')
+		update orders
+		set minus_yn='1', minus_date=sysdate
+		where delivery_state=5 and minus_yn != 1
 	</update>
 
 </mapper>

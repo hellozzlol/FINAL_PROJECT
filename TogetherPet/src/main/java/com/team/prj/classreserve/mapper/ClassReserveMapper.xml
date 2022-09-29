@@ -51,7 +51,7 @@
 				TO_DATE(#{dt},'YYYY-MM-DD HH24:MI:SS'),
 				SYSDATE,
 				#{pay},
-				1,
+				1, 
 				#{userNo},
 				#{classNo},
 				#{totalPrice}*0.9,
@@ -85,11 +85,11 @@
 	</update>
 
 	<!-- 0927 희수가 정산때문에 추가 -->
+		<!-- 0928 희수 수정 : 판매완료건을 정산-->	
 	<update id="updateMinusYN">
-	<!-- 어제날짜를 그담날 정산 -->
 		update class_reserve 
 		set minus_yn='1', minus_date=sysdate 
-		where to_char( dt, 'yyyymmdd' ) = to_char(sysdate-1, 'yyyymmdd')
+		where  pay_yn=1 and minus_yn != 1
 	</update>
 
 </mapper>

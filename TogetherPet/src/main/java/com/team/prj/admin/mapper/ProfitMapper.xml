@@ -4,8 +4,9 @@
 	<!-- 일별 리스트 -->
 	<select id="profitList"
 		resultType="com.team.prj.admin.service.ProfitVO">
-		select to_char(minus_dt, 'yy/mm/dd') as minus_dt,
-		to_char(order_dt, 'yy/mm/dd') as order_dt,
+		select to_char(minus_dt, 'yyyy-mm-dd') as minus_dt,
+		to_char(order_dt,
+		'yy/mm/dd') as order_dt,
 		user_no,
 		user_name,
 		seller_no,
@@ -16,12 +17,14 @@
 		minus_price,
 		profit,
 		minus_yn
-		from profit where 1=1
+		from profit
+		where 1=1
 		<!-- 날짜 선택하여 조회할 경우 -->
 		<if test="start != null and end != null">
 			and minus_dt
-			between to_date(#{start}, 'yy/mm/dd')
-			and TO_CHAR(to_date(#{end}, 'yy/mm/dd') + INTERVAL '1' DAY, 'YY/MM/DD')
+			between to_date(#{start}, 'yyyy-mm-dd')
+			and
+			TO_CHAR(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
 		</if>
 		and minus_yn='1'
 	</select>
@@ -32,34 +35,38 @@
 		select * from profit where 1=1
 	</select>
 
-	<!-- 월별 조회 -->
-	<select id="monthlyList" resultType="map">
-		<!-- key: M01, M02, M03, ... M12 -->
-		<if test="key != null">
-			select #{key}
-			from(
-		</if>
-				SELECT
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'01',profit,0)) AS M01,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'02',profit,0)) AS M02,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'03',profit,0)) AS M03,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'04',profit,0)) AS M04,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'05',profit,0)) AS M05,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'06',profit,0)) AS M06,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'07',profit,0)) AS M07,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'08',profit,0)) AS M08,
-					sum(decode(SUBSTR(minus_dt,4,2),'09',profit, 0)) AS M09,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'10',profit,0)) AS M10,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'11',profit,0)) AS M11,
-					SUM(DECODE(SUBSTR(minus_dt,4,2),'12',profit,0)) AS M12,
-					SUM(profit) AS MT
-				FROM profit
-				WHERE minus_dt BETWEEN '22/01/01' AND '22/12/31'
-		<if test="key != null">
-			)
-		</if>		
+	<!-- 일별 -->
+	<select id="dailyList" resultType="Map">
+		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, sum(profit) as pf
+		from   profit
+		where   minus_yn=1 <!-- and category_id='S' -->
+		group by  minus_dt
+		order by  1 desc
 	</select>
 
-	<!-- 주간별 조회 -->
+	<!-- 주별 조회 -->
+	<select id="weeklyList" resultType="Map">
+      	select	 (select to_char(minus_dt, 'IW') FROM dual) as weekly, 
+		         (select TO_CHAR(trunc(minus_dt,'D'),'yyyy-mm-dd') from dual) as start_dt,
+		         (select TO_CHAR(trunc(minus_dt,'D')+6,'yyyy-mm-dd') from dual) as end_dt,
+			     sum(profit) as pf
+		from profit
+		where minus_yn=1
+		group by to_char(minus_dt, 'IW'),
+                 TO_CHAR(trunc(minus_dt,'D'),'yyyy-mm-dd'),
+				 TO_CHAR(trunc(minus_dt,'D')+6,'yyyy-mm-dd')
+		order by 1 desc
+	</select>
+
+	<!-- 월별 조회 -->
+	<select id="monthlyList" resultType="Map">
+		select substr(minus_dt,4,2) || '월' as monthly,
+			   sum(profit) as pf
+		from profit
+		where minus_yn=1  <!-- and category_id='S' -->
+		group by substr(minus_dt, 4, 2)
+		order by 1 desc
+	</select>
+
 
 </mapper>

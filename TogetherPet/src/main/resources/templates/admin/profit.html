@@ -2,6 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout_admin}">
+
 <head>
 <meta charset="UTF-8">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
@@ -29,6 +30,7 @@
 
 <title>Insert title here</title>
 </head>
+
 <body>
 	<article layout:fragment="content">
 		<!-- Profit Card -->
@@ -36,7 +38,7 @@
 			<div class="row">
 				<div class="col-xl-12">
 					<div class="row">
-						<div class="col-xs-6 col-sm-4">
+						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
 									<div
@@ -65,13 +67,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-4">
+						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
 									<div
 										class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
-											<img src="/admin/assets/img/icons/unicons/wallet-info.png"
+											<img src="/admin/assets/img/icons/unicons/chart.png"
 												alt="Credit Card" class="rounded" />
 										</div>
 										<div class="dropdown">
@@ -94,13 +96,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-4">
+						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
 									<div
 										class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
-											<img src="/admin/assets/img/icons/unicons/cc-primary.png"
+											<img src="/admin/assets/img/icons/unicons/cc-success.png"
 												alt="Credit Card" class="rounded" />
 										</div>
 										<div class="dropdown">
@@ -120,6 +122,33 @@
 									<h3 class="card-title text-nowrap mb-1">$4,679</h3>
 									<small class="text-success fw-semibold"><i
 										class="bx bx-up-arrow-alt"></i> +28.42%</small>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-sm-3">
+							<div class="card">
+								<div class="card-body">
+									<div
+										class="card-title d-flex align-items-start justify-content-between">
+										<div class="avatar flex-shrink-0">
+											<img src="/admin/assets/img/icons/unicons/cc-primary.png"
+												alt="chart success" class="rounded" />
+										</div>
+										<div class="dropdown">
+											<button class="btn p-0" type="button" id="cardOpt3"
+												data-bs-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false"></button>
+											<div class="dropdown-menu dropdown-menu-end"
+												aria-labelledby="cardOpt3">
+												<a class="dropdown-item" href="javascript:void(0);">View
+													More</a> <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+											</div>
+										</div>
+									</div>
+									<span class="fw-semibold d-block mb-1">올해 누적 매출</span>
+									<h3 class="card-title mb-2">123,456,789원</h3>
+									<small class="text-success fw-semibold"><i
+										class="bx bx-up-arrow-alt"></i> +0%</small>
 								</div>
 							</div>
 						</div>
@@ -147,7 +176,7 @@
 								주간</button>
 						</li>
 						<li class="nav-item">
-							<button type="button" class="nav-link" role="tab"
+							<button type="button" class="nav-link" role="tab" id="monthlyBtn"
 								data-bs-toggle="tab" data-bs-target="#monthlyTab"
 								aria-controls="navs-pills-top-messages" aria-selected="false">
 								월간</button>
@@ -167,27 +196,14 @@
 														alt="User" />
 												</div>
 												<div>
-													<small class="text-muted d-block">Total Balance</small>
-													<div class="d-flex align-items-center">
-														<h6 class="mb-0 me-1">$459.10</h6>
-														<small class="text-success fw-semibold"> <i
-															class="bx bx-chevron-up"></i> 42.9%
-														</small>
-													</div>
+													<small class="text-muted d-block">최근 30일 간의 일간
+														차트입니다.</small>
 												</div>
 											</div>
-											<div id="incomeChart">
+											<div id="dailyIncomeChart">
 												<div id="curve_chart" style="width: 100%; height: 500px"></div>
 											</div>
-											<div class="d-flex justify-content-center pt-4 gap-2">
-												<div class="flex-shrink-0">
-													<div id="expensesOfWeek"></div>
-												</div>
-												<div>
-													<p class="mb-n1 mt-1">Expenses This Week</p>
-													<small class="text-muted">$39 less than last week</small>
-												</div>
-											</div>
+
 											<!-- Profit Table -->
 											<br> <br> <br>
 											<div class="daily"
@@ -196,24 +212,14 @@
 													<thead>
 														<tr>
 															<th>정산일자</th>
-															<th>거래일자</th>
-															<th>거래품목</th>
-															<th>거래품명</th>
-															<th>거래금액(원)</th>
-															<th>정산금액(원)</th>
 															<th>매출(원)</th>
 
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="p:${profitList}">
-															<td>[[${p.minusDt}]]</td>
-															<td>[[${p.orderDt}]]</td>
-															<td>[[${p.categoryId}]]</td>
-															<td>[[${p.name}]]</td>
-															<td>[[${#numbers.formatInteger(p.totalPrice,3,'COMMA')}]]</td>
-															<td>[[${#numbers.formatInteger(p.minusPrice,3,'COMMA')}]]</td>
-															<td>[[${#numbers.formatInteger(p.profit,3,'COMMA')}]]</td>
+														<tr class="days" th:each="d:${dailyList}">
+															<td>[[${d.DAILY}]]</td>
+															<td>[[${d.PF}]]</td>
 														</tr>
 													</tbody>
 												</table>
@@ -227,23 +233,6 @@
 						</div>
 						<div class="tab-pane fade" id="weeklyTab" role="tabpanel">
 							<div class="card h-100">
-								<div class="card-header">
-									<ul class="nav nav-pills" role="tablist">
-										<li class="nav-item">
-											<button type="button" class="nav-link active" role="tab"
-												data-bs-toggle="tab"
-												data-bs-target="#navs-tabs-line-card-income"
-												aria-controls="navs-tabs-line-card-income"
-												aria-selected="true">Income</button>
-										</li>
-										<li class="nav-item">
-											<button type="button" class="nav-link" role="tab">Expenses</button>
-										</li>
-										<li class="nav-item">
-											<button type="button" class="nav-link" role="tab">Profit</button>
-										</li>
-									</ul>
-								</div>
 								<div class="card-body px-0">
 									<div class="tab-content p-0">
 										<div class="tab-pane fade show active"
@@ -254,27 +243,38 @@
 														alt="User" />
 												</div>
 												<div>
-													<small class="text-muted d-block">Total Balance</small>
-													<div class="d-flex align-items-center">
-														<h6 class="mb-0 me-1">$459.10</h6>
-														<small class="text-success fw-semibold"> <i
-															class="bx bx-chevron-up"></i> 42.9%
-														</small>
-													</div>
+													<small class="text-muted d-block">주간 
+														차트입니다.</small>
 												</div>
 											</div>
-											<div id="incomeChart">
-												<div id="curve_chart" style="width: 90%; height: 500px"></div>
+											<div id="weeklyIncomeChart">
+												
 											</div>
-											<div class="d-flex justify-content-center pt-4 gap-2">
-												<div class="flex-shrink-0">
-													<div id="expensesOfWeek"></div>
-												</div>
-												<div>
-													<p class="mb-n1 mt-1">Expenses This Week</p>
-													<small class="text-muted">$39 less than last week</small>
-												</div>
+											<!-- Profit Table -->
+											<br> <br> <br>
+											<div class="weekly" style="width: 80%; margin: 5px auto;">
+												<table id="weekly" class="table">
+													<thead>
+														<tr>
+															<th style="display: none">정산일자(일)</th>
+															<th>정산일자(일)</th>
+															<th>정산일자(토)</th>
+															<th>매출(원)</th>
+
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="w:${weeklyList}">
+															<td style="display: none">[[${w.WEEKLY}]]</td>
+															<td>[[${w.START_DT}]]</td>
+															<td>[[${w.END_DT}]]</td>
+															<td>[[${#numbers.formatInteger(w.PF,3,'COMMA')}]]</td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
+
+											<!-- /Profit Table -->
 										</div>
 									</div>
 								</div>
@@ -282,23 +282,6 @@
 						</div>
 						<div class="tab-pane fade" id="monthlyTab" role="tabpanel">
 							<div class="card h-100">
-								<div class="card-header">
-									<ul class="nav nav-pills" role="tablist">
-										<li class="nav-item">
-											<button type="button" class="nav-link active" role="tab"
-												data-bs-toggle="tab"
-												data-bs-target="#navs-tabs-line-card-income"
-												aria-controls="navs-tabs-line-card-income"
-												aria-selected="true">Income</button>
-										</li>
-										<li class="nav-item">
-											<button type="button" class="nav-link" role="tab">Expenses</button>
-										</li>
-										<li class="nav-item">
-											<button type="button" class="nav-link" role="tab">Profit</button>
-										</li>
-									</ul>
-								</div>
 								<div class="card-body px-0">
 									<div class="tab-content p-0">
 										<div class="tab-pane fade show active"
@@ -309,112 +292,27 @@
 														alt="User" />
 												</div>
 												<div>
-													<small class="text-muted d-block">Total Balance</small>
-													<div class="d-flex align-items-center">
-														<h6 class="mb-0 me-1">$459.10</h6>
-														<small class="text-success fw-semibold"> <i
-															class="bx bx-chevron-up"></i> 42.9%
-														</small>
-													</div>
+													<small class="text-muted d-block">올해 월간 차트입니다.</small>
 												</div>
 											</div>
-											<div id="incomeChart">
-												<div id="curve_chart" style="width: 100%; height: 500px"></div>
-											</div>
-											<div class="d-flex justify-content-center pt-4 gap-2">
-												<div class="flex-shrink-0">
-													<div id="expensesOfWeek"></div>
-												</div>
-												<div>
-													<p class="mb-n1 mt-1">Expenses This Week</p>
-													<small class="text-muted">$39 less than last week</small>
-												</div>
+											<div id="monthlyIncomeChart">
+												
 											</div>
 											<!-- Profit Table -->
 											<br> <br> <br>
-											<div class="monthly"
-												style="width: 80%; height: auto; margin: 5px auto;">
+											<div class="monthly" style="width: 80%; margin: 5px auto;">
 												<table id="monthly" class="table">
 													<thead>
 														<tr>
-															<th>정산월</th>
+															<th>정산일자</th>
 															<th>매출(원)</th>
 
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>2022년 1월</td>
-															<td
-																th:text="${monthlyList.M01==0}? '0' : ${#numbers.formatInteger(monthlyList.M01, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 2월</td>
-															<td
-																th:text="${monthlyList.M02==0}? '0' : ${#numbers.formatInteger(monthlyList.M02, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 3월</td>
-															<td
-																th:text="${monthlyList.M03==0}? '0' : ${#numbers.formatInteger(monthlyList.M03, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 4월</td>
-															<td
-																th:text="${monthlyList.M04==0}? '0' : ${#numbers.formatInteger(monthlyList.M04, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 5월</td>
-															<td
-																th:text="${monthlyList.M05==0}? '0' : ${#numbers.formatInteger(monthlyList.M05, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 6월</td>
-															<td
-																th:text="${monthlyList.M06==0}? '0' : ${#numbers.formatInteger(monthlyList.M06, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 7월</td>
-															<td
-																th:text="${monthlyList.M07==0}? '0' : ${#numbers.formatInteger(monthlyList.M07, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 8월</td>
-															<td
-																th:text="${monthlyList.M08==0}? '0' : ${#numbers.formatInteger(monthlyList.M08, 3,
-																'COMMA')}"></td>
-														</tr>
-
-														<tr>
-															<td>2022년 9월</td>
-															<td
-																th:text="${monthlyList.M09==0}? '0' : ${#numbers.formatInteger(monthlyList.M09, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 10월</td>
-															<td
-																th:text="${monthlyList.M10==0}? '0' : ${#numbers.formatInteger(monthlyList.M10, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 11월</td>
-															<td
-																th:text="${monthlyList.M11==0}? '0' : ${#numbers.formatInteger(monthlyList.M11, 3,
-																'COMMA')}"></td>
-														</tr>
-														<tr>
-															<td>2022년 12월</td>
-															<td
-																th:text="${monthlyList.M12==0}? '0' : ${#numbers.formatInteger(monthlyList.M12, 3,
-																'COMMA')}"></td>
+														<tr class="mnths" th:each="m:${monthlyList}">
+															<td>[[${m.MONTHLY}]]</td>
+															<td>[[${#numbers.formatInteger(m.PF,3,'COMMA')}]]</td>
 														</tr>
 													</tbody>
 												</table>
@@ -436,17 +334,94 @@
 			src="https://www.gstatic.com/charts/loader.js"></script>
 		<script type="text/javascript">
 			/* <div id="curve_chart" style="width: 100%; height: 500px"></div> */
+
+			
+			let arrs = [];
+			arrs = dailyChart();
+		$('#monthlyBtn').on('click', function() {
+			$('#dailyIncomeChart').html('');
+			$('#weeklyIncomeChart').html('');
+			$('#monthlyIncomeChart').append('<div id="curve_chart" style="width: 100%; height: 500px"></div>')
+			arrs = monthlyChart();	
+			google.charts.setOnLoadCallback(drawChart);
+			})
+			
+		function monthlyChart(){
+				let f = ['Monthly', 'Profit'];
+				arrs.push(f);
+				
+				let today = new Date();
+				month = Number(today.toISOString().substr(0,5,2));
+				
+				console.log('month', today.toISOString().substr(0,5,2));
+				
+				let mnths = $('.mnths');
+				for(i=month-3; i<month; i++){
+					let arr = [];
+					arr[0] = i;
+					for(mnth of mnths){
+						let m = mnth.children[0].innerHTML;
+						let p = Number(mnth.children[1].innerHTML);
+						console.log('m', m);
+						console.log('p', p);
+						
+						if(m==i){
+							arr[1] = p;
+							break;
+						}else{
+							arr[1] = 0;
+						}
+					}
+					console.log('arr', arr);
+					arrs.push(arr);
+				}
+				console.log('ars', arrs);
+				return arrs;
+			}
+			
+		function dailyChart(){
+			let f = ['Daily', 'Profit'];
+			arrs.push(f);
+		
+			let today = new Date();
+			today = new Date(today.setMonth(today.getMonth() - 1));
+			
+		
+			let days = $('.days');
+			
+				for(i=1; i<32; i++){
+					today.setDate(today.getDate()+1);
+					t = today.toISOString().substr(0, 10);
+					let arr = [];					
+					arr[0] = t;
+					for(day of days){
+						
+						let d = day.children[0].innerHTML;
+						let p = Number(day.children[1].innerHTML);
+						if(d==t){
+							arr[1] = p;
+							break;
+						}else{
+							arr[1] = 0;
+						}
+					}
+					arrs.push(arr);
+				}
+				return arrs;
+			}
+			
+			
+			/* Google Chart */
+		
 			google.charts.load('current', {
 				'packages' : [ 'corechart' ]
 			});
 			google.charts.setOnLoadCallback(drawChart);
 
 			function drawChart() {
-				var data = google.visualization.arrayToDataTable([
-						[ 'Year', 'Sales', 'Expenses' ], [ '2004', 1000, 400 ],
-						[ '2005', 1170, 460 ], [ '2006', 660, 1120 ],
-						[ '2007', 1030, 540 ] ]);
-
+				console.log('>>>', arrs);
+				var data = google.visualization.arrayToDataTable(arrs);
+				
 				var options = {
 					title : 'Company Performance',
 					curveType : 'function',
@@ -460,32 +435,32 @@
 
 				chart.draw(data, options);
 			}
-
+			
 			/* DataTables */
+
 			$('#daily').DataTable({
 				lengthChange : false,
 				pageLength : 10,
-				//lengthMenu : [ 10, 20, 30, 40, 50 ],
+				lengthMenu : [ 10, 20, 30, 40, 50 ],
 				info : true,
 				searching : false,
 				ordering : false,
-
-				columnDefs : [
-
-				{
-					width : 300,
-					targets : 3
-				}
-
-				],
 			});
-
+			$('#weekly').DataTable({
+				lengthChange : false,
+				pageLength : 10,
+				lengthMenu : [ 10, 20, 30, 40, 50 ],
+				info : true,
+				searching : false,
+				ordering : false,
+			});
 			$('#monthly').DataTable({
 				lengthChange : false,
 				pageLength : 10,
-				//lengthMenu : [ 10, 20, 30, 40, 50 ],
+				lengthMenu : [ 10, 20, 30, 40, 50 ],
 				info : true,
-				searching: false
+				searching : false,
+				ordering : false,
 			});
 		</script>
 	</article>

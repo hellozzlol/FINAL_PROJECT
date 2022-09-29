@@ -1,5 +1,6 @@
 package com.team.prj.admin.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,15 @@ public class ProfitController {
 		String end = null;
 		String key = null;
 		model.addAttribute("profitList", ps.profitList(start, end));
-		Map map = ps.monthlyList(key);
-		model.addAttribute("monthlyList", map);
-		System.out.println("==========================" + map.size());
-		System.out.println("==========================" + map.toString());
-		System.out.println("==========================" + map.get("M09"));
-		
-		
-		
+		// Map map = ps.monthlyList(key);
+		List<Map<String, Object>> d = ps.dailyList();
+		List<Map<String, Object>> w = ps.weeklyList();
+		List<Map<String, Object>> m = ps.monthlyList();
+
+		model.addAttribute("dailyList", d);
+		model.addAttribute("weeklyList", w);
+		model.addAttribute("monthlyList", m);
+
 		return "admin/profit";
 	}
 }
