@@ -15,10 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.board.service.BoardService;
+import com.team.prj.board.service.BoardVO;
 import com.team.prj.calendar.service.CalendarService;
 import com.team.prj.calendar.service.CalendarVO;
 import com.team.prj.cart.service.CartService;
@@ -27,6 +31,7 @@ import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentService;
+import com.team.prj.comment.service.CommentVO;
 import com.team.prj.like.service.LikesService;
 import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderService;
@@ -36,6 +41,7 @@ import com.team.prj.pet.service.PetVO;
 import com.team.prj.scrap.service.ScrapService;
 import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.state.service.StateService;
+import com.team.prj.state.service.StateVO;
 import com.team.prj.tutor.service.TutorService;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
@@ -76,7 +82,7 @@ public class UsersController {
 	private String fileDir;
 
 	// 개인 회원 리스트
-	@RequestMapping("/users/usersSelect")
+	@RequestMapping("/usersSelect")
 	public String usersSelect(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
@@ -85,7 +91,7 @@ public class UsersController {
 	}
 
 	// 회원 정보 수정 폼 호출
-	@RequestMapping("/users/usersUpdateForm")
+	@RequestMapping("/usersUpdateForm")
 	public String usersUpdateForm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		UsersVO vo = new UsersVO();
@@ -97,28 +103,31 @@ public class UsersController {
 	}
 
 	// 회원 정보 수정 처리
-	@PostMapping("/users/usersUpdate")
+	@PostMapping("/usersUpdate")
 	public String usersUpdate(UsersVO vo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		user.usersUpdate(vo);
 		vo = user.usersSelect(vo);
 		session.setAttribute("user", vo);
-		return "redirect:/users/usersSelect";
+		return "redirect:/usersSelect";
 	}
 
 	// 마이페이지 주문 내역
-	@RequestMapping("/users/usersOrderList")
-	public String orderList(OrderVO ovo, Model model, HttpServletRequest request) {
+	@RequestMapping("/usersOrderList")
+	public String orderList(OrderVO ovo, Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "5") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		ovo.setUserNo(vo.getUserNo());
 		List<OrderVO> list = user.orderList(ovo);
-		model.addAttribute("orderList", list);
+		model.addAttribute("pageInfo", PageInfo.of(list));
 		return "users/usersOrderList";
 	}
 
 	// 회원 탈퇴
-	@RequestMapping("/users/usersDelete")
+	@RequestMapping("/usersDelete")
 	public String usersDelete(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
@@ -127,7 +136,7 @@ public class UsersController {
 	}
 
 	// 마이페이지 장바구니
-	@RequestMapping("/users/usersCartList")
+	@RequestMapping("/usersCartList")
 	public String userCart(CartVO vo, Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UsersVO u = (UsersVO) session.getAttribute("user");
@@ -137,69 +146,101 @@ public class UsersController {
 	}
 
 	// 마이페이지 반품/교환 내역
-	@RequestMapping("/users/usersCancelList")
+	@RequestMapping("/usersCancelList")
 	public String userCancel(OrderVO vo, Model model) {
 		model.addAttribute("cancelList", state.stateSelect(vo));
 		return "users/usersCancelList";
 	}
 
-	// 마이페이지 클래스 수강내역
-	@RequestMapping("/users/usersClassList")
-	public String userClass(ClassReserveVO crvo, Model model, HttpServletRequest request) {
+	// 클래스 수강내역
+	@RequestMapping("/usersClassList")
+	public String userClass(ClassReserveVO crvo, Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		crvo.setUserNo(vo.getUserNo());
 		List<ClassVO> list = user.classList(crvo);
-		model.addAttribute("classList", list);
+		model.addAttribute("pageInfo", PageInfo.of(list));
 		return "users/usersClassList";
 	}
 
-	// 댓글 조회
-	@RequestMapping("/users/usersCommentList")
-	public String userComment(Model model) {
-		model.addAttribute("commentList", comment.commentSelectList());
+	// 작성댓글 조회
+	@RequestMapping("/usersCommentList")
+	public String userComment(Model model, HttpServletRequest request, CommentVO cvo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		cvo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.commentList(cvo)));
 		return "users/usersCommentList";
 	}
 
-	// 게시판 단건 조회
-	@RequestMapping("/users/usersBoardList")
-	public String userBoard(Model model) {
-		model.addAttribute("boardList", board.boardSelectList());
+	// 작성글 조회
+	@RequestMapping("/usersBoardList")
+	public String userBoard(Model model, HttpServletRequest request, BoardVO bvo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		bvo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.boardList(bvo)));
 		return "users/usersBoardList";
 	}
 
 	// 스크랩 전체 조회
-	@RequestMapping("/users/usersScrapList")
-	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo) {
+	@RequestMapping("/usersScrapList")
+	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		svo.setUserNo(uvo.getUserNo());
-		model.addAttribute("scrapList", user.scrapList(svo));
+		model.addAttribute("pageInfo", PageInfo.of(user.scrapList(svo)));
 		return "users/usersScrapList";
 	}
-	
-	
-//	@RequestMapping("/users/usersScrapList")
-//	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo) {
-//		HttpSession session = request.getSession();
-//		UsersVO uvo = (UsersVO) session.getAttribute("user");
-//		svo.setUserNo(uvo.getUserNo());
-//		model.addAttribute("scrapList", user.scrapList(svo));
-//		return "users/usersScrapList";
-//	}
-	
+
 	// 위시리스트 조회
-	@RequestMapping("/users/usersWishList")
-	public String userLike(LikesVO lvo, Model model, HttpServletRequest request) {
+	@RequestMapping("/usersWishList")
+	public String userLike(LikesVO lvo, Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "8") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		lvo.setUserNo(uvo.getUserNo());
-		model.addAttribute("wishList", user.likeList(lvo));
+		model.addAttribute("pageInfo", PageInfo.of(user.likeList(lvo)));
 		return "users/usersWishList";
 	}
 
+	// 반품 신청 폼 호출
+	@RequestMapping("/usersCancelForm")
+	public String cancelForm(HttpServletRequest request, Model model, OrderVO ovo) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		ovo.setUserNo(uvo.getUserNo());
+		model.addAttribute("cancelList", user.orderCanList(ovo));
+		return "users/usersCancelForm";
+	}
+	
+	// 반품 신청 처리
+	@PostMapping("/usersCancel")
+	public String userCancel(HttpServletRequest request, Model model, OrderVO ovo, StateVO svo) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		ovo.setUserNo(uvo.getUserNo());
+		model.addAttribute("cancel", user.orderCanList(ovo));
+		user.cancelInsert(svo);
+		return "redirect:/usersOrderList";
+	}
+
 	// 전체 일정 조회
-	@RequestMapping("/users/calendarSelectList")
+	@RequestMapping("/calendarSelectList")
 	public String calendarSelectList() {
 		return "calendar/calendarSelectList";
 	}
@@ -219,12 +260,15 @@ public class UsersController {
 
 	// 반려동물 전체 리스트
 	@RequestMapping("/pet/petSelectList")
-	public String petSelectList(HttpServletRequest request, Model model, PetVO pvo) {
+	public String petSelectList(HttpServletRequest request, Model model, PetVO pvo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
 		List<PetVO> pl = pet.petSelectList(pvo);
-		model.addAttribute("petList", pl);
+		model.addAttribute("pageInfo", PageInfo.of(pl));
 		return "pet/petSelectList";
 	}
 
@@ -254,11 +298,9 @@ public class UsersController {
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
-		System.out.println("======================1"+pvo.getBirth());
 		pet.petUpdate(pvo);
 		pvo = pet.petSelect(pvo);
 		session.setAttribute("pet", pvo);
-		System.out.println("======================"+pvo.getBirth());
 		return "redirect:/pet/petSelectList";
 	}
 
@@ -270,12 +312,13 @@ public class UsersController {
 
 	// 반려동물 정보 등록 처리
 	@PostMapping("/pet/petInsert")
-	public String petInsert(Model model, HttpServletRequest request, PetVO pvo, @RequestPart(value="file",required = false)  MultipartFile file)
+	public String petInsert(Model model, HttpServletRequest request, PetVO pvo,
+			@RequestPart(value = "file", required = false) MultipartFile file)
 			throws IllegalStateException, IOException {
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(uvo.getUserNo());
-		
+
 		model.addAttribute("petList", pet.petSelect(pvo));
 
 		// file UpLoad 처리해야함.
@@ -286,7 +329,8 @@ public class UsersController {
 		if (!oFileName.isEmpty()) {
 
 			// 파일명 충돌방지를 위한 별명 만듦
-			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것, 랜덤파일네임
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것,
+																												// 랜덤파일네임
 			String path = fileDir + "/" + sFileName;
 			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장
 

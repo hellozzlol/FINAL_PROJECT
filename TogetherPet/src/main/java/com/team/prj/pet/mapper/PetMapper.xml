@@ -23,17 +23,6 @@
 	<!-- 반려동물 등록 -->
 	<insert id="petInsert"
 		parameterType="com.team.prj.pet.service.PetVO">
-		<!-- <selectKey keyProperty="petNo" order="BEFORE"
-			resultType="int">
-			SELECT
-			CASE WHEN max(pet_no) IS NULL
-			THEN 1
-			ELSE max(pet_no)
-			+ 1
-			END AS no
-			FROM pet
-		</selectKey> -->
-
 		INSERT INTO PET
 		VALUES(#{petNo},
 			#{type},

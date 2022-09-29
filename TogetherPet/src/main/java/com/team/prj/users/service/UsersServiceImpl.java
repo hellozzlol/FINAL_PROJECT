@@ -15,6 +15,7 @@ import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
+import com.team.prj.state.service.StateVO;
 import com.team.prj.users.mapper.UsersMapper;
 
 @Service
@@ -66,14 +67,14 @@ public class UsersServiceImpl implements UsersService {
 	
 	// 작성 게시글 조회
 	@Override
-	public List<BoardVO> boardSelectList(int boardNo, int userNo, String category) {
-		return null;
+	public List<BoardVO> boardList(BoardVO vo) {
+		return map.boardList(vo);
 	}
 
 	// 작성 댓글 조회
 	@Override
-	public List<CommentVO> commentSelectList(int commentNo, int userNo, String category) {
-		return null;
+	public List<CommentVO> commentList(CommentVO vo) {
+		return map.commentList(vo);
 	}
 
 	// 장바구니 조회
@@ -100,6 +101,16 @@ public class UsersServiceImpl implements UsersService {
 		return map.scrapList(vo);
 	}
 
-	
+	// 반품 신청 처리
+	@Override
+	public int cancelInsert(StateVO vo) {
+		return map.cancelInsert(vo);
+	}
+	// 반품 신청 폼에 주문내역 불러오기
+	@Override
+	public List<OrderVO> orderCanList(OrderVO vo) {
+		return map.orderCanList(vo);
+	}
+
 
 }

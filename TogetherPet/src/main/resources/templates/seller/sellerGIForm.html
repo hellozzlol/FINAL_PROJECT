@@ -54,59 +54,52 @@
 						enctype="multipart/form-data">
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}">
+						<input type="hidden" name="sellerNo"
+										th:value="${session.seller.sellerNo}">
 						<div class="row">
 							<div class="mb-3 col-md-6">
-								<label for="type" class="form-label"><strong>상품
-										카테고리</strong></label> <select id="defaultSelect" class="form-select">
-									<option>===선택===</option>
-									<option value="1">사료</option>
-									<option value="2">간식</option>
-									<option value="3">장난감</option>
-									<option value="4">생활용품</option>
-									<option value="5">위생/배변</option>
-									<option value="6">건강관리</option>
+								<label for="type" class="form-label">
+								<strong>상품카테고리</strong></label>
+								<select id="defaultSelect" class="form-select" name="category">
+									<option value="0">===선택===</option>
+									<option value="사료">사료</option>
+									<option value="간식">간식</option>
+									<option value="장난감">장난감</option>
+									<option value="생활용품">생활용품</option>
+									<option value="위생/배변">위생/배변</option>
+									<option value="건강관리">건강관리</option>
 								</select>
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="exampleFormControlInput1" class="form-label"><strong>상품명</strong></label>
-								<input type="text" class="form-control"
+								<input type="text" class="form-control" name="name"
 									id="exampleFormControlInput1" placeholder="상품명을 입력하세요." />
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="exampleFormControlInput1" class="form-label"><strong>업체명</strong></label>
-								<input type="text" class="form-control"
-									id="exampleFormControlInput1" placeholder="업체명을 입력하세요." />
+								<input type="text" class="form-control" name="company"
+									id="exampleFormControlInput1" th:value="${session.seller.company}"
+									readonly="readonly"/>
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="exampleFormControlInput1" class="form-label"><strong>판매가(원)</strong></label>
-								<input type="text" class="form-control"
+								<input type="number" class="form-control" name="price"
 									id="exampleFormControlInput1" placeholder="판매가를 입력하세요." />
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="exampleFormControlInput1" class="form-label"><strong>재고수량</strong></label>
-								<input type="text" class="form-control"
+								<input type="number" class="form-control" name="amount"
 									id="exampleFormControlInput1" placeholder="재고수량을 입력하세요." />
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="exampleFormControlInput1" class="form-label"><strong>상품설명</strong></label>
-								<textarea class="form-control" id="exampleFormControlTextarea1"
+								<textarea class="form-control" id="exampleFormControlTextarea1" name="info"
 									rows="3" placeholder="상품 설명을 입력하세요."></textarea>
-							</div>
-							<div class="mb-3 col-md-6">
-								<label for="exampleFormControlInput1" class="form-label"><strong>상품옵션</strong></label>
-								<br>옵션명 : <input type="text" class="form-control"
-									id="exampleFormControlInput1" placeholder="옵션 입력"
-									style="width: 250px; display: inline;" /><br>
-									옵션금액(원) : <input type="text" class="form-control" id="exampleFormControlInput1"
-									placeholder="옵션 금액 입력" style="width: 208px; display: inline;" />&nbsp;
-								<button type="button" class="btn btn-primary me-2"
-									onclick="location.href=''" style="display: inline;">
-									+ 옵션 추가</button>
 							</div>
 						</div>
 							<hr>
 							<div class="col-md-12" align="center">
-								<label for="exampleFormControlInput1" class="form-label"><strong>상품이미지등록</strong></label>
+								<label for="exampleFormControlInput1" class="form-label"><strong style="font-size: 18px;">상품 이미지 등록</strong></label>
 								<div class="button-wrapper" align="center">
 									<input type="file" id="file" name="file"/>
 										<button type="button"
@@ -133,9 +126,7 @@
 	</div>
 	<!-- Content wrapper -->
 
-
 	<!--shop wrapper end-->
-	</div>
 	<!--shop  area end-->
 </body>
 </html>

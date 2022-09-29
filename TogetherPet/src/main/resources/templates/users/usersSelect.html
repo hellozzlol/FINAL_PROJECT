@@ -70,6 +70,11 @@
 												th:value="${session.user.name}" disabled="disabled" />
 										</div>
 										<div class="mb-3 col-md-6">
+											<label for="money" class="form-label">적립금(원) Money</label> <input
+												class="form-control" type="text" id="money" name="money"
+												th:value="${session.user.money}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
 											<label for="email" class="form-label">이메일 E-mail</label> <input
 												class="form-control" type="text" id="email" name="email"
 												th:value="${session.user.email}" disabled="disabled" />
@@ -90,7 +95,7 @@
 										</div>
 									</div>
 									<div class="mt-2" style="text-align: center;">
-										<a href="/users/usersUpdateForm" class="btn btn-primary me-2">프로필 수정</a>
+										<a href="/usersUpdateForm" class="btn btn-primary me-2">프로필 수정</a>
 									</div>
 								</form>
 							</div>

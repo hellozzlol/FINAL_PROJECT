@@ -69,7 +69,7 @@
 	
 	<!-- 판매자 상품 조회 -->
 	<select id="goodsList" resultType="com.team.prj.goods.service.GoodsVO">
-		select *
+		select goods_no, name, upload_state, sell_state, amount
 		from goods
 		where seller_no = #{sellerNo}
 		order by goods_no
@@ -95,17 +95,17 @@
 			#{category},
 			#{price},
 			#{info},
-			#{upload_state},
+			0,
 			sysdate,
-			#{sellState},
+			0,
 			#{hit},
 			#{sellerNo},
-			#{dc},
-			#{categoryId},
-			#{groupNo},
-			#{returnMessage},
-			#{thumb},
-			#{detail})
+			0.2,
+			's',
+			10,
+			'상품 등록이 반려되었습니다.',
+			#{thumb, jdbcType = VARCHAR},
+			#{detail, jdbcType = VARCHAR})
 	</insert>
 	
 	<!-- 사진 불러오기 -->
