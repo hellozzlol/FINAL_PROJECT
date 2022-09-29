@@ -39,6 +39,12 @@
 		font-weight: 600;
 	}
 </style>
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersOrderList?pageNum=' + p;
+	}
+</script>
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -52,7 +58,7 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>주문내역</li>
+						<li>shopping</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
@@ -79,39 +85,57 @@
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0" style="text-align: center; vertical-align: middle;">
-								<tr th:each="list : ${orderList}">
+								<tr th:each="list : ${pageInfo.list}">
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
 										<strong>[[${list.orderNo}]]</strong><br>
 										<input type="button" value="교환신청" class="btn btn-primary mb-1"><br>
-										<input type="button" value="반품신청" class="btn btn-primary">
+										<input type="button" value="반품신청" class="btn btn-primary" th:onClick="|location.href='@{usersCancelForm(orderNo=${list.orderNo})}'|">
 									</td>
 									<td><img th:src="${list.thumb}" style="height: 100px;"></td>
 									<td>[[${list.name}]]</td>
-									<td>[[${#numbers.formatInteger(list.totalPrice-list.money,3,'COMMA')}]]원</td>
+									<td>[[${#numbers.formatInteger(list.minusPrice-list.money,3,'COMMA')}]]원</td>
 									<td>[[${list.amount}]]개</td>
 									<td>[[${list.pay}]]</td>
 									<td>[[${list.deliveryState}]]</td>
-									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
+									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]<br>
+										<input type="button" value="구매확정" class="btn btn-primary mb-1" onclick="location='/goodsConfirm'">
+									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<!--/ Hoverable Table rows -->
-			</div>
+			</div><br>
 			<!-- / Content -->
 
-			<div class="pagination_style pagination justify-content-center">
-				<ul class="d-flex">
-					<li><a href="#"> << </a></li>
-					<li><a class="current" href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">>></a></li>
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
 				</ul>
-			</div>
+			</nav>
+			<!-- 페이지네이션 -->
 
 			<div class="content-backdrop fade"></div>
 		</div>

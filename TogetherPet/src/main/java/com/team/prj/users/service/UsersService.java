@@ -11,6 +11,7 @@ import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
+import com.team.prj.state.service.StateVO;
 
 public interface UsersService {
 	// 내정보조회(단건 조회)
@@ -24,6 +25,9 @@ public interface UsersService {
 	
 	// 주문 내역 조회
 	List<OrderVO> orderList(OrderVO vo);
+	
+	// 반품 신청 폼에 주문내역 불러오기
+	List<OrderVO> orderCanList(OrderVO vo);
 	
 	// 사진 불러오기
 	List<PhotoVO> photoList(PhotoVO vo);
@@ -41,15 +45,18 @@ public interface UsersService {
 	List<ScrapVO> scrapList(ScrapVO vo);
 	
 	// 작성 글조회
-	List<BoardVO> boardSelectList(int boardNo, int userNo, String category);
+	List<BoardVO> boardList(BoardVO vo);
 	
 	// 작성 댓글조회
-	List<CommentVO> commentSelectList(int commentNo, int userNo, String category);
+	List<CommentVO> commentList(CommentVO vo);
 	
 	// 전체 리스트
 	List<UsersVO> usersSelectList();
 	
 	// 등록
 	int usersInsert(UsersVO vo);
+	
+	// 반품 신청 등록
+	int cancelInsert(StateVO vo);
 
 }

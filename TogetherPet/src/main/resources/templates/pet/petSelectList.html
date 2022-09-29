@@ -10,16 +10,9 @@
 	th:content="${_csrf.headerName}" />
 <title>My pet page</title>
 <script>
-	$(document).ready(function() {
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		const now = new Date();
-		const nowYear = now.getFullYear();
-		const nowAge_input = nowYear - $("#year").val() + 1;
-		const nowAge = nowYear - $("#year option:selected").val() + 1;
-		$("#age").val(nowAge);
-		$("#age_input").val(nowAge_input);
-	});
+	// 페이지 이동
+	function gopage(p) {
+		location.href = '/pet/petSelectList?pageNum=' + p;}
 </script>
 <style>
 .shipping_text h3 {
@@ -27,9 +20,11 @@
 	font-size: 23px;
 	line-height: 18px;
 }
+
 .petrow {
 	padding-top: 30px;
 }
+
 .col-form-label {
 	text-align: center;
 	font-weight: bold;
@@ -57,17 +52,18 @@
 				<div class="shipping_text">
 					<h3>내 반려동물 정보보기</h3>
 				</div>
-				
+
 				<div class="mt-2" style="text-align: right;">
 					<a href="/pet/petInsertForm" class="btn btn-primary me-2 mb-2">
-					+ 내 반려동물정보 등록</a>
+						+ 내 반려동물정보 등록</a>
 				</div>
 				<div class="row">
-					<div class="col-md-12" th:each="list : ${petList}">
+					<div class="col-md-12" th:each="list : ${pageInfo.list}">
 						<!-- Horizontal -->
 						<div class="card mb-3">
 							<div class="row petrow">
-								<div class="col-md-4" align="center" style="display: block; margin: auto;">
+								<div class="col-md-4" align="center"
+									style="display: block; margin: auto;">
 									<a th:href="@{/pet/petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
 										src="/admin/assets/img/elements/dog.png" alt="Card image"
@@ -97,9 +93,7 @@
 												<label class="col-sm-3 col-form-label" for="birth">생일</label>
 												<div class="col-sm-9">
 													<input class="form-control" type="text" id="birth"
-														name="birth"
-														th:value="${list.birth}"
-														disabled="disabled" />
+														name="birth" th:value="${list.birth}" disabled="disabled" />
 												</div>
 											</div>
 											<div class="row mb-2">
@@ -138,6 +132,34 @@
 			</div>
 		</div>
 		<!-- / Content -->
+
+		<!-- 페이지네이션 -->
+		<nav aria-label="Page navigation example">
+			<ul class="pagination pagination-info  justify-content-center">
+				<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+					class="page-link">«</span></li>
+				<li class="page-item"
+					th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+					rel="prev">«</a></li>
+				<li
+					th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+					th:each="page:${pageInfo.navigatepageNums}"><span
+					class="page-link" th:if="${pageInfo.pageNum eq page}"
+					th:text="${page}"></span> <a class="page-link"
+					th:unless="${pageInfo.pageNum eq page}"
+					th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+						}}</a></li>
+				<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+					rel="next">»</a></li>
+				<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+					class="page-link">»</span></li>
+			</ul>
+		</nav>
+		<!-- 페이지네이션 -->
 
 		<div class="content-backdrop fade"></div>
 		<!-- Content wrapper -->

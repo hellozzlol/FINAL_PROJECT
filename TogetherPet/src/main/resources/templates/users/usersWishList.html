@@ -22,7 +22,12 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersWishList?pageNum=' + p;
+	}
+</script>
 <style>
 .product_label span {
 	width: 80px;
@@ -60,10 +65,10 @@
 
 				<div class="row shop_wrapper">
 					<!-- wishlist start -->
-					<div class="col-lg-3 col-md-3" id="point" th:each="list : ${wishList}">
+					<div class="col-lg-3 col-md-3" id="point" th:each="list : ${pageInfo.list}">
 						<div class="single_product">
 							<div class="product_thumb">
-								<a th:href="@{/classSelect(classNo=${list.classNo})}">
+								<a th:href="@{classSelect(classNo=${list.classNo})}">
 									<img class="primary_img" th:src="${list.thumb}" alt="consectetur">
 								</a>
 								<div class="product_action">
@@ -106,17 +111,33 @@
 			</div>
 			<!-- / Content -->
 
-			<div class="pagination_style pagination justify-content-center">
-				<ul class="d-flex">
-					<li><a href="#"> << </a></li>
-					<li><a class="current" href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">>></a></li>
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
 				</ul>
-			</div>
+			</nav>
+			<!-- 페이지네이션 -->
 
 			<div class="content-backdrop fade"></div>
 		</div>

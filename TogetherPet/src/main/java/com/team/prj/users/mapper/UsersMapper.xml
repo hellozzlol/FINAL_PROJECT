@@ -10,10 +10,21 @@
 	<select id="orderList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
-		select *
+		select o.order_no, g.thumb, g.name, o.money, o.amount, o.pay, o.delivery_state, o.dt
 		from orders o, goods g
 		where o.goods_no = g.goods_no
 		and o.user_no = #{userNo}
+		order by order_no desc
+	</select>
+	
+	<!-- 반품 신청 폼에 주문 내역 불러오기 -->
+	<select id="orderCanList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.orders.service.OrderVO">
+		select o.order_no, g.thumb, g.name, o.money, o.amount, o.pay, o.delivery_state, o.dt
+		from orders o, goods g
+		where o.goods_no = g.goods_no
+		and o.order_no = #{orderNo}
 		order by order_no desc
 	</select>
 
@@ -30,18 +41,19 @@
 	<select id="classList"
 		parameterType="com.team.prj.tutor.service.TutorVO"
 		resultType="com.team.prj.classreserve.service.ClassReserveVO">
-		SELECT c.name, t.name as t_name, cr.dt, cr.pay, c.address, c.class_no as class_no
-		FROM class c, tutor t, class_reserve cr
-		WHERE t.tutor_no = c.tutor_no
-		AND c.class_no = cr.class_no
-		AND cr.user_no = #{userNo}
+		select cr.class_name as className, t.name as name, cr.dt as dt,
+				c.address as address, cr.pay_yn as pay, u.user_no, c.class_no
+		from class_reserve cr, tutor t, users u, class c
+		where cr.user_no = u.user_no
+		and cr.class_name = c.name
+		and u.user_no = #{userNo}
 	</select>
 
 	<!-- 위시리스트 조회 -->
 	<select id="likeList"
 		parameterType="com.team.prj.like.service.LikesVO"
 		resultType="com.team.prj.classes.service.ClassVO">
-		select *
+		select c.thumb, c.category, c.name, c.address, c.price, c.class_no
 		from likes l, class c
 		where l.class_no = c.class_no
 		and user_no = #{userNo}
@@ -53,6 +65,40 @@
 		from scrap
 		where user_no = #{userNo}
 	</select>
+	
+	<!-- 작성 글 조회 -->
+	<select id="boardList" resultType="com.team.prj.board.service.BoardVO">
+		select category, title, TO_DATE(dt, 'YYYY-MM-DD') as dt, likes, hit, board_no
+		from board
+		where user_no = #{userNo}
+		order by board_no desc
+	</select>
+	
+	<!-- 작성 댓글 조회 -->
+	<select id="commentList" resultType="com.team.prj.comment.service.CommentVO">
+		select *
+		from comments
+		where user_no = #{userNo}
+		order by comment_no desc
+	</select>
+	
+	<!-- 반품 신청 처리 -->
+	<insert id="cancelInsert" parameterType="com.team.prj.state.service.StateVO">
+		insert into state
+		values(#{orderNo},
+				'1',
+				sysdate,
+				#{cancelCfDt},
+				#{changeDt},
+				#{changeCfDt},
+				#{cancel},
+				#{cancelDetail},
+				#{cancelSel},
+				#{cancelAccount},
+				#{cancelAccountNum},
+				#{change},
+				#{changeDetail})
+	</insert>	
 
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
@@ -68,7 +114,9 @@
 	<select id="usersSelect"
 		parameterType="com.team.prj.users.service.UsersVO"
 		resultType="com.team.prj.users.service.UsersVO">
-		SELECT * FROM USERS WHERE user_no = #{userNo}
+		SELECT *
+		FROM USERS
+		WHERE user_no = #{userNo}
 	</select>
 
 	<!-- 회원 등록 -->
