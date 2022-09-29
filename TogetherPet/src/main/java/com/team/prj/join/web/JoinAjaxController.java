@@ -12,6 +12,7 @@ import com.team.prj.join.service.RegisterMail;
 @RestController
 @RequestMapping("/join")
 public class JoinAjaxController {
+	
 	@Autowired
 	private JoinService js;
 	

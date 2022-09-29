@@ -8,25 +8,39 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.admin.service.adminService;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.attend.service.attendService;
 import com.team.prj.attend.service.attendVO;
+import com.team.prj.seller.service.SellerService;
+import com.team.prj.seller.service.SellerVO;
+import com.team.prj.tutor.service.TutorService;
+import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersService;
+import com.team.prj.users.service.UsersVO;
 
 
 @Controller
 public class adminController {
 	
 	@Autowired
-	private adminService as;
+	private adminService admin;
 	
 	@Autowired
-	private attendService ts;
+	private attendService attend;
 	
 	@Autowired
-	private UsersService us;
+	private UsersService users;
+	
+	@Autowired
+	private TutorService tutor;
+	
+	@Autowired
+	private SellerService seller;
 
 
 	
@@ -45,7 +59,7 @@ public class adminController {
 		model.addAttribute("admin", vo);
 		
 		// 근태 리스트 가져오기
-		model.addAttribute("attendList", ts.attendSelectList(vo.getAdNo()));
+		model.addAttribute("attendList", attend.attendSelectList(vo.getAdNo()));
 		System.out.println("controller:"+model.getAttribute("attendList"));
 		
 		return "admin/mypage";
@@ -68,21 +82,40 @@ public class adminController {
 	
 	
 	// 일반회원 관리
-	@GetMapping("/manager/memManage")
-	public String memManage(Model model) {
-		model.addAttribute("users", us.usersSelectList());
-		return "member/memManage";
+	@GetMapping("/manager/userManage")
+	public String userManage(Model model, UsersVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(users.usersSelectList()));
+			//model.addAttribute("users", us.usersSelectList());
+		return "admin/userManage";
 	}
+		
 	
-	
+	// 튜터회원 관리
+	@GetMapping("/manager/tutorManage")
+	public String tutorManage(Model model, TutorVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(tutor.tutorSelectList()));
+		return "admin/tutorManage";
+	}
 	
 	
 	// 업체회원 관리
 	@GetMapping("/manager/buserManage")
-	public String buserManage(Model model) {
-		//
+	public String buserManage(Model model, SellerVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(seller.sellerSelectList()));
 		return "admin/buserManage";
 	}
+	
+	
+
 	
 	
 	// 전체 글 조회, 삭제?
@@ -100,24 +133,7 @@ public class adminController {
 	}
 	
 
-	
-	
-	
-	// 로그인
-	@GetMapping("/loginForm")
-	public String loginForm(Model model) {
 		
-		return "admin/loginForm";
-	}
-	
-	
-	// 일반회원 가입
-		@GetMapping("/userJoinForm")
-		public String userJoinForm(Model model) {
-			
-			return "admin/userJoinForm";
-		}
-
 	
 	// 출근 등록
 	@RequestMapping("/admin/workIn")

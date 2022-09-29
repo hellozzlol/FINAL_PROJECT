@@ -39,7 +39,8 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> 
 							requests
-							.antMatchers("/", "/index", "/loginForm", "/join/**", "/userJoinForm", "/login", "/shop").permitAll()
+							.antMatchers("/", "/index", "/join/**", "/login", "/shop", "/mem/**",
+									"/joinMain", "/loginForm", "/sellerJoinForm", "/tutorJoinForm", "/userJoinForm").permitAll()
 							.antMatchers("/manager/**").hasAuthority("ROLE_ADMIN")
 							.anyRequest().authenticated())
 				.formLogin().loginPage("/loginForm")
