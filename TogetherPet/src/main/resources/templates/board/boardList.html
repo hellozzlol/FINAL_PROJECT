@@ -26,7 +26,7 @@ a {
 }
 
 .board_list_wrap {
-	padding: 50px;
+	padding: auto;
 }
 
 .board_list {
@@ -93,6 +93,11 @@ a {
 	margin: auto;
 	display: block;
 }
+
+.col-auto {
+	text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -126,6 +131,15 @@ a {
 						</div>
 
 
+
+						<h1>TogetherPet🐾</h1>
+						<br>
+						<h2><br>반려동물 이야기 및 마이펫 자랑<br> <br>자유로운 토크 커뮤니티입니다!  </h2>
+						<br><br>
+						<h4>투게더 펫 은 건강한 인터넷문화를 지향합니다.</h4>
+
+						<br> <br> <br>
+
 						<!-- 검색기능 시작  -->
 						<form class="row gy-2 gx-3 align-items-center" id="btn">
 							<div class="col-auto">
@@ -145,7 +159,9 @@ a {
 							</div>
 						</form>
 						<!-- 검색기능 끝  -->
-						<br> <br> <br>
+						<br> <br>
+
+
 						<!-- 커뮤니티 게시판 반복문 스타트 -->
 						<div class="board_list_wrap">
 							<table class="board_list" id="list">
@@ -250,6 +266,9 @@ a {
 						</div>
 
 
+
+						<br> <br> <br>
+
 						<!-- <!-- 페이징시작 -->
 						<!-- 	<div class="pagination_style pagination justify-content-center">
 							<ul class="d-flex">
@@ -269,7 +288,7 @@ a {
 
 
 						<!-- 페이지네이션 -->
-						 <nav aria-label="Page navigation example">
+						<nav aria-label="Page navigation example">
 							<ul class="pagination pagination-info  justify-content-center">
 								<li class="page-item disabled"
 									th:if="${pageInfo.isIsFirstPage()}"><span
@@ -296,12 +315,12 @@ a {
 									class="page-link">»</span></li>
 							</ul>
 						</nav>
-					
-						<!-- 페이지네이션 -->
-						
-				
 
-						
+						<!-- 페이지네이션 -->
+
+
+
+
 						<!-- 페이지네이션 -->
 						<!--  <div class="pagination_style pagination justify-content-center">
 							<ul class="d-flex">
@@ -328,7 +347,7 @@ a {
 									class="current"></span></li>
 							</ul>
 						</div> -->
-						
+
 						<!-- 페이지네이션 -->
 					</div>
 

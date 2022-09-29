@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.team.prj.board.mapper.BoardMapper;
+import com.team.prj.comment.service.CommentVO;
 
 
 @Service
@@ -51,15 +52,30 @@ public class BoardServiceImpl implements BoardService {
 		return map.boardSearch(key, val);
 	}
 
-	/*
-	 * @Override public List<BoardVO> findAll(BoardVO vo) { // 페이징 return
-	 * map.findAll(vo); }
-	 */
+	@Override
+	public List<CommentVO> commentList(CommentVO vo) {
+		// 댓글 리스트출력
+		return map.commentList(vo);
+	}
 
+	@Override
+	public int commentInsert(CommentVO vo) {
+		// 댓글입력
+		return map.commentInsert(vo);
+	}
 
+	@Override
+	public int commentUpdate(CommentVO vo) {
+		// 댓글수정인데 수정은 안핼래
+		return map.commentUpdate(vo);
+	}
 
+	@Override
+	public int commentDelete(CommentVO vo) {
+		// 댓글삭제
+		return map.commentDelete(vo);
+	}
 
-	
 	
 
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 
 import com.team.prj.board.service.BoardVO;
+import com.team.prj.comment.service.CommentVO;
 
 
 public interface BoardMapper {
@@ -28,6 +29,15 @@ public interface BoardMapper {
 	/*
 	 * //페이징 처리 List<BoardVO> findAll(BoardVO vo);
 	 */
+	
+	//댓글기능
+			List<CommentVO> commentList (CommentVO vo);
+			
+			int commentInsert(CommentVO vo);
+			
+			int commentUpdate(CommentVO vo);
+			
+			int commentDelete(CommentVO vo);
 	
 		
 }
