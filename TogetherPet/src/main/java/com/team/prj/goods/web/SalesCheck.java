@@ -15,7 +15,7 @@ public class SalesCheck {
 	ClassReserveService cr;
 	
 //	@Scheduled(cron="0 0 0 * * * ") // 매일 자정
-	@Scheduled(cron="0 0 12 * * ?") // 매일 정오
+	@Scheduled(cron="0 30 13 * * ?") // 매일 정오
 	public void salesCheck() {
 		order.updateMinusYN();
 		System.out.println("################################# 상품 정산완료 #################################");
