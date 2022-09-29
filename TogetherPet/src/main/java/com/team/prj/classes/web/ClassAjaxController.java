@@ -1,6 +1,8 @@
 package com.team.prj.classes.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,7 @@ import com.team.prj.orders.service.OrderVO;
 public class ClassAjaxController {
 	
 	@Autowired
-	private ClassService ajaxDao;
+	private ClassService classDao;
 	
 	@Autowired
 	private ClassExreserveService exreserveDao;
@@ -39,7 +41,7 @@ public class ClassAjaxController {
 	@RequestMapping("classSearch")
 	@ResponseBody
 	public List<ClassVO> classSearch(Model model, ClassVO vo){
-		return ajaxDao.classSearch(vo);
+		return classDao.classSearch(vo);
 	}
 	
 	
@@ -47,7 +49,7 @@ public class ClassAjaxController {
 	@RequestMapping("classDateOption")
 	@ResponseBody
 	public List<ClassOptionVO> classDateOption(Model model, String sdate, int no, ClassVO vo){
-		List<ClassOptionVO> list = ajaxDao.classDateOption(sdate, no);
+		List<ClassOptionVO> list = classDao.classDateOption(sdate, no);
 		model.addAttribute("option", list);
 		System.out.println("여기까지오긴하는거니..?");
 		return list;
@@ -63,7 +65,7 @@ public class ClassAjaxController {
 		int money = vo.getMoney();
 		System.out.println("예약정보 인서트 완료");
 		
-		//선택한 클래스 타임에 인원 +1
+		//선택한 클래스옵션 타임에 인원 +1
 		ClassOptionVO opvo = new ClassOptionVO();
 		int classOptionNo = vo.getClassOptionNo();
 		opvo.setClassOptionNo(classOptionNo);
@@ -82,6 +84,38 @@ public class ClassAjaxController {
 		System.out.println("===========" + money);
 
 		return reserveNo;
+	}
+	
+	// 클래스 등록하기
+	@RequestMapping("classInsert")
+	@ResponseBody
+	public int classInsert(ClassVO vo, Model model) {
+		//클래스정보 인서트
+		classDao.classInsert(vo);
+		int classNo = vo.getClassNo();
+		System.out.println("클래스 신청정보 인서트 완료 : " + classNo);
+
+		return classNo;
+	}
+	
+	
+	// 클래스 선택옵션 정보 등록하기
+	@RequestMapping("classOptionInsert")
+	@ResponseBody
+	public void classOptionInsert(HashMap<String, Object> params, Model model) {
+		
+		//클래스 옵션 다중 인서트 해시맵 생성
+		HashMap<String, Object> classOptionInsert = new HashMap<String, Object>();
+		
+		
+		//일반 파라미터는 map에 그대로
+		
+		//배열 파라미터는 list에 put하고 그 list를 map에 put
+		List<Map<String,Object>> classOptionList = (List<Map<String, Object>>) params.get("jsonArr");
+		classOptionInsert.put("classOptionList", classOptionList);
+
+		return;
+		
 	}
 	
 

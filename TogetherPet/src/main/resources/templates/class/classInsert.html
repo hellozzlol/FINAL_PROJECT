@@ -1,64 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+	layout:decorate="~{layout/layout_Insert}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>classInsert</title>
 
 
 <!-- summernote -->
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/js/summernote/summernote-ko-KR.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/summernote/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
 <!-- 데이트픽커 -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<!-- 구글맵 -->
-<!--  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZO3MrykFpNpemqO2zPtG5M9ADUXSoApw&callback=initMap"></script>-->
-
-<style>
-.container h1 {
-	margin-top: 0;
-}
-
-.small-menu {
-	font-size: 1.2em;
-}
-
-.menu_title>a {
-	font-size: 1.4em;
-	font-weight: 600;
-}
-
-.menu_title>a {
-	font-size: 1.4em;
-	font-weight: 600;
-	line-height: 1.48;
-}
-
-a:focus, a:hover {
-	color: #ff385c;
-	text-decoration: none;
-}
-</style>
 
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9551f210d2bfdcde36af42fb1ccab895&libraries=services"></script>
+<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0&libraries=services,clusterer,drawing"></script>
 <script>
 var categoryNumL;
 var categoryNumS;
@@ -225,7 +193,7 @@ $(function(){
 	});
 /////////////////////////////////파일이름 넣기
 ///////////////////////////////////////////////////////빈칸확인
-	$('#class_apply').click(function(){
+	/*$('#class_apply').click(function(){
 		if($('#class_name').val() == ""){
 			alert('클래스명을 입력하세요');
 			window.location.href="#f1";
@@ -238,11 +206,14 @@ $(function(){
 			alert('클래스 카테고리를 선택하세요');
 			window.location.href="#f3";
 			return false;
-		}else if($('#thumb_image').val() == ""){		
+		}
+		/*else if($('#thumb_image').val() == ""){		
 			alert('클래스 썸네 파일을 업로드하세요');
 			window.location.href="#f4";
 			return false;
-		}else if($('#summernote').val() == ""){
+		}
+		
+		else if($('#summernote').val() == ""){
 			alert('클래스 소개를 입력하세요');
 			window.location.href="#f5";
 			return false;
@@ -269,101 +240,22 @@ $(function(){
 			alert('최대인원을 입력하세요');
 			return false;
 		}
-	});
+	});*/
+
+	
+	
+	
+	
 });
-
-////////////////////////////////클래스 인서트 ajax ///////////////////////////////
-$('').on('click', function() {
-
-	if(confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		//let classNo = 
-		let name = $('#name').val();
-		let category = $('#category').val();
-		let intro = $('#intro').val();
-		let price = $('#price').val();
-		//let uploadState
-		//let uploadDate
-		//let hit
-		let maxHeadcount = $('#maxHeadcount').val();
-		//let tutorNo 
-		//let groupNo
-		let address = $('#address').val();
-		let postcode = $('#postcode').val();
-		let da = $('#da').val();
-		
-		let latitude = $('#latitude').val();
-		let longitude = $('#longitude').val();
-		//let returnMessage 
-		//let thumb
-		//let detail
-				$.ajax({
-						url: '', //controller페이지에서 만들기
-						type: 'post',
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader(header, token)
-						},
-						data: {
-							name:name,
-							category:category,
-							intro:intro,
-							price:price,
-							maxHeadcount:maxHeadcount,
-							address:address,
-							postcode:postcode,
-							da:da,
-							latitude:latitude,
-							longitude:longitude
-						}
-					}).done(res => {
-						$('#classNo').val(res);
-						$().submit() //class option 인서트 실행
-					})
-		
-		
-	}
 	
-	
-	
-})
-///////////////////////// class option 제출 //////////////////////////
+var clickCount;
+var arry = new Array();
+var arryStart = new Array();
+var arryEnd = new Array();
 
-
-		function startTimeRealInput(){
-        	var day = $('#dateStr').html();
-			var arySdt = [];
-			var aryEdt = [];
-			var jsonArr = [];
-			var allHeadcount = 
-			
-			$('input[id="startTime"]').each(function(i){
-				arySdt.push(day + $(this).val());
-			})
-			$('input[id="endTime"]').each(function(i){
-				aryEdt.push(day + $(this).val());
-			})
-			
-			console.log(arySdt);
-			console.log(aryEdt);
-			
-			for(var i=0; i<arySdt.length; i++) {
-				jsonArr.push({
-					startDt: arySdt[i],
-					endDt: aryEdt[i]
-				})
-			}
-			
-			//$('#classDateRealStart').val(arryStart);
-			//console.log("startTimeRealInput function : 시작시간배열");
-			//$('#classDateRealEnd').val(arryEnd);
-			//console.log("startTimeRealInput function : 마치는시간배열");
-
-		}
-		
-		
-		
+var startTime;
+var endTime;
+var lastTime;
 
 //////////////////////////////////// 날짜 선택 지우기 div
 		function deleteDivDate(del, index){
@@ -386,65 +278,137 @@ $('').on('click', function() {
 		}
 //////////////////////////// 
 
-/* 주소 검색 */
-function execDaumPostcode() {
-   	var width = 500;
-  	var height = 300;
-  	
-	new daum.Postcode({
-    	width: width,
-    	height: height,
-    	popupTitle:'TogetherPetClass',
-        oncomplete: function(data) {
-        	
-            var roadAddr = data.roadAddress; // 도로명 주소 변수
-            var extraRoadAddr = ''; // 참고 항목 변수
+		/* 주소 검색 */
+		function execDaumPostcode() {
+		   	var width = 500;
+		  	var height = 300;
+		  	
+			new daum.Postcode({
+		    	width: width,
+		    	height: height,
+		    	popupTitle:'TogetherPetClass',
+		        oncomplete: function(data) {
+		        	
+		            var roadAddr = data.roadAddress; // 도로명 주소 변수
+		            var extraRoadAddr = ''; // 참고 항목 변수
+		
+		            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		            document.getElementById('postcode').value = data.zonecode;
+		            document.getElementById("address").value = roadAddr;
+		            var guideTextBox = document.getElementById("guide");
+		            // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+		            if(data.autoRoadAddress) {
+		                var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+		                guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+		                guideTextBox.style.display = 'block';
+		            } else {
+		                guideTextBox.innerHTML = '';
+		                guideTextBox.style.display = 'none';
+		            }
+		            
+		            // 주소로 상세 정보를 검색
+		            geocoder.addressSearch(data.address, function(results, status) {
+		                // 정상적으로 검색이 완료됐으면
+		                if (status === daum.maps.services.Status.OK) {
+		
+		                    var result = results[0]; //첫번째 결과의 값을 활용
+		
+		                    // 해당 주소에 대한 좌표를 받아서
+		                    var coords = new daum.maps.LatLng(result.y, result.x);
+		                    $('#latitude').val(result.x);
+		                    $('#longitude').val(result.y);
+		                    
+		                    // 지도를 보여준다.
+		                    mapContainer.style.display = "block";
+		                    map.relayout();
+		                    // 지도 중심을 변경한다.
+		                    map.setCenter(coords);
+		                    // 마커를 결과값으로 받은 위치로 옮긴다.
+		                    marker.setPosition(coords);
+		                }
+		            });
+		        }
+		    }).open({//embed('classAddressIframe'); 팝업아닌 넣어서 표시
+		    	 left: (window.screen.width / 2) - (width / 2),
+		    	 top: (window.screen.height / 2) - (height / 2)
+		    });
+		};
 
-            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-            document.getElementById('postcode').value = data.zonecode;
-            document.getElementById("roadAddress").value = roadAddr;
-            var guideTextBox = document.getElementById("guide");
-            // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-            if(data.autoRoadAddress) {
-                var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                guideTextBox.style.display = 'block';
-            } else {
-                guideTextBox.innerHTML = '';
-                guideTextBox.style.display = 'none';
-            }
-            
-            // 주소로 상세 정보를 검색
-            geocoder.addressSearch(data.address, function(results, status) {
-                // 정상적으로 검색이 완료됐으면
-                if (status === daum.maps.services.Status.OK) {
 
-                    var result = results[0]; //첫번째 결과의 값을 활용
 
-                    // 해당 주소에 대한 좌표를 받아서
-                    var coords = new daum.maps.LatLng(result.y, result.x);
-                    $('#latitude').val(result.x);
-                    $('#longitude').val(result.x);
-                    
-                    // 지도를 보여준다.
-                    mapContainer.style.display = "block";
-                    map.relayout();
-                    // 지도 중심을 변경한다.
-                    map.setCenter(coords);
-                    // 마커를 결과값으로 받은 위치로 옮긴다.
-                    marker.setPosition(coords);
-                }
-            });
-        }
-    }).open({//embed('classAddressIframe'); 팝업아닌 넣어서 표시
-    	 left: (window.screen.width / 2) - (width / 2),
-    	 top: (window.screen.height / 2) - (height / 2)
-    });
-};
 
+///////////////////////// class option 제출 //////////////////////////
+	$('#class_apply').click(function(){
+		var day = $('#dateStr').html();
+		var arySdt = []; //시작시각 배열
+		var aryEdt = []; //종료시각 배열
+		var classNo = $('#classNo').val();
+		var allHeadcount = 0;
+		var jsonArr = [];
+		
+		$('input[id="startTime"]').each(function(i){
+		arySdt.push(day + $(this).val());
+		})
+		$('input[id="endTime"]').each(function(i){
+		aryEdt.push(day + $(this).val());
+		})
+		
+		console.log(arySdt);
+		console.log(aryEdt);
+		
+		for(var i=0; i<arySdt.length; i++) {
+		jsonArr.push({
+		classNo: classNo,
+		startDt: arySdt[i],
+		endDt: aryEdt[i],
+		allHeadcount: allHeadcount			
+		})
+		}
+		
+		console.log(jsonArr);
+		
+		
+		
+		
+	})
 	
 	
+	function classOptionInput(){
+			var day = $('#dateStr').html();
+			var arySdt = []; //시작시각 배열
+			var aryEdt = []; //종료시각 배열
+			var classNo = $('#classNo').val();
+			var allHeadcount = 0;
+			var jsonArr = [];
+			
+			$('input[id="startTime"]').each(function(i){
+			arySdt.push(day + $(this).val());
+			})
+			$('input[id="endTime"]').each(function(i){
+			aryEdt.push(day + $(this).val());
+			})
+			
+			console.log(arySdt);
+			console.log(aryEdt);
+			
+			for(var i=0; i<arySdt.length; i++) {
+			jsonArr.push({
+			classNo: classNo,
+			startDt: arySdt[i],
+			endDt: aryEdt[i],
+			allHeadcount: allHeadcount			
+			})
+			}
+			
+			console.log(jsonArr);
+			
+		}
+
+
+
+
 </script>
+
 
 <script>
 var serverName = '<%=request.getServerName() %>';
@@ -521,8 +485,235 @@ $(()=>{
 	      		}
 	      	});
 		}
+		
+	
 });
 </script>
+
+
+<script>
+	///////////////////////////////클래스 인서트 ajax ///////////////////////////////
+document.addEventListener('DOMContentLoaded', function() {
+	function classOptionInput(){
+		var day = $('#dateStr').html();
+		var arySdt = []; //시작시각 배열
+		var aryEdt = []; //종료시각 배열
+		var classNo = $('#classNo').val();
+		var allHeadcount = 0;
+		var jsonArr = [];
+		
+		$('input[id="startTime"]').each(function(i){
+		arySdt.push(day + $(this).val());
+		})
+		$('input[id="endTime"]').each(function(i){
+		aryEdt.push(day + $(this).val());
+		})
+		
+		console.log(arySdt);
+		console.log(aryEdt);
+		
+		for(var i=0; i<arySdt.length; i++) {
+		jsonArr.push({
+		classNo: classNo,
+		startDt: arySdt[i],
+		endDt: aryEdt[i],
+		allHeadcount: allHeadcount			
+		})
+		}
+		
+		console.log(jsonArr);
+		
+	}
+	
+	
+	
+	$('#class_submit').on('click', function(){
+		if(!confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
+			return;
+		}
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+		//let classNo = 
+		let name = $('#class_name').val();
+		let category = $('#category').val();
+		let intro = $('#summernote').val();
+		let price = $('#class_fee').val();
+		//let uploadState
+		//let uploadDate
+		//let hit
+		let maxHeadcount = $('#class_nop').val();
+		let tutorNo = $('#userNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
+		let groupNo = 0;
+		let address = $('#address').val();
+		let postcode = $('#postcode').val();
+		let da = $('#da').val();
+		let latitude = $('#latitude').val();
+		let longitude = $('#longitude').val();
+
+		let thumb = '';
+		//let detail
+		
+			
+		$.ajax({
+			url: 'classInsert', //controller페이지에서 만들기
+			type: 'post',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader(header, token)
+			},
+			data: {
+				name: name,
+				category: category,
+				intro: intro,
+				price: price,
+				maxHeadcount: maxHeadcount,
+				tutorNo: tutorNo,
+				groupNo: groupNo,
+				address: address,
+				latitude: latitude,
+				longitude: longitude,
+				thumb: thumb,
+				postcode: postcode,
+				da: da
+				
+			},
+			success: function(result) {
+				$('#classNo').val(result);
+			},
+			fail: function(result) {
+				alert("클래스 인서트 오류! 다시 실행해주세요.")
+			}
+		}).then( (arg)=> {
+			
+			var day = $('#dateStr').html();
+			var arySdt = []; //시작시각 배열
+			var aryEdt = []; //종료시각 배열
+			var classNo = $('#classNo').val();
+			var allHeadcount = 0;
+			var jsonArr = [];
+			
+				$('input[id="startTime"]').each(function(i){
+				arySdt.push(day + $(this).val());
+				})
+				$('input[id="endTime"]').each(function(i){
+				aryEdt.push(day + $(this).val());
+				})
+				
+				console.log(arySdt);
+				console.log(aryEdt);
+				
+				for(var i=0; i<arySdt.length; i++) {
+				jsonArr.push({
+				classNo: classNo,
+				startDt: arySdt[i],
+				endDt: aryEdt[i],
+				allHeadcount: allHeadcount			
+				})
+				}
+			
+			console.log(jsonArr)
+			console.log("----여기까지가 두번째 아작스 전----")
+			
+			$.ajax({
+				url: 'classOptionInsert', //controller페이지에서 만들기
+				type: 'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data : jsonArr,
+				success: function(result2) {
+					alert("클래스를 성공적으로 등록했습니다.")
+				},
+				fail: function(result) {
+					alert("클래스 인서트 오류! 다시 실행해주세요.")
+				}
+			
+			}) //end of ajax2
+		}) //end of then
+		
+	}) //end of click event
+	
+})//end of document event 	
+	
+	
+	/*function classInsert() {
+			if(confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+			
+				//let classNo = 
+				let name = $('#name').val();
+				let category = $('#category').val();
+				let intro = $('#intro').val();
+				let price = $('#price').val();
+				//let uploadState
+				//let uploadDate
+				//let hit
+				let maxHeadcount = $('#maxHeadcount').val();
+				let tutorNo = $('#userNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
+				//let groupNo
+				let address = $('#address').val();
+				let postcode = $('#postcode').val();
+				let da = $('#da').val();
+				let latitude = $('#latitude').val();
+				let longitude = $('#longitude').val();
+				//let returnMessage 
+				//let thumb
+				//let detail
+			
+				new Promise((success, fail) => {
+			
+					$.ajax({
+						url: 'classInsert', //controller페이지에서 만들기
+						type: 'post',
+							beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						data: {
+							name:name,
+							category:category,
+							intro:intro,
+							price:price,
+							maxHeadcount:maxHeadcount,
+							address:address,
+							postcode:postcode,
+							da:da,
+							latitude:latitude,
+							longitude:longitude
+						},
+						success: function(result) {
+							$('#classNo').val(result);
+						},
+						fail: function(result) {
+							alert("클래스 인서트 오류! 다시 실행해주세요.")
+						}
+					});
+				
+			
+				}).then((arg) => {
+				function classOptionInput();
+				$.ajax({
+					url: 'classOptionInsert', //controller페이지에서 만들기
+					type: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data : jsonArr,
+					success: function(result2) {
+						alert("클래스를 성공적으로 등록했습니다.")
+					}
+				
+				})
+				})
+		
+		
+			}
+
+		};
+}*/
+	////////////////////////////////클래스 인서트 ajax ///////////////////////////////
+
+	</script>
 
 
 
@@ -1052,6 +1243,10 @@ input[type="checkbox"]:after {
 	width: 400px;
 }
 </style>
+
+
+
+
 </head>
 <body>
 	<article layout:fragment="content">
@@ -1071,7 +1266,7 @@ input[type="checkbox"]:after {
 						</div>
 						<!--breadcrumbs area end-->
 
-						<form method="post" action="classList" enctype="multipart/form-data">
+						<!-- <form method="post" action="classList" enctype="multipart/form-data"> -->
 							<!-- <%=request.getContextPath()%>/creator/makeClassOk -->
 							<div class="container">
 								<h1>클래스개설</h1>
@@ -1079,8 +1274,6 @@ input[type="checkbox"]:after {
 									<ul>
 										<li><div class="followButton" style="color: white">1</div>
 											<a href="#f1"> 클래스명</a></li>
-										<li><div class="followButton" style="color: white">2</div>
-											<a href="#f2"> 간단소개</a></li>
 										<li><div class="followButton" style="color: white">3</div>
 											<a href="#f3"> 카테고리</a></li>
 										<li><div class="followButton" style="color: white">4</div>
@@ -1093,8 +1286,6 @@ input[type="checkbox"]:after {
 											<a href="#f7"> 상세</a> 주소</li>
 										<li><div class="followButton" style="color: white">8</div>
 											<a href="#f8"> 수강료,인원</a></li>
-										<li><div class="followButton" style="color: white">9</div>
-											<a href="#f9"> #태그</a></li>
 									</ul>
 								</div>
 								<div class="classCommonDiv" id="f1">
@@ -1103,6 +1294,11 @@ input[type="checkbox"]:after {
 								<div>
 									<input type="text" name="name" class="inputCommonClass"
 										placeholder="클래스명을 입력하세요" id="class_name">
+									<!-- 튜터 번호로 나중에 바꾸기!!! -->
+									<input type="hidden" id="userNo" th:value="${session.user.userNo}">
+									<!-- 클래스번호 -->
+									<input type="hidden" th:name="classNo" th:id="classNo">
+									
 									<ul class="descriptionUl">
 										<li class="dsctitle">작성 Tip</li>
 										<li>어떤 수업인지 한 눈에 알수있는 클래스 이름</li>
@@ -1229,10 +1425,11 @@ input[type="checkbox"]:after {
 									<ul>
 										<li><input class="flatpickrCalender" /></li>
 										<li><div id="putDateTime"></div></li>
-										<li><div id="dateCount"></div></li>
+										<li><div id="dateCount"></div></li>	
 										<li><input id="dateConfirmButton" type="button"
-											value="확인" onclick="startTimeRealInput()"></li>
+											value="확인" onclick="classOptionInput()"></li>									
 									</ul>
+										
 								</div>
 								<div>
 									<ul class="descriptionUl">
@@ -1241,6 +1438,7 @@ input[type="checkbox"]:after {
 										<li>최대 10일 까지 선택 가능합니다</li>
 										<li>10개 선택 초과시 빨강색으로 표시되며 선택한 요일을 다시 클릭하면 취소됩니다</li>
 									</ul>
+									
 								</div>
 								
 								
@@ -1255,8 +1453,11 @@ input[type="checkbox"]:after {
 										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"> 
 										<span id="guide" style="color: #999; display: none"></span> 
 										<input type="text" id="da" placeholder="상세주소" name="address" />
-										<input type="hidden" id="latitude" name="latitude" />
-										<input type="hidden" id="longitude" name="longitude" />
+										<!-- 히든으로변경 -->
+										<input type="text" id="latitude" name="latitude" value=""/>
+										<input type="text" id="longitude" name="longitude" value=""/>
+										
+										
 										<!-- 구글맵 -->
 										<input id="serchOnGoogle" type="button" value="지도에 위치표시 하기" onclick="mapSearch()" />
 									</div>
@@ -1268,7 +1469,7 @@ input[type="checkbox"]:after {
 								<script>
 									var mapContainer = document.getElementById('kakaoMap'), // 지도를 표시할 div
 							        mapOption = {
-							            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+							            center: new daum.maps.LatLng(35.865792, 128.594077), // 지도의 중심좌표
 							            level: 5 // 지도의 확대 레벨
 							        };
 								
@@ -1315,33 +1516,14 @@ input[type="checkbox"]:after {
 									</ul>
 								</div>
 								
-								
-								
-								<div class="classCommonDiv" id="f9">
-									<span>* 9) 검색 #태그 </span>
-								</div>
-								<div id="classFee">
-									<input type="text" class="inputCommonClass"
-										placeholder="#없이 태그를 입력하세요" id="classTag"> <input
-										type="button" value="추가" id="class_tagButton"
-										class="buttonClass"><br />
-									<div id="tagInsert"></div>
-									<input type="text" name="class_tag" id="class_tag">
-								</div>
-								<div>
-									<ul class="descriptionUl">
-										<li class="dsctitle">작성 Tip</li>
-										<li>5개 태그까지 추가 할 수 있습니다</li>
-										<li>띄어쓰기 대신 _를 사용해 주세요</li>
-										<li>추가버튼을 누르면 항목이 밑에 표시됩니다</li>
-									</ul>
-								</div>
+
 								<div class="classApplyDiv">
-									<input type="submit" value="클래스 등록신청" name="class_apply"
-										id="class_apply" class="buttonClass">
+									<input id="class_submit" type="button" value="클래스 등록">
 								</div>
 							</div>
-						</form>
+							
+							
+						<!--</form>  -->
 						<!--  <button id="modalButton">모달창</button> 
 					<div class="modal"> 
 						<div class="modal_content" title="클릭하면 창이 닫힙니다."> 여기에 모달창 내용을 적어줍니다.<br> 이미지여도 좋고 글이어도 좋습니다. </div>
@@ -1351,6 +1533,9 @@ input[type="checkbox"]:after {
 				</div>
 			</div>
 		</div>
+
+		
+		
 	</article>
 </body>
 </html>

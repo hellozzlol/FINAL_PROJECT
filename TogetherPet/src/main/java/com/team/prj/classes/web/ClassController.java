@@ -2,14 +2,19 @@ package com.team.prj.classes.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.classes.mapper.ClassMapper;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
@@ -46,7 +51,12 @@ public class ClassController {
 	
 	//클래스 리스트 페이지
 	@RequestMapping("classList")
-	public String classSelectList(Model model) {
+	public String classSelectList(Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize); 
+		
+		model.addAttribute("pageInfo",PageInfo.of(dao.classSelectList()));
 		model.addAttribute("class", dao.classSelectList());
 		return "class/classList";
 	}

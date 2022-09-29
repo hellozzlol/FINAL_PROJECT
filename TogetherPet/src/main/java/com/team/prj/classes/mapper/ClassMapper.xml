@@ -10,6 +10,7 @@
 	
 	
 	
+	
 	<!-- 클래스 단건조회 -->
 	<select id="classSelect" parameterType="com.team.prj.classes.service.ClassVO"
 			resultType="com.team.prj.classes.service.ClassVO">
@@ -32,6 +33,8 @@
 	
 	
 	
+	
+	<!-- 클래스 등록 인서트 -->
 	<insert id="classInsert" parameterType="com.team.prj.classes.service.ClassVO">
 			<selectKey keyProperty="classNo" order="BEFORE" resultType="int">
 			SELECT
@@ -39,9 +42,29 @@
 			FROM CLASS
 			</selectKey>
 		INSERT INTO CLASS
-		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage},#{thumb},#{detail})
+		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,sysdate,0,#{maxHeadcount},#{tutorNo},#{groupNo},
+		#{address},#{latitude},#{longitude},'C','',#{thumb},'',#{postcode},#{da})
 	</insert>
 	
+	
+	
+	<!-- 클래스 옵션등록 -->
+	<insert id="classOptionInsert" parameterType="java.util.HashMap">
+		INSERT INTO CLASS_OPTION
+		(CLASS_NO, START_DT, END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO)
+		SELECT A.*
+		from (
+			<foreach collection="classOptionList" item="item" separator="UNION ALL ">
+				SELECT  #{classNo} AS CLASS_NO, to_char(#{startDt}, 'yyyy-MM-DD HH:MM') AS START_DT, to_char(#{endDt}, 'yyyy-MM-DD HH:MM') AS END_DT, 
+						#{allHeadcount} AS ALL_HEADCOUNT
+				FROM DUAL
+			</foreach>
+		) A, OPTIONNO_SEQ.NEXTVAL
+	</insert>
+
+	
+	
+	<!-- 클래스 수정 -->
 	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
 		update class
 		<set>
@@ -56,11 +79,19 @@
 		WHERE CLASS_NO = #{classNo}
 	</update>
 	
+	
+	
+	
+	<!-- 클래스 삭제 -->
 	<delete id="classDelete">
 		DELETE FROM CLASS
 		WHERE CLASS_NO = #{classNo}
 	</delete>
 	
+	
+	
+	
+	<!-- 클래스 검색 -->
 	<select id="classSearch" resultType="com.team.prj.classes.service.ClassVO">
 		select * from class
 		<where>

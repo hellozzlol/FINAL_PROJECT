@@ -305,7 +305,7 @@
 						<div class="row shop_wrapper">
 							<!---------싱글 상품 리스트 반복문---------->
 							<div class="col-lg-4 col-md-4 col-sm-6 col-6" id="point"
-								th:each="c:${class}">
+								th:each="c:${pageInfo.list}">
 
 								<div class="single_product">
 
@@ -358,24 +358,46 @@
 							</div>
 							<!---------싱글 상품 리스트 반복문---------->
 						</div>
-
-
-
-
-
-						<div class="pagination_style pagination justify-content-center">
-							<ul class="d-flex">
-								<li><a href="#"> << </a></li>
-								<li><a href="#">1</a></li>
-								<li><a class="current" href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">>></a></li>
+						
+												
+						 <!-- 페이지네이션 -->
+						 <nav aria-label="Page navigation example">
+							<ul class="pagination pagination-info  justify-content-center">
+								<li class="page-item disabled"
+									th:if="${pageInfo.isIsFirstPage()}"><span
+									class="page-link">«</span></li>
+								<li class="page-item"
+									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+									rel="prev">«</a></li>
+								<li
+									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+									th:each="page:${pageInfo.navigatepageNums}"><span
+									class="page-link" th:if="${pageInfo.pageNum eq page}"
+									th:text="${page}"></span> <a class="page-link"
+									th:unless="${pageInfo.pageNum eq page}"
+									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+										}}</a></li>
+								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+									rel="next">»</a></li>
+								<li class="page-item disabled"
+									th:unless="${pageInfo.hasNextPage}"><span
+									class="page-link">»</span></li>
 							</ul>
-						</div>
-
-						<!--shop toolbar end-->
+						</nav>
+						<!-- 페이지네이션 -->
+						<script>
+		               		function gopage(p) {
+		                  		location.href = '/classList?pageNum=' + p;
+		                  	}
+		               	</script>
+						
+						
+						
+						
 						<!--shop wrapper end-->
 					</div>
 				</div>
