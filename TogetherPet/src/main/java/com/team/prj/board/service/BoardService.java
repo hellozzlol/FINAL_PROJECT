@@ -34,7 +34,7 @@ public interface BoardService {
 		 */
 	
 		//댓글기능
-		List<CommentVO> commentList (CommentVO vo);
+		List<CommentVO> commentSelectList (CommentVO vo);
 		
 		int commentInsert(CommentVO vo);
 		

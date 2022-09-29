@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.comment.mapper.CommentMapper">
+
+
 	<select id="commentSelectList"
-		resultType="com.team.prj.comment.service.CommentVO">
+		resultType="com.team.prj.comment.service.CommentVO" parameterType="com.team.prj.comment.service.CommentVO">
 		select * from comments
 	</select>
 
