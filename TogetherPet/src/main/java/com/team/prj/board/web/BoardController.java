@@ -75,10 +75,13 @@ public class BoardController {
 
 	// 커뮤니티게시판상세조회
 	@GetMapping("/boardSel")
-	public String boardselect(BoardVO vo, Model model) {
+	public String boardselect(BoardVO vo,CommentVO cvo ,Model model) {
 		System.out.println("=====================" + vo.getBoardNo());
 		model.addAttribute("boardSel", dao.boardSelect(vo));
 		dao.boardHitUpdate(vo);// 조회수증가
+		//댓글리스트
+		cvo.setCommentNo(vo.getBoardNo());
+		model.addAttribute("commentSelectList",dao.commentSelectList(cvo));
 		return "board/boardSel";
 	}
 
@@ -176,18 +179,7 @@ public class BoardController {
 	
 	/////////////////////////////////////////여기서 부터는 댓글임둥 >_< /////////////////////////////////////////////
 	
-	//댓글리스트 출력
-	@GetMapping("commentList.do")
-	@ResponseBody
-	
-	public List<CommentVO> replyList(CommentVO vo, HttpServletRequest request, Model model){
-		String commentNo = request.getParameter("commentNo");
-		vo.setCommentNo(Integer.parseInt(commentNo));
-		System.out.println("출력이 될까?===1"+commentNo);
-		return dao.commentList(vo);
-	}
-	
-	
+
 	
 	
 }

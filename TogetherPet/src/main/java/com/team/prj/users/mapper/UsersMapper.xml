@@ -47,9 +47,9 @@
 		select cr.class_name as className, t.name as name, cr.dt as dt,
 				c.address as address, cr.pay_yn as pay, u.user_no, c.class_no
 		from class_reserve cr, tutor t, users u, class c
-		where cr.user_no = u.user_no
-		and cr.class_name = c.name
-		and u.user_no = #{userNo}
+		where cr.class_no = c.class_no
+		and u.user_no = cr.user_no
+		and cr.user_no = #{userNo}
 	</select>
 
 	<!-- 위시리스트 조회 -->
@@ -89,18 +89,18 @@
 	<insert id="cancelInsert" parameterType="com.team.prj.state.service.StateVO">
 		insert into state
 		values(#{orderNo},
-				'1',
+				1,
 				sysdate,
-				#{cancelCfDt},
-				#{changeDt},
-				#{changeCfDt},
+				'',
+				'',
+				'',
 				#{cancel},
 				#{cancelDetail},
 				#{cancelSel},
 				#{cancelAccount},
 				#{cancelAccountNum},
-				#{change},
-				#{changeDetail})
+				'',
+				'')
 	</insert>	
 
 	<!-- 사진 불러오기 -->
@@ -138,18 +138,22 @@
 
 		INSERT INTO USERS
 		VALUES(#{userNo}
-		,#{id}
-		,#{password}
-		,#{name}
-		,#{nickname}
-		,#{email}
-		,#{call}
-		,#{address}
-		,'USER'
-		,3000
-		,1
-		,SYSDATE
-		,'1')
+			,#{id}
+			,#{password}
+			,#{name}
+			,#{nickname}
+			,#{email}
+			,#{call}
+			,#{address}
+			,'USER'
+			,3000
+			,1
+			,SYSDATE
+			,'1'
+			,#{postcode}
+			,#{da}
+			,#{attach}
+			,#{attachDir})
 	</insert>
 
 	<!-- 회원 수정 -->
@@ -161,7 +165,9 @@
 			<if test="password != null">password = #{password},</if>
 			<if test="email != null">email = #{email},</if>
 			<if test="call != null">call = #{call},</if>
-			<if test="address != null">address = #{address}</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="da != null">da = #{da}</if>
 		</set>
 		WHERE user_no = #{userNo}
 	</update>

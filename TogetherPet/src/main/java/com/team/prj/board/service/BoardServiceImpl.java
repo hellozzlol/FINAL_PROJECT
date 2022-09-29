@@ -52,12 +52,7 @@ public class BoardServiceImpl implements BoardService {
 		return map.boardSearch(key, val);
 	}
 
-	@Override
-	public List<CommentVO> commentList(CommentVO vo) {
-		// 댓글 리스트출력
-		return map.commentList(vo);
-	}
-
+	
 	@Override
 	public int commentInsert(CommentVO vo) {
 		// 댓글입력
@@ -74,6 +69,12 @@ public class BoardServiceImpl implements BoardService {
 	public int commentDelete(CommentVO vo) {
 		// 댓글삭제
 		return map.commentDelete(vo);
+	}
+
+	@Override
+	public List<CommentVO> commentSelectList(CommentVO vo) {
+		// TODO Auto-generated method stub
+		return map.commentSelectList(vo);
 	}
 
 	

@@ -9,6 +9,15 @@
 		order by board_no DESC
 	</select>
 
+	<!-- 댓글리스트조회 -->
+	<select id="commentSelectList"
+		resultType="com.team.prj.comment.service.CommentVO"
+		parameterType="com.team.prj.comment.service.CommentVO">
+		select * from comments
+	</select>
+
+
+
 
 	<!-- 게시판단건조회 -->
 	<select id="boardSelect"
@@ -25,7 +34,8 @@
 		select *
 		from photo
 		where group_no =#{groupNo}
-		and name='리스트'
+		and
+		name='리스트'
 
 	</select>
 	<!-- 게시판글등록 -->
@@ -83,7 +93,8 @@
 	<!-- 게시판조회수 -->
 
 	<update id="boardHitUpdate">
-		UPDATE board SET HIT = HIT + 1 WHERE board_no = #{boardNo}
+		UPDATE board SET HIT = HIT + 1 WHERE board_no =
+		#{boardNo}
 	</update>
 
 	<!-- 게시판검색 -->
