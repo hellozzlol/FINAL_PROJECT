@@ -227,14 +227,15 @@ public class UsersController {
 		model.addAttribute("cancelList", user.orderCanList(ovo));
 		return "users/usersCancelForm";
 	}
-	
+
 	// 반품 신청 처리
 	@PostMapping("/usersCancel")
 	public String userCancel(HttpServletRequest request, Model model, OrderVO ovo, StateVO svo) {
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
-		ovo.setUserNo(uvo.getUserNo());
-		model.addAttribute("cancel", user.orderCanList(ovo));
+		//ovo.setUserNo(uvo.getUserNo());
+		ovo.setOrderNo(svo.getOrderNo());
+		model.addAttribute("cancelList", user.orderCanList(ovo));
 		user.cancelInsert(svo);
 		return "redirect:/usersOrderList";
 	}

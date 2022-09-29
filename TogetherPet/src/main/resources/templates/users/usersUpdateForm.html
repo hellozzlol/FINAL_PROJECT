@@ -191,14 +191,16 @@
 										</div>
 										<div class="mb-3 col-md-6 addressForm">
 											<label for="address" class="form-label">주소 Address</label><br>
-											<input type="text" id="postcode" placeholder="우편번호"
-												class="form-control"> <input type="button"
+											<input type="text" id="postcode" name="postcode" placeholder="우편번호"
+												class="form-control" th:value="${session.user.postcode}">
+											<input type="button"
 												onclick="execDaumPostcode()" class="btn btn-primary3"
-												value="주소검색" id="find"> <input type="text"
+												value="주소검색" id="find">
+											<input type="text"
 												id="address" name="address" placeholder="주소"
 												th:value="${session.user.address}" class="form-control">
-											<input type="text" id="detailAddress" placeholder="상세주소"
-												class="form-control">
+											<input type="text" id="da" name="da" placeholder="상세주소"
+												class="form-control" th:value="${session.user.da}">
 										</div>
 									</div>
 									<div class="mt-2" style="text-align: center;">

@@ -17,10 +17,10 @@ public class StateVO {
 	
 	// 0929 선희 DB에 추가
 	private String cancel; // 반품 사유
-	private String cancel_detail; // 반품 상세 사유
-	private String cancel_sel; // 반품 방법
-	private String cancel_account; // 반품 계좌
-	private String cancel_account_num; // 반품 계좌 번호
+	private String cancelDetail; // 반품 상세 사유
+	private String cancelSel; // 반품 방법
+	private String cancelAccount; // 반품 계좌
+	private String cancelAccountNum; // 반품 계좌 번호
 	private String change; // 교환 사유
-	private String change_detail; // 교환 상세 사유
+	private String changeDetail; // 교환 상세 사유
 }

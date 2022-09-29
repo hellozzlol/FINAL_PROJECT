@@ -31,14 +31,14 @@ public class SellerController {
 	private String fileDir;
 
 	// 판매자 회원 전체 조회
-	@RequestMapping("/seller/sellerSelectList")
+	@RequestMapping("/sellerSelectList")
 	public String sellerSelectList(Model model) {
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerSelectList";
 	}
 
 	// 판매자 회원(개인정보) 단건 조회
-	@RequestMapping("/seller/sellerMyPage")
+	@RequestMapping("/sellerMyPage")
 	public String sellerMyPage(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		SellerVO vo = (SellerVO) session.getAttribute("seller");
@@ -47,7 +47,7 @@ public class SellerController {
 	}
 
 	// 판매자 회원(개인정보) 수정 폼 호출
-	@RequestMapping("/seller/sellerMyPageUpdForm")
+	@RequestMapping("/sellerMyPageUpdForm")
 	public String sellerMyPageUpdForm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		SellerVO vo = new SellerVO();
@@ -59,17 +59,17 @@ public class SellerController {
 	}
 
 	// 판매자 회원(개인정보) 수정
-	@PostMapping("/seller/sellerMyPageUpd")
+	@PostMapping("/sellerMyPageUpd")
 	public String sellerUpdate(SellerVO vo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		seller.sellerUpdate(vo);
 		vo = seller.sellerMyPage(vo);
 		session.setAttribute("seller", vo);
-		return "redirect:/seller/sellerMyPage";
+		return "redirect:/sellerMyPage";
 	}
 
 	// 판매자 회원(사업자) 단건 조회
-	@RequestMapping("/seller/sellerComList")
+	@RequestMapping("/sellerComList")
 	public String sellerComList(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		SellerVO vo = (SellerVO) session.getAttribute("seller");
@@ -78,7 +78,7 @@ public class SellerController {
 	}
 
 	// 판매자 정보(사업자) 수정 폼 호출
-	@RequestMapping("/seller/sellerComUpForm")
+	@RequestMapping("/sellerComUpForm")
 	public String sellerComUpForm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		SellerVO vo = new SellerVO();
@@ -90,23 +90,23 @@ public class SellerController {
 	}
 
 	// 판매자 정보(사업자) 수정 처리
-	@PostMapping("/seller/sellerComUpdate")
+	@PostMapping("/sellerComUpdate")
 	public String sellerComUpdate(SellerVO vo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		seller.sellerUpdate(vo);
 		vo = seller.sellerMyPage(vo);
 		session.setAttribute("seller", vo);
-		return "redirect:/seller/sellerComList";
+		return "redirect:/sellerComList";
 	}
 
 	// 판매 상품 등록 폼 호출
-	@RequestMapping("/seller/sellerGIForm")
+	@RequestMapping("/sellerGIForm")
 	public String sellerGoodsInsert() {
 		return "seller/sellerGIForm";
 	}
 
 	// 판매 상품 등록 처리
-	@PostMapping("/seller/sellerGI")
+	@PostMapping("/sellerGI")
 	public String goodsInsert(Model model, HttpServletRequest request, GoodsVO gvo,
 			@RequestPart(value = "file", required = false) MultipartFile file)
 			throws IllegalStateException, IOException {
@@ -132,11 +132,11 @@ public class SellerController {
 			svo.setAttachDir(saveFolder + "/" + sFileName);
 		}
 		seller.goodsInsert(gvo);
-		return "redirect:/seller/sellerGoodsList";
+		return "redirect:/sellerGoodsList";
 	}
 
 	// 판매 상품 조회
-	@RequestMapping("/seller/sellerGoodsList")
+	@RequestMapping("/sellerGoodsList")
 	public String sellerGoodsList(Model model, HttpServletRequest request, GoodsVO gvo,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
@@ -149,21 +149,21 @@ public class SellerController {
 	}
 
 	// 배송 관리 페이지
-	@RequestMapping("/seller/sellerDeliList")
+	@RequestMapping("/sellerDeliList")
 	public String sellerDeliList(Model model) {
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerDeliList";
 	}
 
 	// 취소/반품 관리 페이지
-	@RequestMapping("/seller/sellerCanList")
+	@RequestMapping("/sellerCanList")
 	public String sellerCanList(Model model) {
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerCanList";
 	}
 
 	// 판매완료 상품 관리 페이지
-	@RequestMapping("/seller/sellerDoneList")
+	@RequestMapping("/sellerDoneList")
 	public String sellerDoneList(Model model) {
 		model.addAttribute("sellerList", seller.sellerSelectList());
 		return "seller/sellerDoneList";
