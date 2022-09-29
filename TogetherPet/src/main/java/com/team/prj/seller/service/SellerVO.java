@@ -22,6 +22,9 @@ public class SellerVO {
 	Date dt; // 가입일자
 	String attach; // 사진 0928 선희 추가
 	String attachDir; // 사진 위치 0928 선희 추가
+	String postcode; // 우편번호 0929 선희 추가
+	String da; // 상세주소 0929 선희 추가
+	
 	
 	private GoodsVO goods; // 0928 선희 추가
 }

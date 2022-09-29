@@ -14,6 +14,7 @@ import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.scrap.service.ScrapVO;
+import com.team.prj.state.service.StateVO;
 import com.team.prj.tutor.service.TutorVO;
 
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class UsersVO {
 	private TutorVO tutor;
 	private ClassReserveVO cr;
 	private ScrapVO scrap;
+	private StateVO stateVO;
 
 	//0927 희수가 추가
 	private String postcode; // 우편번호
@@ -59,4 +61,5 @@ public class UsersVO {
 	private PetVO pet; // 0927 선희 추가
 	private int petNo; // 0928 선희 추가
 	private int classNo; // 0928 선희 추가
+	private int orderNo; // 0929 선희 추가
 }

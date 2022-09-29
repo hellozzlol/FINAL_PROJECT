@@ -40,7 +40,11 @@
 				,#{companyNo}
 				,#{author}
 				,#{groupNo}
-				,#{dt})
+				,#{dt}
+				,#{attach}
+				,#{attachDir}
+				,#{postcode}
+				,#{da})
 	</insert>
 
 	<!-- 판매자 정보 수정 -->
@@ -56,7 +60,9 @@
 			<if test="address != null">address = #{address},</if>
 			<if test="companyNo != null">company_no = #{companyNo},</if>
 			<if test="dt != null">dt = #{dt},</if>
-			<if test="name != null">name = #{name}</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="da != null">da = #{da}</if>
 		</set>
 		where seller_no = #{sellerNo}
 	</update>
