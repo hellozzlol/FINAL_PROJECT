@@ -15,20 +15,20 @@
 
 		INSERT INTO USERS (user_no, id, password, name, nickname, email, call, address, author, money, group_no, dt, state, postcode, da)
 		VALUES(#{userNo}
-		,#{id, jdbcType=VARCHAR}
-		,#{password, jdbcType=VARCHAR}
-		,#{name, jdbcType=VARCHAR}
-		,#{nickname, jdbcType=VARCHAR}
-		,#{email, jdbcType=VARCHAR}
-		,#{call, jdbcType=VARCHAR}
-		,#{address, jdbcType=VARCHAR}
+		,#{id}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{email}
+		,#{call}
+		,#{address}
 		,'USER'
 		,3000
 		,1
 		,SYSDATE
 		,'활동중'
-		,#{postcode, jdbcType=VARCHAR}
-		,#{da, jdbcType=VARCHAR}
+		,#{postcode}
+		,#{da}
 		)
 		</insert> 
 

@@ -85,7 +85,7 @@ public class adminController {
 	@GetMapping("/manager/userManage")
 	public String userManage(Model model, UsersVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			@RequestParam(required = false, defaultValue = "7") int pageSize) {
 			PageHelper.startPage(pageNum, pageSize); 
 			model.addAttribute("pageInfo", PageInfo.of(users.usersSelectList()));
 			//model.addAttribute("users", us.usersSelectList());
@@ -118,11 +118,11 @@ public class adminController {
 
 	
 	
-	// 전체 글 조회, 삭제?
-	@GetMapping("/manager/allPostView")
-	public String allPostView(Model model) {
+	// 전체 글 조회, 삭제 (커뮤니티, 상품, 클래스)
+	@GetMapping("/manager/boardPost")
+	public String boardPost(Model model) {
 
-		return "admin/allPostView";
+		return "admin/boardPost";
 	}
 		
 	//  
