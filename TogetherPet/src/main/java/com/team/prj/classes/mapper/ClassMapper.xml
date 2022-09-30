@@ -52,14 +52,14 @@
 	<insert id="classOptionInsert" parameterType="java.util.HashMap">
 		INSERT INTO CLASS_OPTION
 		(CLASS_NO, START_DT, END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO)
-		SELECT A.*
+		SELECT A.*, OPTIONNO_SEQ.NEXTVAL
 		from (
-			<foreach collection="classOptionList" item="item" separator="UNION ALL ">
-				SELECT  #{classNo} AS CLASS_NO, to_char(#{startDt}, 'yyyy-MM-DD HH:MM') AS START_DT, to_char(#{endDt}, 'yyyy-MM-DD HH:MM') AS END_DT, 
-						#{allHeadcount} AS ALL_HEADCOUNT
+			<foreach collection="optionList" item="item" separator="UNION ALL ">
+				SELECT  #{item.classNo} AS CLASS_NO, to_date(#{item.startDt}, 'yyyy-MM-DD HH24:mi') AS START_DT, to_date(#{item.endDt}, 'yyyy-MM-DD HH24:mi') AS END_DT, 
+						#{item.allHeadcount} AS ALL_HEADCOUNT
 				FROM DUAL
 			</foreach>
-		) A, OPTIONNO_SEQ.NEXTVAL
+		) A
 	</insert>
 
 	

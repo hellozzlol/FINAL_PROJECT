@@ -1,7 +1,11 @@
 package com.team.prj.classes.service;
 
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.team.prj.photo.service.PhotoVO;
 
@@ -20,6 +24,9 @@ public interface ClassService {
 	List<ClassOptionVO> classDateOption(String sdate, int no);
 	//클래스 옵션 인서트
 	//int classOptionInsert(ClassOptionVO vo);
+	
+	//클래스 옵션 리스트 인서트
+	//void classOptionInsert(@RequestBody HashMap<String, Object> param);
 	
 	
 	

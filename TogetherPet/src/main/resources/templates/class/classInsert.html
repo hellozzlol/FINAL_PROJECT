@@ -579,11 +579,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			},
 			success: function(result) {
 				$('#classNo').val(result);
+				console.log("클래스 인서트 완료.")
 			},
 			fail: function(result) {
-				alert("클래스 인서트 오류! 다시 실행해주세요.")
+				console.log("클래스 인서트 실패.")
 			}
-		}).then( (arg)=> {
+		}).then((arg)=> {
 			
 			var day = $('#dateStr').html();
 			var arySdt = []; //시작시각 배열
@@ -604,11 +605,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				for(var i=0; i<arySdt.length; i++) {
 				jsonArr.push({
-				classNo: classNo,
-				startDt: arySdt[i],
-				endDt: aryEdt[i],
-				allHeadcount: allHeadcount			
-				})
+					classNo: classNo,
+					startDt: arySdt[i],
+					endDt: aryEdt[i],
+					allHeadcount: allHeadcount
+					})
 				}
 			
 			console.log(jsonArr)
@@ -620,7 +621,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)
 				},
-				data : jsonArr,
+				traditional: true,
+				data : {data : JSON.stringify(jsonArr)}, //data: JSON.stringify(jsonArr)
+				//dataType: 'JSON',
+				//contentType: 'application/json; charset=utf-8',
 				success: function(result2) {
 					alert("클래스를 성공적으로 등록했습니다.")
 				},
