@@ -15,10 +15,44 @@
 		parameterType="com.team.prj.comment.service.CommentVO">
 		select * from comments
 	</select>
-
-
-
-
+	
+	<!-- 댓글단건조회 -->
+	<select id="commentSelect"
+		resultType="com.team.prj.comment.service.CommentVO"
+		parameterType="com.team.prj.comment.service.CommentVO">
+		select *
+		from comments
+		where comment_no = #{commentNo}
+	</select>
+	
+	<!-- 댓글 입력 -->
+		<insert id="commentInsert" parameterType="com.team.prj.comment.service.CommentVO">
+		<selectKey keyProperty="commentNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(comment_no) IS NULL 
+			    THEN 1
+			    ELSE max(comment_no) + 1 
+			    END AS no
+			FROM comments
+		</selectKey>
+		
+		INSERT INTO comments
+		VALUES(#{commentNo}
+				,#{content}
+				,sysdate
+				,#{boardNo}
+				,#{userNo}
+				,#{cwriter})
+	</insert>
+	
+	
+	<!-- 댓글삭제  -->
+	
+	<delete id="commentDelete">
+		delete from comment
+		where comment_no = #{commentNo}
+	</delete>
+	
 	<!-- 게시판단건조회 -->
 	<select id="boardSelect"
 		resultType="com.team.prj.board.service.BoardVO"

@@ -1,11 +1,16 @@
 package com.team.prj.board.web;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
@@ -24,12 +28,16 @@ import com.github.pagehelper.PageInfo;
 import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class BoardController {
 	@Autowired
 	private BoardService dao;
+	
+	@Autowired
+	private UsersService user; // 개인회원
 
 	@Value("${file.dir}")
 	private String fileDir;
@@ -122,6 +130,53 @@ public class BoardController {
 		dao.boardInsert(vo);
 		return "redirect:boardList";
 	}
+	
+	//커뮤니티 파일 다운로드
+	
+	@GetMapping(value = "/download")
+    public void download(String fileName, HttpServletResponse response, HttpServletRequest request){
+
+        try {
+            String originFileName = URLDecoder.decode(fileName, "UTF-8");
+            String onlyFileName = originFileName.substring(originFileName.lastIndexOf("_") + 1);
+
+            File file = new File("C:\\Temp", originFileName);
+
+            if(file.exists()) {
+                String agent = request.getHeader("User-Agent");
+
+                //브라우저별 한글파일 명 처리
+                if(agent.contains("Trident"))//Internet Explore
+                    onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8").replaceAll("\\+", " ");
+                    
+                else if(agent.contains("Edge")) //Micro Edge
+                    onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8");
+                    
+                else //Chrome
+                    onlyFileName = new String(onlyFileName.getBytes("UTF-8"), "ISO-8859-1");
+                //브라우저별 한글파일 명 처리
+
+                response.setHeader("Content-Type", "application/octet-stream");
+                response.setHeader("Content-Disposition", "attachment; filename=" + onlyFileName);
+
+                InputStream is = new FileInputStream(file);
+                OutputStream os = response.getOutputStream();
+
+                int length;
+                byte[] buffer = new byte[1024];
+
+                while( (length = is.read(buffer)) != -1){
+                    os.write(buffer, 0, length);
+                }
+
+                os.flush();
+                os.close();
+                is.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	// 커뮤니티 글 삭제
 
@@ -139,9 +194,15 @@ public class BoardController {
 
 	@GetMapping("/boardUpdateForm")
 
-	public String boardUpdate(BoardVO vo, Model model) {
-		System.out.println("=====================" + vo.getBoardNo());
-		model.addAttribute("boardSel", dao.boardSelect(vo));
+	public String boardUpdate(BoardVO bvo, Model model,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UsersVO vo = new UsersVO();
+		String id = (String) session.getAttribute("id");
+		vo.setId(id);
+		vo = user.usersSelect(vo);
+		request.setAttribute("userList", vo);
+		System.out.println("=====================" + bvo.getBoardNo());
+		model.addAttribute("boardSel", dao.boardSelect(bvo));
 		return "board/boardUpdateForm";
 	}
 

@@ -33,6 +33,23 @@ form {
 </style>
 <title>동물병원</title>
 
+<script>
+//필터링
+// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+$('#category').on('click', 'button', function() {
+			let filter = $(this).data('filter');
+			let categories = $('.category') // <div> 태그 배열
+			
+			for(category of categories){ 
+				category.style='';
+				if(filter == 'ALL'){
+					category.style='';
+				}else if(category.getAttribute('data-category') != filter){
+					category.style.display='none';
+				}
+			}
+		})
+</script>
 
 </head>
 <body>
@@ -53,6 +70,46 @@ form {
 						</div>
 						<!--breadcrumbs area end-->
 
+
+									<!-- 카테고리 시작  -->
+			
+							<div id="category"
+							class="blog_messonry_button d-flex justify-content-center"
+							style="margin-top: 100px;">
+							
+							<button class="active" data-filter="ALL">
+								<img
+									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
+							</button>
+							
+							<button data-filter="DAEGU">
+								<img
+									src="https://cdn.clien.net/web/api/file/F01/8384364/fe733d011dfc7.gif?w=390&h=30000" width="100" height="100"/><br>대구
+							</button>
+							
+							<button data-filter="GWANGJU">
+								<img
+									src="https://image.fmkorea.com/files/attach/new/20200226/3674493/1191607396/2756050745/d3385b3bf6b306964226bd1d4c6209a5.png" width="100" height="100"/><br>광주
+							</button>
+							
+							<button data-filter="SEOUL">
+								<img
+									src="https://www.seoul.go.kr/seoulcom/fileDownload.do?fileName=symbol/icon4.png" width="100" height="100"/><br>서울
+							</button>
+							
+							
+							<button data-filter="GYEONGGI-DO">
+								<img
+									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQJPhWeL8QO6SNNjHJXj14PRAIFczcQXW0Q&usqp=CAU" width="100" height="100"/><br>경기
+							</button>
+			
+							</div>
+						
+							<!-- 카테고리 끝  -->
+
+
+
+
 						<div class="shop_banner d-flex align-items-center"
 							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
 							<div class="shop_banner_text">
@@ -66,53 +123,8 @@ form {
 						</div>
 
 
-						<!--shop  area start-->
-						<!-- <h1>테스트입니다</h1>
-						<table border="1" id="myTable" Class="table">
-							<thead class="table-dark">
-								<tr>
-									<th>번호</th>
-									<th>병원 명</th>
-									<th>주소</th>
-									<th>진료시간</th>
-									<th>전화번호</th>
-									<th>조회수</th>
 
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr th:each="h : ${hospital}">
-									<td><a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"
-										th:text="${h.hospitalNo}"></a></td>
-									<td><a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"
-										th:text="${h.name}"></a></td>
-									<td th:text="${h.address}"></td>
-									<td th:text="${h.workingHour}"></td>
-									<td th:text="${h.call}"></td>
-									<td th:text="${h.hit}"></td>
-								</tr>
-							</tbody>
-						</table> -->
-
-						<!-- 검색기능 시작  -->
-
-						<!-- <div class="input-group mb-3" id="btn" style="min-height: 100px;">
-							<table>
-								<tr>
-									<td width="100"><select id="key" name="key">
-											<option value="1">지역</option>
-											<option value="2">병원명</option>
-									</select></td>
-									<td><input type="text" id="val" name="val"></td>
-									<td width="100" align="center">
-										<button type="button" id="Serachbtn" class="btn btn-dark">검색</button>
-									</td>
-								</tr>
-							</table>
-						</div> -->
-
-						<!-- 검색기능 끝  -->
+						
 
 						<!-- 검색기능 시작  -->
 						<form class="row gy-2 gx-3 align-items-center" id="btn">
@@ -135,10 +147,12 @@ form {
 							<br>
 							<br>
 							<br>
+							
+				
 						<!-- 병원리스트 반복문 시작 -->
-						<div class="row shop_wrapper">
-							<div class="card" style="width: 18rem;" id="point"
-								th:each="h:${hospital}">
+					<div class="row shop_wrapper" id="all">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-6 category" style="width: 18rem;" id="point"
+								th:each="h : ${pageInfo.list}" th:data-category="${h.category}">
 								<div class="embed-responsive embed-responsive-4by3">
 								<img th:src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
 								</div>
@@ -151,12 +165,53 @@ form {
 										class="btn btn-primary">더보기</a>
 								</div>
 							</div>
-						</div>
+						</div> 
+						
+				
 						<!-- 병원리스트 반복문 끝 -->
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		
+		
+							<!-- 페이지네이션 -->
+						<nav aria-label="Page navigation example">
+							<ul class="pagination pagination-info  justify-content-center">
+								<li class="page-item disabled"
+									th:if="${pageInfo.isIsFirstPage()}"><span
+									class="page-link">«</span></li>
+								<li class="page-item"
+									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+									rel="prev">«</a></li>
+								<li
+									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+									th:each="page:${pageInfo.navigatepageNums}"><span
+									class="page-link" th:if="${pageInfo.pageNum eq page}"
+									th:text="${page}"></span> <a class="page-link"
+									th:unless="${pageInfo.pageNum eq page}"
+									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+										}}</a></li>
+								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+									rel="next">»</a></li>
+								<li class="page-item disabled"
+									th:unless="${pageInfo.hasNextPage}"><span
+									class="page-link">»</span></li>
+							</ul>
+						</nav> 
+
+							<!-- 페이지네이션 -->
+		
+		
+		
+		
+		
+		
 
 		<!-- 검색아작스 스크립트 시작  -->
 		<script>
@@ -220,6 +275,16 @@ form {
 					};
 		</script>
 		<!-- 검색아작스 스크립트 끝  -->
+		
+		
+					<!-- 페이지네이션 스크립프 -->
+					<script>
+					function gopage(p) {
+						location.href = '/hospitalList?pageNum=' + p;}
+					</script> 
+					<!-- 페이지네이션 스크립프 -->
+		
+		
 	</article>
 </body>
 </html>

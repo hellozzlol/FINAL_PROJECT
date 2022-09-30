@@ -1,12 +1,18 @@
 package com.team.prj.accomo.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.accomo.service.accomoService;
 import com.team.prj.accomo.service.accomoVO;
+import com.team.prj.board.service.BoardVO;
 
 @Controller
 public class accomoController {
@@ -16,8 +22,11 @@ public class accomoController {
 	
 	//숙소리스트
 	@RequestMapping("/accomoList")
-	public String accomoList(Model model) {
-		model.addAttribute("accomo", dao.accomoSelectList());
+	public String accomoList(Model model, BoardVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		model.addAttribute("pageInfo", PageInfo.of( dao.accomoSelectList()));
 		return "accomo/accomoList";
 
 	}
