@@ -1,17 +1,29 @@
 package com.team.prj.classes.web;
 
+import java.lang.reflect.Parameter;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
@@ -93,30 +105,43 @@ public class ClassAjaxController {
 		//클래스정보 인서트
 		classDao.classInsert(vo);
 		int classNo = vo.getClassNo();
-		System.out.println("클래스 신청정보 인서트 완료 : " + classNo);
+		System.out.println("클래스 인서트 완료 : " + classNo);
 
 		return classNo;
 	}
+
+	
+//	//출처: https://smile-place.tistory.com/entry/SPRING-Mybatis에서-다중-insert하기 [Smile Place:티스토리]
+//	@RequestMapping("classOptionInsert")
+//	@ResponseBody
+//	public void classOptionInsert(@RequestBody HashMap<String, Object> params) throws Exception {
+//		//데이터를 담아줄 map 생성 
+//		HashMap< String , Object > map = new HashMap<String , Object>(); 
+//		
+//		//배열 파라미터는 list에 put하고 그 list를 map에 put 
+//		@SuppressWarnings("unchecked")
+//		List<Map<String,Object>> optionList = (List<Map<String, Object>>) params;
+//		map.put("optionList", optionList);
+//		
+//	}
 	
 	
-	// 클래스 선택옵션 정보 등록하기
 	@RequestMapping("classOptionInsert")
 	@ResponseBody
-	public void classOptionInsert(HashMap<String, Object> params, Model model) {
+	public void classOptionInsert(@RequestParam String data) {
+		JSONParser jp = new JSONParser(data); 
+		JSONArray ja = (JSONArray)jp.parse();
 		
-		//클래스 옵션 다중 인서트 해시맵 생성
-		HashMap<String, Object> classOptionInsert = new HashMap<String, Object>();
-		
-		
-		//일반 파라미터는 map에 그대로
-		
-		//배열 파라미터는 list에 put하고 그 list를 map에 put
-		List<Map<String,Object>> classOptionList = (List<Map<String, Object>>) params.get("jsonArr");
-		classOptionInsert.put("classOptionList", classOptionList);
-
-		return;
+		for(int i=0; i<ja.size(); i++) {
+			Map<String, Object> map = new HashMap<>();
+			JSONObject jo = (JSONObject)ja.get(i);
+			int classNo = (int)jo.get("classNo");
+			Date startDt = (Date)jo.get("startDt");
+			
+		}
 		
 	}
-	
+
+
 
 }

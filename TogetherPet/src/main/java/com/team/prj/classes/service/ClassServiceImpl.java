@@ -1,9 +1,12 @@
 package com.team.prj.classes.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.team.prj.classes.mapper.ClassMapper;
 import com.team.prj.photo.service.PhotoVO;
@@ -27,19 +30,19 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public int classInsert(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//클래스 입력
 		return map.classInsert(vo);
 	}
 
 	@Override
 	public int classUpdate(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//클래스 수정
 		return 0;
 	}
 
 	@Override
 	public int classDelete(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//클래스 삭제
 		return 0;
 	}
 
@@ -57,9 +60,11 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public List<PhotoVO> classPhotoList(ClassVO vo) {
-		// TODO Auto-generated method stub
+		//클래스 group사진 리스트
 		return map.classPhotoList(vo);
 	}
+
+
 
 
 
