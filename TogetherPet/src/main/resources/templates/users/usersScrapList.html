@@ -26,10 +26,29 @@
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
 <script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 	//페이지 이동
 	function gopage(p) {
 		location.href = '/usersScrapList?pageNum=' + p;
 	}
+	
+	// 필터링
+	// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+	$('#category').on('click', 'button', function() {
+		let filter = $(this).data('filter');
+		let categories = $('.category') // <div> 태그 배열
+		
+		for(category of categories){ 
+			category.style='';
+			if(filter == 'ALL'){
+				category.style='';
+			}else if(category.getAttribute('data-category') != filter){
+				category.style.display='none';
+			}
+		}
+	})
 </script>
 </head>
 <body>
@@ -54,20 +73,20 @@
 				</div>
 				<br>
 				
-				<div>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+				<div id="category">
+					<button data-filter="ALL" type="button" id="button" name="button" class="active btn rounded-pill btn-secondary">
 						<strong>전체 스크랩 수([[${#lists.size(pageInfo.list)}]]개)</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="HOSPITAL" type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
 						<strong>병원</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="FUNERAL" type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
 						<strong>장례</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="ACCOMO" type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
 						<strong>숙박</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="COMMUNITY" type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
 						<strong>커뮤니티</strong>
 					</button>
 				</div><br>
@@ -85,7 +104,7 @@
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${pageInfo.list}" style="text-align: center;">
+								<tr class="category" th:each="list : ${pageInfo.list}" style="text-align: center;">
 									<td>[[${list.categoryId}]]</td>
 									<td>제목</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>

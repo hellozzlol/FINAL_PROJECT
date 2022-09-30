@@ -26,9 +26,6 @@ public interface UsersService {
 	// 주문 내역 조회
 	List<OrderVO> orderList(OrderVO vo);
 	
-	// 반품 신청 폼에 주문내역 불러오기
-	List<OrderVO> orderCanList(OrderVO vo);
-	
 	// 사진 불러오기
 	List<PhotoVO> photoList(PhotoVO vo);
 	
@@ -39,7 +36,7 @@ public interface UsersService {
 	List<ClassVO> classList(ClassReserveVO vo);
 	
 	// 위시리스트 조회
-	List<LikesVO> likeList(LikesVO vo);
+	List<LikesVO> likeList(ScrapVO vo);
 	
 	// 내 스크랩조회
 	List<ScrapVO> scrapList(ScrapVO vo);
@@ -56,11 +53,7 @@ public interface UsersService {
 	// 등록
 	int usersInsert(UsersVO vo);
 	
-	// 반품 신청 등록
-	int cancelInsert(StateVO vo);
-	
-	
 	// 일반회원 상태 변경 / 0929 지혜 추가
 	int usersStateUpdate(UsersVO vo);
-
+	
 }

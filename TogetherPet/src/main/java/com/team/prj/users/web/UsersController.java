@@ -112,20 +112,6 @@ public class UsersController {
 		return "redirect:/usersSelect";
 	}
 
-	// 마이페이지 주문 내역
-	@RequestMapping("/usersOrderList")
-	public String orderList(OrderVO ovo, Model model, HttpServletRequest request,
-			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "5") int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		HttpSession session = request.getSession();
-		UsersVO vo = (UsersVO) session.getAttribute("user");
-		ovo.setUserNo(vo.getUserNo());
-		List<OrderVO> list = user.orderList(ovo);
-		model.addAttribute("pageInfo", PageInfo.of(list));
-		return "users/usersOrderList";
-	}
-
 	// 회원 탈퇴
 	@RequestMapping("/usersDelete")
 	public String usersDelete(HttpServletRequest request) {
@@ -144,6 +130,59 @@ public class UsersController {
 		model.addAttribute("cartList", user.cartList(vo));
 		return "users/usersCartList";
 	}
+
+	// 마이페이지 주문 내역
+	@RequestMapping("/usersOrderList")
+	public String orderList(OrderVO ovo, Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "5") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize); // 페이징처리
+		HttpSession session = request.getSession();
+		UsersVO vo = (UsersVO) session.getAttribute("user"); // 로그인한 계정(VO) 컨트롤러에서 불러오기
+		ovo.setUserNo(vo.getUserNo());
+		List<OrderVO> list = user.orderList(ovo);
+		model.addAttribute("pageInfo", PageInfo.of(list));
+		return "users/usersOrderList";
+	}
+
+	// 반품 신청 폼 호출
+	@RequestMapping("/usersCancelForm")
+	public String cancelForm(HttpServletRequest request, Model model, OrderVO ovo) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		ovo = state.orderCanList(ovo);
+		model.addAttribute("ovo", ovo);
+		return "users/usersCancelForm";
+	}
+
+	// 반품 신청 처리
+	@PostMapping("/usersCancel") // cancelInsert
+	public String cancelInsert(OrderVO ovo, StateVO svo) {
+		// state 테이블에 등록
+		System.out.println("???????????" + svo.getOrderNo());
+		System.out.println("???????????" + svo.getCancelDetail());
+		
+		state.cancelInsert(svo);
+		//int orderNo = ovo.getOrderNo();
+		
+		// 주문 배송 상태를 업데이트 (교환 5번 취소 4번)
+		// 주문 내역 삭제
+		//int orderNo2 = ovo.getOrderNo();
+		//ovo.setOrderNo(orderNo2);
+		//order.deleteOrder(ovo);
+		
+		return "redirect:/usersOrderList";
+	}
+	
+//	@PostMapping("/usersCancel")
+//	public String userCancel(HttpServletRequest request, Model model, OrderVO ovo, StateVO svo) {
+//		HttpSession session = request.getSession();
+//		UsersVO uvo = (UsersVO) session.getAttribute("user");
+//		ovo.setOrderNo(svo.getOrderNo());
+//		model.addAttribute("cancelList", user.orderCanList(ovo));
+//		user.cancelInsert(svo);
+//		return "redirect:/usersOrderList";
+//	}
 
 	// 마이페이지 반품/교환 내역
 	@RequestMapping("/usersCancelList")
@@ -196,7 +235,7 @@ public class UsersController {
 	@RequestMapping("/usersScrapList")
 	public String userScrap(Model model, HttpServletRequest request, ScrapVO svo,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
@@ -207,37 +246,15 @@ public class UsersController {
 
 	// 위시리스트 조회
 	@RequestMapping("/usersWishList")
-	public String userLike(LikesVO lvo, Model model, HttpServletRequest request,
+	public String userLike(ScrapVO svo, Model model, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "8") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
-		lvo.setUserNo(uvo.getUserNo());
-		model.addAttribute("pageInfo", PageInfo.of(user.likeList(lvo)));
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.likeList(svo)));
 		return "users/usersWishList";
-	}
-
-	// 반품 신청 폼 호출
-	@RequestMapping("/usersCancelForm")
-	public String cancelForm(HttpServletRequest request, Model model, OrderVO ovo) {
-		HttpSession session = request.getSession();
-		UsersVO uvo = (UsersVO) session.getAttribute("user");
-		ovo.setUserNo(uvo.getUserNo());
-		model.addAttribute("cancelList", user.orderCanList(ovo));
-		return "users/usersCancelForm";
-	}
-
-	// 반품 신청 처리
-	@PostMapping("/usersCancel")
-	public String userCancel(HttpServletRequest request, Model model, OrderVO ovo, StateVO svo) {
-		HttpSession session = request.getSession();
-		UsersVO uvo = (UsersVO) session.getAttribute("user");
-		//ovo.setUserNo(uvo.getUserNo());
-		ovo.setOrderNo(svo.getOrderNo());
-		model.addAttribute("cancelList", user.orderCanList(ovo));
-		user.cancelInsert(svo);
-		return "redirect:/usersOrderList";
 	}
 
 	// 전체 일정 조회
@@ -263,7 +280,7 @@ public class UsersController {
 	@RequestMapping("/pet/petSelectList")
 	public String petSelectList(HttpServletRequest request, Model model, PetVO pvo,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+			@RequestParam(required = false, defaultValue = "2") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		HttpSession session = request.getSession();
 		UsersVO vo = (UsersVO) session.getAttribute("user");

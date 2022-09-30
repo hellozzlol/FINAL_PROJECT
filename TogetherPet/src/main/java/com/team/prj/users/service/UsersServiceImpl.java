@@ -91,7 +91,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	// 위시리스트 조회
 	@Override
-	public List<LikesVO> likeList(LikesVO vo) {
+	public List<LikesVO> likeList(ScrapVO vo) {
 		return map.likeList(vo);
 	}
 
@@ -101,24 +101,10 @@ public class UsersServiceImpl implements UsersService {
 		return map.scrapList(vo);
 	}
 
-	// 반품 신청 처리
-	@Override
-	public int cancelInsert(StateVO vo) {
-		return map.cancelInsert(vo);
-	}
-	// 반품 신청 폼에 주문내역 불러오기
-	@Override
-	public List<OrderVO> orderCanList(OrderVO vo) {
-		return map.orderCanList(vo);
-	}
-
-	
 	// 일반회원 상태 변경 / 0929 지혜 추가
 	@Override
 	public int usersStateUpdate(UsersVO vo) {
 		return map.usersStateUpdate(vo);
 	}
-
-
 
 }
