@@ -17,5 +17,6 @@ public class HospitalVO {
 	private String hphoto;//병원사진
 	private String hit;//조회
 	private String categoryId;// 카테고리 아이디
+	private String category; //지역
 
 }

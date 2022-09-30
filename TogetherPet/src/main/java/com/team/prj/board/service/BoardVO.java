@@ -16,6 +16,6 @@ public class BoardVO {
 	private String nickname;//작성자
 	private int groupNo; // 그룹번호(사진)
 	private int userNo; // 유저번호
-	private String attech;//작성자
-	private String attechDir;//작성자
+	private String attech;//파일이름
+	private String attechDir;//파일경로
 }

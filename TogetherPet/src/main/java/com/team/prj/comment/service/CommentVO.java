@@ -18,5 +18,6 @@ public class CommentVO {
 	private Date dt; // 댓글날짜
 	private int boardNo; // 게시글번호
 	private int userNo; // 유저번호
+	private String cwriter;//댓글작성자
 
 }

@@ -31,7 +31,8 @@
 				,#{content}
 				,#{dt}
 				,#{boardNo}
-				,#{userNo})
+				,#{userNo}
+				,#{cwriter})
 	</insert>
 	
 	<update id="commentUpdate" parameterType="com.team.prj.comment.service.CommentVO">

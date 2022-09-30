@@ -86,7 +86,7 @@
 
 											<!--숙소 반복문 스타트! -->
 											<div class="col-lg-4 col-md-4 col-sm-6 col-6 " id="point"
-												th:each="a:${accomo}">
+												th:each="a:${pageInfo.list}">
 												<div class="single_product">
 													<div class="product_thumb">
 														<a th:href="@{accomo(accomoNo=${a.accomoNo})}"> <img
@@ -124,8 +124,55 @@
 											</div>
 
 											<!--숙소 반복문 끝! -->
+											
+											
+						<!-- 페이지네이션 -->
+						<nav aria-label="Page navigation example">
+							<ul class="pagination pagination-info  justify-content-center">
+								<li class="page-item disabled"
+									th:if="${pageInfo.isIsFirstPage()}"><span
+									class="page-link">«</span></li>
+								<li class="page-item"
+									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+									rel="prev">«</a></li>
+								<li
+									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+									th:each="page:${pageInfo.navigatepageNums}"><span
+									class="page-link" th:if="${pageInfo.pageNum eq page}"
+									th:text="${page}"></span> <a class="page-link"
+									th:unless="${pageInfo.pageNum eq page}"
+									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+										}}</a></li>
+								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+									rel="next">»</a></li>
+								<li class="page-item disabled"
+									th:unless="${pageInfo.hasNextPage}"><span
+									class="page-link">»</span></li>
+							</ul>
+						</nav>
 
-											<script>
+
+						<!-- 페이지네이션 -->
+											
+					<script>
+					function gopage(p) {
+						location.href = '/accomoList?pageNum=' + p;}
+					</script>	
+											
+											
+											
+											
+											
+											
+											
+											
+											
+
+	   <script>
 		
 		$("#Searchbtn").on('click', searchCall)
 		

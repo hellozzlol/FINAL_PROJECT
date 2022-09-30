@@ -388,14 +388,14 @@ a {
 											<dt>작성일자</dt>
 											<dd>
 												<input type="date" id="dt" name="dt"
-													th:value="${boardSel.dt}">
+													th:value="${boardSel.dt}" readonly="readonly">
 											</dd>
 										</dl>
 
 										<dl>
 											<dt>첨부파일</dt>
 											<dd>
-												<input type="file" id="file" name="file">
+												<input type="file" id="file" name="file" th:value="${boardSel.attech}">
 											</dd>
 										</dl>
 
