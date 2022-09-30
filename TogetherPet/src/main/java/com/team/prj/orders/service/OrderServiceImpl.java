@@ -17,19 +17,16 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public UsersVO userInfo(CartVO vo) {
-		// TODO Auto-generated method stub
 		return map.userInfo(vo);
 	}
 
 	@Override
 	public int insertOrder(OrderVO vo) {
-		// TODO Auto-generated method stub
 		return map.insertOrder(vo);
 	}
 
 	@Override
 	public List<OrderVO> selectOrder(OrderVO vo) {
-		// TODO Auto-generated method stub
 		return map.selectOrder(vo);
 	}
 
@@ -40,13 +37,17 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int updateGoodsQty(OrderVO vo) {
-		// TODO Auto-generated method stub
 		return map.updateGoodsQty(vo);
 	}
 
 	@Override
 	public int updateMinusYN() {
-		// TODO Auto-generated method stub
 		return map.updateMinusYN();
+	}
+
+	// 주문 내역 삭제 0930 선희추가
+	@Override
+	public int deleteOrder(OrderVO vo) {
+		return map.deleteOrder(vo);
 	}
 }

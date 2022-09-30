@@ -68,5 +68,11 @@
 		set minus_yn='1', minus_date=sysdate
 		where delivery_state=5 and minus_yn != 1
 	</update>
-
+	
+	<!-- 주문 내역 삭제 0930 선희 추가(교환/반품 신청 후 내역에서 지움) -->
+	<delete id="deleteOrder">
+		delete
+		from orders
+		where order_no = #{orderNo}
+	</delete>
 </mapper>

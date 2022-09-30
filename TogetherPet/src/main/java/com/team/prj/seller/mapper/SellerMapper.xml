@@ -111,10 +111,10 @@
 			0,
 			#{hit},
 			#{sellerNo},
-			0.2,
+			#{dc},
 			's',
 			10,
-			'상품 등록이 반려되었습니다.',
+			'',
 			#{thumb, jdbcType = VARCHAR},
 			#{detail, jdbcType = VARCHAR})
 	</insert>

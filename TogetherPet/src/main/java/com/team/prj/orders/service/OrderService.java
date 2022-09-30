@@ -19,4 +19,6 @@ public interface OrderService {
 	// 0927 희수 추가
 	int updateMinusYN();
 
+	// 주문 내역 삭제 0930 선희 추가
+	int deleteOrder(OrderVO vo);
 }

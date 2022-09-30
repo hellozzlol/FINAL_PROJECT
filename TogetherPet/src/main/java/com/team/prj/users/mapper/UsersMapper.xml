@@ -20,17 +20,6 @@
 		order by order_no desc
 	</select>
 	
-	<!-- 반품 신청 폼에 주문 내역 불러오기 -->
-	<select id="orderCanList"
-		parameterType="com.team.prj.goods.service.GoodsVO"
-		resultType="com.team.prj.orders.service.OrderVO">
-		select o.order_no, g.thumb, g.name, o.money, o.amount, o.pay, o.delivery_state, o.dt
-		from orders o, goods g
-		where o.goods_no = g.goods_no
-		and o.order_no = #{orderNo}
-		order by order_no desc
-	</select>
-
 	<!-- 장바구니 내역 조회 -->
 	<select id="cartList"
 		resultType="com.team.prj.cart.service.CartVO">
@@ -54,11 +43,11 @@
 
 	<!-- 위시리스트 조회 -->
 	<select id="likeList"
-		parameterType="com.team.prj.like.service.LikesVO"
+		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
 		select c.thumb, c.category, c.name, c.address, c.price, c.class_no
-		from likes l, class c
-		where l.class_no = c.class_no
+		from scrap s, class c
+		where s.class_no = c.class_no
 		and user_no = #{userNo}
 	</select>
 	
@@ -85,24 +74,6 @@
 		order by comment_no desc
 	</select>
 	
-	<!-- 반품 신청 처리 -->
-	<insert id="cancelInsert" parameterType="com.team.prj.state.service.StateVO">
-		insert into state
-		values(#{orderNo},
-				1,
-				sysdate,
-				'',
-				'',
-				'',
-				#{cancel},
-				#{cancelDetail},
-				#{cancelSel},
-				#{cancelAccount},
-				#{cancelAccountNum},
-				'',
-				'')
-	</insert>	
-
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
 		parameterType="com.team.prj.goods.service.GoodsVO"

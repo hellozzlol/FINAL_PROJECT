@@ -33,8 +33,8 @@ public interface UsersMapper {
 	// 주문 내역 조회
 	List<OrderVO> orderList(OrderVO vo);
 
-	// 반품 신청 폼에 주문내역 불러오기
-	List<OrderVO> orderCanList(OrderVO vo);
+	// 주문 내역 삭제
+	int orderDelete(OrderVO vo);
 
 	// 사진 불러오기
 	List<PhotoVO> photoList(PhotoVO vo);
@@ -46,7 +46,7 @@ public interface UsersMapper {
 	List<ClassVO> classList(ClassReserveVO vo);
 
 	// 위시리스트 조회
-	List<LikesVO> likeList(LikesVO vo);
+	List<LikesVO> likeList(ScrapVO vo);
 
 	// 내 스크랩조회
 	List<ScrapVO> scrapList(ScrapVO vo);
@@ -57,10 +57,6 @@ public interface UsersMapper {
 	// 작성 댓글조회
 	List<CommentVO> commentList(CommentVO vo);
 
-	// 반품 신청 등록
-	int cancelInsert(StateVO vo);
-	
-	
 	// 일반회원 상태 변경 / 0929 지혜 추가
 	int usersStateUpdate(UsersVO vo);
 }

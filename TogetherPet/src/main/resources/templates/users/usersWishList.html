@@ -71,14 +71,6 @@
 								<a th:href="@{classSelect(classNo=${list.classNo})}">
 									<img class="primary_img" th:src="${list.thumb}" alt="consectetur">
 								</a>
-								<div class="product_action">
-									<ul>
-										<li class="wishlist"><a href="#" data-tippy="Wishlist"
-											data-tippy-inertia="true" data-tippy-delay="50"
-											data-tippy-arrow="true" data-tippy-placement="left"><i
-												class="icon-heart icons"></i></a></li>
-									</ul>
-								</div>
 								<div class="product_label">
 									<span>[[${list.category}]]</span>
 								</div>
@@ -86,7 +78,7 @@
 						</div>
 						<div>
 							<h4>
-								<a href="#">[[${list.name}]]</a>
+								<span>[[${list.name}]]</span>
 							</h4>
 							<hr>
 						</div>

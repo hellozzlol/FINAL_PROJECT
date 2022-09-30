@@ -18,7 +18,10 @@ public interface OrderMapper {
 
 	// 주문 및 결제시 재고 업데이트
 	int updateGoodsQty(OrderVO vo);
-	
+
 	// 0927 희수 추가
 	int updateMinusYN();
+
+	// 주문 내역 삭제 0930 선희 추가
+	int deleteOrder(OrderVO vo);
 }
