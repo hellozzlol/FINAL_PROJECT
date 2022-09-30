@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.seller.mapper.SellerMapper">
+	
+	<!-- 0930 order by 추가 / 지혜 -->
 	<select id="sellerSelectList"
 		resultType="com.team.prj.seller.service.SellerVO">
-		select * from seller
+		select * 
+		from seller
+		order by seller_no
 	</select>
 
 	<!-- 판매자 단건 조회 -->

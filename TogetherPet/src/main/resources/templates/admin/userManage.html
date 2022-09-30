@@ -24,15 +24,12 @@
 <body>
 	<article layout:fragment="content">
 
-		<script>
-			
-		</script>
-
+		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
 			<span class="text-muted ">회원 관리 </span>
-		</h5>
-
-		<!-- Basic Table -->
+			</h5>
+		<br><br>
+		<!-- 일반 회원 테이블 -->
 		<div class="card">
 			<h5 class="card-header">일반 회원</h5>
 			<div class="table-responsive text-nowrap">
@@ -60,7 +57,7 @@
 				</table>
 			</div>
 		</div>
-		<!--/ Basic Bootstrap Table -->
+		<!-- Table end-->
 		<br>
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
@@ -93,11 +90,11 @@
 
 		<script>
 			function gopage(p) {
-				location.href = '/userManage?pageNum=' + p;
+				location.href = '/manager/userManage?pageNum=' + p;
 			}
 		</script>
 		<!-- 페이지네이션 -->
-	</article>
-
-</body>
+		
+		</article>
+	</body>
 </html>
