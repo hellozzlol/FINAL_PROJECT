@@ -13,11 +13,6 @@ public class HospitalServiceImpl implements HospitalService {
 	private HospitalMapper map;
 	
 	@Override
-	public List<HospitalVO> hospitalSelectList() {
-		return map.hospitalSelectList();
-	}
-
-	@Override
 	public HospitalVO hospitalSelect(HospitalVO vo) {
 		return map.hospitalSelect(vo);
 	}
@@ -47,6 +42,12 @@ public class HospitalServiceImpl implements HospitalService {
 	public List<HospitalVO> hospitalSearch(String key, String val) {
 		// 검색
 		return map.hospitalSearch(key, val);
+	}
+
+	@Override
+	public List<HospitalVO> hospitalSelectList(String key) {
+		// 리스트 조회
+		return map.hospitalSelectList(key);
 	}
 
 }

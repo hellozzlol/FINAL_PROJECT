@@ -14,19 +14,13 @@
 		resultType="com.team.prj.comment.service.CommentVO"
 		parameterType="com.team.prj.comment.service.CommentVO">
 		select * from comments
+		where
+		board_no = #{boardNo}
 	</select>
 	
-	<!-- 댓글단건조회 -->
-	<select id="commentSelect"
-		resultType="com.team.prj.comment.service.CommentVO"
-		parameterType="com.team.prj.comment.service.CommentVO">
-		select *
-		from comments
-		where comment_no = #{commentNo}
-	</select>
 	
 	<!-- 댓글 입력 -->
-		<insert id="commentInsert" parameterType="com.team.prj.comment.service.CommentVO">
+		<insert id="commentInsert">
 		<selectKey keyProperty="commentNo" order="BEFORE" resultType="int">
 			SELECT 
 			    CASE WHEN max(comment_no) IS NULL 
@@ -42,7 +36,7 @@
 				,sysdate
 				,#{boardNo}
 				,#{userNo}
-				,#{cwriter})
+				,#{nickname})
 	</insert>
 	
 	

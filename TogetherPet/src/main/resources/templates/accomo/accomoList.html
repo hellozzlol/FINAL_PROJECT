@@ -30,8 +30,91 @@
 						<!--breadcrumbs area end-->
 
 
+			<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		// 필터링
+		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+		$('#category').on('click', 'button', function() {
+			let filter = $(this).data('filter');
+			let categories = $('.category') // <div> 태그 배열
+			
+			for(category of categories){ 
+				category.style='';
+				if(filter == 'ALL'){
+					category.style='';
+				}else if(category.getAttribute('data-category') != filter){
+					category.style.display='none';
+				}
+			}
+		})
+		
+	})
+</script>					
 
 
+					<!-- 카테고리 시작  -->
+			
+							<div id="category"
+							class="blog_messonry_button d-flex justify-content-center"
+							style="margin-top: 100px;">
+							
+							<button class="active" data-filter="ALL">
+								<img
+									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
+							</button>
+							
+							<button data-filter="Gyeongbuk">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514290/79156597-%EB%B6%88%EA%B5%AD%EC%82%AC.jpg" width="100" height="100"/><br>경북
+							</button>
+							
+							<button data-filter="gyeonggido">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514002/79156016-%ED%95%9C%EA%B5%AD-%EB%AF%BC%EC%86%8D%EC%B4%8C.jpg" width="100" height="100"/><br>경기도
+							</button>
+							
+							<button data-filter="Chungnam">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514599/79156947-%EC%84%B8%EC%A2%85-%EB%AC%B8%ED%99%94-%ED%9A%8C%EA%B4%80.jpg" width="100" height="100"/><br>충청남도
+							</button>
+							
+							
+							<button data-filter="Gyeongnam">
+								<img
+									src="https://images.cdn3.stockunlimited.net/preview1300/national-palace-museum_2013629.jpg" width="100" height="100"/><br>경상남도
+							</button>
+			
+							<br>
+							
+							<button data-filter="Jeju">
+								<img
+									src="https://st4.depositphotos.com/18288972/20331/v/450/depositphotos_203318712-stock-illustration-beautiful-attraction-jeju-island-south.jpg" width="100" height="100"/><br>제주도
+							</button>
+			
+							
+							<button data-filter="Gangwondo">
+								<img
+									src="https://images.cdn2.stockunlimited.net/preview1300/national-folk-museum_2013016.jpg" width="100" height="100"/><br>강원도
+							</button>
+			
+							
+							<button data-filter="Incheon">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170513760/79155634-%EA%B5%AD%EB%A6%BD-%EB%B0%95%EB%AC%BC%EA%B4%80.jpg" width="100" height="100"/><br>인천
+							</button>
+			
+							<button data-filter="Busan">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514571/79156889-%EB%B2%A1-%EC%8B%9C%EC%8A%A4%EC%BD%94.jpg" width="100" height="100"/><br>부산
+							</button>
+							
+						
+							</div>
+							
+						
+							<!-- 카테고리 끝  -->
 
 						<div class="shop_banner d-flex align-items-center"
 							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
@@ -85,8 +168,8 @@
 										<div class="row shop_wrapper ">
 
 											<!--숙소 반복문 스타트! -->
-											<div class="col-lg-4 col-md-4 col-sm-6 col-6 " id="point"
-												th:each="a:${pageInfo.list}">
+											<div class="col-lg-4 col-md-4 col-sm-6 col-6 category" 
+												th:each="a:${accomo}" th:data-category="${a.category}" >
 												<div class="single_product">
 													<div class="product_thumb">
 														<a th:href="@{accomo(accomoNo=${a.accomoNo})}"> <img
@@ -101,7 +184,7 @@
 																	data-tippy="Wishlist" data-tippy-inertia="true"
 																	data-tippy-delay="50" data-tippy-arrow="true"
 																	data-tippy-placement="left"><i
-																		class="icon-heart icons"></i></a></li>
+																		class="icon-heart icons" onClick="alert('스크랩하시겠습니까?')"></i></a></li>
 															</ul>
 														</div>
 														<!--스크랩기능 끝  -->
@@ -110,10 +193,10 @@
 														<div class="product_content grid_content text-center">
 															<h4 class="product_name">🐶[[${a.name}]]</h4>
 															<div class="price_box">
-																<span class="current_price">🐶[[${a.address}]]</span>
+																<span class="current_price">📢[[${a.address}]]</span>
 															</div>
 															<div class="price_box">
-																<span class="current_price">🐶[[${a.price}]]원</span>
+																<span class="current_price">💸[[${a.price}]]원</span>
 															</div>
 															<div class="product_name">
 																<span class="current_price">👀[[${a.hit}]]</span>
@@ -126,52 +209,7 @@
 											<!--숙소 반복문 끝! -->
 											
 											
-						<!-- 페이지네이션 -->
-						<nav aria-label="Page navigation example">
-							<ul class="pagination pagination-info  justify-content-center">
-								<li class="page-item disabled"
-									th:if="${pageInfo.isIsFirstPage()}"><span
-									class="page-link">«</span></li>
-								<li class="page-item"
-									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
-									class="page-link"
-									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
-									rel="prev">«</a></li>
-								<li
-									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
-									th:each="page:${pageInfo.navigatepageNums}"><span
-									class="page-link" th:if="${pageInfo.pageNum eq page}"
-									th:text="${page}"></span> <a class="page-link"
-									th:unless="${pageInfo.pageNum eq page}"
-									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
-										}}</a></li>
-								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
-									class="page-link"
-									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
-									rel="next">»</a></li>
-								<li class="page-item disabled"
-									th:unless="${pageInfo.hasNextPage}"><span
-									class="page-link">»</span></li>
-							</ul>
-						</nav>
-
-
-						<!-- 페이지네이션 -->
-											
-					<script>
-					function gopage(p) {
-						location.href = '/accomoList?pageNum=' + p;}
-					</script>	
-											
-											
-											
-											
-											
-											
-											
-											
-											
-
+		
 	   <script>
 		
 		$("#Searchbtn").on('click', searchCall)
@@ -269,21 +307,6 @@
 					};
 		</script>
 
-
-											<!-- 페이징시작 -->
-											<div
-												class="pagination_style pagination justify-content-center">
-												<ul class="d-flex">
-													<li><a href="#"> << </a></li>
-													<li><a href="#">1</a></li>
-													<li><a class="current" href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><a href="#">4</a></li>
-													<li><a href="#">5</a></li>
-													<li><a href="#">>></a></li>
-												</ul>
-											</div>
-											<!-- 페이징 끝-->
 										</div>
 									</div>
 								</div>

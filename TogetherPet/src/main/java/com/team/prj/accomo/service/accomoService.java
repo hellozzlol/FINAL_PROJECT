@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface accomoService {
 
-	List<accomoVO> accomoSelectList();
+	
 
 	accomoVO accomoSelect(accomoVO vo);
 
@@ -22,5 +22,7 @@ public interface accomoService {
 	//검색기능
 	
 	List<accomoVO> accomoSearch(@Param("key")String key, @Param("val") String val);
+
+	List<accomoVO> accomoSelectList(String key);
 
 }

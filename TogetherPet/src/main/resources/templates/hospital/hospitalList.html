@@ -33,23 +33,7 @@ form {
 </style>
 <title>동물병원</title>
 
-<script>
-//필터링
-// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
-$('#category').on('click', 'button', function() {
-			let filter = $(this).data('filter');
-			let categories = $('.category') // <div> 태그 배열
-			
-			for(category of categories){ 
-				category.style='';
-				if(filter == 'ALL'){
-					category.style='';
-				}else if(category.getAttribute('data-category') != filter){
-					category.style.display='none';
-				}
-			}
-		})
-</script>
+
 
 </head>
 <body>
@@ -69,8 +53,33 @@ $('#category').on('click', 'button', function() {
 							</ul>
 						</div>
 						<!--breadcrumbs area end-->
-
-
+									
+									
+									
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		// 필터링
+		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+		$('#category').on('click', 'button', function() {
+			let filter = $(this).data('filter');
+			let categories = $('.category') // <div> 태그 배열
+			
+			for(category of categories){ 
+				category.style='';
+				if(filter == 'ALL'){
+					category.style='';
+				}else if(category.getAttribute('data-category') != filter){
+					category.style.display='none';
+				}
+			}
+		})
+		
+	})
+</script>
+									
+			
 									<!-- 카테고리 시작  -->
 			
 							<div id="category"
@@ -89,7 +98,7 @@ $('#category').on('click', 'button', function() {
 							
 							<button data-filter="GWANGJU">
 								<img
-									src="https://image.fmkorea.com/files/attach/new/20200226/3674493/1191607396/2756050745/d3385b3bf6b306964226bd1d4c6209a5.png" width="100" height="100"/><br>광주
+									src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/7Cdd/image/f3nuEtGBejVIyewzBIHl3L2aSB4.jpg" width="100" height="100"/><br>광주
 							</button>
 							
 							<button data-filter="SEOUL">
@@ -98,9 +107,9 @@ $('#category').on('click', 'button', function() {
 							</button>
 							
 							
-							<button data-filter="GYEONGGI-DO">
+							<button data-filter="GYEONGGIDO">
 								<img
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQJPhWeL8QO6SNNjHJXj14PRAIFczcQXW0Q&usqp=CAU" width="100" height="100"/><br>경기
+									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQJPhWeL8QO6SNNjHJXj14PRAIFczcQXW0Q&usqp=CAU" width="100" height="100"/><br>경기도
 							</button>
 			
 							</div>
@@ -123,9 +132,12 @@ $('#category').on('click', 'button', function() {
 						</div>
 
 
-
 						
-
+										<h1>동물병원 조회</h1>
+										<br>
+										<h3>투게더 펫 에서  ,전국에있는 동물병원을 조회해보아요🐾</h3>
+										<br>
+										<br>
 						<!-- 검색기능 시작  -->
 						<form class="row gy-2 gx-3 align-items-center" id="btn">
 							<div class="col-auto">
@@ -149,13 +161,27 @@ $('#category').on('click', 'button', function() {
 							<br>
 							
 				
+
 						<!-- 병원리스트 반복문 시작 -->
 					<div class="row shop_wrapper" id="all">
-							<div class="col-lg-4 col-md-4 col-sm-6 col-6 category" style="width: 18rem;" id="point"
-								th:each="h : ${pageInfo.list}" th:data-category="${h.category}">
-								<div class="embed-responsive embed-responsive-4by3">
+							<div th:each="h : ${hospital}"
+								 class="col-lg-4 col-md-4 col-sm-6 col-6 category" style="width: 18rem;"
+								 th:data-category="${h.category}">
+								<div class="embed-responsive embed-responsive-4by3" >
 								<img th:src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
+								                        <!--스크랩기능 시작  -->
+														<div class="product_action">
+															<ul>
+																<li class="wishlist"><a href="#"
+																	data-tippy="Wishlist" data-tippy-inertia="true"
+																	data-tippy-delay="50" data-tippy-arrow="true"
+																	data-tippy-placement="left"><i
+																		class="icon-heart icons" onClick="alert('스크랩하시겠습니까?')"></i></a></li>
+															</ul>
+														</div>
+														<!--스크랩기능 끝  -->
 								</div>
+								
 								<div class="card-body">
 									<h5 class="card-title">🐶[[${h.name}]]</h5>
 									<p class="card-text">⏰[[${h.workingHour}]]</p>
@@ -166,53 +192,12 @@ $('#category').on('click', 'button', function() {
 								</div>
 							</div>
 						</div> 
-						
-				
 						<!-- 병원리스트 반복문 끝 -->
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		
-		
-							<!-- 페이지네이션 -->
-						<nav aria-label="Page navigation example">
-							<ul class="pagination pagination-info  justify-content-center">
-								<li class="page-item disabled"
-									th:if="${pageInfo.isIsFirstPage()}"><span
-									class="page-link">«</span></li>
-								<li class="page-item"
-									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
-									class="page-link"
-									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
-									rel="prev">«</a></li>
-								<li
-									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
-									th:each="page:${pageInfo.navigatepageNums}"><span
-									class="page-link" th:if="${pageInfo.pageNum eq page}"
-									th:text="${page}"></span> <a class="page-link"
-									th:unless="${pageInfo.pageNum eq page}"
-									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
-										}}</a></li>
-								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
-									class="page-link"
-									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
-									rel="next">»</a></li>
-								<li class="page-item disabled"
-									th:unless="${pageInfo.hasNextPage}"><span
-									class="page-link">»</span></li>
-							</ul>
-						</nav> 
-
-							<!-- 페이지네이션 -->
-		
-		
-		
-		
-		
-		
-
 		<!-- 검색아작스 스크립트 시작  -->
 		<script>
 		
@@ -246,13 +231,13 @@ $('#category').on('click', 'button', function() {
 					//html로 변환해서 원하는 위치에 출력하도록 구현
 					
 					 $(".shop_wrapper").empty(); 
-					 $(".host").remove(); 
+					 //$(".host").remove(); 
 					 
 				
 					 for(h of data) {
 					
 						 var result = `
-								<div class="card" id="point" style="width: 18rem;">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-6 category" id="point" style="width: 18rem;">
 								<div class="embed-responsive embed-responsive-4by3">
 								<img src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
 								</div>
@@ -275,16 +260,6 @@ $('#category').on('click', 'button', function() {
 					};
 		</script>
 		<!-- 검색아작스 스크립트 끝  -->
-		
-		
-					<!-- 페이지네이션 스크립프 -->
-					<script>
-					function gopage(p) {
-						location.href = '/hospitalList?pageNum=' + p;}
-					</script> 
-					<!-- 페이지네이션 스크립프 -->
-		
-		
 	</article>
 </body>
 </html>

@@ -12,7 +12,8 @@ select accomo_no,
 	   address,
 	   price,
 	   aphoto,
-	   hit
+	   hit,
+	   category
 	
 	from accomo
 	order by accomo_no ASC

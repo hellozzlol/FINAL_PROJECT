@@ -32,7 +32,7 @@
 				,#{dt}
 				,#{boardNo}
 				,#{userNo}
-				,#{cwriter})
+				,#{nickname})
 	</insert>
 	
 	<update id="commentUpdate" parameterType="com.team.prj.comment.service.CommentVO">

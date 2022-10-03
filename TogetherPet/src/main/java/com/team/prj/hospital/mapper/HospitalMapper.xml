@@ -8,7 +8,8 @@
 			   address,
 			   working_Hour,
 			   hphoto,
-			   hit
+			   hit,
+			   category
 		 from hospital
 		 order by hospital_no ASC
 	</select>
