@@ -15,4 +15,5 @@ public class accomoVO {
 	private String longitude;// 숙소경도
 	private String hit;//조회수
 	private int groupNo;//그룹번호
+	private String category;
 }

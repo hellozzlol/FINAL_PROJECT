@@ -109,7 +109,8 @@ display:block;
 							</div>
 						</section>
 						<!--product details end-->
-
+						
+						
 						<!--product info start-->
 						<div class="product_d_info mb-118">
 							<div class="container">
@@ -119,10 +120,10 @@ display:block;
 											<div class="product_info_button border-bottom">
 												<ul class="nav" role="tablist">
 													<li><a class="active" data-toggle="tab" href="#info"
-														role="tab" aria-controls="info" aria-selected="false">INFORMATION</a>
+														role="tab" aria-controls="info" aria-selected="false">병원정보</a>
 													</li>
 													<li><a data-toggle="tab" href="#reviews" role="tab"
-														aria-controls="reviews" aria-selected="false">Reviews
+														aria-controls="reviews" aria-selected="false">후기
 													</a></li>
 
 
@@ -130,16 +131,15 @@ display:block;
 											</div>
 											<div class="tab-content">
 												<div class="tab-pane fade show active" id="info"
-													role="tabpanel">
+													role="tabpanel" th:each="h:${hospital}">
 													<div class="product_info_content">
-														<p>여기 병원소개 해주세용.</p>
+														<p th:text="${h.name}">여기 병원소개 해주세용.</p>
 														<ul>
-															<li>Length: 74cm</li>
-															<li>Regular fit</li>
-															<li>Notched lapels</li>
-															<li>Twin button front fastening</li>
-															<li>Front patch pockets; chest pocket</li>
-															<li>Internal pockets</li>
+															<li>우리아이가 아플때 제일먼저 생각나는 병원이 되도록하겠습니다</li>
+															<li>주차장보유</li>
+															<li>진료는 미리 전화주시면 빠르게 보실수 있으십니다.</li>
+															<li>강아지,고양이 진료가능</li>
+															<li>영어가능</li>
 														</ul>
 													</div>
 												</div>

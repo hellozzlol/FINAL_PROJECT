@@ -22,9 +22,9 @@ public class ScrapController {
 	
 	// 스크랩 전체 조회
 	@GetMapping("/scrapSelectList")
-	public String scrapSelectList(Model model) {
+	public String scrapSelectList(Model model ,String key) {
 		model.addAttribute("scrapList", scrap.scrapSelectList());
-		model.addAttribute("hospitalList", hospital.hospitalSelectList());
+		model.addAttribute("hospitalList", hospital.hospitalSelectList(key));
 		return "scrap/scrapSelectList";
 	}
 	

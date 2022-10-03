@@ -22,11 +22,12 @@ public class accomoController {
 	
 	//숙소리스트
 	@RequestMapping("/accomoList")
-	public String accomoList(Model model, BoardVO vo, HttpServletRequest request,
-			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "10") int pageSize){
-		PageHelper.startPage(pageNum, pageSize);
-		model.addAttribute("pageInfo", PageInfo.of( dao.accomoSelectList()));
+	public String accomoList(Model model, BoardVO vo, String key){
+		if(key==null) {
+			  key="1";
+		  }
+		model.addAttribute("accomo",
+				dao.accomoSelectList(key));
 		return "accomo/accomoList";
 
 	}

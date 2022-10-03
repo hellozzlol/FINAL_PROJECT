@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.team.prj.accomo.service.accomoVO;
 
 public interface accomoMapper {
-	List<accomoVO> accomoSelectList();
+	List<accomoVO> accomoSelectList(@Param("key") String key);
 
 	accomoVO accomoSelect(accomoVO vo);
 

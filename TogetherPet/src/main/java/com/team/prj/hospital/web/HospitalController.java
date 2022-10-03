@@ -1,16 +1,13 @@
 package com.team.prj.hospital.web;
 
-import javax.servlet.http.HttpServletRequest;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.team.prj.hospital.service.HospitalService;
 import com.team.prj.hospital.service.HospitalVO;
 
@@ -22,25 +19,22 @@ public class HospitalController {
 
 	// 개인 회원 => 병원 스크랩 리스트
 	@GetMapping("/usersHospitalList")
-	public String hospitalSelectList(HospitalVO vo, Model model) {
-		model.addAttribute("hospitalList", dao.hospitalSelectList());
+	public String hospitalSelectList(HospitalVO vo, Model model, String key) {
+		model.addAttribute("hospitalList", dao.hospitalSelectList(key));
 		return "users/usersHospitalList";
 	}
 
 	// 병원리스트
 	
-	  @RequestMapping("/hospitalList") public String hospitalList(Model model,
-	  HttpServletRequest request,
-	  
-	 @RequestParam(required = false, defaultValue = "1") int pageNum,
-	  
-	 @RequestParam(required = false, defaultValue = "8") int pageSize) {
-	 PageHelper.startPage(pageNum, pageSize); model.addAttribute("pageInfo",
-	 PageInfo.of(dao.hospitalSelectList())); return "hospital/hospitalList"; }
-	 
-
-	
-
+	  @RequestMapping("/hospitalList") 
+	  public String hospitalList(Model model, String key){
+		  if(key==null) {
+			  key="1";
+		  }
+	 model.addAttribute("hospital",
+	 dao.hospitalSelectList(key)); 
+	 return "hospital/hospitalList"; 
+	  }
 	// 상세보기
 	@RequestMapping("/hospital")
 	public String hospitalSelect(HospitalVO vo, Model model) {
