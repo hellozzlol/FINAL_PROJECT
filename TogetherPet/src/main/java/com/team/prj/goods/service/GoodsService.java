@@ -3,6 +3,7 @@ package com.team.prj.goods.service;
 import java.util.List;
 import java.util.Map;
 
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewVO;
 
@@ -37,4 +38,10 @@ public interface GoodsService {
 	
 	// 상세보기에 리뷰 뿌리기
 	List<ReviewVO> reviewList(GoodsVO vo);
+	
+	// 배송 상품 조회(1003 선희 추가)
+	List<OrderVO> deliveryList(OrderVO vo);
+	
+	// 배송 상태 업데이트(1003 선희 추가)
+	int sellerDeliUpdate(OrderVO vo);
 }

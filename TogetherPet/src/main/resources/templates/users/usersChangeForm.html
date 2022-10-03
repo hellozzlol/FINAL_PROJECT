@@ -32,11 +32,11 @@
 				<!--breadcrumbs area end-->
 
 				<div class="shipping_text">
-					<h3>반품 신청</h3>
+					<h3>교환 신청</h3>
 				</div>
 				<br>
 
-				<!-- 반품 신청할 리스트 -->
+				<!-- 교환 신청할 리스트 -->
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="row">
@@ -66,20 +66,20 @@
 						</div>
 					</div>
 				</div>
-				<!-- 반품 신청할 리스트 -->
+				<!-- 교환 신청할 리스트 -->
 
-				<!-- 반품 신청 폼 -->
+				<!-- 교환 신청 폼 -->
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-12">
-								<form id="cancelConfirmCall" action="usersCancel" name="fr"
+								<form id="changeConfirmCall" action="usersChange" name="fr"
 									method="post">
 									<input type="hidden" th:name="${_csrf.parameterName}"
 										th:value="${_csrf.token}"> <label for="type"
-										class="form-label"> <strong>반품사유</strong></label>
+										class="form-label"> <strong>교환사유</strong></label>
 									<div class="mb-1 col-md-6">
-										<select id="cancel" name="cancel">
+										<select id="change" name="change">
 											<option value="0">===선택===</option>
 											<option value="1">상품에 문제가 있어요</option>
 											<option value="2">주문한 상품과 다른 상품이 왔어요</option>
@@ -90,32 +90,15 @@
 									<br> <br>
 									<div class="mb-3 col-md-12">
 										<label for="exampleFormControlInput" class="form-label"><strong>상세사유</strong></label>
-										<textarea name="cancelDetail" class="form-control"
-											id="cancelDetail" rows="3" placeholder="상품 설명을 입력하세요."></textarea>
+										<textarea name="changeDetail" class="form-control"
+											id="changeDetail" rows="3" placeholder="상품 설명을 입력하세요."></textarea>
 									</div>
 									<div class="mb-3 col-md-12">
-										<label for="exampleFormControlInput" class="form-label"><strong>반품방법</strong></label><br>
-										<input id="cancelSel" type="radio" name="cancelSel"
+										<label for="exampleFormControlInput" class="form-label"><strong>교환방법</strong></label><br>
+										<input id="changeSel" type="radio" name="changeSel"
 											value="택배수거" /> <label for="택배수거">택배수거</label>&nbsp;&nbsp;&nbsp;
-										<input id="cancelSel" type="radio" name="cancelSel"
+										<input id="changeSel" type="radio" name="changeSel"
 											value="직접 택배 접수" /> <label for="직접 택배 접수">직접 택배 접수</label>
-									</div>
-									<label for="type" class="form-label"> <strong>환불계좌입력('-' 없이 입력)</strong></label>
-									<div class="mb-1 col-md-6">
-										<select id="cancelAccount" name="cancelAccount">
-											<option value="0">은행명을 선택하세요.</option>
-											<option value="1">대구은행</option>
-											<option value="2">농협중앙회</option>
-											<option value="3">국민은행</option>
-											<option value="4">기업은행</option>
-											<option value="5">신한은행</option>
-											<option value="6">우리은행</option>
-											<option value="7">카카오뱅크</option>
-										</select>
-									</div>
-									<div class="mb-3 col-md-12">
-										<input type="text" class="form-control" id="cancelAccountNum"
-											name="cancelAccountNum" placeholder="환불계좌를 입력하세요." />
 										<input
 											type=number name="orderNo" style="display: none"
 											th:value="${ovo.orderNo}">
@@ -130,7 +113,7 @@
 				<div class="mb-3 col-md-12" id="btnList" align="center">
 					<input type="hidden" th:value="${session.user.userNo}" id="userNo"
 						name="userNo"> <input type="button"
-						class="btn btn-primary me-2" id="cancelFormBtn" value="신청하기">
+						class="btn btn-primary me-2" id="changeFormBtn" value="신청하기">
 					<a href="/usersOrderList" class="btn btn-primary2 me-2">뒤로가기</a>
 				</div>
 
@@ -150,10 +133,10 @@
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
 
-			// 반품 신청 처리
-			$("#btnList").on("click", "#cancelFormBtn", function() {
-				if (confirm('반품신청 하시겠습니까?')) {
-					$("#cancelConfirmCall").submit();
+			// 교환 신청 처리
+			$("#btnList").on("click", "#changeFormBtn", function() {
+				if (confirm('교환신청 하시겠습니까?')) {
+					$("#changeConfirmCall").submit();
 
 				}
 			})

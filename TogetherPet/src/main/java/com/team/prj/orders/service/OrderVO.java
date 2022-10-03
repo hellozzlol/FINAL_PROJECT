@@ -2,6 +2,8 @@ package com.team.prj.orders.service;
 
 import java.util.Date;
 
+import com.team.prj.state.service.StateVO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +26,10 @@ public class OrderVO {
 	private String da; // 상세주소
 
 	// 0927 선희 추가
-	private String thumb;
+	private String thumb; // 썸네일
+	
+	// 1003 선희 추가
+	private Date cancelDt; // 반품신청일자
+	private Date changeDt; // 교환신청일자
 }
 

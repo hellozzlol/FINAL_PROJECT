@@ -4,6 +4,9 @@
 	layout:decorate="~{layout/layout_mypage}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,12 +25,7 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-<script>
-	//페이지 이동
-	function gopage(p) {
-		location.href = '/usersBoardList?pageNum=' + p;
-	}
-</script>
+
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -50,18 +48,19 @@
 					<h3>내 작성글보기</h3>
 				</div>
 				<br>
-				
-				<div>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+
+				<div id="category">
+					<button data-filter="ALL" class="active btn rounded-pill btn-secondary">
 						<strong>전체 게시글 수([[${#lists.size(pageInfo.list)}]]개)</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="FREE" class="btn rounded-pill btn-secondary">
 						<strong>FREE</strong>
 					</button>
-					<button type="button" id="button" name="button" class="btn rounded-pill btn-secondary">
+					<button data-filter="QNA" class="btn rounded-pill btn-secondary">
 						<strong>QNA</strong>
 					</button>
-				</div><br>
+				</div>
+				<br>
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
@@ -72,18 +71,18 @@
 									<th>카테고리</th>
 									<th>제목</th>
 									<th>작성일</th>
-									<th>좋아요</th>
 									<th>조회수</th>
 									<th></th>
 								</tr>
 							</thead>
-							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${pageInfo.list}" style="text-align: center;">
-									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-										<strong>[[${list.category}]]</strong></td>
+							<tbody class="table-border-bottom-0" id="all" style="text-align: center;">
+								<tr class="category" th:each="list : ${pageInfo.list}" 
+								th:data-category="${list.category}" style="">
+									<td style="width: 150px; border-right: 1px solid lightgray;">
+										<strong>[[${list.category}]]</strong>
+									</td>
 									<td th:onClick="|location.href='@{boardSel(boardNo=${list.boardNo})}'|">[[${list.title}]]</td>
 									<td>[[${list.dt}]]</td>
-									<td>[[${list.likes}]]</td>
 									<td>[[${list.hit}]]</td>
 									<td>
 										<div class="dropdown">
@@ -92,9 +91,9 @@
 												data-bs-toggle="dropdown"></button>
 											<div class="dropdown-menu">
 												<a class="dropdown-item" href="javascript:void(0);"> <i
-													class="bx bx-edit-alt me-1"></i> Edit
+													class="bx bx-edit-alt me-1"></i> 수정
 												</a> <a class="dropdown-item" href="javascript:void(0);"> <i
-													class="bx bx-trash me-1"></i> Delete
+													class="bx bx-trash me-1"></i> 삭제
 												</a>
 											</div>
 										</div>
@@ -105,7 +104,8 @@
 					</div>
 				</div>
 				<!--/ Hoverable Table rows -->
-			</div><br>
+			</div>
+			<br>
 			<!-- / Content -->
 
 			<!-- 페이지네이션 -->
@@ -142,7 +142,34 @@
 		<!-- Content wrapper -->
 
 		<!--shop wrapper end-->
+	<script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersBoardList?pageNum=' + p;
+	}
+	
+	// 필터링
+	// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+	$("#category").on("click", "button", function() {
+		let filter = $(this).data("filter");
+		let categories = $(".category")
+		
+		for(category of categories){ 
+			category.style="";
+			if (filter == "ALL"){
+				category.style="";
+			} else if (category.getAttribute("data-category") != filter){
+				category.style.display="none";
+			}
+		}
+	})
+	</script>
+	
 	</div>
 	<!--shop  area end-->
+	
 </body>
 </html>

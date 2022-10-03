@@ -15,7 +15,7 @@ public class StateServiceImpl implements StateService {
 
 	// 반품, 교환상태 전체 조회
 	@Override
-	public List<StateVO> stateSelectList() {
+	public List<OrderVO> stateSelectList() {
 		return map.stateSelectList();
 	}
 
@@ -25,11 +25,16 @@ public class StateServiceImpl implements StateService {
 		return map.stateSelect(vo);
 	}
 
-	// 상태 업데이트
-	// 1 : 반품신청(개인), 2 : 반품신청접수(판매자), 3 : 교환신청(개인), 4 : 교환신청접수(판매자)
+	// 배송 상태 업데이트(default 1번에서 5번 반품으로)
 	@Override
-	public int stateUpdate(StateVO vo) {
-		return map.stateUpdate(vo);
+	public int cancelUpdate(OrderVO vo) {
+		return map.cancelUpdate(vo);
+	}
+	
+	// 배송 상태 업데이트(default 1번에서 6번 반품으로)
+	@Override
+	public int changeUpdate(OrderVO vo) {
+		return map.changeUpdate(vo);
 	}
 
 	// 반품 신청 등록
@@ -38,10 +43,22 @@ public class StateServiceImpl implements StateService {
 		return map.cancelInsert(vo);
 	}
 
-	// 반품 신청 폼에 주문내역 불러오기
+	// 교환,반품 신청 폼에 주문내역 불러오기
 	@Override
 	public OrderVO orderCanList(OrderVO vo) {
 		return map.orderCanList(vo);
+	}
+
+	// 교환 신청 등록
+	@Override
+	public int changeInsert(StateVO vo) {
+		return map.changeInsert(vo);
+	}
+
+	// 구매확정 상태변경
+	@Override
+	public int goodsConfirm(OrderVO vo) {
+		return map.goodsConfirm(vo);
 	}
 
 }

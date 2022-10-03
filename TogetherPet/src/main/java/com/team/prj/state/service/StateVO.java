@@ -23,4 +23,5 @@ public class StateVO {
 	private String cancelAccountNum; // 반품 계좌 번호
 	private String change; // 교환 사유
 	private String changeDetail; // 교환 상세 사유
+	private String changeSel; // 교환 방법 1001 선희 DB에 추가
 }

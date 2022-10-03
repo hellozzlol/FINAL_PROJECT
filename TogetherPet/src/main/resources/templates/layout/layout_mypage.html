@@ -56,9 +56,6 @@
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="/assets/css/style.css">
 
-<!--modernizr min js here-->
-<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
-
 <script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
 <script src="/assets/js/vendor/popper.js"></script>
 <script src="/assets/js/vendor/bootstrap.min.js"></script>
@@ -76,6 +73,9 @@
 
 <!-- Main JS -->
 <script src="/assets/js/main.js"></script>
+
+<!--modernizr min js here-->
+<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 
 <!-- Structured Data  -->
 <script type="application/ld+json">
@@ -407,10 +407,10 @@
 										href="/usersScrapList" data-toggle="collapse">내 스크랩</a>
 										<ul class="widget_dropdown_categories collapse show"
 											id="accessories">
-											<li><a href="#">병원</a></li>
-											<li><a href="#">장례</a></li>
-											<li><a href="#">숙박</a></li>
-											<li><a href="#">커뮤니티</a></li>
+											<li><a href="/scrapHospital">병원</a></li>
+											<li><a href="/scrapFuneral">장례</a></li>
+											<li><a href="/scrapAccomo">숙박</a></li>
+											<li><a href="/scrapCommunity">커뮤니티</a></li>
 										</ul></li>
 									<hr>
 									<li class="widget_sub_categories"><a
@@ -419,7 +419,7 @@
 											id="footwear">
 											<li><a href="/usersOrderList">주문내역</a></li>
 											<li><a href="/usersCartList">장바구니</a></li>
-											<li><a href="/usersCancelList">교환 및 반품 내역</a></li>
+											<li><a href="/usersStateList">교환 및 반품 내역</a></li>
 										</ul></li>
 									<hr>
 									<li class="widget_sub_categories"><a
@@ -430,9 +430,9 @@
 											<li><a href="/usersWishList">위시리스트</a></li>
 										</ul></li>
 									<hr>
-									<li class="widget_sub_categories"><a
-										href="/calendarSelectList" data-toggle="collapse">내
-											일정관리</a></li>
+									<li class="widget_sub_categories">
+										<a href="/calendarSelectList">내 일정관리</a>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -521,6 +521,24 @@
 		</div>
 	</footer>
 	<!--footer area end-->
+	
+	
+	<!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="/admin/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/admin/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/admin/assets/vendor/js/bootstrap.js"></script>
+    <script src="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/admin/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Main JS -->
+    <script src="/admin/assets/js/main.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+	
 </body>
 
 </html>
