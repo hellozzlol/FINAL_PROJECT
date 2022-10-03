@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.state.mapper.StateMapper">
-	<!-- 반품, 교환상태 전체 조회 -->
+	<!-- 반품, 교환상태 전체 조회(상태번호 5, 6 인것만 조회) -->
 	<select id="stateSelectList"
-		resultType="com.team.prj.state.service.StateVO">
-		select * from state
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT o.user_no as userNo, s.change_dt as changeDt, s.cancel_dt as cancelDt, g.thumb, g.name, o.total_price, o.amount, o.delivery_state
+		from orders o, goods g, state s
+		where o.goods_no = g.goods_no
+        and o.delivery_state BETWEEN '5' and '6'
+        and s.order_no = o.order_no
+		order by s.order_no desc
 	</select>
 
 	<!-- 단건 조회 -->
@@ -16,17 +22,23 @@
 		where order_no = #{orderNo}
 	</select>
 	
-	<!-- 상태 업데이트
-	1 : 반품신청(개인), 2 : 반품신청접수(판매자), 3 : 교환신청(개인), 4 : 교환신청접수(판매자) -->
-	<update id="stateUpdate">
-		update state
-		set state = #{state}
-			,cancelDt = #{cancelCfDt}
-			,changeDt = #{changeCfDt}
-		where order_no = #{orderNo}
+	<!-- 배송 상태 업데이트(default 1번에서 5번 반품으로) -->
+	<update id="cancelUpdate" parameterType="com.team.prj.orders.service.OrderVO">
+		update orders
+		set delivery_state = '5'
+		where delivery_state LIKE '%4%'
+		and order_no = #{orderNo}
 	</update>
 	
-	<!-- 반품 신청 폼에 주문 내역 불러오기 -->
+	<!-- 배송 상태 업데이트(default 1번에서 6번 교환으로) -->
+	<update id="changeUpdate" parameterType="com.team.prj.orders.service.OrderVO">
+		update orders
+		set delivery_state = '6'
+		where delivery_state LIKE '%4%'
+		and order_no = #{orderNo}
+	</update>
+	
+	<!-- 교환,반품 신청 폼에 주문 내역 불러오기 -->
 	<select id="orderCanList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
@@ -52,19 +64,34 @@
 				#{cancelAccount},
 				#{cancelAccountNum},
 				null,
+				null,
 				null)
-		<!-- values(#{orderNo},
-				1,
-				sysdate,
-				#{cancelCfDt},
-				#{changeDt},
-				#{changeCfDt},
-				#{cancel},
-				#{cancelDetail},
-				#{cancelSel},
-				#{cancelAccount},
-				#{cancelAccountNum},
-				#{change},
-				#{changeDetail}) -->
 	</insert>
+	
+	<!-- 교환 신청 처리 -->
+	<insert id="changeInsert" parameterType="com.team.prj.state.service.StateVO">
+		insert into state
+		values(#{orderNo},
+				3,
+				null,
+				null,
+				sysdate,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				#{change},
+				#{changeDetail},
+				#{changeSel})
+	</insert>
+	
+	<!-- 구매확정 상태 업데이트 -->
+	<update id="goodsConfirm" parameterType="com.team.prj.orders.service.OrderVO">
+		update orders
+		set delivery_state = '7'
+		where delivery_state LIKE '%4%'
+		and order_no = #{orderNo}
+	</update>
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.goods.mapper.GoodsMapper;
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewVO;
 
@@ -76,6 +77,18 @@ public class GoodsServiceImpl implements GoodsService {
 	public List<ReviewVO> reviewList(GoodsVO vo) {
 		// TODO Auto-generated method stub
 		return map.reviewList(vo);
+	}
+
+	// 배송 조회(1003 선희 추가)
+	@Override
+	public List<OrderVO> deliveryList(OrderVO vo) {
+		return map.deliveryList(vo);
+	}
+
+	// 배송 상태 업데이트(1003 선희 추가)
+	@Override
+	public int sellerDeliUpdate(OrderVO vo) {
+		return map.sellerDeliUpdate(vo);
 	}
 
 }

@@ -19,16 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 
 @Controller
 public class SellerController {
-	@Autowired
-	private SellerService seller;
 	@Value("${file.dir}")
 	private String fileDir;
+	@Autowired
+	private SellerService seller;
+	@Autowired
+	private GoodsService goods;
 
 	// 판매자 회원 전체 조회
 	@RequestMapping("/sellerSelectList")
@@ -134,6 +138,13 @@ public class SellerController {
 		seller.goodsInsert(gvo);
 		return "redirect:/sellerGoodsList";
 	}
+	
+	// 판매 상품 삭제
+	@RequestMapping("/deleteGoods")
+	public String deleteGoods(GoodsVO vo) {
+		goods.deleteGoods(vo);
+		return "redirect:/sellerGoodsList";
+	}
 
 	// 판매 상품 조회
 	@RequestMapping("/sellerGoodsList")
@@ -147,14 +158,63 @@ public class SellerController {
 		model.addAttribute("pageInfo", PageInfo.of(seller.goodsList(gvo)));
 		return "seller/sellerGoodsList";
 	}
+	
+	// 상품 상세보기
+	@RequestMapping("/sellerGoodsDetail")
+	public String sellerGoodsDetail(GoodsVO gvo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		gvo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("goodsList", goods.goodsSelectOne(gvo));
+		return "seller/sellerGoodsDetail";
+	}
+	
+	// 상품 수정 폼 호출
+	@RequestMapping("/sellerGUForm")
+	public String sellerGUForm(GoodsVO gvo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		gvo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("goodsList", goods.goodsSelectOne(gvo));
+		return "seller/sellerGUForm";
+	}
+	
+	// 상품 수정 처리
+	@PostMapping("/sellerGoodsUpdate")
+	public String sellerGoodsUpdate(GoodsVO gvo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		gvo.setSellerNo(svo.getSellerNo());
+		goods.updateGoods(gvo);
+		gvo = goods.goodsSelectOne(gvo);
+		session.setAttribute("goods", gvo);
+		return "redirect:/sellerGoodsList";
+	}
 
-	// 배송 관리 페이지
+	// 배송 상품 조회
 	@RequestMapping("/sellerDeliList")
-	public String sellerDeliList(Model model) {
-		model.addAttribute("sellerList", seller.sellerSelectList());
+	public String sellerDeliList(Model model, OrderVO ovo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		HttpSession session = request.getSession();
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		ovo.setSellerNo(svo.getSellerNo());
+		PageHelper.startPage(pageNum, pageSize);
+		model.addAttribute("pageInfo", PageInfo.of(goods.deliveryList(ovo)));
 		return "seller/sellerDeliList";
 	}
 
+	// 배송 상태 업데이트
+//	@PostMapping("/sellerDeliUpdate")
+//	public String sellerDeliUpdate(OrderVO ovo, HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		SellerVO svo = (SellerVO) session.getAttribute("seller");
+//		ovo.setSellerNo(svo.getSellerNo());
+//		goods.updateGoods(ovo);
+//		session.setAttribute("goods", gvo);
+//		return "redirect:/sellerGoodsList";
+//	}
+	
 	// 취소/반품 관리 페이지
 	@RequestMapping("/sellerCanList")
 	public String sellerCanList(Model model) {

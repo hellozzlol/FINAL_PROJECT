@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.goods.mapper.GoodsMapper">
 	<!-- 전체 조회 -->
-	<select id="goodsSelectAll" resultType="com.team.prj.goods.service.GoodsVO">
+	<select id="goodsSelectAll"
+		resultType="com.team.prj.goods.service.GoodsVO">
 		select * from goods order by
 		<choose>
 			<when test="key == 1"> 1 desc </when>
@@ -11,7 +12,7 @@
 			<when test="key == 4"> 5</when>
 		</choose>
 	</select>
-	
+
 	<!-- 단건 조회 -->
 	<select id="goodsSelectOne"
 		resultType="com.team.prj.goods.service.GoodsVO">
@@ -33,10 +34,49 @@
 		category_id='S' group by board_no
 	</select>
 	<!-- goods 리뷰 리스트 호출 -->
-	
+
 	<select id="reviewList"
 		resultType="com.team.prj.review.service.ReviewVO">
 		select * from review where board_no=#{goodsNo} and
 		category_id='S'
 	</select>
+
+	<!-- 상품 삭제 1003 선희 추가 -->
+	<delete id="deleteGoods">
+		delete
+		from goods
+		where goods_no = #{goodsNo}
+	</delete>
+
+	<!-- 상품 수정 1003 선희 추가 -->
+	<update id="updateGoods"
+		parameterType="com.team.prj.goods.service.GoodsVO">
+		UPDATE GOODS
+		<set>
+			<if test="category != null">category = #{category},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="amount != null">amount = #{amount},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="dc != null">dc = #{dc},</if>
+			<if test="info != null">info = #{info}</if>
+		</set>
+		WHERE seller_no = #{sellerNo}
+		AND goods_no = #{goodsNo}
+	</update>
+	
+	<!-- 배송 상품 조회(상태 1,2,3) 1003 선희 추가 -->
+	<select id="deliveryList" resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE delivery_state &lt;= '3'
+		AND seller_no = #{sellerNo}
+	</select>
+	
+	<!-- 배송 상태 업데이트 1003 선희 추가 -->
+	<!-- <update id="sellerDeliUpdate" parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '2'
+		WHERE seller_no = #{sellerNo}
+		AND goods_no = #{goodsNo}
+	</update> -->
 </mapper>

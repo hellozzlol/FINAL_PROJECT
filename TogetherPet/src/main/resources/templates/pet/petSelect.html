@@ -9,18 +9,6 @@
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
 <title>My pet page</title>
-<script>
-	$(document).ready(function() {
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		const now = new Date();
-		const nowYear = now.getFullYear();
-		const nowAge_input = nowYear - $("#year").val() + 1;
-		const nowAge = nowYear - $("#year option:selected").val() + 1;
-		$("#age").val(nowAge);
-		$("#age_input").val(nowAge_input);
-	});
-</script>
 <style>
 .shipping_text h3 {
 	margin-bottom: 7px;

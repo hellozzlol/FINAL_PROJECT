@@ -2,86 +2,144 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
 
-	<!-- 0929 order by 추가 JH / 일반회원 리스트-->
+	<!-- 0929 order by 추가 JH / 일반회원 리스트 -->
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
 		SELECT * FROM USERS
 		ORDER BY user_no
 	</select>
 
-	<!-- 주문 내역 불러오기 -->
+	<!-- 주문 내역 불러오기(배송상태 1,2,3,4 인것만 조회) -->
 	<select id="orderList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
-		select o.order_no, g.thumb, g.name, o.money, o.amount, o.pay, o.delivery_state, o.dt
-		from orders o, goods g
-		where o.goods_no = g.goods_no
-		and o.user_no = #{userNo}
-		order by order_no desc
+		SELECT o.order_no, g.thumb, g.name, o.total_price,
+				o.amount, o.pay, o.delivery_state, o.dt
+		FROM orders o, goods g
+		WHERE o.goods_no = g.goods_no
+        AND o.user_no = #{userNo}
+        ORDER BY order_no DESC
+		
+		<!-- SELECT o.order_no, g.thumb, g.name, o.total_price,
+				o.amount, o.pay, o.delivery_state, o.dt
+		FROM orders o, goods g
+		WHERE o.goods_no = g.goods_no
+        AND o.delivery_state &lt; ALL(select delivery_state
+                                from orders
+                                where delivery_state = '5')
+        AND o.user_no = #{userNo}
+        ORDER BY order_no DESC -->
 	</select>
-	
+
 	<!-- 장바구니 내역 조회 -->
 	<select id="cartList"
 		resultType="com.team.prj.cart.service.CartVO">
-		select *
-		from goods g, cart c
-		where g.goods_no = c.goods_no
-		and c.user_no = #{userNo}
+		SELECT *
+		FROM goods g, cart c
+		WHERE g.goods_no = c.goods_no
+		AND c.user_no = #{userNo}
 	</select>
 
 	<!-- 수강 내역 조회 -->
 	<select id="classList"
 		parameterType="com.team.prj.tutor.service.TutorVO"
 		resultType="com.team.prj.classreserve.service.ClassReserveVO">
-		select cr.class_name as className, t.name as name, cr.dt as dt,
+		SELECT cr.class_name as className, t.name as name, cr.dt as dt,
 				c.address as address, cr.pay_yn as pay, u.user_no, c.class_no
-		from class_reserve cr, tutor t, users u, class c
-		where cr.class_no = c.class_no
-		and u.user_no = cr.user_no
-		and cr.user_no = #{userNo}
+		FROM class_reserve cr, tutor t, users u, class c
+		WHERE cr.class_no = c.class_no
+		AND u.user_no = cr.user_no
+		AND cr.user_no = #{userNo}
 	</select>
 
 	<!-- 위시리스트 조회 -->
 	<select id="likeList"
 		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
-		select c.thumb, c.category, c.name, c.address, c.price, c.class_no
-		from scrap s, class c
-		where s.class_no = c.class_no
-		and user_no = #{userNo}
+		SELECT c.thumb, c.category, c.name, c.address, c.price, c.class_no
+		FROM scrap s, class c
+		WHERE s.class_no = c.class_no
+		AND user_no = #{userNo}
 	</select>
-	
+
 	<!-- 전체 스크랩 리스트 조회 -->
-	<select id="scrapList" resultType="com.team.prj.scrap.service.ScrapVO">
-		select *
-		from scrap
-		where user_no = #{userNo}
+	<select id="scrapList"
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT *
+		FROM scrap
+		WHERE user_no = #{userNo}
+		ORDER BY board_no DESC
 	</select>
 	
+	<!-- 병원 스크랩 조회 -->
+	<select id="hospitalScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT *
+		FROM scrap
+		WHERE category_id = 'h'
+		AND user_no = #{userNo}
+		ORDER BY board_no DESC
+	</select>
+	
+	<!-- 장례 스크랩 조회 -->
+	<select id="funeralScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT *
+		FROM scrap
+		WHERE category_id = 'f'
+		AND user_no = #{userNo}
+		ORDER BY board_no DESC
+	</select>
+	
+	<!-- 숙박 스크랩 조회 -->
+	<select id="accomoScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT *
+		FROM scrap
+		WHERE category_id = 'a'
+		AND user_no = #{userNo}
+		ORDER BY board_no DESC
+	</select>
+	
+	<!-- 커뮤니티 스크랩 조회 -->
+	<select id="communityScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT *
+		FROM scrap
+		WHERE category_id = 'b'
+		AND user_no = #{userNo}
+		ORDER BY board_no DESC
+	</select>
+
 	<!-- 작성 글 조회 -->
-	<select id="boardList" resultType="com.team.prj.board.service.BoardVO">
-		select category, title, TO_DATE(dt, 'YYYY-MM-DD') as dt, likes, hit, board_no
-		from board
-		where user_no = #{userNo}
-		order by board_no desc
+	<select id="boardList"
+		resultType="com.team.prj.board.service.BoardVO">
+		SELECT category, title, dt,
+				likes, hit, board_no
+		FROM board
+		WHERE user_no = #{userNo}
+		ORDER BY
+		board_no DESC
 	</select>
-	
+
 	<!-- 작성 댓글 조회 -->
-	<select id="commentList" resultType="com.team.prj.comment.service.CommentVO">
-		select *
-		from comments
-		where user_no = #{userNo}
-		order by comment_no desc
+	<select id="commentList"
+		resultType="com.team.prj.comment.service.CommentVO">
+		SELECT *
+		FROM comments
+		WHERE user_no = #{userNo}
+		ORDER BY
+		comment_no DESC
 	</select>
-	
+
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.photo.service.PhotoVO">
-		select *
-		from photo
-		where group_no = #{groupNo}
-		and name = '리스트'
+		SELECT *
+		FROM photo
+		WHERE group_no = #{groupNo}
+		AND name = '리스트'
 	</select>
 
 	<!-- 회원 조회 -->
@@ -109,22 +167,22 @@
 
 		INSERT INTO USERS
 		VALUES(#{userNo}
-			,#{id}
-			,#{password}
-			,#{name}
-			,#{nickname}
-			,#{email}
-			,#{call}
-			,#{address}
-			,'USER'
-			,3000
-			,1
-			,SYSDATE
-			,'1'
-			,#{postcode}
-			,#{da}
-			,#{attach}
-			,#{attachDir})
+		,#{id}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{email}
+		,#{call}
+		,#{address}
+		,'USER'
+		,3000
+		,1
+		,SYSDATE
+		,'1'
+		,#{postcode}
+		,#{da}
+		,#{attach}
+		,#{attachDir})
 	</insert>
 
 	<!-- 회원 수정 -->
@@ -147,12 +205,10 @@
 	<delete id="usersDelete">
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
-	
-	
-	<!-- 일반회원 상태 변경 / 0929 지혜 추가 
-	<update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO">
-		update users 
-		ser state = case wher (select state from users where user_no = #{userNo} = )
-	</update> -->
+
+
+	<!-- 일반회원 상태 변경 / 0929 지혜 추가 <update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO"> 
+		update users ser state = case wher (select state from users where user_no 
+		= #{userNo} = ) </update> -->
 
 </mapper>
