@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout_admin}">
 
 <head>
-<meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"
-	th:content="${_csrf.headerName}" />
+	<meta charset="UTF-8">
+	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
-<script
-	src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-<script
-	src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-<script
-	src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 
-<title>Insert title here</title>
+	<title>Insert title here</title>
 </head>
 
 <body>
@@ -41,95 +30,89 @@
 						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
-									<div
-										class="card-title d-flex align-items-start justify-content-between">
+									<div class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
 											<img src="/admin/assets/img/icons/unicons/chart-success.png"
 												alt="chart success" class="rounded" />
 										</div>
 										<div class="dropdown">
 											<button class="btn p-0" type="button" id="cardOpt3"
-												data-bs-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
+												data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<i class="bx bx-dots-vertical-rounded"></i>
 											</button>
-											<div class="dropdown-menu dropdown-menu-end"
-												aria-labelledby="cardOpt3">
+											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
 												<a class="dropdown-item" href="javascript:void(0);">View
-													More</a> <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+													More</a> <a class="dropdown-item"
+													href="javascript:void(0);">Delete</a>
 											</div>
 										</div>
 									</div>
-									<span class="fw-semibold d-block mb-1">어제 매출 합계</span>
-									<h3 class="card-title mb-2">$12,628</h3>
-									<small class="text-success fw-semibold"><i
-										class="bx bx-up-arrow-alt"></i> +72.80%</small>
+									<span class="fw-semibold d-block mb-1"><a href="#" id="prevDSum">
+											<< </a>&nbsp;&nbsp;&nbsp; <span id="std"></span>
+									&nbsp;&nbsp;&nbsp;<a href="#" id="nextDSum"> >> </a></span>
+									<h3 class="card-title mb-2" id="dayTotal"></h3>
+									<small class="text-success fw-semibold" id="dayUpDown"></small>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
-									<div
-										class="card-title d-flex align-items-start justify-content-between">
+									<div class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
-											<img src="/admin/assets/img/icons/unicons/chart.png"
-												alt="Credit Card" class="rounded" />
+											<img src="/admin/assets/img/icons/unicons/chart.png" alt="Credit Card"
+												class="rounded" />
 										</div>
 										<div class="dropdown">
 											<button class="btn p-0" type="button" id="cardOpt6"
-												data-bs-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
+												data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<i class="bx bx-dots-vertical-rounded"></i>
 											</button>
-											<div class="dropdown-menu dropdown-menu-end"
-												aria-labelledby="cardOpt6">
+											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
 												<a class="dropdown-item" href="javascript:void(0);">View
-													More</a> <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+													More</a> <a class="dropdown-item"
+													href="javascript:void(0);">Delete</a>
 											</div>
 										</div>
 									</div>
 									<span>지난 주 매출 합계</span>
 									<h3 class="card-title text-nowrap mb-1">$4,679</h3>
-									<small class="text-success fw-semibold"><i
-										class="bx bx-up-arrow-alt"></i> +28.42%</small>
+									<small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+										+28.42%</small>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
-									<div
-										class="card-title d-flex align-items-start justify-content-between">
+									<div class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
-											<img src="/admin/assets/img/icons/unicons/cc-success.png"
-												alt="Credit Card" class="rounded" />
+											<img src="/admin/assets/img/icons/unicons/cc-success.png" alt="Credit Card"
+												class="rounded" />
 										</div>
 										<div class="dropdown">
 											<button class="btn p-0" type="button" id="cardOpt6"
-												data-bs-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
+												data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<i class="bx bx-dots-vertical-rounded"></i>
 											</button>
-											<div class="dropdown-menu dropdown-menu-end"
-												aria-labelledby="cardOpt6">
+											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
 												<a class="dropdown-item" href="javascript:void(0);">View
-													More</a> <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+													More</a> <a class="dropdown-item"
+													href="javascript:void(0);">Delete</a>
 											</div>
 										</div>
 									</div>
 									<span>지난 달 매출 합계</span>
 									<h3 class="card-title text-nowrap mb-1">$4,679</h3>
-									<small class="text-success fw-semibold"><i
-										class="bx bx-up-arrow-alt"></i> +28.42%</small>
+									<small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+										+28.42%</small>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-6 col-sm-3">
 							<div class="card">
 								<div class="card-body">
-									<div
-										class="card-title d-flex align-items-start justify-content-between">
+									<div class="card-title d-flex align-items-start justify-content-between">
 										<div class="avatar flex-shrink-0">
 											<img src="/admin/assets/img/icons/unicons/cc-primary.png"
 												alt="chart success" class="rounded" />
@@ -138,10 +121,10 @@
 											<button class="btn p-0" type="button" id="cardOpt3"
 												data-bs-toggle="dropdown" aria-haspopup="true"
 												aria-expanded="false"></button>
-											<div class="dropdown-menu dropdown-menu-end"
-												aria-labelledby="cardOpt3">
+											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
 												<a class="dropdown-item" href="javascript:void(0);">View
-													More</a> <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+													More</a> <a class="dropdown-item"
+													href="javascript:void(0);">Delete</a>
 											</div>
 										</div>
 									</div>
@@ -151,8 +134,8 @@
 											<span id="totalProfit"></span>원
 										</h3>
 									</div>
-									<small class="text-success fw-semibold"><i
-										class="bx bx-up-arrow-alt"></i> +0%</small>
+									<small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+										+0%</small>
 								</div>
 							</div>
 						</div>
@@ -168,53 +151,50 @@
 				<div class="nav-align-top mb-4">
 					<ul class="nav nav-pills mb-3" role="tablist">
 						<li class="nav-item">
-							<button type="button" class="nav-link active" role="tab"
-								id="dailyBtn" data-bs-toggle="tab" data-bs-target="#dailyTab"
-								aria-controls="navs-pills-top-home" aria-selected="true">
+							<button type="button" class="nav-link active" role="tab" id="dailyBtn" data-bs-toggle="tab"
+								data-bs-target="#dailyTab" aria-controls="navs-pills-top-home" aria-selected="true">
 								일간</button>
 						</li>
 						<li class="nav-item">
-							<button type="button" class="nav-link" role="tab" id="weeklyBtn"
-								data-bs-toggle="tab" data-bs-target="#weeklyTab"
-								aria-controls="navs-pills-top-profile" aria-selected="false">
+							<button type="button" class="nav-link" role="tab" id="weeklyBtn" data-bs-toggle="tab"
+								data-bs-target="#weeklyTab" aria-controls="navs-pills-top-profile"
+								aria-selected="false">
 								주간</button>
 						</li>
 						<li class="nav-item">
-							<button type="button" class="nav-link" role="tab" id="monthlyBtn"
-								data-bs-toggle="tab" data-bs-target="#monthlyTab"
-								aria-controls="navs-pills-top-messages" aria-selected="false">
+							<button type="button" class="nav-link" role="tab" id="monthlyBtn" data-bs-toggle="tab"
+								data-bs-target="#monthlyTab" aria-controls="navs-pills-top-messages"
+								aria-selected="false">
 								월간</button>
 						</li>
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="dailyTab"
-							role="tabpanel">
+						<div class="tab-pane fade show active" id="dailyTab" role="tabpanel">
 							<div class="card h-100">
 								<div class="card-body px-0">
 									<div class="tab-content p-0">
-										<div class="tab-pane fade show active"
-											id="navs-tabs-line-card-income" role="tabpanel">
+										<div class="tab-pane fade show active" id="navs-tabs-line-card-income"
+											role="tabpanel">
 											<div class="p-4 pt-3">
 												<div>
 													<small class="text-muted d-block">15일 동안의 일간 차트입니다.</small>
 												</div>
 												<div>
 													<h5 class="card-header">
-														<a href="#"> << </a>&nbsp;&nbsp;&nbsp;<span id="stDay"></span>
-														&nbsp;&nbsp;&nbsp;<a href="#"> >> </a>
+														<a href="#" id="prevDBtn">
+															<< </a>&nbsp;&nbsp;&nbsp; <span id="stDay"></span>
+																&nbsp;&nbsp;&nbsp;<a href="#" id="nextDBtn"> >> </a>
 													</h5>
 												</div>
 											</div>
 
 											<div>
-												<div id="dailyIncomeChart"
-													style="width: 100%; height: 500px"></div>
+												<div id="dailyIncomeChart" style="width: 100%; height: 500px"></div>
 											</div>
 
 											<!-- Profit Table -->
 											<br> <br> <br>
-											<div class="daily"
-												style="width: 80%; height: auto; margin: 5px auto;">
+											<div class="daily" style="width: 80%; height: auto; margin: 5px auto;">
 												<table id="daily" class="table">
 													<thead>
 														<tr>
@@ -251,8 +231,9 @@
 
 												<div>
 													<h5 class="card-header">
-														<a href="#"> << </a>&nbsp;&nbsp;&nbsp;<span id="stWeek"></span>
-														&nbsp;&nbsp;&nbsp;<a href="#"> >> </a>
+														<a href="#" id="prevWBtn"> << </a>&nbsp;&nbsp;&nbsp;<span
+															id="stWeek"></span> &nbsp;&nbsp;&nbsp;<a href="#"
+															id="nextWBtn"> >> </a>
 													</h5>
 												</div>
 											</div>
@@ -347,26 +328,113 @@
 			src="https://www.gstatic.com/charts/loader.js"></script>
 		<script type="text/javascript">
 			/* <div id="curve_chart" style="width: 100%; height: 500px"></div> */
-			
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		let arrs=[];
+		
+		dailyChart();	
+		DSum();
+
 		$('#weeklyBtn').on('click', function() {
-			chartId = 'weeklyIncomeChart';
-			arrs = weeklyChart();	
-			google.charts.setOnLoadCallback(drawChart);
+			weeklyChart();	
 			})	
 			
-		$('#monthlyBtn').on('click', function() {
-			chartId = 'monthlyIncomeChart';
-			arrs = monthlyChart();	
-			google.charts.setOnLoadCallback(drawChart);
-			})
-	
+ 		$('#monthlyBtn').on('click', function() {
+			monthlyChart();	
+			})  
+	 
 		$('#dailyBtn').on('click', function() {
-			chartId = 'dailyIncomeChart';
-			arrs = dailyChart();	
-			google.charts.setOnLoadCallback(drawChart);
-			})	
+			dailyChart();	
+			})	 
+		
+		$('#prevDBtn').on('click', function(){
+			//console.log($('#stDay').html())
+			let pd = $('#stDay').html();
+			pd = new Date(pd);
+			pd = pd.setDate(pd.getDate()-1);
+			pd = new Date(pd).toISOString().substr(0,10);
+			//$('#stDay').html('');
+			//$('#stDay').html(pd);
 			
+			dailyChart(pd);
+		})	
+		
+		$('#nextDBtn').on('click', function(){
+			let nd = $('#stDay').html(); 
+			nd = new Date(nd);
+			nd = nd.setDate(nd.getDate()+1);
+			nd = new Date(nd).toISOString().substr(0,10);
 			
+			let td = new Date().toISOString().substr(0,10);
+			
+			if(nd>td){
+				alert('!')
+				return;
+			}
+			$('#stDay').html('');
+			$('#stDay').html(nd);
+			
+			dailyChart(nd);
+		})
+		
+		// 어제 매출 합계
+		$('#prevDSum').on('click', function(){
+			let pd = $('#std').html();
+			pd = new Date(pd);
+			pd = pd.setDate(pd.getDate()-1);
+			pd = new Date(pd).toISOString().substr(0,10);
+			
+			DSum(pd);
+		})
+		
+		// 어제 매출 합계
+		$('#nextDSum').on('click', function(){
+			let nd = $('#std').html();
+			nd = new Date(nd);
+			nd = nd.setDate(nd.getDate()+1);
+			nd = new Date(nd).toISOString().substr(0,10);
+			let td = new Date().toISOString().substr(0,10);
+			
+			if(nd>td){
+				alert('!')
+				return;
+			}
+			DSum(nd);
+		})
+		
+		function DSum(sd){
+			let today = new Date();
+			console.log('sd in fnc',sd);
+			if(sd){
+				today = new Date(sd);
+			}
+			today = today.toISOString().substr(0,10)
+			$('#std').html(today);
+
+			
+			$.ajax('/manager/ajaxDailyList',{
+					type: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {
+						start: today,
+					}
+				})
+				.done(res => {
+					//console.log(res[0].PF);	
+					if(res==''){
+						$('#dayTotal').html('0원');
+						
+					}else{
+						res = Number(res[0].PF).toLocaleString() + '원'
+						$('#dayTotal').html(res);
+					}
+				})
+
+		}
+		
 		// 올해 몇주차인지 반환 ( ex 39주 )	
 		function ISO8601_week_no() 
 		  {
@@ -384,108 +452,140 @@
 		        }
 
 		function weeklyChart(){
+			let stday = null;
 				arrs = [];
 				let f = ['Weekly', 'Profit'];
 				arrs.push(f);
 				
 				let weekNo = ISO8601_week_no();
-				let weeks = $('.weeks');
 				$('#stWeek').html(weekNo + '주차')
 				
-				for(i=weekNo-8; i<=weekNo; i++){
-					let arr = [];
-													
-					arr[0] = i + "주";
-					for(week of weeks){
-						let w = Number(week.children[0].innerHTML);
-						let p = Number(week.children[2].innerHTML.replace(",",""));
-						if(w==i){
-							console.log('같습니다.')
-							arr[1] = p;
-							break;
-						}else{
-							arr[1] = 0;
-						}
+				$.ajax('/manager/ajaxWeeklyList',{
+					type: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {
+						start: stday,
 					}
-					console.log('arr', arr);
-					arrs.push(arr);
-				}
-				return arrs;
-			};
+				})
+				.done(res => {
+					for(i=weekNo-8; i<=weekNo; i++){
+						let arr = [];
+						arr[0] = i + "주";
+					}
+					for(i=weekNo-8; i<=weekNo; i++){
+						let arr = [];
+														
+						arr[0] = i + "주";
+						
+						for(let field in res){
+							let w = res[field].WEEKLY;
+							let p = res[field].PF;
+							if(w==i){
+								arr[1] = p;
+								break;
+							}else{
+								arr[1] = 0;
+							}
+						}
+						
+						arrs.push(arr);
+						}	
+					chartId = 'weeklyIncomeChart';
+					google.charts.setOnLoadCallback(drawChart);
+				})
+				//return arrs;
+			}
 			
 		function monthlyChart(){
 				arrs = [];
 				let f = ['Monthly', 'Profit'];
 				arrs.push(f);
-				
+				let stday = null;
 				let today = new Date();
 				let month = Number(today.toISOString().substr(5,2));
 				$('#stMnth').html(today.toISOString().substr(0,7))
 				//console.log('month', month	);
 				//console.log(typeof month);
-				
-				let mnths = $('.mnths');
-				
-				//console.log('mnths', mnths);
-				for(i=month-6; i<=month; i++){
-					let arr = [];
-					arr[0] = i + "월";
-					//console.log('i', i);
-					for(mnth of mnths){
-						//console.log('mnth', mnth);
-						let m = mnth.children[0].innerHTML;
-						m = Number(m.substr(0,2));
-						let p = Number(mnth.children[1].innerHTML.replace(",",""));
-						//console.log('m', m);
-						//console.log('p', p);
-						
-						if(m==i){
-							//console.log('같습니다.')
-							arr[1] = p;
-							break;
-						}else{
-							arr[1] = 0;
-						}
+				$.ajax('/manager/ajaxMonthlyList',{
+					type: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {
+						start: stday,
 					}
-					//console.log('arr', arr);
-					arrs.push(arr);
-				}
-				//console.log('ars', arrs);
-				return arrs;
+				})
+				.done(res => {
+					for(i=month-6; i<=month; i++){
+						let arr = [];
+						arr[0] = i;
+						//console.log('i', i);
+						for(let field in res){
+							let m = res[field].MONTHLY;
+							let p = res[field].PF;
+							if(m==i){
+								arr[1] = Number(p);
+								break;
+							}else{
+								arr[1] = 0;
+							}
+						}
+						arrs.push(arr);
+					}
+					chartId = 'monthlyIncomeChart';
+					google.charts.setOnLoadCallback(drawChart);
+				})
+					//return arrs;
 			}
 			
-		function dailyChart(){
-			let arrs = [];
-			let f = ['Daily', 'Profit'];
-			arrs.push(f);
-		
+		function dailyChart(sd){
+			arrs = [];
+			arrs.push(['Daily', 'Profit']);
+			let stday = null;
 			let today = new Date();
-			//today = new Date(today.setMonth(today.getMonth() - 1));
+			
+			if(sd){
+				today = new Date(sd);
+			}
+			
 			$('#stDay').html(today.toISOString().substr(0,10))
 			today = new Date(Date.parse(today) - 15 * 1000 * 60 * 60 * 24); // 보름 전
-		
-			let days = $('.days');
-			
-				for(i=0; i<15; i++){
-					today.setDate(today.getDate()+1);
-					t = today.toISOString().substr(0, 10);
-					let arr = [];
-					console.log('t', t);
-					arr[0] = t.substr(5);
-					for(day of days){
-						
-						let d = day.children[0].innerHTML;
-						let p = Number(day.children[1].innerHTML.replace(",",""));
-						if(d==t){
-							arr[1] = p;
-							break;
-						}else{
-							arr[1] = 0;
-						}
+
+			$.ajax('/manager/ajaxDailyList',{
+					type: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {
+						start: stday,
 					}
-					arrs.push(arr);
-				}
-				return arrs;
+				})
+				.done(res => {
+					console.log('!!!', res)
+					for(i=0; i<15; i++){
+						today.setDate(today.getDate()+1);
+						t = today.toISOString().substr(0, 10);
+						let arr = [];
+						arr[0] = t.substr(5);
+						for(let field in res){
+							
+							let d = res[field].DAILY;
+							let p = res[field].PF;
+							if(d==t){
+								arr[1] = p;
+								break;
+							}else{
+								arr[1] = 0;
+							}
+						}
+						arrs.push(arr);
+					}
+					chartId = 'dailyIncomeChart';
+					google.charts.setOnLoadCallback(drawChart);
+				})
+				//return arrs;
 			}
 			
 			/* total profit */
@@ -499,19 +599,12 @@
 			$('#totalProfit').html(sum.toLocaleString())
 			
 			/* Google Chart */
-
-			let arrs = [];
-			arrs = dailyChart();
-			
-			let chartId='dailyIncomeChart';
-			
+		 
 			google.charts.load('current', {
 				'packages' : [ 'corechart' ]
 			});
-			google.charts.setOnLoadCallback(drawChart);
 
 			function drawChart() {
-				console.log('>>>', arrs);
 				var data = google.visualization.arrayToDataTable(arrs);
 				
 				var options = {
@@ -524,7 +617,6 @@
 	                    min: 0
 	                }
 				};
-				console.log('chartID', chartId)
 				
 				var chart = new google.visualization.LineChart(document
 						.getElementById(chartId));
@@ -534,23 +626,7 @@
 			
 			/* DataTables */
 
-			$('#daily').DataTable({
-				lengthChange : false,
-				pageLength : 10,
-				lengthMenu : [ 10, 20, 30, 40, 50 ],
-				info : true,
-				searching : false,
-				ordering : false,
-			});
-			$('#weekly').DataTable({
-				lengthChange : false,
-				pageLength : 10,
-				lengthMenu : [ 10, 20, 30, 40, 50 ],
-				info : true,
-				searching : false,
-				ordering : false,
-			});
-			$('#monthly').DataTable({
+			$('.table').DataTable({
 				lengthChange : false,
 				pageLength : 10,
 				lengthMenu : [ 10, 20, 30, 40, 50 ],

@@ -18,7 +18,7 @@
 		profit,
 		minus_yn
 		from profit
-		where 1=1
+		where minus_yn='1'
 		<!-- 날짜 선택하여 조회할 경우 -->
 		<if test="start != null and end != null">
 			and minus_dt
@@ -26,7 +26,6 @@
 			and
 			TO_CHAR(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
 		</if>
-		and minus_yn='1'
 	</select>
 
 	<!-- 단건 조회 -->
@@ -40,6 +39,9 @@
 		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, sum(profit) as pf
 		from   profit
 		where   minus_yn=1 <!-- and category_id='S' -->
+		<if test="start != null">
+		and minus_dt = #{start}
+		</if>
 		group by  minus_dt
 		order by  1 desc
 	</select>
@@ -52,6 +54,9 @@
 			     sum(profit) as pf
 		from profit
 		where minus_yn=1
+		<if test="start != null">
+		 and (select to_char(minus_dt, 'IW') FROM dual) = 39
+		</if>
 		group by to_char(minus_dt, 'IW'),
                  TO_CHAR(trunc(minus_dt,'D'),'yyyy-mm-dd'),
 				 TO_CHAR(trunc(minus_dt,'D')+6,'yyyy-mm-dd')
@@ -60,10 +65,13 @@
 
 	<!-- 월별 조회 -->
 	<select id="monthlyList" resultType="Map">
-		select substr(minus_dt,4,2) || '월' as monthly,
+		select substr(minus_dt,4,2) as monthly,
 			   sum(profit) as pf
 		from profit
-		where minus_yn=1  <!-- and category_id='S' -->
+		where minus_yn=1
+		<if test="start != null">
+        and substr(minus_dt,4,2) = 9
+        </if>
 		group by substr(minus_dt, 4, 2)
 		order by 1 desc
 	</select>

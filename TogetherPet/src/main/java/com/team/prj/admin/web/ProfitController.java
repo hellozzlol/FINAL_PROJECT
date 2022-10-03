@@ -23,9 +23,9 @@ public class ProfitController {
 		String key = null;
 		model.addAttribute("profitList", ps.profitList(start, end));
 		// Map map = ps.monthlyList(key);
-		List<Map<String, Object>> d = ps.dailyList();
-		List<Map<String, Object>> w = ps.weeklyList();
-		List<Map<String, Object>> m = ps.monthlyList();
+		List<Map<String, Object>> d = ps.dailyList(start);
+		List<Map<String, Object>> w = ps.weeklyList(start);
+		List<Map<String, Object>> m = ps.monthlyList(start);
 
 		model.addAttribute("dailyList", d);
 		model.addAttribute("weeklyList", w);

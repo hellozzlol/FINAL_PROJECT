@@ -15,8 +15,8 @@ public interface ProfitMapper {
 	
 	//Map monthlyList(@Param("key") String key);
 	
-	List<Map<String, Object>> dailyList();
-	List<Map<String, Object>> weeklyList();
-	List<Map<String, Object>> monthlyList();
+	List<Map<String, Object>> dailyList(@Param("start") String start);
+	List<Map<String, Object>> weeklyList(@Param("start") String start);
+	List<Map<String, Object>> monthlyList(@Param("start") String start);
 	
 }
