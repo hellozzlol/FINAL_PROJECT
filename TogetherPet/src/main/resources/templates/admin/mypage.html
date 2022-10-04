@@ -17,136 +17,118 @@ margin-right:20px;
 </head>
 <body>
 	<article layout:fragment="content">
-			<div class="container-xxl flex-grow-1 container-p-y">
-				<h5 class="fw-bold py-3 mb-4">
-					<span class="text-muted fw-light">내 정보 관리 /</span> 
-					 </h5>
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h5 class="fw-bold py-3 mb-4">
+			<span class="text-muted fw-light">내 정보 관리 /</span> 
+			 </h5>
 
-				<div class="row">
-					<div class="col-md-12">
-						<ul class="nav nav-pills flex-column flex-md-row mb-3">
-							<li class="nav-item"><a class="nav-link active" href="javascript:void(0);">
-							<i class="bx bx-user me-1"></i> Account</a></li>
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="nav nav-pills flex-column flex-md-row mb-3">
+					<li class="nav-item"><a class="nav-link active" href="javascript:void(0);">
+					<i class="bx bx-user me-1"></i> Account</a></li>
 
 
-						</ul>
-						<div class="card mb-4">
-							<h5 class="card-header">나의 정보</h5>
-							<!-- Account -->
-							<div class="card-body"></div>
-							<hr class="my-0" />
+				</ul>
+				<div class="card mb-4">
+					<h5 class="card-header">나의 정보</h5>
+					<hr class="my-0" />
 
-							<div class="card-body" th:each="adm : ${admin}">
-								<form id="formAccountSettings" method="POST" onsubmit="return false">
-									<div class="row">
-										<div class="mb-3 col-md-6">
-											<label for="aName" class="form-label">이름</label> 
-											<input class="form-control" type="text" id="aName" name="aName"
-												th:value="${adm.name}" disabled="disabled" />
-										</div>
-										
-										<div class="mb-3 col-md-6">
-											<label for="ad_no" class="form-label">사번</label> 
-											<input class="form-control" type="text" name="ad_no" id="ad_no"
-												th:value="${adm.adNo}" disabled="disabled" />
-										</div>
+					<div class="card-body" th:each="adm : ${admin}">
+						<form id="formAccountSettings" method="POST" onsubmit="return false">
+							<div class="row">
+								<div class="mb-3 col-md-6">
+									<label for="aName" class="form-label">이름</label> 
+									<input class="form-control" type="text" id="aName" name="aName"
+										th:value="${adm.name}" disabled="disabled" />
+								</div>
+								
+								<div class="mb-3 col-md-6">
+									<label for="ad_no" class="form-label">사번</label> 
+									<input class="form-control" type="text" name="ad_no" id="ad_no"
+										th:value="${adm.adNo}" disabled="disabled" />
+								</div>
 
-										<div class="mb-3 col-md-6">
-											<label for="dept" class="form-label">부서</label>
-											<input class="form-control" type="text" name="dept" id="dept"
-												th:value="${adm.dept}" disabled="disabled" />
-										</div>
+								<div class="mb-3 col-md-6">
+									<label for="dept" class="form-label">부서</label>
+									<input class="form-control" type="text" name="dept" id="dept"
+										th:value="${adm.dept}" disabled="disabled" />
+								</div>
 
-										<div class="mb-3 col-md-6">
-											<label for="position" class="form-label">직급</label>
-											<input class="form-control" type="text" name="position"
-												id="position" th:value="${adm.position}" disabled="disabled" />
-										</div>
+								<div class="mb-3 col-md-6">
+									<label for="position" class="form-label">직급</label>
+									<input class="form-control" type="text" name="position"
+										id="position" th:value="${adm.position}" disabled="disabled" />
+								</div>
 
-										<div class="mb-3 col-md-6">
-											<label for="hiredate" class="form-label">입사일</label>
-											<input type="text" class="form-control" id="hiredate"
-												name="hiredate" th:value="${adm.hiredate}"
-												disabled="disabled" />
-										</div>
-										
-									</div>
-								</form>
+								<div class="mb-3 col-md-6">
+									<label for="hiredate" class="form-label">입사일</label>
+									<input type="text" class="form-control" id="hiredate"
+										name="hiredate" th:value="${adm.hiredate}"
+										disabled="disabled" />
+								</div>
+								
 							</div>
-						</div>
-						
-						<!-- /근태 정보 -->
- 
-						<div class="card">
-							<h5 class="card-header">근태 정보</h5>
-							<div class="card-body">
-								<div class="mb-3 col-12 mb-0"></div>
-								<form id="formAccountDeactivation" method="POST" onsubmit="return false">
-									<div class="row">
-										<div class="mb-3 col-md-6">
-											<label for="attDt" id="style_label" class="form-label">일자</label> 
-											<label for="ad_no" id="style_label" class="form-label">사원번호</label> 
-											<label for="ad_no" id="style_label" class="form-label">출근 시간</label> 
-											<label for="ad_no" id="style_label" class="form-label">퇴근 시간</label>
-											<label for="ad_no" id="style_label" class="form-label">상태</label>  
-										</div>
-										
-<!-- 여기서 오류남 -->							<!-- /근태 정보 리스트 출력하기 -->
-											<div th:each="att : ${attendList}">
-										<!--		<a 
-													th:text="${att.DT}"></a> -->
-												<a 
-													th:text="${att.AD_NO}"></a>
-												<a 
-													th:text="${att.START_DT}"></a>
-												<a 
-													th:text="${att.END_DT}"></a>
-												<a 
-													th:text="${att.STATE}"></a>
-											</div>
-							
-										
-<!-- 										<div class="mb-3 col-md-6">
-											<label for="ad_no" class="form-label">사원번호</label> 
-											<input class="form-control" type="text" name="ad_no" id="ad_no"
-												th:value="${adm.adNo}" disabled="disabled" />
-										</div>
-
-										<div class="mb-3 col-md-6">
-											<label for="stdt" class="form-label">출근 시간</label>
-											<input class="form-control" type="text" name="stdt" id="stdt"
-												th:value="${att.start_dt}" disabled="disabled" />
-										</div>
-
-										<div class="mb-3 col-md-6">
-											<label for="eddt" class="form-label">퇴근 시간</label>
-											<input class="form-control" type="text" id="eddt"
-												name="eddt" th:value="${att.end_dt}" disabled="disabled" />
-										</div>
-
-										<div class="mb-3 col-md-6">
-											<label for="state" class="form-label">상태</label>
-											<input type="text" class="form-control" id="state"
-												name="state" th:value="${att.state}"disabled="disabled" />
-										</div> -->
-										
-									</div>
-
-								</form>
-							</div>
-						</div>
-
-
-
-
-
+						</form>
 					</div>
 				</div>
-				<!-- / Content -->
+				
+				<!-- /근태 정보 -->
 
-
-				<div class="content-backdrop fade"></div>
+				<div class="card">
+					<h5 class="card-header">근태 정보</h5>
+					<hr class="my-0" />
+					<div class="card-body">
+					
+					<div class="table-responsive text-nowrap">
+					<table class="table">
+					<thead>
+						<tr>
+							<th>출근 시간</th>
+							<th>퇴근 시간</th>
+							<th>상태</th>
+						</tr>
+					</thead>
+					<tbody class="table-border-bottom-0">
+						<tr th:each="att : ${attendList}" >
+							<td th:text="${att.START_DT}"></td>
+							<td th:text="${#strings.isEmpty(att.END_DT)? ' ' : att.END_DT}"></td>
+							<td th:text="${att.STATE}"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
+		</div>
+					
+	<!--  				<form id="formAccountDeactivation" method="POST" onsubmit="return false">
+							<div class="row">
+								<div class="row">
+									<div class="col-3">출근 시간</div> 
+									<div class="col-3">퇴근 시간</div>
+									<div class="col-2">상태</div>  
+								</div>
+								
+									<!-- /근태 정보 리스트 출력 
+									<div th:each="att : ${attendList}" class="row" >
+										<div class="col-3" th:text="${att.START_DT}"></div>
+										<div class="col-3" th:text="${#strings.isEmpty(att.END_DT)? ' ' : att.END_DT}" ></div>
+										<div class="col-2" th:text="${att.STATE}"></div>
+									</div>
+							</div>
+						</form> -->	
+					</div>
+				</div>
+
+
+
+
+
+			</div>
+		</div>
+		<!-- / Content -->
+
+		<div class="content-backdrop fade"></div>
+	</div>
 	</article>
 
 </body>

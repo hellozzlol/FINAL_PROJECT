@@ -64,6 +64,13 @@ public class ClassServiceImpl implements ClassService {
 		return map.classPhotoList(vo);
 	}
 
+	// 클래스 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	@Override
+	public List<ClassVO> classList() {
+		// TODO Auto-generated method stub
+		return map.classList();
+	}
+
 
 
 

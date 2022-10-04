@@ -14,7 +14,7 @@
 
 	<select id="attendSelectList" parameterType="int"
 	resultType="HashMap" >
-	    SELECT *
+	    SELECT ad_no, nvl(end_dt, ' ') end_dt, state, start_dt
 		FROM ATTEND
 		WHERE ad_no = #{adNo}
 	</select>

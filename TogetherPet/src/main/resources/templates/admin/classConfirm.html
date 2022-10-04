@@ -52,7 +52,7 @@
 							<td><a th:href="@{classSel(classNo=${c.classNo})}"
 								th:text="${c.name}"></a></td>
 							<td th:text="${c.uploadDate}"></td>
-							<td th:text="${c.uploadState}"></td>        
+							<td th:text="${c.uploadState==0}"></td>        
 						</tr>
 					</tbody>
 				</table>

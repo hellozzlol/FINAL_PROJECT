@@ -44,4 +44,7 @@ public interface GoodsService {
 	
 	// 배송 상태 업데이트(1003 선희 추가)
 	int sellerDeliUpdate(OrderVO vo);
+	
+	// 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	List<GoodsVO> goodsList(String key);
 }
