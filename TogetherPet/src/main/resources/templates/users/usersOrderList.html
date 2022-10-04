@@ -190,7 +190,7 @@
 		}
 	})
 	
-	// 구매확정 버튼 클릭시 상태 업데이트하고 구매확정 버튼 비활성화
+	// 구매확정 버튼 클릭시 상태 업데이트
 	$("#btnList").on("click", "#confirmBtn", function () {
 		if (confirm('구매확정 하시겠습니까?')) {
 			let orderNo = Number($(this).closest('tr').attr('id'));

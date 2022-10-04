@@ -24,6 +24,7 @@ import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
+import com.team.prj.state.service.StateVO;
 
 @Controller
 public class SellerController {
@@ -213,14 +214,32 @@ public class SellerController {
 		return "seller/sellerDoneList";
 	}
 
-	// 배송 상태 업데이트
-	@PostMapping("/sellerDeliUpdate")
-	public String sellerDeliUpdate(Model model, OrderVO ovo, HttpSession session) {
-//		SellerVO svo = (SellerVO) session.getAttribute("seller");
-//		ovo.setSellerNo(svo.getSellerNo());
-//		model.addAttribute("goods", goods.sellerDeliUpdate(ovo))
-		goods.sellerDeliUpdate(ovo);
-		return "redirect:/sellerGoodsList";
+	// 배송 상태 업데이트(상품준비중)
+	@PostMapping("/deliveryReadyUpdate")
+	public String deliveryReadyUpdate(OrderVO ovo) {
+		goods.deliveryReadyUpdate(ovo);
+		return "redirect:/sellerDeliList";
+	}
+
+	// 배송 상태 업데이트(배송지시)
+	@PostMapping("/deliveryUpdate")
+	public String deliveryUpdate(OrderVO ovo) {
+		goods.deliveryUpdate(ovo);
+		return "redirect:/sellerDeliList";
+	}
+
+	// 반품 상태 업데이트(반품접수)
+	@PostMapping("/cancelUpdate")
+	public String cancelUpdate(StateVO svo) {
+		goods.cancelUpdate(svo);
+		return "redirect:/sellerCanList";
+	}
+
+	// 교환 상태 업데이트(교환접수)
+	@PostMapping("/changeUpdate")
+	public String changeUpdate(StateVO svo) {
+		goods.changeUpdate(svo);
+		return "redirect:/sellerCanList";
 	}
 
 }

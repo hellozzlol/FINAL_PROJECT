@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewVO;
+import com.team.prj.state.service.StateVO;
 
 public interface GoodsService {
 
@@ -47,18 +48,25 @@ public interface GoodsService {
 	// 배송 상품 조회(1003 선희 추가)
 	List<OrderVO> deliveryList(OrderVO vo);
 
-	// 배송 상태 업데이트(1003 선희 추가)
-	int sellerDeliUpdate(OrderVO vo);
-
+	// 배송 상태 업데이트 => 상품준비중(1003 선희 추가)
+	int deliveryReadyUpdate(OrderVO vo);
+	
+	// 배송 상태 업데이트 => 배송지시(1004 선희 추가)
+	int deliveryUpdate(OrderVO vo);
 	
 	// 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
 	List<GoodsVO> goodsList(String key);
-
 
 	// 반품/교환 상품 조회(1004 선희 추가)
 	List<OrderVO> sellerCancelList(OrderVO vo);
 
 	// 판매완료 상품 조회(1004 선희 추가)
 	List<OrderVO> sellerDoneList(OrderVO vo);
+	
+	// 반품요청 상태 업데이트(1004 선희 추가)
+	int cancelUpdate(StateVO vo);
+	
+	// 교환요청 상태 업데이트(1004 선희 추가)
+	int changeUpdate(StateVO vo);
 
 }

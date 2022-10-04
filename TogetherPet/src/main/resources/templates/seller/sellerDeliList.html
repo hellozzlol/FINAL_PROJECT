@@ -160,7 +160,8 @@
 									</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>
-										<button type="button" class="btn-primary3" id="goodsUpd">발주확인처리</button>
+										<input th:if="${list.deliveryState == '1'}" type="button" id="goodsReady" value="발주확인처리" class="btn-primary3">
+										<input th:if="${list.deliveryState == '2'}" type="button" id="goodsDelivery" value="배송처리" class="btn-primary3">
 									</td>
 								</tr>
 							</tbody>
@@ -202,13 +203,20 @@
 		<!-- Content wrapper -->
 		
 		<!-- 상태변경(상품준비중) -->
-		<form name="cancelCall" id="cancelCall" method="post" action="usersCancelForm">
+		<form name="readyCall" id="readyCall" method="post" action="deliveryReadyUpdate">
 			<input type="hidden" th:name="${_csrf.parameterName}"
 				th:value="${_csrf.token}">
-			<input type="hidden"
-				id="canSubmit" name="orderNo">
+			<input type="hidden" id="readySubmit" name="orderNo">
 		</form>
 		<!-- 상태변경(상품준비중) -->
+		
+		<!-- 상태변경(배송지시) -->
+		<form name="deliveryCall" id="deliveryCall" method="post" action="deliveryUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="deliverySubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(배송지시) -->
 		
 
 <style>
@@ -244,7 +252,6 @@
 		}
 	})
 	
-	// 검색
 	// 검색
 	$("#searchBtn").on("click", searchCall) 
 	var token = $("meta[name='_csrf']").attr("content");
@@ -293,6 +300,24 @@
 			$("#all").append(tbody);
 			}	
 		}
+		
+		// 배송 상태 업데이트(상품준비중)
+		$("#btnList").on("click", "#goodsReady", function () {
+			if (confirm('배송상태를 상품준비중으로 변경하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#readySubmit').val(orderNo);
+				$("#readyCall").submit();
+			}
+		})
+		
+		// 배송 상태 업데이트(배송지시)
+		$("#btnList").on("click", "#goodsDelivery", function () {
+			if (confirm('배송처리 하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#deliverySubmit').val(orderNo);
+				$("#deliveryCall").submit();
+			}
+		})
 </script>
 
 		<!--shop wrapper end-->

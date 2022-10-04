@@ -31,5 +31,8 @@ public class OrderVO {
 	// 1003 선희 추가
 	private Date cancelDt; // 반품신청일자
 	private Date changeDt; // 교환신청일자
+	
+	// 1004 선희 추가
+	private String state; // 반품,교환상태
 }
 

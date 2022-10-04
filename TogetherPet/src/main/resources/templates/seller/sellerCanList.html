@@ -95,11 +95,11 @@
 									<th>수취인</th>
 									<th>연락처</th>
 									<th>배송지</th>
-									<th>배송상태</th>
+									<th>신청상태</th>
 									<th></th>
 								</tr>
 							</thead>
-							<tbody class="table-border-bottom-0">
+							<tbody id="btnList" class="table-border-bottom-0">
 								<tr th:each="list : ${pageInfo.list}">
 									<td>[[${list.orderNo}]]</td>
 									<td>[[${list.goodsNo}]]</td>
@@ -109,13 +109,14 @@
 									<td>[[${list.call}]]</td>
 									<td>[[${list.address}]]</td>
 									<td>
-										<div th:switch="${list.deliveryState}">
-											<p th:case="5">반품요청</p>
-											<p th:case="6">교환요청</p>
+										<div th:switch="${list.state}">
+											<p th:case="1">반품요청</p>
+											<p th:case="3">교환요청</p>
 										</div>
 									</td>
 									<td>
-										<button type="button" class="btn-primary3" id="">요청접수</button>
+										<input th:if="${list.state == '1'}" type="button" id="cancelRequest" value="반품요청접수" class="btn-primary3">
+										<input th:if="${list.state == '3'}" type="button" id="changeRequest" value="교환요청접수" class="btn-primary3">
 									</td>
 								</tr>
 							</tbody>
@@ -153,11 +154,25 @@
 				</ul>
 			</nav>
 			<!-- 페이지네이션 -->
-
-			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
-
+		
+		<!-- 상태변경(반품접수) -->
+		<form name="cancelCall" id="cancelCall" method="post" action="cancelUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="cancelSubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(반품접수) -->
+		
+		<!-- 상태변경(교환접수) -->
+		<form name="changeCall" id="changeCall" method="post" action="changeUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="changeSubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(교환접수) -->
+		
 <style>
 	.search-box .form-control {
 		width: 48%;
@@ -169,10 +184,28 @@
 	}
 </style>
 <script>
-//페이지 이동
+	//페이지 이동
 	function gopage(p) {
 		location.href = '/sellerCanList?pageNum=' + p;
 	}
+	
+	// 상태 업데이트(반품)
+	$("#btnList").on("click", "#cancelRequest", function () {
+		if (confirm('반품요청을 접수 하시겠습니까?')) {
+			let orderNo = Number($(this).closest('tr').attr('id'));
+			$('#changeSubmit').val(orderNo);
+			$("#changeCall").submit();
+		}
+	})
+	
+	// 상태 업데이트(교환)
+	$("#btnList").on("click", "#changeRequest", function () {
+		if (confirm('교환요청을 접수 하시겠습니까?')) {
+			let orderNo = Number($(this).closest('tr').attr('id'));
+			$('#cancelSubmit').val(orderNo);
+			$("#cancelCall").submit();
+		}
+	})
 </script>
 
 		<!--shop wrapper end-->
