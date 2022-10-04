@@ -37,10 +37,10 @@
 	<!-- 일별 -->
 	<select id="dailyList" resultType="Map">
 		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, sum(profit) as pf
-		from   profit
+		from    profit
 		where   minus_yn=1 <!-- and category_id='S' -->
 		<if test="start != null">
-		and minus_dt = #{start}
+		and     to_date(minus_dt, 'yy/mm/dd') = to_date(#{start}, 'yy/mm/dd')
 		</if>
 		group by  minus_dt
 		order by  1 desc
@@ -48,19 +48,19 @@
 
 	<!-- 주별 조회 -->
 	<select id="weeklyList" resultType="Map">
-      	select	 (select to_char(minus_dt, 'IW') FROM dual) as weekly, 
-		         (select TO_CHAR(trunc(minus_dt,'D'),'yyyy-mm-dd') from dual) as start_dt,
-		         (select TO_CHAR(trunc(minus_dt,'D')+6,'yyyy-mm-dd') from dual) as end_dt,
-			     sum(profit) as pf
-		from profit
-		where minus_yn=1
+		select	 	 (select to_char(minus_dt, 'IW') FROM dual) as weekly, 
+			         (select TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd') from dual) as start_dt,
+			         (select TO_CHAR(TRUNC(minus_dt,'iw')+6,'yyyy-mm-dd') from dual) as end_dt,
+				     sum(profit) as pf
+		from		 profit
+		where 		 minus_yn=1
 		<if test="start != null">
-		 and (select to_char(minus_dt, 'IW') FROM dual) = 39
+		and 		 to_date((select TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd') from dual), 'yyyy-mm-dd') = to_date(#{start}, 'yyyy-mm-dd')
 		</if>
-		group by to_char(minus_dt, 'IW'),
-                 TO_CHAR(trunc(minus_dt,'D'),'yyyy-mm-dd'),
-				 TO_CHAR(trunc(minus_dt,'D')+6,'yyyy-mm-dd')
-		order by 1 desc
+		group by 	 to_char(minus_dt, 'IW'),
+                     TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd'),
+				     TO_CHAR(TRUNC(minus_dt,'iw')+6,'yyyy-mm-dd')
+		order by     1 desc
 	</select>
 
 	<!-- 월별 조회 -->
@@ -70,7 +70,7 @@
 		from profit
 		where minus_yn=1
 		<if test="start != null">
-        and substr(minus_dt,4,2) = 9
+        and to_number(substr(minus_dt,4,2)) = #{start}
         </if>
 		group by substr(minus_dt, 4, 2)
 		order by 1 desc
