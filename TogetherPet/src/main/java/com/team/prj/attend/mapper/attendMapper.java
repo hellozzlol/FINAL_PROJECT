@@ -14,4 +14,6 @@ public interface attendMapper {
 	attendVO attendSelect(attendVO tvo);
 	attendVO attendInsert(attendVO tvo);
 	attendVO attendUpdate(attendVO tvo);
+	void insertWorkIn(attendVO ato);
+	void updateWorkIn();
 }

@@ -8,9 +8,10 @@ import lombok.Setter;
 @Setter
 public class attendVO {
 	int adNo;
-	Date startDt;
-	Date endDt;
+	String startDt;
+	String endDt;
 //	Date Dt; // 0922 지움
 	int state;
-	String workCk; // 0923 추가
+	// String workCk; // 0923 추가
+	int atNo; //1001 추가
 }

@@ -60,7 +60,7 @@
 				<p>* 클래스명 클릭시 상세 페이지로 이동합니다.</p>
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<div class="table-responsive text-nowrap">
+					<div class="table-responsive text-nowrap" style="text-align: center;">
 						<table class="table table-hover">
 							<thead>
 								<tr>
@@ -79,7 +79,12 @@
 									<td>[[${list.name}]]</td>
 									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>
 									<td>[[${list.address}]]</td>
-									<td style="text-align: center;">[[${list.pay}]]</td>
+									<td style="text-align: center;">
+										<div th:switch="${list.pay}">
+											<p th:case="1">결제완료</p>
+											<p th:case="0">결제대기중</p>
+										</div>
+									</td>
 								</tr>
 							</tbody>
 						</table>

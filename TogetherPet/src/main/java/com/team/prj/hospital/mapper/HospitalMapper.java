@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.team.prj.hospital.service.HospitalVO;
 
 public interface HospitalMapper {
-	List<HospitalVO> hospitalSelectList();
+	List<HospitalVO> hospitalSelectList(@Param("key") String key);
 
 	HospitalVO hospitalSelect(HospitalVO vo);
 

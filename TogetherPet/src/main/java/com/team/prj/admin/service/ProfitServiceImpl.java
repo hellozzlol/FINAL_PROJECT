@@ -25,21 +25,21 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
-	public List<Map<String, Object>> dailyList() {
+	public List<Map<String, Object>> dailyList(String start) {
 		// TODO Auto-generated method stub
-		return map.dailyList();
+		return map.dailyList(start);
 	}
 
 	@Override
-	public List<Map<String, Object>> weeklyList() {
+	public List<Map<String, Object>> weeklyList(String start) {
 		// TODO Auto-generated method stub
-		return map.weeklyList();
+		return map.weeklyList(start);
 	}
 
 	@Override
-	public List<Map<String, Object>> monthlyList() {
+	public List<Map<String, Object>> monthlyList(String start) {
 		// TODO Auto-generated method stub
-		return map.monthlyList();
+		return map.monthlyList(start);
 	}
 
 }

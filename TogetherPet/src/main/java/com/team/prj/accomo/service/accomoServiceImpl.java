@@ -13,11 +13,7 @@ public class accomoServiceImpl implements accomoService {
 	@Autowired
 	private accomoMapper map;
 		
-	@Override
-	public List<accomoVO> accomoSelectList() {
-		// 숙소리스트
-		return map.accomoSelectList();
-	}
+	
 
 	@Override
 	public accomoVO accomoSelect(accomoVO vo) {
@@ -53,6 +49,12 @@ public class accomoServiceImpl implements accomoService {
 	public List<accomoVO> accomoSearch(String key, String val) {
 		// 검색
 		return map.accomoSearch(key, val);
+	}
+
+	@Override
+	public List<accomoVO> accomoSelectList(String key) {
+		// 리스트조회
+		return map.accomoSelectList(key);
 	}
 
 }

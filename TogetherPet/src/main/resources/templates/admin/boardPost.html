@@ -11,21 +11,18 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<title>전체 글 조회</title>
+<title>전체 글 조회 - 커뮤니티</title>
 <style>
-.uList {
-	/* 	position: relative;
-	top: 50%;
- */
-	margin-top: 100px;
-}
+
 </style>
 </head>
 <body>
 	<article layout:fragment="content">
+	
 		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
-			<span class="text-muted ">전체 게시글 조회 - 커뮤니티 </span>
+			<span class="text-muted ">전체 게시글 조회 / </span> 
+			커뮤니티
 			</h5>
 		<br><br>
 		<!-- 커뮤니티 게시글 테이블 -->
@@ -35,7 +32,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>선택</th>
+							<th><input type="checkbox" class="allCheck"></th>
 							<th>글 번호</th>
 							<th>카테고리</th>
 							<th>글 제목</th>
@@ -48,7 +45,8 @@
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${b.boardNo}"></td>
 							<td th:text="${b.category}"></td>
-							<td th:text="${b.title}"></td>
+							<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+								th:text="${b.title}"></a></td>
 							<td th:text="${b.nickname}"></td>
 							<td th:text="${b.dt}"></td>     
 						</tr>
@@ -58,8 +56,10 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">변경</button>
+		
+		<button type="button" class="btn btn-sm btn-primary" data-boardNo="${boardList.boardNo}" id="delete">삭제</button>
 		<br> <br>
+
 
 		<!-- 페이지네이션 -->
 		<nav aria-label="Page navigation example">
@@ -89,10 +89,14 @@
 
 		<script>
 			function gopage(p) {
-				location.href = 'manager/boardPost?pageNum=' + p;
+				location.href = '/manager/boardPost?pageNum=' + p;
 			}
 		</script>
 		<!-- 페이지네이션 -->
+		<script>
+
+		</script>
+		
 		
 		</article>
 	</body>

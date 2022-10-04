@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewVO;
 
@@ -42,5 +43,11 @@ public interface GoodsMapper {
 
 	// 상세보기에 리뷰 뿌리기
 	List<ReviewVO> reviewList(GoodsVO vo);
+
+	// 배송 상품 조회(1003 선희 추가)
+	List<OrderVO> deliveryList(OrderVO vo);
+
+	// 배송 상태 업데이트(1003 선희 추가)
+	int sellerDeliUpdate(OrderVO vo);
 
 }

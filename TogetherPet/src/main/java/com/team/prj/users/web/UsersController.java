@@ -155,40 +155,54 @@ public class UsersController {
 		return "users/usersCancelForm";
 	}
 
+	// 교환 신청 폼 호출
+	@RequestMapping("/usersChangeForm")
+	public String changeForm(HttpServletRequest request, Model model, OrderVO ovo) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		ovo = state.orderCanList(ovo);
+		model.addAttribute("ovo", ovo);
+		return "users/usersChangeForm";
+	}
+
 	// 반품 신청 처리
-	@PostMapping("/usersCancel") // cancelInsert
+	@PostMapping("/usersCancel")
 	public String cancelInsert(OrderVO ovo, StateVO svo) {
 		// state 테이블에 등록
-		System.out.println("???????????" + svo.getOrderNo());
-		System.out.println("???????????" + svo.getCancelDetail());
-		
 		state.cancelInsert(svo);
-		//int orderNo = ovo.getOrderNo();
-		
-		// 주문 배송 상태를 업데이트 (교환 5번 취소 4번)
-		// 주문 내역 삭제
-		//int orderNo2 = ovo.getOrderNo();
-		//ovo.setOrderNo(orderNo2);
-		//order.deleteOrder(ovo);
-		
+		// 주문 배송 상태를 업데이트 (취소 4번)
+		state.cancelUpdate(ovo);
 		return "redirect:/usersOrderList";
 	}
-	
-//	@PostMapping("/usersCancel")
-//	public String userCancel(HttpServletRequest request, Model model, OrderVO ovo, StateVO svo) {
-//		HttpSession session = request.getSession();
-//		UsersVO uvo = (UsersVO) session.getAttribute("user");
-//		ovo.setOrderNo(svo.getOrderNo());
-//		model.addAttribute("cancelList", user.orderCanList(ovo));
-//		user.cancelInsert(svo);
-//		return "redirect:/usersOrderList";
-//	}
+
+	// 교환 신청 처리
+	@PostMapping("/usersChange")
+	public String changeInsert(OrderVO ovo, StateVO svo) {
+		// state 테이블에 등록
+		state.changeInsert(svo);
+		// 주문 배송 상태를 업데이트 (교환 5번)
+		state.changeUpdate(ovo);
+		return "redirect:/usersOrderList";
+	}
+
+	// 구매확정 처리
+	@PostMapping("/usersGoodsConfirm")
+	public String goodsConfirm(OrderVO vo) {
+		state.goodsConfirm(vo);
+		return "redirect:/usersOrderList";
+	}
 
 	// 마이페이지 반품/교환 내역
-	@RequestMapping("/usersCancelList")
-	public String userCancel(OrderVO vo, Model model) {
-		model.addAttribute("cancelList", state.stateSelect(vo));
-		return "users/usersCancelList";
+	@RequestMapping("/usersStateList")
+	public String usersStateList(OrderVO ovo, Model model, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "5") int pageSize) {
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		ovo.setUserNo(uvo.getUserNo());
+		PageHelper.startPage(pageNum, pageSize);
+		model.addAttribute("pageInfo", PageInfo.of(state.stateSelectList()));
+		return "users/usersStateList";
 	}
 
 	// 클래스 수강내역
@@ -242,6 +256,58 @@ public class UsersController {
 		svo.setUserNo(uvo.getUserNo());
 		model.addAttribute("pageInfo", PageInfo.of(user.scrapList(svo)));
 		return "users/usersScrapList";
+	}
+
+	// 병원 스크랩 조회
+	@RequestMapping("/scrapHospital")
+	public String scrapHospital(Model model, HttpServletRequest request, ScrapVO svo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.hospitalScrap(svo)));
+		return "users/scrapHospital";
+	}
+
+	// 장례 스크랩 조회
+	@RequestMapping("/scrapFuneral")
+	public String scrapFuneral(Model model, HttpServletRequest request, ScrapVO svo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.funeralScrap(svo)));
+		return "users/scrapFuneral";
+	}
+
+	// 숙박 스크랩 조회
+	@RequestMapping("/scrapAccomo")
+	public String scrapAccomo(Model model, HttpServletRequest request, ScrapVO svo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.accomoScrap(svo)));
+		return "users/scrapAccomo";
+	}
+
+	// 커뮤니티 스크랩 조회
+	@RequestMapping("/scrapCommunity")
+	public String scrapCommunity(Model model, HttpServletRequest request, ScrapVO svo,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		model.addAttribute("pageInfo", PageInfo.of(user.communityScrap(svo)));
+		return "users/scrapCommunity";
 	}
 
 	// 위시리스트 조회

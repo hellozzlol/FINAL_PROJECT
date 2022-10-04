@@ -4,6 +4,9 @@
 	layout:decorate="~{layout/layout_mypage}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,7 +25,6 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -36,39 +38,38 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>교환/반품 신청내역</li>
+						<li>커뮤니티 스크랩</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
 
 				<div class="shipping_text">
-					<h3>교환/반품 신청내역</h3>
+					<h3>내 스크랩보기</h3>
 				</div>
 				<br>
 
 				<!-- Hoverable Table rows -->
-				<div class="card">
+				<div class="card" style="text-align: center;">
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
 								<tr style="text-align: center;">
-									<th>신청일자</th>
-									<th>상품이미지</th>
-									<th>상품명</th>
-									<th>가격</th>
-									<th>수량</th>
-									<th>상태</th>
+									<th>카테고리</th>
+									<th>제목</th>
+									<th>작성일</th>
+									<th></th>
 								</tr>
 							</thead>
-							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${cancelList}" style="text-align: center;">
-									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-										<strong>[[${#dates.format(list.cancelDt, 'yyyy-MM-dd')}]]</strong></td>
-									<td><img src="/assets/img/product/product4.jpg" alt=""></td>
-									<td>[[${list.name}]]</td>
-									<td>[[${list.totalPrice}]]</td>
-									<td>[[${list.amount}]]</td>
-									<td>[[${list.state}]]</td>
+							<tbody id="all" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}" class="category"
+									th:data-category="${list.categoryId}" style="">
+									<td style="width: 150px; border-right: 1px solid lightgray;">
+										<div th:switch="${list.categoryId}">
+											<p th:case="b">커뮤니티</p>
+										</div>
+									</td>
+									<td style="width: 500px; border-right: 1px solid lightgray;">제목</td>
+									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>
 										<div class="dropdown">
 											<button type="button"
@@ -76,9 +77,7 @@
 												data-bs-toggle="dropdown"></button>
 											<div class="dropdown-menu">
 												<a class="dropdown-item" href="javascript:void(0);"> <i
-													class="bx bx-edit-alt me-1"></i> Edit
-												</a> <a class="dropdown-item" href="javascript:void(0);"> <i
-													class="bx bx-trash me-1"></i> Delete
+													class="bx bx-trash me-1"></i> 삭제
 												</a>
 											</div>
 										</div>
@@ -90,19 +89,36 @@
 				</div>
 				<!--/ Hoverable Table rows -->
 			</div>
+			<br>
 			<!-- / Content -->
 
-			<div class="pagination_style pagination justify-content-center">
-				<ul class="d-flex">
-					<li><a href="#"> << </a></li>
-					<li><a class="current" href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">>></a></li>
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
 				</ul>
-			</div>
+			</nav>
+			<!-- 페이지네이션 -->
 
 			<div class="content-backdrop fade"></div>
 		</div>
@@ -110,7 +126,17 @@
 
 
 		<!--shop wrapper end-->
+	<script>
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		//페이지 이동
+		function gopage(p) {
+			location.href = '/usersCommunityList?pageNum=' + p;
+		}
+	</script>
 	</div>
 	<!--shop  area end-->
+
 </body>
 </html>

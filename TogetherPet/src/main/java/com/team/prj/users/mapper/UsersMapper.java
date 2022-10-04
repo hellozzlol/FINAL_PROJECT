@@ -7,6 +7,7 @@ import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.hospital.service.HospitalVO;
 import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
@@ -50,6 +51,18 @@ public interface UsersMapper {
 
 	// 내 스크랩조회
 	List<ScrapVO> scrapList(ScrapVO vo);
+
+	// 병원 스크랩 조회
+	List<ScrapVO> hospitalScrap(ScrapVO vo);
+
+	// 장례 스크랩 조회
+	List<ScrapVO> funeralScrap(ScrapVO vo);
+
+	// 숙박 스크랩 조회
+	List<ScrapVO> accomoScrap(ScrapVO vo);
+
+	// 커뮤니티 스크랩 조회
+	List<ScrapVO> communityScrap(ScrapVO vo);
 
 	// 작성 글조회
 	List<BoardVO> boardList(BoardVO vo);

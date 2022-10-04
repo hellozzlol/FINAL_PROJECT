@@ -43,6 +43,17 @@
 	</update>
 -->	
 
+	<insert id="insertWorkIn" parameterType="com.team.prj.attend.service.attendVO">
+		insert into attend
+		(AD_NO, STATE, START_DT, AT_NO)
+		values (#{adNo},#{state},#{startDt}, atd_seq.NEXTVAL)
+	</insert>
+	
+	<update id="updateWorkIn">
+		update attend
+		set end_dt = sysdate
+		where at_no = (select max(at_no) from attend)
+	</update>
 
 
 
