@@ -175,7 +175,7 @@ public class ClassAjaxController {
 	@PostMapping(value="classPhoto", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 
-	
+
 
 
 	 public ResponseEntity<List<PhotoVO>> classPhoto(MultipartFile[] uploadFile){
@@ -276,5 +276,5 @@ public class ClassAjaxController {
 	}
 
 
-
+	
 }

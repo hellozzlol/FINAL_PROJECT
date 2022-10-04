@@ -6,7 +6,7 @@
 	<select id="boardSelectList"
 		resultType="com.team.prj.board.service.BoardVO">
 		select * from board
-		order by board_no     <!-- 0930 desc삭제 / 지혜  -->
+		order by board_no DESC
 	</select>
 
 
