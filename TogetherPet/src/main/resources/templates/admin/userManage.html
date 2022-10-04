@@ -62,6 +62,7 @@
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
 
+
 		<!-- 페이지네이션 -->
 		<nav aria-label="Page navigation example">
 			<ul class="pagination pagination-info  justify-content-center">
@@ -94,6 +95,55 @@
 			}
 		</script>
 		<!-- 페이지네이션 -->
+		
+		
+		<!-- 검색 -->
+		<form class="row gy-2 gx-3 align-items-center" id="btn">
+		<div class="col-auto">
+			<select id="key" name="key">
+				<option value="1">아이디</option>
+				<option value="2">이름</option>
+				<option value="3">닉네임</option>
+			</select>
+		</div>
+	
+		<div class="col-auto">
+			<input class="form-control" type="text" id="val" name="val">
+		</div>
+		<div class="col-auto">
+			<button type="button" class="btn btn-dark" id="searchBtn"
+				onclick="searchDo()">검색</button>
+		</div>
+		</form>
+			
+		
+		<!-- 검색 Ajax -->
+		<script>
+		$("#searchBtn").on('click', searchDo)
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			function searchDo(){
+				let key = document.getElementById('key').value;
+				let val = document.getElementById('val').value;
+				
+					$.ajax({
+						url: 'userSearch',
+						type: 'post',
+						beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+						data: {'key':key, 'val':val},
+						dataType: 'json',
+							success: function(response){
+							htmlView(response);
+						},
+							error: function(){
+								console.log('error!!');
+							}
+					});
+			}
+	
+		</script>
 		
 		</article>
 	</body>

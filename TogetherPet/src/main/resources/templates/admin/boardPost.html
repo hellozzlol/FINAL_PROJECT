@@ -35,6 +35,7 @@
 					boardNoList.push($(this).val());
 				});
 					console.log(boardNoList); // 체크박스 선택 값 / boardNo 못 불러오고있음..
+					console.log(boardNoList.join(',')); // 배열을 문자열로 변경
 			});
 		});
 	</script>
@@ -115,7 +116,10 @@
 			}
 		</script>
 		<!-- 페이지네이션 -->
-				
+		
+		<form name="deleteForm" method="post" action="/admin/delete.do">
+			<input type="hidden" name="boardNoList"/>
+		</form>
 		
 		</article>
 	</body>
