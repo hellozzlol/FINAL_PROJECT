@@ -5,12 +5,21 @@
 	<select id="stateSelectList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
-		SELECT o.user_no as userNo, s.change_dt as changeDt, s.cancel_dt as cancelDt, g.thumb, g.name, o.total_price, o.amount, o.delivery_state
-		from orders o, goods g, state s
-		where o.goods_no = g.goods_no
-        and o.delivery_state BETWEEN '5' and '6'
-        and s.order_no = o.order_no
-		order by s.order_no desc
+		SELECT o.user_no, 
+		       s.change_dt, 
+		       s.cancel_dt, 
+		       g.thumb, 
+		       g.name, 
+		       o.total_price, 
+		       o.amount, 
+		       o.delivery_state, 
+		       o.order_no
+		  from orders o, goods g, state s
+		 where o.goods_no = g.goods_no
+           and o.delivery_state BETWEEN '5' and '6'
+           and s.order_no = o.order_no
+           and o.user_no = #{userNo}
+		 order by s.order_no desc
 	</select>
 
 	<!-- 단건 조회 -->
