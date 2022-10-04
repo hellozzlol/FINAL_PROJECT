@@ -20,7 +20,7 @@ public class ClassVO {
 	Date timeEnd;
 	int price;
 	String uploadState;
-	Date uploadDate;
+	String uploadDate;
 	int hit;
 	int maxHeadcount;
 	int tutorNo;

@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +72,8 @@ public class ClassAjaxController {
 	private ClassExreserveService exreserveDao;
 	@Autowired
 	private ClassReserveService reserveDao;
+	@Value("${file.dir}")
+	private String fileDir;
 	
 	
 	//클래스 리스트에서 검색하는 ajax
@@ -146,7 +149,7 @@ public class ClassAjaxController {
 		try {
 			classDao.classOptionInsert(opmap);
 		} catch (Exception e) {
-			System.out.println("--------hashmap BindingException 오류 예외처리함--------");
+			System.out.println("---hashmap 바인딩 오류 예외처리함---");
 		}
 
 	}
@@ -159,15 +162,12 @@ public class ClassAjaxController {
 
 		ptmap.put("photoList", ptparams);
 		System.out.println("그룹사진 맵에 담음");
+		try {
+			classDao.classPhotoInsert(ptmap);
+		} catch (Exception e) {
+			System.out.println("---hashmap 바인딩 오류 예외처리함---");
+		}
 		
-		classDao.classPhotoInsert(ptmap);
-	}
-	
-	
-	
-	@ExceptionHandler(BindingException.class)
-	public void BindingEx(Exception e) {
-		System.out.println("--------hashmap BindingException 오류 예외처리함--------");
 	}
 
 	
@@ -198,11 +198,10 @@ public class ClassAjaxController {
 
 		//파일 경로를 저장하는 String 타입의 변수를 선언하고 초기화
 		String uploadFolder = "C:\\Temp";
-		
 
 		
 		//File객체를 사용해 폴더 생성
-		File uploadPath = new File(uploadFolder);		
+		File uploadPath = new File(uploadFolder); //물리적 저장할 위치		
 		if(uploadPath.exists() == false) {
 			uploadPath.mkdirs();
 		}
@@ -218,11 +217,12 @@ public class ClassAjaxController {
 			String uploadFileName = multipartFile.getOriginalFilename();		
 			// uuid 적용 파일 이름
 			String uuid = UUID.randomUUID().toString();
-			uploadFileName = uuid + "_" + uploadFileName;			
+			uploadFileName = uuid + "_" + uploadFileName;		
 			// 파일 위치, 파일 이름을 합친 File 객체
 			File saveFile = new File(uploadPath, uploadFileName);			
 			//포토 vo에 경로넣기
-			vo.setDir(uploadFolder+ "\\" + uploadFileName);	
+			//vo.setDir(uploadFolder+ "\\" + uploadFileName);
+			vo.setDir(uploadFileName);
 			vo.setName("리스트");
 			vo.setGroupNo(classDao.getGroupNo()+10);
 			// 파일 저장
@@ -257,7 +257,7 @@ public class ClassAjaxController {
 		ResponseEntity<byte[]> result = null;
 		
 		try {
-			//
+
 			MultiValueMap<String,String> header = new LinkedMultiValueMap<String, String>();
 	
 			header.add("Content-type", Files.probeContentType(file.toPath()));

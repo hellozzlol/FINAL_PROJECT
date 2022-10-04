@@ -15,24 +15,23 @@
 	<select id="classReserveSelectList"
 		resultType="com.team.prj.classreserve.service.ClassReserveVO">
 		SELECT RESERVE_NO,
-		DT,
-		ORDER_DATE,
-		PAY,
-		PAY_YN,
-		USER_NO,
-		CLASS_NO,
-		MINUS_PRICE,
-		TOTAL_PRICE,
-		MINUS_YN,
-		MINUS_DATE,
-		CLASS_OPTION_NO,
-		CALL,
-		NAME,
-		MONEY,
-		CLASS_NAME
-		FROM CLASS_RESERVE
-		WHERE RESERVE_NO
-		=#{reserveNo}
+				DT,
+				ORDER_DATE,
+				PAY,
+				PAY_YN,
+				USER_NO,
+				CLASS_NO,
+				MINUS_PRICE,
+				TOTAL_PRICE,
+				MINUS_YN,
+				MINUS_DATE,
+				CLASS_OPTION_NO,
+				CALL,
+				NAME,
+				MONEY,
+				CLASS_NAME
+		 FROM CLASS_RESERVE
+		WHERE RESERVE_NO = #{reserveNo}
 	</select>
 
 

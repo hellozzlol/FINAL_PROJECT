@@ -10,18 +10,17 @@
 <title>classInsert</title>
 
 
-<!-- summernote -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/summernote/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
 <!-- 데이트픽커 -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- 클래식 에디터 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -38,22 +37,28 @@ var DateArray = [];
 var classDateDivCount;
 var resultsArray;
 var startTimeArray =[];
-$(function(){
-	//////////////////////////////////////////////////////날짜 선택 모달
-	 $(".modal").css({
-         "top": (($(window).height()-$(".modal").outerHeight())/2+$(window).scrollTop())+"px",
-         "left": (($(window).width()-$(".modal").outerWidth())/2+$(window).scrollLeft())+"px"
-     }); 
+
+
+$(function(){		
+		/*-----------------------
+		날짜 선택 모달
+		-------------------------*/	
+		 $(".modal").css({
+	         "top": (($(window).height()-$(".modal").outerHeight())/2+$(window).scrollTop())+"px",
+	         "left": (($(window).width()-$(".modal").outerWidth())/2+$(window).scrollLeft())+"px"
+	     }); 
+		
+		$("#modalButton").click(function(){
+			$(".modal").fadeIn(); 
+		}); 
+		
+		$(".modal").click(function(){
+				$(".modal").fadeOut();
+		});
 	
-	$("#modalButton").click(function(){
-		$(".modal").fadeIn(); 
-	}); 
 	
-	$(".modal").click(function(){
-			$(".modal").fadeOut();
-	});
 	//////////////////////////////////////// 대분류 카테고리 눌렀을시 소분류 불러오기
-	$('.categoryL').on('click',function(){
+	/*$('.categoryL').on('click',function(){
 		
 		$("#classCategorySUL").html("");
 		categoryNumL = $(this).val();
@@ -80,156 +85,73 @@ $(function(){
 				}
 			});
 			$("input:checkbox[name='NAME']").is(":checked")
-	});
-	/////////////////////////////////////////////////////////숫자만 입력
-	
-	$("#class_fee").on("keyup", function() {
-		if(!$.isNumeric($('#class_fee').val())){
-     		 $(this).val($(this).val().replace(/[^0-9]/g,""));
-     		 alert('숫자만 입력할수 있습니다');
-  		};
-	});
-	
-	$("#class_nop").on("keyup", function() {
-		if(!$.isNumeric($('#class_nop').val())){
-     		 $(this).val($(this).val().replace(/[^0-9]/g,""));
-     		 alert('숫자만 입력할수 있습니다');
-  		};
-	});
-	
-	$("#classTag").on("keyup", function() {
-		$(this).val($(this).val().replace(/ /g,""))
-	});
-	
-	
-	////////////////////////////////////////////////////////// 카테고리 
-	$('.categoryL').click(function(){
-		if($(this).prop('checked') &&  categoryNumL == 800){
-			alert("자기계발 카테고리(대)는 하위 카테고리가 없습니다")
-			$("#categoryReal").val(800);
-			$(".categoryL").prop("checked",false);
-			$(this).prop('checked',true);
-			$('#smallCategoryDiv').css("display","none");
-		}else if($(this).prop('checked') &&  categoryNumL == 900){	
-			$("#categoryReal").val(900);
-			alert("기타 카테고리(대)는 하위 카테고리가 없습니다")
-			$(".categoryL").prop("checked",false);
-			$(this).prop('checked',true);
-			$('#smallCategoryDiv').css("display","none");
-		}else if($(this).prop('checked') && categoryNumL != 800){
-				$('#smallCategoryDiv').css("display","block");
-			 	$(".categoryL").prop("checked",false);
-				$(this).prop('checked',true);
-		 
-		}else if($(".categoryL").is("checked") == false) {
-		   	$('#smallCategoryDiv').css("display","none");
-		   	$("input[type='checkbox'][name='categoryS']").prop("checked",false);
-		    }
-	});
-	//////////////////////////////////////////////////////달력
-	classDateDivCount = -1;
-	classDateCount=0;
-	
-	$(".flatpickrCalender").flatpickr({
-		inline : true,
-		mode: "single",
-		dateFormat: "Y-m-d ",
-		minDate:"today",
-		maxDate: new Date().fp_incr(180),
-		altInput: true,
-		onChange(selectedDates, dateStr, instance) {
-            	var testing1;
-        	 
-        	   classDateDivCount++;
-        	   
-        	   
-            	testing1 = "<div class='putDateTime2' id='dateTimeDivDel'>";
-            	testing1 += "<div title='cancel' class='dateCancelButton' onclick='deleteDivDate(this, "+classDateDivCount+");'>";
-            	testing1 += "<div value='"+classDateDivCount+"'></div>"; //<img src='<%=request.getContextPath()%>/img/kimin/xbu.png'>
-            	testing1 += "</div>";
-            	testing1 += "<a id='dateStr' value='"+dateStr+"'>"+dateStr+"</a>";
-				testing1 += "<input type='time' id='startTime' value=''>"; // onchange='startTimeInput($(this).val())'
-				//testing1 +=  "<img src='<%=request.getContextPath()%>/img/kimin/~.png'>"
-				testing1 += "<input type='time' id='endTime' value=''>"; // onchange='startTimeInput($(this).val())'
-				testing1 += "</div>";
-				
-				
-            	$('#putDateTime').append(testing1);
-            	
-            	//var startTime = $('#startTime').val();
-            	//var endTile = $('#endTime').val();
-            	//var day = dateStr;
-            	//startTimeInput($('#startTime').val(), $('#endTime').val(), dateStr);
-            	
-            	
-            if(classDateDivCount >= 9){
-            	//alert("선택"+count+"를 초과하였습니다\n"+count+"개를 취소해 주십시오.");
-            	alert("10개를 모두 선택하였습니다\n");
-            	$(".flatpickr-day.selected").css("background","#FF385C");
-            }
-             
-             console.log(classDateDivCount)
-       	}
-		
-	});
-	////////
-	
-
-/////////////////////////////////파일이름 넣기
-///////////////////////////////////////////////////////빈칸확인
-	/*$('#class_apply').click(function(){
-		if($('#class_name').val() == ""){
-			alert('클래스명을 입력하세요');
-			window.location.href="#f1";
-			return false;
-		}else if($('#class_info').val() == ""){
-			alert('클래스 간단 소개를 입력하세요');
-			window.location.href="#f2";
-			return false;
-		}else if($("#categoryReal").val() == ""){		
-			alert('클래스 카테고리를 선택하세요');
-			window.location.href="#f3";
-			return false;
-		}
-		/*else if($('#thumb_image').val() == ""){		
-			alert('클래스 썸네 파일을 업로드하세요');
-			window.location.href="#f4";
-			return false;
-		}
-		
-		else if($('#summernote').val() == ""){
-			alert('클래스 소개를 입력하세요');
-			window.location.href="#f5";
-			return false;
-		}else if($('#classDateRealStart').val() == ""){
-			alert('날짜를 선택후 확인을 눌러주세요');
-			window.location.href="#f6";
-			return false;
-		}else if($('#roadAddress').val() == ""){
-			alert('도로명 주소 검색하세요');
-			window.location.href="#f7";
-			return false;
-		}else if($('#postcode').val() == ""){
-			alert('우편번호를 검색하세요');
-			window.location.href="#f7";
-			return false;
-		}else if($('#detailAddress').val() == ""){
-			alert('상세주소를 입력하세요');
-			window.location.href="#f7";
-			return false;
-		}else if($('#class_fee').val() == ""){
-			alert('수강료를 입력하세요');
-			return false;
-		}else if($('#class_nop').val() == ""){
-			alert('최대인원을 입력하세요');
-			return false;
-		}
 	});*/
+	
+	
+		/*-----------------------
+		숫자만 입력
+		-------------------------*/	
+		
+		$("#class_fee").on("keyup", function() {
+			if(!$.isNumeric($('#class_fee').val())){
+	     		 $(this).val($(this).val().replace(/[^0-9]/g,""));
+	     		 alert('숫자만 입력할수 있습니다');
+	  		};
+		});
+		
+		$("#class_nop").on("keyup", function() {
+			if(!$.isNumeric($('#class_nop').val())){
+	     		 $(this).val($(this).val().replace(/[^0-9]/g,""));
+	     		 alert('숫자만 입력할수 있습니다');
+	  		};
+		});
+		
+		
 
+		/*-----------------------
+		날짜 선택 캘린더
+		-------------------------*/	
+		classDateDivCount = -1;
+		classDateCount=0;
+		
+		$(".flatpickrCalender").flatpickr({
+			inline : true,
+			mode: "single",
+			dateFormat: "Y-m-d ",
+			minDate:"today",
+			maxDate: new Date().fp_incr(180),
+			altInput: true,
+			onChange(selectedDates, dateStr, instance) {
+	            	var testing1;
+	        	 
+	        	   classDateDivCount++;
+	        	   
+	        	   
+	            	testing1 = "<div class='putDateTime2' id='dateTimeDivDel'>";
+	            	testing1 += "<div title='cancel' class='dateCancelButton' onclick='deleteDivDate(this, "+classDateDivCount+");'>";
+	            	testing1 += "<div value='"+classDateDivCount+"'></div>"; 
+	            	testing1 += "X";
+	            	testing1 += "</div>";
+	            	testing1 += "<a id='dateStr' value='"+dateStr+"'>"+dateStr+"</a>";
+					testing1 += "<input type='time' id='startTime' value=''>"; 
+					testing1 += "<input type='time' id='endTime' value=''>"; 
+					testing1 += "</div>";
+					
+					
+	            	$('#putDateTime').append(testing1);
 	
-	
-	
-	
+	            	
+	            if(classDateDivCount >= 9){
+	            	alert("10개를 모두 선택하였습니다\n");
+	            	$(".flatpickr-day.selected").css("background","#FF385C");
+	            }
+	             
+	             console.log(classDateDivCount)
+	       	}
+			
+		});
+
+
 });
 	
 var clickCount;
@@ -241,7 +163,12 @@ var startTime;
 var endTime;
 var lastTime;
 
-//////////////////////////////////// 날짜 선택 지우기 div
+
+
+
+		/*-----------------------
+		날짜 선택에서 선택한 옵션 삭제
+		-------------------------*/	
 		function deleteDivDate(del, index){
 			$($(del).parents("#dateTimeDivDel")).remove();
 			//delete arry[index];
@@ -252,7 +179,10 @@ var lastTime;
 			//$("#classDateRealStart").val(""); //네임안에 있는 값전체삭제
 			//$("#classDateRealEnd").val("");
 		}
-/////////////////////////////// 태그에 빨간 div 삭제
+
+		/*-----------------------
+		빨간색 X div 삭제
+		-------------------------*/	
 		function deleteDiv(){
 			var div = document.getElementById('tagInsertInner'+iitest);
 			div.remove();
@@ -260,9 +190,11 @@ var lastTime;
 			iitest--;
 			console.log(count);
 		}
-//////////////////////////// 
 
-		/* 주소 검색 */
+		
+		/*-----------------------
+		주소 검색
+		-------------------------*/	
 		function execDaumPostcode() {
 		   	var width = 500;
 		  	var height = 300;
@@ -317,284 +249,245 @@ var lastTime;
 		    	 top: (window.screen.height / 2) - (height / 2)
 		    });
 		};
-/////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////// 이미지 파일 서버전송 ////////////////////////////
-
-var fileArr;
-var fileInfoArr=[];
-
-//썸네일 클릭시 삭제.
-function fileRemove(index) {
-    console.log("index: "+index);
-    fileInfoArr.splice(index,1);
- 
-    var imgId="#img_id_"+index;
-    $(imgId).remove();
-    console.log(fileInfoArr);
-}
-//onchange -> 썸네일 미리보기.
-function previewImage(targetObj, View_area) {
-    var files=targetObj.files;
-    fileArr=Array.prototype.slice.call(files);
-    
-    var preview = document.getElementById(View_area); //div id
-    var ua = window.navigator.userAgent;
-
- 
-    //ie일때(IE8 이하에서만 작동)
-    if (ua.indexOf("MSIE") > -1) {
-        targetObj.select();
-        try {
-            var src = document.selection.createRange().text; // get file full path(IE9, IE10에서 사용 불가)
-            var ie_preview_error = document.getElementById("ie_preview_error_" + View_area);
- 
- 
-            if (ie_preview_error) {
-                preview.removeChild(ie_preview_error); //error가 있으면 delete
-            }
- 
-            var img = document.getElementById(View_area); //이미지가 뿌려질 곳
- 
-            //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
-            img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='scale')";
-        } catch (e) {
-            if (!document.getElementById("ie_preview_error_" + View_area)) {
-                var info = document.createElement("<p>");
-                info.id = "ie_preview_error_" + View_area;
-                info.innerHTML = e.name;
-                preview.insertBefore(info, null);
-            }
-        }
-    //ie가 아닐때(크롬, 사파리, FF)
-    } else {
-        var files = targetObj.files;
-        for ( var i = 0; i < files.length; i++) {
-            var file = files[i];
-            fileInfoArr.push(file);
- 
-            var imageType = /image.*/; //이미지 파일일경우만 뿌려준다.
-            if (!file.type.match(imageType))
-                continue;
-            // var prevImg = document.getElementById("prev_" + View_area); //이전에 미리보기가 있다면 삭제
-            // if (prevImg) {
-            //     preview.removeChild(prevImg);
-            // }
-
-            var span=document.createElement('span');
-            span.id="img_id_"+i;
-            span.style.width = '200px';
-            span.style.height = '220px';
-            preview.appendChild(span);
-
-			if (i == 0) { //첫번째 이미지에 썸네일 표시
-				var inputbtn = document.createElement('input');
-				inputbtn.type="button";
-				inputbtn.value="썸네일"
-				inputbtn.id="clthumb"
-				span.appendChild(inputbtn);
-			}
- 
-            var img = document.createElement("img");
-            img.className="addImg";
-            img.classList.add("obj");
-            img.file = file;
-            img.style.width='inherit';
-            img.style.height='inherit';
-            img.style.cursor='pointer';
-            const idx=i;
-            img.onclick=()=>fileRemove(idx);   //이미지를 클릭했을 때.
-            span.appendChild(img);
-
- 
-            if (window.FileReader) { // FireFox, Chrome, Opera 확인.
-                var reader = new FileReader();
-                reader.onloadend = (function(aImg) {
-                    return function(e) {
-                        aImg.src = e.target.result;
-                    };
-                })(img);
-                reader.readAsDataURL(file);
-            } else { // safari is not supported FileReader
-                //alert('not supported FileReader');
-                if (!document.getElementById("sfr_preview_error_"
-                    + View_area)) {
-                    var info = document.createElement("p");
-                    info.id = "sfr_preview_error_" + View_area;
-                    info.innerHTML = "not supported FileReader";
-                    preview.insertBefore(info, null);
-                }
-            }
-			
-        }//이미지 for문 end
-
-
-		//파일체크
-		let fileInput = $('input[name="img_upload"]');
-		let fileList = fileInput[0].files;
-		console.log("fileList : " + fileList);
 		
-		let fileObj = fileList[0];
-		console.log("fileObj : " + fileObj);
 		
-		console.log("fileName : " + fileObj.name);
-		console.log("fileSize : " + fileObj.size);
-		console.log("fileType(MimeType) : " + fileObj.type);
 		
-		//첨부파일 서버 전송위해 formdata객체 생성
-		let formData = new FormData();
 		
-		//사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가
-		for(let i = 0; i < fileList.length; i++){
-			formData.append("uploadFile", fileList[i]);
+		
+		/*-----------------------
+		썸네일 클릭시 이미지 삭제
+		-------------------------*/	
+		var fileArr;
+		var fileInfoArr=[];
+		
+		function fileRemove(index) {
+		    console.log("index: "+index);
+		    fileInfoArr.splice(index,1);
+		 
+		    var imgId="#img_id_"+index;
+		    $(imgId).remove();
+		    console.log(fileInfoArr);
 		}
+
 		
-		//		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
 		
-		//AJAX를 사용하여 서버로 전송
-		$.ajax({
-			beforeSend: function(xhr){
-				xhr.setRequestHeader(header,token);
-			},
-			url: 'classPhoto',
-	    	processData : false,
-	    	contentType : false,
-	    	data : formData,
-	    	type : 'POST',
-	    	dataType : 'json',
-	    	success : function(result){
-	    		console.log(result);//컨트롤러에서 url값 리턴해줌
-	    		$('#thumb').val(result[0].dir); //첫번째 사진 주소는 따로 썸네일값으로 담아줌
-	    		console.log($('#thumb').val())
-	    		$('#groupNo').val(result[0].groupNo); //다음그룹넘버 담아줌
-	    		console.log($('#groupNo').val())
-	    		
-	    		var jsonArr = [];
-	    		for (var i=0; i<result.length; i++){
-	    			jsonArr.push({
-	    				groupNo : (result[i].groupNo),
-	    				name : (result[i].name),
-	    				dir : (result[i].dir)
-	    			})
-	    		}
-	    		console.log(jsonArr);
-	    		
-	    		$.ajax({
-					url: 'classPhotoInsert',
-					type: 'post',
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					traditional: true,
-					data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
-					dataType: 'JSON',
-					contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
-					success: function() {
-						alert("그룹사진을 등록했습니다.")
-						
-					},
-					fail: function() {
-						alert("그룹사진 인서트 오류! 다시 실행해주세요.")
+		/*-----------------------
+		이미지 썸네일 처리 & 서버단 전송
+		-------------------------*/			
+		function previewImage(targetObj, View_area) {
+		    var files=targetObj.files;
+		    fileArr=Array.prototype.slice.call(files);
+		    var preview = document.getElementById(View_area); //div id
+		    var ua = window.navigator.userAgent;
+		
+		 
+		    //ie일때(IE8 이하에서만 작동)
+		    if (ua.indexOf("MSIE") > -1) {
+		        targetObj.select();
+		        try {
+		            var src = document.selection.createRange().text; // get file full path(IE9, IE10에서 사용 불가)
+		            var ie_preview_error = document.getElementById("ie_preview_error_" + View_area);
+		 
+		 
+		            if (ie_preview_error) {
+		                preview.removeChild(ie_preview_error); //error가 있으면 delete
+		            }
+		 
+		            var img = document.getElementById(View_area); //이미지가 뿌려질 곳
+		 
+		            //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
+		            img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='scale')";
+		        } catch (e) {
+		            if (!document.getElementById("ie_preview_error_" + View_area)) {
+		                var info = document.createElement("<p>");
+		                info.id = "ie_preview_error_" + View_area;
+		                info.innerHTML = e.name;
+		                preview.insertBefore(info, null);
+		            }
+		        }
+		    //ie가 아닐때(크롬, 사파리, FF)
+		    } else {
+		        var files = targetObj.files;
+		        for ( var i = 0; i < files.length; i++) {
+		            var file = files[i];
+		            fileInfoArr.push(file);
+		 
+		            var imageType = /image.*/; //이미지 파일일경우만 뿌려준다.
+		            if (!file.type.match(imageType))
+		                continue;
+		
+		            var span=document.createElement('span');
+		            span.id="img_id_"+i;
+		            span.style.width = '200px';
+		            span.style.height = '220px';
+		            preview.appendChild(span);
+		
+					if (i == 0) { //첫번째 이미지에 썸네일 표시
+						var inputbtn = document.createElement('input');
+						inputbtn.type="button";
+						inputbtn.value="썸네일"
+						inputbtn.id="clthumb"
+						span.appendChild(inputbtn);
 					}
+		 
+		            var img = document.createElement("img");
+		            img.className="addImg";
+		            img.classList.add("obj");
+		            img.file = file;
+		            img.style.width='inherit';
+		            img.style.height='inherit';
+		            img.style.cursor='pointer';
+		            const idx=i;
+		            img.onclick=()=>fileRemove(idx);   //이미지를 클릭했을 때.
+		            span.appendChild(img);
+		
+		 
+		            if (window.FileReader) { // FireFox, Chrome, Opera 확인.
+		                var reader = new FileReader();
+		                reader.onloadend = (function(aImg) {
+		                    return function(e) {
+		                        aImg.src = e.target.result;
+		                    };
+		                })(img);
+		                reader.readAsDataURL(file);
+		            } else { // safari is not supported FileReader
+		                //alert('not supported FileReader');
+		                if (!document.getElementById("sfr_preview_error_"
+		                    + View_area)) {
+		                    var info = document.createElement("p");
+		                    info.id = "sfr_preview_error_" + View_area;
+		                    info.innerHTML = "not supported FileReader";
+		                    preview.insertBefore(info, null);
+		                }
+		            }
+					
+		        }//이미지 for문 end
+		
+		
+				//파일체크
+				let fileInput = $('input[name="img_upload"]');
+				let fileList = fileInput[0].files;
+				console.log("fileList : " + fileList);
 				
+				let fileObj = fileList[0];
+				console.log("fileObj : " + fileObj);
 				
-				})
-	    		
-	    		
-	    		
-	    	},error : function(result){
-	    		alert("이미지 파일이 아닙니다.");
-	    	}
-		});
-		
-
-    }//file on change end
-
-}
-/////////////////////////// 이미지 파일 서버전송 ////////////////////////////
-
-
-
-
-
-		
-		
-		
-		
-		
-		
-///////////////////////// class option 제출 //////////////////////////
-	$('#class_apply').click(function(){
-		var day = $('#dateStr').html();
-		var arySdt = []; //시작시각 배열
-		var aryEdt = []; //종료시각 배열
-		var classNo = $('#classNo').val();
-		var allHeadcount = 0;
-		var jsonArr = [];
-		
-		$('input[id="startTime"]').each(function(i){
-		arySdt.push(day + $(this).val());
-		})
-		$('input[id="endTime"]').each(function(i){
-		aryEdt.push(day + $(this).val());
-		})
-		
-		console.log(arySdt);
-		console.log(aryEdt);
-		
-		for(var i=0; i<arySdt.length; i++) {
-		jsonArr.push({
-		classNo: classNo,
-		startDt: arySdt[i],
-		endDt: aryEdt[i],
-		allHeadcount: allHeadcount			
-		})
-		}
-		
-		console.log(jsonArr);
-		
-		
-		
-		
-	})
-
+				console.log("fileName : " + fileObj.name);
+				console.log("fileSize : " + fileObj.size);
+				console.log("fileType(MimeType) : " + fileObj.type);
+				
+				//첨부파일 서버 전송위해 formdata객체 생성
+				let formData = new FormData();
+				
+				//사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가
+				for(let i = 0; i < fileList.length; i++){
+					formData.append("uploadFile", fileList[i]);
+				}
 	
-	function classOptionInput(){
-			var day = $('#dateStr').html();
-			var arySdt = []; //시작시각 배열
-			var aryEdt = []; //종료시각 배열
-			var classNo = $('#classNo').val();
-			var allHeadcount = 0;
-			var jsonArr = [];
-			
-			$('input[id="startTime"]').each(function(i){
-			arySdt.push(day + $(this).val());
-			})
-			$('input[id="endTime"]').each(function(i){
-			aryEdt.push(day + $(this).val());
-			})
-			
-			console.log(arySdt);
-			console.log(aryEdt);
-			
-			for(var i=0; i<arySdt.length; i++) {
-			jsonArr.push({
-				classNo: classNo,
-				startDt: arySdt[i],
-				endDt: aryEdt[i],
-				allHeadcount: allHeadcount			
-				})
-			}
-			
-			console.log(jsonArr);
-			
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				
+				//AJAX를 사용하여 서버로 전송
+				$.ajax({
+					beforeSend: function(xhr){
+						xhr.setRequestHeader(header,token);
+					},
+					url: 'classPhoto',
+			    	processData : false,
+			    	contentType : false,
+			    	data : formData,
+			    	type : 'POST',
+			    	dataType : 'json',
+			    	success : function(result){
+			    		console.log(result);//컨트롤러에서 url값 리턴해줌
+			    		$('#thumb').val(result[0].dir); //첫번째 사진 주소는 따로 썸네일값으로 담아줌
+			    		console.log($('#thumb').val())
+			    		$('#groupNo').val(result[0].groupNo); //다음그룹넘버 담아줌
+			    		console.log($('#groupNo').val())
+			    		
+			    		var jsonArr = [];
+			    		for (var i=0; i<result.length; i++){
+			    			jsonArr.push({
+			    				groupNo : (result[i].groupNo),
+			    				name : (result[i].name),
+			    				dir : (result[i].dir)
+			    			})
+			    		}
+			    		console.log(jsonArr);
+			    		
+			    		$.ajax({
+							url: 'classPhotoInsert',
+							type: 'post',
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
+							traditional: true,
+							data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
+							dataType: 'JSON',
+							contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
+							success: function() {
+								alert("그룹사진을 등록했습니다.")
+								
+							},
+							fail: function() {
+								alert("그룹사진 인서트 오류! 다시 실행해주세요.")
+							}
+						
+						
+						})
+			    		
+			    		
+			    		
+			    	},error : function(result){
+			    		alert("이미지 파일이 아닙니다.");
+			    	}
+				});
+				
+		
+		    }//file on change end
+		
 		}
 
-
-
+		
+		
+		
+		
+		/*-----------------------
+		클래스 옵션 선택한 리스트 배열 만듦 
+		-------------------------*/	
+		function classOptionInput(){
+				$('#optioncheck').val('1');
+			
+				var day = $('#dateStr').html();
+				var arySdt = []; //시작시각 배열
+				var aryEdt = []; //종료시각 배열
+				var classNo = $('#classNo').val();
+				var allHeadcount = 0;
+				var jsonArr = [];
+				
+				$('input[id="startTime"]').each(function(i){
+					arySdt.push($("a[id='dateStr']")[i].innerText + $(this).val());
+				})
+				$('input[id="endTime"]').each(function(i){
+					aryEdt.push($("a[id='dateStr']")[i].innerText + $(this).val());
+				})
+				
+				
+				console.log(arySdt);
+				console.log(aryEdt);
+				
+				for(var i=0; i<arySdt.length; i++) {
+				jsonArr.push({
+					classNo: classNo,
+					startDt: arySdt[i],
+					endDt: aryEdt[i],
+					allHeadcount: allHeadcount			
+					})
+				}
+				
+				console.log(jsonArr);
+				
+			}
 
 </script>
 
@@ -602,158 +495,191 @@ function previewImage(targetObj, View_area) {
 
 
 <script>
-///////////////////////////////클래스 인서트 ajax ///////////////////////////////
 document.addEventListener('DOMContentLoaded', function() {
 
-	
-	function classOptionInput(){
-		var day = $('#dateStr').html();
-		var arySdt = []; //시작시각 배열
-		var aryEdt = []; //종료시각 배열
-		var classNo = $('#classNo').val();
-		var groupNo = $('#groupNo').val();
-		var allHeadcount = 0;
-		var jsonArr = [];
-		
-		$('input[id="startTime"]').each(function(i){
-		arySdt.push(day + $(this).val());
-		})
-		$('input[id="endTime"]').each(function(i){
-		aryEdt.push(day + $(this).val());
-		})
-		
-		console.log(arySdt);
-		console.log(aryEdt);
-		
-		for(var i=0; i<arySdt.length; i++) {
-		jsonArr.push({
-		classNo: classNo,
-		startDt: arySdt[i],
-		endDt: aryEdt[i],
-		allHeadcount: allHeadcount			
-		})
-		}
-		
-		console.log(jsonArr);
-		
-	}
-	
-	
-	
-	$('#class_submit').on('click', function(){
-		if(!confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
-			return;
-		}
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-	
-		//let classNo = 
-		let name = $('#class_name').val();
-		let category = $('#category').val();
-		let intro = $('#summernote').val();
-		let price = $('#class_fee').val();
-		//let uploadState
-		//let uploadDate
-		//let hit
-		let maxHeadcount = $('#class_nop').val();
-		let tutorNo = $('#userNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
-		let address = $('#address').val();
-		let postcode = $('#postcode').val();
-		let da = $('#da').val();
-		let latitude = $('#latitude').val();
-		let longitude = $('#longitude').val();
 
-		let thumb = $('#thumb').val();
-		let groupNo = $('#groupNo').val();
+			/*-----------------------
+			글 작성 에디터
+			-------------------------*/	
 		
-			
-		$.ajax({ //클래스 인서트 ajax
-			url: 'classInsert',
-			type: 'post',
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader(header, token)
-			},
-			//async: true,  // 비동기 방식으로 설정
-			data: {
-				name: name,
-				category: category,
-				intro: intro,
-				price: price,
-				maxHeadcount: maxHeadcount,
-				tutorNo: tutorNo,
-				address: address,
-				latitude: latitude,
-				longitude: longitude,
-				thumb: thumb,
-				postcode: postcode,
-				groupNo: groupNo,
-				da: da
-				
-			},
-			success: function(result) {
-				$('#classNo').val(result);
-				console.log($('#classNo').val())
-				console.log("클래스 인서트 완료.")
-			},
-			fail: function(result) {
-				console.log("클래스 인서트 실패.")
-			}
-		}).then((arg)=> { //옵션 인서트 ajax
-			
-			var day = $('#dateStr').html();
-			var arySdt = []; //시작시각 배열
-			var aryEdt = []; //종료시각 배열
-			var classNo = $('#classNo').val();
-			var allHeadcount = 0;
-			var jsonArr = new Array();
-			
-				$('input[id="startTime"]').each(function(i){
-				arySdt.push(day + $(this).val());
+			//에디터를 화면에 붙일때 작성공간인 textarea값이나 div의 id로 가져온다.
+			var theEditor;
+			ClassicEditor
+			   .create( document.querySelector( '#editor' ), {
+			       language: 'ko' //언어설정
+			  	})
+				.then( contents => {
+				theEditor = contents; // #contents에 있는 값을 theEditor에 넣어놓는다.
 				})
-				$('input[id="endTime"]').each(function(i){
-				aryEdt.push(day + $(this).val());
-				})
-				
-				for(var i=0; i<arySdt.length; i++) {
-				jsonArr.push({
-					classNo: classNo,
-					startDt: arySdt[i],
-					endDt: aryEdt[i],
-					allHeadcount: allHeadcount
-					})
-				}
-
-			console.log(jsonArr)
+			   .catch( error => {
+			       console.error( error );
+			    });
+	
+	
 			
-			$.ajax({
-				url: 'classOptionInsert',
-				type: 'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
-				traditional: true,
-				async: false, //컨트롤러에서 Exception처리 이후 return안될 때 동기화 꺼야함
-				data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
-				dataType: 'JSON',
-				contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
-				success: function() {
-					console.log("성공");
-					var answer;
-					answer = confirm("클래스 등록이 완료되었습니다. 등록하신 클래스 페이지로 이동하시겠습니까?");
-					if(answer == true){
-						location = 'classSelect?classNo='+classNo;
+			/*-----------------------
+			클래스 제출 버튼 눌렀을 때 function
+			-------------------------*/	
+			$('#class_submit').on('click', function(){
+				
+			  	   //나중에 확인할때 소스
+			       var sHTML = theEditor.getData();
+			       console.log(sHTML); 
+							    
+					//빈칸 확인
+					if($('#class_name').val() == ""){
+						alert('클래스명을 입력하세요');
+						window.location.href="#f1";
+						return false;
+					}else if($("#category").val() == ""){		
+						alert('클래스 카테고리를 선택하세요');
+						window.location.href="#f2";
+						return false;
+					}else if($('#img_upload').val() == ""){		
+						alert('클래스 이미지 파일을 업로드하세요');
+						window.location.href="#f3";
+						return false;
+					}else if(sHTML == ""){
+						alert('클래스 소개를 입력하세요');
+						window.location.href="#f4";
+						return false;
+					}else if($('#optioncheck').val() == ""){
+						alert('날짜 선택후 확인을 눌러주세요');
+						window.location.href="#f5";
+						return false;
+					}else if($('#roadAddress').val() == ""){
+						alert('주소를 입력하세요');
+						window.location.href="#f6";
+						return false;
+					}else if($('#class_fee').val() == ""){
+						alert('수강료를 입력하세요');
+						window.location.href="#f7";
+						return false;
+					}else if($('#class_nop').val() == ""){
+						alert('최대인원을 입력하세요');
+						window.location.href="#f7";
+						return false;
 					}
-				},
-				fail: function(result) {
-					console.log("오류");
-				}
-			
-				})// end of option ajax 
 				
+					
+					//빈칸 확인 후 최종 confirm
+					if(!confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
+						return;
+					}
+					
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
 			
-			})//end of option ajax then
+					let name = $('#class_name').val();
+					let category = $('#category').val();
+					let intro = sHTML;
+					let price = $('#class_fee').val();
+					let maxHeadcount = $('#class_nop').val();
+					let tutorNo = $('#userNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
+					let address = $('#address').val();
+					let postcode = $('#postcode').val();
+					let da = $('#da').val();
+					let latitude = $('#latitude').val();
+					let longitude = $('#longitude').val();
+					let thumb = $('#thumb').val();
+					let groupNo = $('#groupNo').val();
+					
 
-	}) //end of click event
+					$.ajax({ //클래스 인서트 ajax
+						url: 'classInsert',
+						type: 'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						//async: true,  // 비동기 방식으로 설정
+						data: {
+							name: name,
+							category: category,
+							intro: intro,
+							price: price,
+							maxHeadcount: maxHeadcount,
+							tutorNo: tutorNo,
+							address: address,
+							latitude: latitude,
+							longitude: longitude,
+							thumb: thumb,
+							postcode: postcode,
+							groupNo: groupNo,
+							da: da
+							
+						},
+						success: function(result) {
+							$('#classNo').val(result);
+							console.log($('#classNo').val())
+							console.log("클래스 인서트 완료.")
+						},
+						fail: function(result) {
+							console.log("클래스 인서트 실패.")
+						}
+					}).then((arg)=> { //옵션 인서트 ajax
+						
+						var day = $('#dateStr').html();
+						var arySdt = []; //시작시각 배열
+						var aryEdt = []; //종료시각 배열
+						var classNo = $('#classNo').val();
+						var allHeadcount = 0;
+						var jsonArr = new Array();
+						
+							$('input[id="startTime"]').each(function(i){
+								arySdt.push($("a[id='dateStr']")[i].innerText + $(this).val());
+							})
+							$('input[id="endTime"]').each(function(i){
+								aryEdt.push($("a[id='dateStr']")[i].innerText + $(this).val());
+							})
+							
+							for(var i=0; i<arySdt.length; i++) {
+							jsonArr.push({
+								classNo: classNo,
+								startDt: arySdt[i],
+								endDt: aryEdt[i],
+								allHeadcount: allHeadcount
+								})
+							}
+			
+						console.log(jsonArr)
+						
+						$.ajax({
+							url: 'classOptionInsert',
+							type: 'post',
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
+							traditional: true,
+							async: false, //컨트롤러에서 Exception처리 이후 return안될 때 동기화 꺼야함
+							data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
+							dataType: 'JSON',
+							contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
+							success: function() {
+								console.log("성공");
+								var answer;
+								answer = confirm("클래스 등록이 완료되었습니다. 등록하신 클래스 페이지로 이동하시겠습니까?");
+								if(answer == true){
+									location = 'classSelect?classNo='+classNo;
+								}
+							},
+							fail: function() {
+								console.log("오류");
+							},
+							complete: function() {
+								console.log("성공");
+								var answer;
+								answer = confirm("클래스 등록이 완료되었습니다. 등록하신 클래스 페이지로 이동하시겠습니까?");
+								if(answer == true){
+									location = 'classSelect?classNo='+classNo;
+								}
+							}
+						
+						})// end of option ajax 
+						
+					
+				})//end of option ajax then
+		
+		}) //end of click event
 	
 })//end of document event 	
 
@@ -763,6 +689,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <style>
+#class_submit {
+ 	position: relative;
+    border: none;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+#classAddressInnerDiv > input {
+	width: 100%;
+}
+
 #clthumb {
 	border-radius: 5px;
 	border: none;
@@ -921,7 +864,7 @@ kimin2 {
 	width: 15%;
 }
 
-input[type="checkbox"] {
+input[type="radio"] {
 	cursor: pointer;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -933,19 +876,19 @@ input[type="checkbox"] {
 	border: 1px solid #FF385C;
 }
 
-input[type="checkbox"]:checked {
+input[type="radio"]:checked {
 	background: #FF385C;
 }
 
-input[type="checkbox"]:hover {
+input[type="radio"]:hover {
 	background: #FF385C;
 }
 
-input[type="checkbox"]:checked:after {
+input[type="radio"]:checked:after {
 	display: block;
 }
 
-input[type="checkbox"]:after {
+input[type="radio"]:after {
 	content: '';
 	position: relative;
 	left: 40%;
@@ -1007,9 +950,12 @@ input[type="checkbox"]:after {
 	height: 40px;
 }
 
-#summernoteForm {
-	margin-top: 20px;
-	margin-bottom: 20px;
+.ck.ck-editor {
+	max-width: auto;
+}
+
+.ck-editor__editable {
+	min-height: 600px;
 }
 
 #descriptionDetail {
@@ -1041,7 +987,7 @@ input[type="checkbox"]:after {
 	border-radius: 8px;
 	background-color: white;
 	border: 1px solid lightgray;
-	margin-left: 5px;
+	margin-left: -20px;
 }
 
 #dateConfirmButton:hover {
@@ -1107,7 +1053,7 @@ input[type="checkbox"]:after {
 
 .classAddress {
 	width: 100%;
-	height: 180px;
+	height: 250px;
 	border: 2px solid lightgray;
 	border-radius: 8px;
 	margin-top: 20px;
@@ -1225,7 +1171,9 @@ input[type="checkbox"]:after {
 }
 
 .classApplyDiv {
+    padding-top: 3em;
 	border-top: 3px solid lightgray;
+	 text-align: center;
 }
 
 #class_apply {
@@ -1324,18 +1272,18 @@ input[type="checkbox"]:after {
 									<ul>
 										<li><div class="followButton" style="color: white">1</div>
 											<a href="#f1"> 클래스명</a></li>
+										<li><div class="followButton" style="color: white">2</div>
+											<a href="#f2"> 카테고리</a></li>
 										<li><div class="followButton" style="color: white">3</div>
-											<a href="#f3"> 카테고리</a></li>
+											<a href="#f3"> 이미지</a></li>
 										<li><div class="followButton" style="color: white">4</div>
-											<a href="#f4"> 썸네일</a></li>
+											<a href="#f4"> 소개</a></li>
 										<li><div class="followButton" style="color: white">5</div>
-											<a href="#f5"> 소개</a></li>
+											<a href="#f5"> 일정</a></li>
 										<li><div class="followButton" style="color: white">6</div>
-											<a href="#f6"> 일정</a></li>
+											<a href="#f6"> 상세주소</a></li>
 										<li><div class="followButton" style="color: white">7</div>
-											<a href="#f7"> 상세</a> 주소</li>
-										<li><div class="followButton" style="color: white">8</div>
-											<a href="#f8"> 수강료,인원</a></li>
+											<a href="#f7"> 수강료,인원</a></li>
 									</ul>
 								</div>
 								<div class="classCommonDiv" id="f1">
@@ -1358,27 +1306,24 @@ input[type="checkbox"]:after {
 								</div>
 								
 								
-								<div class="classCommonDiv" id="f3">
+								<div class="classCommonDiv" id="f2">
 									<span><kimin>*</kimin> 2) 클래스 카테고리 <kimin>(필수)</kimin></span>
 								</div>
 
 								<div class="classCategoryDiv" id="forEach">
 									<ul>
-										<li>펫 푸드<input id="category" type="checkbox" value="food"></li>
-										<li>펫 드로잉<input id="category" type="checkbox" value="drawing"></li>
-										<li>펫 핸드메이드<input id="category" type="checkbox" value="hand"></li>
-										<li>펫 미용<input id="category" type="checkbox" value="beauty"></li>
-										<li>기타 <input id="category" type="checkbox" value="etc"></li>										
-										<!--<c:forEach var="vo" items="${cate }">-->
-										<!--<li ><input type="checkbox"  value=" ${vo.category1_no }" class="categoryL" > ${vo.category_name }</li> <!-- 반복문 -->
-										<!--</c:forEach>-->
+										<li>펫 푸드<input id="category" type="radio" name="check" value="food"></li>
+										<li>펫 드로잉<input id="category" type="radio" name="check" value="drawing"></li>
+										<li>펫 핸드메이드<input id="category" type="radio" name="check" value="handmade"></li>
+										<li>펫 미용<input id="category" type="radio" name="check" value="beauty"></li>
+										<li>기타 <input id="category" type="radio" name="check" value="etc"></li>										
 									</ul>
 								</div>					
 								
 								
 								
 								<!-- ------------------------------클래스 이미지 ---------------------------- -->
-								<div class="classCommonDiv" id="f4">
+								<div class="classCommonDiv" id="f3">
 									<span><kimin>*</kimin> 3) 클래스 이미지 슬라이드<kimin>(필수)</kimin></span>
 								</div>
 
@@ -1401,8 +1346,6 @@ input[type="checkbox"]:after {
 										
 										<input type="file" name="img_upload" id="img_upload"
 											 onchange="previewImage(this,'View_area')" multiple> 
-										<!-- style="display: none;"  -->
-			
 			
 										<!-- 프리뷰 -->
 										<div class="classImgDiv">
@@ -1434,12 +1377,12 @@ input[type="checkbox"]:after {
 								
 								
 								
-								<div class="classCommonDiv" id="f5">
-									<span><kimin>*</kimin> 5) 클래스 소개 <kimin>(필수)</kimin></span>
+								<div class="classCommonDiv" id="f4">
+									<span><kimin>*</kimin> 4) 클래스 소개 <kimin>(필수)</kimin></span>
 								</div>
 								<div>
-									<div id="summernoteForm">
-										<textarea id="summernote" name="intro"></textarea>
+									<div id="editorForm">
+										<textarea id="editor" name="intro" class="editor"></textarea>
 									</div>
 								</div>
 								<div>
@@ -1451,20 +1394,22 @@ input[type="checkbox"]:after {
 									</ul>
 								</div>
 								
+		
 								
 								<!-- ////////////////////// -->
 								<input type="text" id="classDateRealStart" name="start_date">
 								<input type="text" id="classDateRealEnd" name="end_date">
-								<div class="classCommonDiv" id="f6">
-									<span><kimin>*</kimin> 6) 클래스 일정 <kimin>(필수)</kimin></span>
+								<div class="classCommonDiv" id="f5">
+									<span><kimin>*</kimin> 5) 클래스 일정 <kimin>(필수)</kimin></span>
 								</div>
 								<div class="classDate">
 									<ul>
 										<li><input class="flatpickrCalender" /></li>
 										<li><div id="putDateTime"></div></li>
-										<li><div id="dateCount"></div></li>	
 										<li><input id="dateConfirmButton" type="button"
-											value="확인" onclick="classOptionInput()"></li>									
+											value="확인" onclick="classOptionInput()">
+											<input type="hidden" id="optioncheck"></li>									
+										<li><div id="dateCount"></div></li>	
 									</ul>
 										
 								</div>
@@ -1480,23 +1425,20 @@ input[type="checkbox"]:after {
 								
 								
 								
-								<div class="classCommonDiv" id="f7">
-									<span><kimin>*</kimin> 7) 클래스 상세 주소 <kimin>(필수)</kimin></span>
+								<div class="classCommonDiv" id="f6">
+									<span><kimin>*</kimin> 6) 클래스 상세 주소 <kimin>(필수)</kimin></span>
 								</div>
 								<div class="classAddress">
 									<div id="classAddressInnerDiv">
-										<input type="text" id="postcode" placeholder="우편번호" name="class_post_no" readonly="readonly"> 
 										<input type="button" onclick="execDaumPostcode()" value="주소검색" class="buttonClass"><br> 
-										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"> 
+										<input type="text" id="postcode" placeholder="우편번호" name="class_post_no" readonly="readonly"><br> 
+										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"><br> 
 										<span id="guide" style="color: #999; display: none"></span> 
 										<input type="text" id="da" placeholder="상세주소" name="address" />
 										<!-- 히든으로변경 -->
-										<input type="text" id="latitude" name="latitude" value=""/>
-										<input type="text" id="longitude" name="longitude" value=""/>
-										
-										
-										<!-- 구글맵 -->
-										<input id="serchOnGoogle" type="button" value="지도에 위치표시 하기" onclick="mapSearch()" />
+										<input type="hidden" id="latitude" name="latitude" value=""/>
+										<input type="hidden" id="longitude" name="longitude" value=""/>
+
 									</div>
 								</div>
 								<div class="classAddress" id="classAddressInnerDivGoogle">
@@ -1507,7 +1449,7 @@ input[type="checkbox"]:after {
 									var mapContainer = document.getElementById('kakaoMap'), // 지도를 표시할 div
 							        mapOption = {
 							            center: new daum.maps.LatLng(35.865792, 128.594077), // 지도의 중심좌표
-							            level: 5 // 지도의 확대 레벨
+							            level: 3 // 지도의 확대 레벨
 							        };
 								
 								    //지도를 미리 생성
@@ -1532,8 +1474,8 @@ input[type="checkbox"]:after {
 								
 								
 								
-								<div class="classCommonDiv" id="f8">
-									<span><kimin>*</kimin> 8) 클래스 수강료 및 최대인원 <kimin>(필수)</kimin></span>
+								<div class="classCommonDiv" id="f7">
+									<span><kimin>*</kimin> 7) 클래스 수강료 및 최대인원 <kimin>(필수)</kimin></span>
 								</div>
 								<div id="classFee">
 									<span> 수강료 : </span>
