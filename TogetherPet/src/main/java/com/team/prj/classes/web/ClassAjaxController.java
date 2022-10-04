@@ -175,7 +175,7 @@ public class ClassAjaxController {
 	@PostMapping(value="classPhoto", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 
-	public void classOptionInsert(@RequestParam String data) {
+	public void classOptionInsert(@RequestParam String data) {}
 	
 
 
@@ -277,5 +277,5 @@ public class ClassAjaxController {
 	}
 
 
-
+	
 }

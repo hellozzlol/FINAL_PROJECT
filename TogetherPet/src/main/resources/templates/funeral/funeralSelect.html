@@ -6,180 +6,200 @@
 <meta charset="UTF-8">
 
 <style>
-.photo{
-height: 1000px;
+.photo {
+	height: 1000px;
 }
 
-#d5>div:nth-child(2){ 
-white-space: pre-line;
-text-align:center;
-}
-span{
-font-size: 30px;
+#d5>div:nth-child(2) {
+	white-space: pre-line;
+	text-align: center;
 }
 
-.review-comment-list{
-	display:flex;
+span {
+	font-size: 30px;
+}
+
+.review-comment-list {
+	display: flex;
 	justify-content: flex-start;
 	flex-direction: column;
-	background-color:#fff;
-	padding:15px 40px 15px 40px;
+	background-color: #fff;
+	padding: 15px 40px 15px 40px;
 	border-radius: 5px;
 }
 
-.review-comment{
-	display:flex;
+.review-comment {
+	display: flex;
 	justify-content: flex-start;
-	flex-direction:column;
+	flex-direction: column;
 	align-items: flex-end;
 }
 
-.comment-item{
-	display:flex;
+.comment-item {
+	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	margin:10px 0 15px;
+	margin: 10px 0 15px;
 }
 
 .review-comment-list .comment-info {
-	width:30px;
-	margin-right:16px;
+	width: 30px;
+	margin-right: 16px;
 }
 
-.class-review-content .review-comment-list .user-img{
-	width:30px;
-	height:30px;
+.class-review-content .review-comment-list .user-img {
+	width: 30px;
+	height: 30px;
 }
 
-.class-review-content .review-comment-list .comment-text{
-	width:654px;
-	font-size:14px;
-	color:#666;
+.class-review-content .review-comment-list .comment-text {
+	width: 654px;
+	font-size: 14px;
+	color: #666;
 }
 
-span.user-review-info{
-	display:inline-block;
-	margin-right:10px;
-	font-size:15px;
-	font-weight:700;
-	color:#444;
+span.user-review-info {
+	display: inline-block;
+	margin-right: 10px;
+	font-size: 15px;
+	font-weight: 700;
+	color: #444;
 }
 
-
-.comment-delete{
-	color:#999;
+.comment-delete {
+	color: #999;
 }
 
-.comment-menu{
-	margin-top:5px;
+.comment-menu {
+	margin-top: 5px;
 }
 
-.comment-menu > span, .comment-menu > a{
-	display:inline-block;
-	margin-right:10px;
-	font-size:13px;
-	color:#777;
+.comment-menu>span, .comment-menu>a {
+	display: inline-block;
+	margin-right: 10px;
+	font-size: 13px;
+	color: #777;
 }
 
-.comment-menu > span{
+.comment-menu>span {
 	font-weight: 500;
 }
 
-.comment-menu > a{
+.comment-menu>a {
 	font-weight: 600;
 }
 
-.comment-menu > .write-re-comment-btn{
-	color:#ff385c;
+.comment-menu>.write-re-comment-btn {
+	color: #ff385c;
 }
 
-.comment-menu > a.comment-delete{
+.comment-menu>a.comment-delete {
 	font-weight: 500;
-	color:#aaa;
+	color: #aaa;
 }
 
-
-.review-comment-write{
-	display:flex;
+.review-comment-write {
+	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	width:700px;
-	padding:0 40px 0 0px;
+	width: 700px;
+	padding: 0 40px 0 0px;
 }
 
-
-.reviewCommentFrm, .replyFrm{
-	display:flex;
+.reviewCommentFrm, .replyFrm {
+	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	width:700px;
+	width: 700px;
 }
 
-.reviewCommentFrm{
-	width:700px;
-	margin-top:25px;
+.reviewCommentFrm {
+	width: 700px;
+	margin-top: 25px;
 }
 
-.replyFrm{
-	margin-bottom:20px;
-	margin-top:5px;
+.replyFrm {
+	margin-bottom: 20px;
+	margin-top: 5px;
 }
 
-
-.review-reply{
-	width:590px;
-	min-height:50px;
+.review-reply {
+	width: 590px;
+	min-height: 50px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	padding:6px 10px;
+	padding: 6px 10px;
 	resize: none;
-	
 }
 
-.replyFrm > .review-reply{
-	width:545px;
-	min-height:50px;
+.replyFrm>.review-reply {
+	width: 545px;
+	min-height: 50px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	padding:6px 10px;
+	padding: 6px 10px;
 }
 
-.review-reply-btn{
-	width:50px;
-	height:36px;
-	margin-left:14px;
+.review-reply-btn {
+	width: 50px;
+	height: 36px;
+	margin-left: 14px;
 	border: none;
-	background-color:#000000;
-	color:#fff;
+	background-color: #000000;
+	color: #fff;
 	border-radius: 5px;
-	cursor:pointer;
+	cursor: pointer;
 }
 
-.btn{
- 		
-        margin:auto;
-        display:block;
+.btn {
+	margin: auto;
+	display: block;
 }
 </style>
 
 
 <title>반려동물장례식장</title>
 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+
+/*-----------------------
+//별점 클릭 시 별점 조정	
+-------------------------*/	
+$(document).on('click', '.fa-star', function(evt){
+	console.log('실행');
+	var idxS = $(this).index();
+	console.log(idxS);
+	for(var i=0; i<=idxS; i++){ // 별점 채우기
+		$('.star-point').children().eq(i).css('color', '#FFB300');
+	}
+	for(var i=4; i>idxS; i--){ // 별점 비우기
+		$('.star-point').children().eq(i).css('color', '#d3d3d3');
+	}
+	$('#star').val(idxS+1);
+	$('.star-txt').html('<span>'+ (idxS+1) +'</span><span>점</span>');
+	
+});
+
+
+</script>
 
 </head>
 
 <body>
 	<article layout:fragment="content">
 		<!--shop  area start-->
-		
+
 
 		<!--shop  area start-->
 		<div class="shop_section shop_reverse">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 col-md-12">
-					
-					
+
+
 						<!--breadcrumbs area start-->
 						<div class="breadcrumb_content" style="margin: 50px;">
 							<ul>
@@ -201,16 +221,16 @@ span.user-review-info{
 								</p>
 							</div>
 						</div>
-					
-				
-					
-					
-					
-					
-				
+
+
+
+
+
+
+
 						<table style="width: 100%;">
 							<tbody>
-								
+
 
 								<tr th:each="f:${funeral}">
 									<td
@@ -229,70 +249,63 @@ span.user-review-info{
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">전화번호</td>
 									<td th:text="${f.call}" style="width: 70%; text-align: center;"><br></td>
 								</tr>
-							
+
 								<tr th:each="f:${funeral}">
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">홈페이지</td>
-									<td
-										style="width: 70%; text-align: center; font-size: 15px">
-											<a th:href="${f.homepage}">[[${f.homepage}]]</a>
-										</td>
-										
+									<td style="width: 70%; text-align: center; font-size: 15px">
+										<a th:href="${f.homepage}">[[${f.homepage}]]</a>
+									</td>
+
 								</tr>
-							
+
 							</tbody>
 						</table>
-						 <br>
-						 <br>
-						
-													
+						<br> <br>
+
 						<!--product info start-->
 						<div class="product_d_info mb-118">
 							<div class="container">
 								<div class="row">
 									<div class="col-12">
 										<div class="product_d_inner">
+
+											<!-- 클래스 목차 메뉴바 -->
 											<div class="product_info_button border-bottom">
 												<ul class="nav" role="tablist">
-													<li><a class="active" data-toggle="tab" href="#info"
-														role="tab" aria-controls="info" aria-selected="false">업체정보</a>
-													</li>
+													<li><a data-toggle="tab" href="#additional" role="tab"
+														aria-controls="additional" aria-selected="false">업체소개</a></li>
 													<li><a data-toggle="tab" href="#reviews" role="tab"
-														aria-controls="reviews" aria-selected="false">후기
-													</a></li>
-
-
+														aria-controls="reviews" aria-selected="false">리뷰</a></li>
+													<li><a data-toggle="tab" href="#maps" role="tab"
+														aria-controls="maps" aria-selected="false">오시는 길</a></li>
 												</ul>
 											</div>
+
 											<div class="tab-content">
-												<div class="tab-pane fade show active" id="info"
-													role="tabpanel" th:each="f:${funeral}">
+												<!-- 업체 소개글 -->
+												<div class="tab-pane fade show active" id="additional" role="tabpanel"
+													th:each="f:${funeral}">
 													<div class="product_info_content">
-														<p th:text="${f.name}">여기 병원소개 해주세용.</p>
+														<p th:text="${f.name}">업체소개</p>
 														<ul>
 															<li>주차장보유</li>
 															<li>영어가능</li>
 														</ul>
 													</div>
 												</div>
+
+												<!-- 리뷰 -->
 												<div class="tab-pane fade" id="reviews" role="tabpanel">
 													<div class="reviews_wrapper">
-														<h2>1 review for Donec eu furniture</h2>
+														<h2>1개의 리뷰가 있습니다.</h2>
 														<div class="reviews_comment_box">
 															<div class="comment_thmb">
 																<img src="assets/img/blog/comment2.jpg" alt="">
 															</div>
 															<div class="comment_text">
 																<div class="reviews_meta">
-																	<div class="star_rating">
-																		<ul class="d-flex">
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																		</ul>
-																	</div>
+
 																	<p>
 																		<strong>admin </strong>- September 12, 2018
 																	</p>
@@ -301,121 +314,98 @@ span.user-review-info{
 															</div>
 
 														</div>
-														<div class="comment_title">
-															<h2>Add a review</h2>
-															<p>Your email address will not be published. Required
-																fields are marked</p>
-														</div>
 														<div class="product_ratting mb-10">
-															<h3>Your rating</h3>
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
+															<h2 class="star-txt">별점을 선택해주세요</h2>
+															<div class="star-point">
+																<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+																	class="fa-star">★</i> <i class="fa-star">★</i> <i
+																	class="fa-star">★</i>
+															</div>
+															<input type="hidden" id="star" name="star" value="0" />
+
 														</div>
 														<div class="product_review_form">
-															
+															<form action="#">
 																<div class="row">
-																	<div class="col-12">
-																		<label for="review_comment">Your review </label>
+																	<div class="comment_title col-12">
+																		<h2>후기를 작성해주세요</h2>
+																		<div class="col-lg-6 col-md-6">
+																			<!-- 수강자명 -->
+																			<input id="author" type="text"
+																				th:value="${session.user.name}" readonly>
+																		</div>
+																		<br>
 																		<textarea name="comment" id="review_comment"></textarea>
-																	</div>
-																	<div class="col-lg-6 col-md-6">
-																		<label for="author">Name</label> <input id="author"
-																			type="text" placeholder="여기아마 닉네임 들어가고 이부분 세션 걸듯?">
-
 																	</div>
 
 																</div>
-																<button type="submit">Submit</button>
-															
+																<button type="submit">작성하기</button>
+															</form>
 														</div>
 													</div>
 												</div>
-												<div class="tab-pane fade" id="tags" role="tabpanel">
-													<div class="product_info_content">
-														<ul>
-															<li>Length: 74cm</li>
-															<li>Regular fit</li>
-															<li>Notched lapels</li>
-															<li>Twin button front fastening</li>
-															<li>Front patch pockets; chest pocket</li>
-															<li>Internal pockets</li>
-														</ul>
-													</div>
-												</div>
-												<div class="tab-pane fade" id="additional" role="tabpanel">
+
+												<!-- 오시는길 -->
+												<div class="tab-pane fade" id="maps" role="tabpanel">
 													<div class="product_d_table">
 														<form action="#">
+															<input type="hidden" name="latitude" id="latitude"
+																th:value="${funeral.latitude}"> <input
+																type="hidden" name="longitude" id="longitude"
+																th:value="${funeral.longitude}">
 															<table>
 																<tbody>
 																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
+																		<td class="first_child">주소</td>
+																		<td>[[${funeral.address}]]</td>
 																	</tr>
 																</tbody>
 															</table>
+															<br>
+
+															<div id="map"
+																style="width: auto; height: 400px; margin: auto;"></div>
+															<script type="text/javascript"
+																src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22
+																a6e05b0&libraries=services,clusterer,drawing">
+															</script>
+															<script>
+																var latitude = $(
+																		'#latitude')
+																		.val(); //x축
+																var longitude = $(
+																		'#longitude')
+																		.val(); //y축
+																var mapContainer = document
+																		.getElementById('map'), // 지도를 표시할 div 
+																mapOption = {
+																	center : new daum.maps.LatLng(
+																			latitude,
+																			longitude), // 지도의 중심좌표
+																	level : 3
+																// 지도의 확대 레벨
+																};
+
+																//지도를 미리 생성
+																var map = new daum.maps.Map(
+																		mapContainer,
+																		mapOption);
+																//주소-좌표 변환 객체를 생성
+																var geocoder = new daum.maps.services.Geocoder();
+																//마커를 미리 생성
+																var marker = new daum.maps.Marker(
+																		{
+																			position : new daum.maps.LatLng(
+																					latitude,
+																					longitude),
+																			map : map
+																		});
+															</script>
 														</form>
 													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
 												</div>
-												<div class="tab-pane fade" id="tabinfo" role="tabpanel">
-													<div class="product_d_table">
-														<form action="#">
-															<table>
-																<tbody>
-																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
-																	</tr>
-																</tbody>
-															</table>
-														</form>
-													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
-												</div>
-												
+
+
 
 											</div>
 										</div>
@@ -424,21 +414,24 @@ span.user-review-info{
 							</div>
 						</div>
 						<!--product info end-->
-						
-				             <br>
-				             <br>
-				             <br>
-							<div id="btn">
-							<button type="button" class="btn btn-dark" onclick="location.href='funeralList'">목록가기</button>
-							<br>
-							<button type="button" class="btn btn-dark" onclick="alert('스크랩하시겠습니까?')">스크랩</button>
-							</div>
-							
+
+
+						<br> <br> <br>
+						<div id="btn">
+							<button type="button" class="btn btn-dark"
+								onclick="location.href='funeralList'">목록가기</button>
+						</div>
+
+					</div>
+				</div>
+
+
 			</div>
 		</div>
-		
-		
-		
+
+
+
+
 	</article>
 </body>
 </html>
