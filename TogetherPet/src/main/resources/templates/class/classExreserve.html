@@ -15,8 +15,10 @@
 	document.addEventListener('DOMContentLoaded', function() {
 			console.log("==========?????????" , Number($('#userNo').val()))	
 		
+			/*-----------------------
+			총액 계산
+			-------------------------*/		
 			getTotal();
-			// 총액 계산			
 			function getTotal() {
 
 				//subtotal
@@ -39,7 +41,11 @@
 				// 할인액
 				//$('#dc').html(sTotal-gTotal);
 			}
-		// 적립금 사용하기 버튼 눌렀을 때 동적 제어	
+			
+			
+			/*-----------------------
+			적립금 사용하기 버튼 눌렀을 때 동적 제어	
+			-------------------------*/
 			$('#getMoney').on('click', function(){
 				let money = Number($('#money').val());
 				if(money < 1000){
@@ -55,8 +61,9 @@
 			})
 		
 		
-		
-			// 주문/결제 
+			/*-----------------------
+			주문 결제 
+			-------------------------*/
 			$('#insertReserve').on('click', function () {
 				
 				console.log("????????????????" + document.getElementById('userNo'));
@@ -83,13 +90,6 @@
 					console.log('money' + money);
 					//let clas = $('#tb > tr');
 					let totalPrice = $('#gTotal').text();
-					
-						//let classNo = Number(g.getAttribute('id'));
-						//let totalPrice = Number(g.children[4].children[0].children[0].innerHTML);
-						//let minusPrice = totalPrice * 0.9;
-						//let amount = Number(g.children[3].children[0].children[0].value);
-						//let exreserveNo = Number(g.getAttribute('data-cn'));
-						//console.log('cartNo' + cartNo);
 						
 						$.ajax({
 								url: 'classReserveInsert',
@@ -105,7 +105,6 @@
 									userNo: userNo,
 									classNo: classNo,
 									totalPrice: totalPrice,
-									
 									exreserveNo: exreserveNo,
 									money: money,
 									dt: dt,
@@ -117,11 +116,8 @@
 								$('#reserveCall').submit();
 							})
 					
-					
-				}
-			})
-
-			
+					}
+			})	
 	})
 </script>
 

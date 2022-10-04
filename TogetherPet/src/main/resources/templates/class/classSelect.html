@@ -23,135 +23,116 @@
 <!-- <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
-	$(document).ready(function(){
-						var jb = jQuery.noConflict();
-						//달력
-						jb(function() {
-							jb('.datepicker').datepicker(
-									{ 	dateFormat : "yy-mm-dd",
-										dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
-										minDate : "0m",
-										maxDate : "+5m"
-									}
-									)
-							
-							//jb('.datepicker').datepicker('setdate', 'today');
-						})
-				});
-</script>
+$(document).ready(function(){
+
+		//var logid = "${userId}";
+		var token = $("meta[name='_csrf']").attr("content");
+ 		var header = $("meta[name='_csrf_header']").attr("content");
+	    				
+	    				
+		/*-----------------------
+		데이터 피커 생성
+		-------------------------*/
+		$('.datepicker').datepicker(
+				{ 	dateFormat : "yy-mm-dd",
+					dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
+					minDate : "0m",
+					maxDate : "+5m"
+				}
+		)
 
 
-<script>
-	$(document).ready(function(){
-						var jc = jQuery.noConflict();
-						//var logid = "${userId}";
-						var token = jc("meta[name='_csrf']").attr("content");
-	    				var header = jc("meta[name='_csrf_header']").attr("content");
 						
-						//달력 Ajax	
-						jc('#datepicker').on("change", function() {
-								jc("#selectClassListd").empty();
-								var maxheadcount = `[[${clas.maxHeadcount}]]` //jc(this).(".maxhd").val(); //이 클래스의 최대인원		
-								var params = {"sdate" : jc(this).val(),"no":`[[${clas.classNo}]]` };
+		/*-----------------------
+		//날짜 선택시 클래스 옵션 조회 Ajax	
+		-------------------------*/				
+		$('#datepicker').on("change", function() {
+				$("#selectClassListd").empty();
+				var params = {"sdate" : $(this).val(),"no":`[[${clas.classNo}]]` }; 	
+				
+			 	$.ajax({
+						url : "classDateOption",
+						type:'get',
+						data : params,
+						success : htmlView
+				}); 
+			 	
+		});
+		
+		
+		/*-----------------------
+		//콜백함수 날짜 선택시 클래스 옵션 조회 Ajax	
+		-------------------------*/	
+		function htmlView(list) {
+			var maxheadcount = `[[${clas.maxHeadcount}]]` //이 클래스의 최대인원		
+			for (c of list) {
+				if( maxheadcount > `${c.allHeadcount}`){//name변경 checkedclassoption
+					var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
+						<div class='startdiv'>${c.startDt}</div>
+						<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 : ${c.allHeadcount}</div>
+						<div class='classoptionno'>${c.classOptionNo}</div>
+						<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label><input type='radio' class='radio' name='radioNo' id='radioNo' value= '${c.classOptionNo}'  /></div>
+						</div>`
+   					//var a = c.class_option_no;	 	    					
+   				 } else {
+   					 var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
+							<div class='startdiv'  style='color: #a0a0a0;'>${c.startDt}</div>
+							<div class='headcountdiv'  style='color: #a0a0a0;'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 :  ${c.allHeadcount}</div>
+							<div class='classoptionno'  style='color: #a0a0a0;'>${c.classOptionNo}</div>
+							<div class='inend'  style='color: #a0a0a0;'>&nbsp; 정원마감</div> 
+						</div>`
 
-								console.log(maxheadcount)
-								console.log(params);	    	
-								
-								jc.ajax({
-										url : "classDateOption",
-										type:'get',
-										data : params,
-										success : function(response){
-											htmlView(response);
-											//console.log('성공');
-											
-										}
-								});
-								
-								function htmlView(list) {
-									for (c of list) {
-										if( maxheadcount > `${c.allHeadcount}`){//name변경 checkedclassoption
-											var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
-												<div class='startdiv'>${c.startDt}</div>
-												<div class='headcountdiv'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 : ${c.allHeadcount}</div>
-												<div class='classoptionno'>${c.classOptionNo}</div>
-												<div class='ckdiv'><label style='color:#ff385c;'>클래스선택</label><input type='radio' class='radio' name='radioNo' id='radioNo' value= '${c.classOptionNo}'  /></div>
-												</div>`
-					    					//var a = c.class_option_no;	 	    					
-					    				 } else {
-					    					 var result = `<div class='oneclassdiv' style='margin-bottom:10px;'>
-													<div class='startdiv'  style='color: #a0a0a0;'>${c.startDt}</div>
-													<div class='headcountdiv'  style='color: #a0a0a0;'> 최대인원 : [[${clas.maxHeadcount}]] / 신청인원 :  ${c.allHeadcount}</div>
-													<div class='classoptionno'  style='color: #a0a0a0;'>${c.classOptionNo}</div>
-													<div class='inend'  style='color: #a0a0a0;'>&nbsp; 정원마감</div> 
-												</div>`
-		 
-					    				 }
+   				 }
 
-										jc("#selectClassListd").append(result);
-									}
-								}				
-						});
+				$("#selectClassListd").append(result);
+			}
+		}				
+
 						
 
-						//결제페이지로 이동함
-						jc('#addExreserve').on('click', function(){
-							if(confirm('해당 클래스를 신청하시겠습니까?')){	
-								var token = jc("meta[name='_csrf']").attr("content");
-			    				var header = jc("meta[name='_csrf_header']").attr("content");
-								
-								//클래스 옵션 체크값 선언 후 체크값 추출
-								var option =  jc('input:radio[name="radioNo"]:checked').val();
-								//폼에 추출한 값 넣어주기?
-								jc("#classOptionNo").val(option);
-								alert(option);
-								
-								jc('#exreserveCall').submit();
-								
-								
-							}
-						})
-						
-						
-						
-						jc.ajax('classReserveInsert', {
-									type: 'post',
-									data: {userNo:userNo, classNo:classNo, classOptionNo:classOptionNo},
-									dataType: 'text',
-									beforeSend : function(xhr){
-										xhr.setRequestHeader(header, token)},
-								})
-								.done(res => {
-									if(confirm(res)){
-										//폼에 추출한 값 넣어주기?
-										jc("#classOptionNo").val(option);
-										jc('#exreserveCall').submit();
-									}
-								})
-						
-						//별점 클릭 시 별점 조정
-						jc(document).on('click', '.fa-star', function(evt){
-							console.log('실행');
-							var idxS = jc(this).index();
-							console.log(idxS);
-							for(var i=0; i<=idxS; i++){ // 별점 채우기
-								jc('.star-point').children().eq(i).css('color', '#FFB300');
-							}
-							for(var i=4; i>idxS; i--){ // 별점 비우기
-								jc('.star-point').children().eq(i).css('color', '#d3d3d3');
-							}
-							jc('#star').val(idxS+1);
-							jc('.star-txt').html('<span>'+ (idxS+1) +'</span><span>점</span>');
-							
-						});
-						
-						
-	});
+		/*-----------------------
+		//결제페이지로 이동함	
+		-------------------------*/							
+		$('#addExreserve').on('click', function(){
+			if(confirm('해당 클래스를 신청하시겠습니까?')){	
+				var token = $("meta[name='_csrf']").attr("content");
+   				var header = $("meta[name='_csrf_header']").attr("content");
+				
+				//클래스 옵션 체크값 선언 후 체크값 추출
+				var option =  $('input:radio[name="radioNo"]:checked').val();
+				//폼에 추출한 값 넣어주기?
+				$("#classOptionNo").val(option);
+				alert(option);
+				
+				$('#exreserveCall').submit();
+				
+				
+			}
+		})
+
+		/*-----------------------
+		//별점 클릭 시 별점 조정	
+		-------------------------*/	
+		$(document).on('click', '.fa-star', function(evt){
+			console.log('실행');
+			var idxS = $(this).index();
+			console.log(idxS);
+			for(var i=0; i<=idxS; i++){ // 별점 채우기
+				$('.star-point').children().eq(i).css('color', '#FFB300');
+			}
+			for(var i=4; i>idxS; i--){ // 별점 비우기
+				$('.star-point').children().eq(i).css('color', '#d3d3d3');
+			}
+			$('#star').val(idxS+1);
+			$('.star-txt').html('<span>'+ (idxS+1) +'</span><span>점</span>');
+			
+		});
+												
+});
 </script>
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
-<!-- 새로추가 예약달력 css -->
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- 예약달력 css -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 
 <style>
@@ -625,8 +606,8 @@
 						<div class="scontainer">
 							<ul id="sul" class="slider">
 								<li class="item" th:each="ph:${photoList}" id="parent"><img
-									id="slide" th:src="${ph.dir}" name="slide"></li>
-												<!-- "${ph.dir}" -->
+									id="slide" th:src="@{display(fileName=${ph.dir})}" name="slide"></li>
+												<!-- th:src="@{display(fileName=${ph.dir})}" -->
 							</ul>
 						</div>
 						<div class="sbtn">
@@ -764,15 +745,18 @@
 								<!-- 클래스 소개글 -->
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
-										<p>[[${clas.intro}]]</p>
-										<ul>
-											<li>Length: 74cm</li>
-											<li>Regular fit</li>
-											<li>Notched lapels</li>
-											<li>Twin button front fastening</li>
-											<li>Front patch pockets; chest pocket</li>
-											<li>Internal pockets</li>
-										</ul>
+										<a id="intro"></a>
+										<script>
+											var str = `[[${clas.intro}]]`;
+											str = str.replaceAll("&lt;", "<");
+											str = str.replaceAll("&gt;", ">");
+											str = str.replaceAll("&amp;lt;", "<");
+											str = str.replaceAll("&amp;gt;", ">");
+											str = str.replaceAll("&amp;nbsp;", " ");
+											str = str.replaceAll("&amp;amp;", "&");
+											document.getElementById('intro').innerHTML=str;
+										</script>
+										
 									</div>
 								</div>
 
@@ -870,7 +854,7 @@
 													var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 													mapOption = {
 											            center: new daum.maps.LatLng(longitude, latitude), // 지도의 중심좌표
-											            level: 5 // 지도의 확대 레벨
+											            level: 3 // 지도의 확대 레벨
 											        };
 												
 												    //지도를 미리 생성

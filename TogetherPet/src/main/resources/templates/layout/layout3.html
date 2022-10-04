@@ -72,7 +72,7 @@
     </script>
 <script>
 		/* 0926 희수가 추가 */
-	document.addEventListener('DOMContentLoaded', function() {
+	$(function(){
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -189,7 +189,7 @@
 								<nav>
 									<ul class="d-flex">
 										<li><a href="shop">shop</a></li>
-										<li><a href="classSelectList">class</a>
+										<li><a href="classList">class</a>
 											<ul class="sub_menu">
 												<li><a href="#">펫 푸드</a></li>
 												<li><a href="#">펫 핸드메이드</a></li>
@@ -208,8 +208,44 @@
 									</ul>
 								</nav>
 							</div>
-							
-							<!-- -------------------------- -->
+							<div class="header_account">
+								<ul class="d-flex">
+									<li class="header_search"><a href="#"><i
+											class="icon-magnifier icons"></i></a></li>
+									<li class="account_link"><a href="#"><i
+											class="icon-user icons"></i></a>
+										<ul class="dropdown_account_link">
+											<li><a href="/usersSelect">My Account</a></li>
+											<li><a href="/sellerMyPage">seller(임시용)</a></li>
+											<!-- 0926 희수가 추가 -->
+											<div sec:authorize="isAnonymous()">
+												<li><a href="loginForm">Login</a></li>
+												<li><a href="joinMain">Join</a></li> <!-- 0929 JH 추가 -->
+											</div>
+											<div sec:authorize="isAuthenticated()">
+												<li><a id="logout">Logout</a></li>
+
+												<form action="logout" method="post" id="logoutFrm">
+													<input type="hidden" th:name="${_csrf.parameterName}"
+														th:value="${_csrf.token}">
+												</form>
+											</div>
+										</ul></li>
+									<li><a href="#"><i class="icon-heart icons"></i></a> <span
+										class="item_count">2</span></li>
+									<div sec:authorize="isAuthenticated()">
+										<li class="shopping_cart"><a id="layoutcartCall"><img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
+												<span id="item_count" class="item_count"></span></a></li>
+									</div>
+									<div sec:authorize="isAnonymous()">
+										<li class="shopping_cart"><a href="loginForm"><img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
+										</li>
+									</div>
+									<!-- / 0926 희수가 추가 -->
+								</ul>
+							</div>
 							
 
 						</div>

@@ -135,7 +135,6 @@ public class BoardController {
 	}
 	
 	//커뮤니티 파일 다운로드
-	
 	@GetMapping(value = "/download")
     public void download(String fileName, HttpServletResponse response, HttpServletRequest request){
 

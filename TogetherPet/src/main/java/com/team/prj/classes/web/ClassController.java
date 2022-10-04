@@ -8,32 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.team.prj.classes.mapper.ClassMapper;
-import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
-import com.team.prj.classexreserve.mapper.ClassExreserveMapper;
 import com.team.prj.classexreserve.service.ClassExreserveService;
 import com.team.prj.classexreserve.service.ClassExreserveVO;
-import com.team.prj.classreserve.mapper.ClassReserveMapper;
 import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
-import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class ClassController {
 	
-	@Autowired 
-	private ClassMapper dao;
 	@Autowired
 	private ClassService classes;
 	@Autowired 
@@ -53,11 +44,11 @@ public class ClassController {
 	@RequestMapping("classList")
 	public String classSelectList(Model model, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			@RequestParam(required = false, defaultValue = "9") int pageSize) {
+		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
 		PageHelper.startPage(pageNum, pageSize); 
 		
-		model.addAttribute("pageInfo",PageInfo.of(dao.classSelectList()));
-		model.addAttribute("class", dao.classSelectList());
+		model.addAttribute("pageInfo",PageInfo.of(classes.classSelectList()));
 		return "class/classList";
 	}
 	
@@ -81,8 +72,7 @@ public class ClassController {
 	//클래스 등록페이지
 	@GetMapping("classInsert")
 	public String classInsert(Model model) {
-		//ClassVO vo = new ClassVO();
-		//model.addAttribute("class", dao.classInsert(vo));
+
 		return "class/classInsert";
 	}
 
@@ -126,26 +116,15 @@ public class ClassController {
 		vo = list.get(0);
 		System.out.println("클래스 예약 내역 셀렉트 완료");
 		
-		// 상품 총 가격(할인후가격-적립금)
-		int total = 0;
-		for (int i = 0; i < list.size(); i++) {
-			total += list.get(i).getTotalPrice();
-		}
-		total = total - vo.getMoney();
 
 		// 적립금 업데이트
 		UsersVO u = new UsersVO();
-		System.out.println("===========" + vo.getUserNo());
-		System.out.println("===========" + vo.getMoney());
 		u.setUserNo(vo.getUserNo());
 		u.setMoney(vo.getMoney());
 		reserve.updateMoney(u);
-		System.out.println("적립금 업데이트 완료");
 		
-		model.addAttribute("reserveList", list);
 		model.addAttribute("reserve", vo);
-		model.addAttribute("totalPrice", total);
-		
+	
 		
 		return "class/reserveConfirm";
 	}
