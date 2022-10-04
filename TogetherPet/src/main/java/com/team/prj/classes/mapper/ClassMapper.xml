@@ -163,10 +163,14 @@
 	
 	<!-- (관리자 페이지)클래스 리스트 1004 추가 / 지혜 -->
 	<select id="classList" resultType="com.team.prj.classes.service.ClassVO">
-		SELECT * 
+		SELECT CLASS_NO, CATEGORY, NAME, UPLOAD_DATE,
+			   CASE WHEN UPLOAD_STATE = '0' THEN '승인대기'
+			   	    WHEN UPLOAD_STATE = '1' THEN '승인완료' 
+			   ELSE ' '
+			   END AS UPLOAD_STATE
 		FROM CLASS
-		where upload_state=0  
-		order by class_no     
+		<!-- where upload_state=0  --> 
+		ORDER BY CLASS_NO 
 	</select>
 	
 
