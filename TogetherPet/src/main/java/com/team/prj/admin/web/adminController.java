@@ -192,7 +192,7 @@ public class adminController {
 	}
 	
 	
-	// 글 등록 검토(클래스) // (state가 0인것만 조회)
+	// 글 등록 검토(클래스) // (state가 0 = 승인대기 인것만 조회)
 	@GetMapping("/manager/classConfirm")
 	public String classConfirm(Model model, ClassVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,

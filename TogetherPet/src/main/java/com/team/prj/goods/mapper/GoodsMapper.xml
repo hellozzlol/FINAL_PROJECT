@@ -112,8 +112,9 @@
 		<choose>
 			<when test="key == 1"> 1 </when>
 			<when test="key == 2"> 10 desc</when>
-
-	</update>
+		</choose>
+	</select>
+	
 	
 	<!-- 등록한 상품 검색 -->
 	<select id="goodsSearch" resultType="com.team.prj.goods.service.GoodsVO">
