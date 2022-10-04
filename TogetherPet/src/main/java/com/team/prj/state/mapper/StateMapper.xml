@@ -100,7 +100,7 @@
 	<update id="goodsConfirm" parameterType="com.team.prj.orders.service.OrderVO">
 		update orders
 		set delivery_state = '7'
-		where delivery_state LIKE '%4%'
+		where delivery_state = '4'
 		and order_no = #{orderNo}
 	</update>
 </mapper>

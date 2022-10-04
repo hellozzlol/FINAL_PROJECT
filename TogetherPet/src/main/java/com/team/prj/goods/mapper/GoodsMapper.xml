@@ -35,7 +35,7 @@
 		select board_no, count(*) rv_cnt from review where
 		category_id='S' group by board_no
 	</select>
-	
+
 	<!-- goods 리뷰 리스트 호출 -->
 	<select id="reviewList"
 		resultType="com.team.prj.review.service.ReviewVO">
@@ -60,49 +60,82 @@
 			<if test="amount != null">amount = #{amount},</if>
 			<if test="price != null">price = #{price},</if>
 			<if test="dc != null">dc = #{dc},</if>
-			<if test="info != null">info = #{info}</if>
+			<if test="info != null">info = #{info},</if>
+			<if test="sellState != null">sell_state = #{sellState},</if>
 		</set>
 		WHERE seller_no = #{sellerNo}
 		AND goods_no = #{goodsNo}
 	</update>
-	
+
 	<!-- 배송 상품 조회(상태 1,2,3) 1003 선희 추가 -->
-	<select id="deliveryList" resultType="com.team.prj.orders.service.OrderVO">
+	<select id="deliveryList"
+		resultType="com.team.prj.orders.service.OrderVO">
 		SELECT *
 		FROM orders
 		WHERE delivery_state IN ('1','2','3')
 		AND seller_no = #{sellerNo}
 		ORDER BY order_no DESC
 	</select>
-	
-	<!-- 반품/교환 상품 조회(상태 5,6) 1004 선희 추가 -->
-	<select id="sellerCancelList" resultType="com.team.prj.orders.service.OrderVO">
-		SELECT *
-		FROM orders
-		WHERE delivery_state IN ('5','6')
-		AND seller_no = #{sellerNo}
-		ORDER BY order_no DESC
+
+	<!-- 반품/교환 상품 조회(상태 1,3) 1004 선희 추가 -->
+	<select id="sellerCancelList"
+		resultType="com.team.prj.orders.service.OrderVO"
+		parameterType="com.team.prj.state.service.StateVO">
+		SELECT s.order_no, o.goods_no, o.goods_name, o.amount, o.name, o.call, o.address, s.state
+		FROM orders o, state s
+		WHERE state IN ('1','3')
+		AND o.order_no = s.order_no
+		AND o.seller_no = #{sellerNo}
+		ORDER BY o.order_no DESC
 	</select>
-	
+
 	<!-- 판매완료(구매확정) 상품 조회(상태 7) 1004 선희 추가 -->
-	<select id="sellerDoneList" resultType="com.team.prj.orders.service.OrderVO">
-		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
+	<select id="sellerDoneList"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT order_no, goods_no, goods_name, amount, name, call,
+		address, delivery_state
 		FROM orders
 		WHERE seller_no = 1
-		AND delivery_state = '7'
+		AND
+		delivery_state = '7'
 		ORDER BY order_no DESC
 	</select>
-	
-	<!-- 배송 상태 업데이트 1003 선희 추가 -->
-	<update id="sellerDeliUpdate" parameterType="com.team.prj.orders.service.OrderVO">
+
+	<!-- 배송 상태 업데이트(상품준비중) 1003 선희 추가 -->
+	<update id="deliveryReadyUpdate"
+		parameterType="com.team.prj.orders.service.OrderVO">
 		UPDATE orders
 		SET delivery_state = '2'
-		WHERE seller_no = #{sellerNo}
-		AND goods_no = #{goodsNo}
+		WHERE
+		delivery_state = '1'
+		AND order_no = #{orderNo}
+	</update>
 
-	</update> 
+	<!-- 배송 상태 업데이트(배송지시) 1003 선희 추가 -->
+	<update id="deliveryUpdate"
+		parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '3'
+		WHERE delivery_state = '2'
+		AND order_no = #{orderNo}
+	</update>
 	
+	<!-- 반품 상태 업데이트(접수) 1004 선희 추가 -->
+	<update id="cancelUpdate" parameterType="com.team.prj.state.service.StateVO">
+		UPDATE state
+		SET state = '1'
+		WHERE state = '2'
+		AND order_no = #{orderNo}
+	</update>
 	
+	<!-- 교환 상태 업데이트(접수) 1004 선희 추가 -->
+	<update id="changeUpdate" parameterType="com.team.prj.state.service.StateVO">
+		UPDATE state
+		SET state = '3'
+		WHERE state = '4'
+		AND order_no = #{orderNo}
+	</update>
+
 	<!-- 상품 조회(state=0 (미 승인) 1004 추가 / 지혜) -->
 	<select id="goodsList"
 		resultType="com.team.prj.goods.service.GoodsVO">
@@ -112,11 +145,12 @@
 		<choose>
 			<when test="key == 1"> 1 </when>
 			<when test="key == 2"> 10 desc</when>
+		</choose>
+	</select>
 
-	</update>
-	
 	<!-- 등록한 상품 검색 -->
-	<select id="goodsSearch" resultType="com.team.prj.goods.service.GoodsVO">
+	<select id="goodsSearch"
+		resultType="com.team.prj.goods.service.GoodsVO">
 		select *
 		from goods
 		where
@@ -124,15 +158,15 @@
 			<when test="key == 1">name LIKE '%' || #{val} || '%'</when>
 		</choose>
 	</select>
-	
+
 	<!-- 오더 상품 검색 -->
-	<select id="orderSearch" resultType="com.team.prj.orders.service.OrderVO">
+	<select id="orderSearch"
+		resultType="com.team.prj.orders.service.OrderVO">
 		SELECT *
 		FROM orders
 		WHERE
 		<choose>
 			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
-
 		</choose>
 	</select>
 </mapper>
