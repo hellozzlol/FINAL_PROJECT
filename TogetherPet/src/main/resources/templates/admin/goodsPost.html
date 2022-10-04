@@ -11,60 +11,54 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<title>회원 관리 - 판매자 회원</title>
+<title>전체 글 조회 - 커뮤니티</title>
 <style>
 .uList {
-
+	/* 	position: relative;
+	top: 50%;
+ */
 	margin-top: 100px;
 }
 </style>
 </head>
 <body>
 	<article layout:fragment="content">
-
 		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
-			<span class="text-muted ">회원 관리 </span>
-		</h5>
+			<span class="text-muted ">전체 게시글 조회 / </span> 
+			커뮤니티
+			</h5>
 		<br><br>
-		<!-- Basic Table -->
+		<!-- 커뮤니티 게시글 테이블 -->
 		<div class="card">
-			<h5 class="card-header">판매자 회원</h5>
+			<h5 class="card-header"></h5>
 			<div class="table-responsive text-nowrap">
 				<table class="table">
 					<thead>
 						<tr>
 							<th>선택</th>
-							<th>회원번호</th>
-							<th>아이디</th>
-							<th>이름</th>
-							<th>상호</th>
-							<th>상태</th>
+							<th>글 번호</th>
+							<th>카테고리</th>
+							<th>글 제목</th>
+							<th>닉네임</th>
+							<th>작성일자</th>
 						</tr>
 					</thead>
-				<tbody class="table-border-bottom-0">
-		<!--			<tr th:each="s:${seller}"> 
+					<tbody class="table-border-bottom-0">
+						<tr th:each="b:${pageInfo.list}">
 							<td><input type="checkbox" id="ckbox"></td>
-								<td th:text="${s.sellerNo}"></td>
-								<td th:text="${s.id}"></td>
-								<td th:text="${s.name}"></td>
-								<td th:text="${s.company}"></td>
-								<td th:text="${s.state}"></td> -->
-
-
- 						<tr th:each="s:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox"></td>
-							<td th:text="${s.sellerNo}"></td>
-							<td th:text="${s.id}"></td>
-							<td th:text="${s.name}"></td>
-							<td th:text="${s.company}"></td>
-							<td th:text="${s.state}"></td>
-						</tr> 
+							<td th:text="${b.boardNo}"></td>
+							<td th:text="${b.category}"></td>
+							<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+								th:text="${b.title}"></a></td>
+							<td th:text="${b.nickname}"></td>
+							<td th:text="${b.dt}"></td>     
+						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<!--/ Basic Bootstrap Table -->
+		<!-- Table end-->
 		<br>
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
@@ -97,11 +91,11 @@
 
 		<script>
 			function gopage(p) {
-				location.href = '/manager/buserManage?pageNum=' + p;
+				location.href = '/manager/goodsPost?pageNum=' + p;
 			}
-		</script> 
+		</script>
 		<!-- 페이지네이션 -->
-	</article>
-
-</body>
+		
+		</article>
+	</body>
 </html>

@@ -130,13 +130,13 @@ public class ClassAjaxController {
 	@ResponseBody
 	public void classOptionInsert(@RequestParam String data) {
 		JSONParser jp = new JSONParser(data); 
-		JSONArray ja = (JSONArray)jp.parse();
+		//JSONArray ja = (JSONArray)jp.parse();
 		
 		for(int i=0; i<ja.size(); i++) {
 			Map<String, Object> map = new HashMap<>();
 			JSONObject jo = (JSONObject)ja.get(i);
 			int classNo = (int)jo.get("classNo");
-			Date startDt = (Date)jo.get("startDt");
+			//Date startDt = (Date)jo.get("startDt");
 			
 		}
 		
