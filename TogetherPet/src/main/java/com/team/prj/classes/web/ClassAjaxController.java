@@ -255,7 +255,7 @@ public class ClassAjaxController {
 		ResponseEntity<byte[]> result = null;
 		
 		try {
-			
+			//
 			MultiValueMap<String,String> header = new LinkedMultiValueMap<String, String>();
 	
 			header.add("Content-type", Files.probeContentType(file.toPath()));
