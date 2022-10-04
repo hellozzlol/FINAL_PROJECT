@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/layout_seller}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Together Pet</title>
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
@@ -31,19 +31,6 @@
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
 
-<style>
-.search-box .form-control {
-	width: 48%;
-	display: inline;
-}
-#search {
-	font-weight: bold;
-	font-size: 17px;
-}
-.btn-primary3 {
-	margin-top: 8px;
-}
-</style>
 
 </head>
 <body>
@@ -58,7 +45,7 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>판매 완료</li>
+						<li>판매완료</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
@@ -77,9 +64,9 @@
 							<div class="mb-3 row">
 								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">조회기간</label>
 								<div class="col-md-10">
-									<input type="date" id="dateSearchFirst" value="2020-10-01"
+									<input type="date" id="dateSearchFirst" value=""
 										class="form-control" /> <label>~</label> <input type="date"
-										id="dateSearchLast" value="2021-12-01" class="form-control" />
+										id="dateSearchLast" value="" class="form-control" />
 								</div>
 							</div>
 							<div class="mt-2" style="text-align: center;">
@@ -94,11 +81,11 @@
 				<!-- Hoverable Table rows -->
 				<div class="card">
 					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
-						판매 완료 상품 목록 (총 [[${#lists.size(sellerList)}]]개)
+						판매완료 상품 목록 (총 [[${#lists.size(pageInfo.list)}]]개)
 					</h4>
 
 					<div class="table-responsive text-nowrap">
-						<table class="table table-hover">
+						<table class="table table-hover" style="text-align: center; vertical-align: middle;">
 							<thead>
 								<tr>
 									<th>
@@ -107,19 +94,17 @@
 												id="flexCheckDefault">
 										</div>
 									</th>
-									<th>상품번호</th>
 									<th>주문번호</th>
+									<th>상품번호</th>
 									<th>상품명</th>
 									<th>수량</th>
 									<th>수취인</th>
 									<th>연락처</th>
 									<th>배송지</th>
-									<th>배송상태</th>
-									<th>출고일</th>
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0">
-								<tr th:each="list : ${sellerList}">
+								<tr th:each="list : ${pageInfo.list}">
 									<!-- [[${#dates.format(list.dt, 'yyyy-MM-dd')}]] -->
 									<td>
 										<div class="form-check">
@@ -127,40 +112,70 @@
 												id="flexCheckDefault">
 										</div>
 									</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td>[[${list.orderNo}]]</td>
+									<td>[[${list.goodsNo}]]</td>
+									<td>[[${list.goodsName}]]</td>
+									<td>[[${list.amount}]]</td>
+									<td>[[${list.name}]]</td>
+									<td>[[${list.call}]]</td>
+									<td>[[${list.address}]]</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<!--/ Hoverable Table rows -->
-			</div>
+			</div><br>
 			<!-- / Content -->
 
-			<div class="pagination_style pagination justify-content-center">
-				<ul class="d-flex">
-					<li><a href="#"> << </a></li>
-					<li><a class="current" href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">>></a></li>
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
 				</ul>
-			</div>
+			</nav>
+			<!-- 페이지네이션 -->
 
 			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
 
+<style>
+	.search-box .form-control {
+		width: 48%;
+		display: inline;
+	}
+	#search {
+		font-weight: bold;
+		font-size: 17px;
+	}
+</style>
+<script>
+//페이지 이동
+	function gopage(p) {
+		location.href = '/sellerDoneList?pageNum=' + p;
+	}
+</script>
 
 		<!--shop wrapper end-->
 	</div>

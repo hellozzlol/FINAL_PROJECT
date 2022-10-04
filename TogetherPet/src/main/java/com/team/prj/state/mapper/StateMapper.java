@@ -7,7 +7,7 @@ import com.team.prj.state.service.StateVO;
 
 public interface StateMapper {
 	// 반품, 교환상태 전체 조회
-	List<OrderVO> stateSelectList();
+	List<OrderVO> stateSelectList(OrderVO vo);
 
 	// 단건 조회
 	StateVO stateSelect(OrderVO vo);

@@ -33,8 +33,8 @@
 		select board_no, count(*) rv_cnt from review where
 		category_id='S' group by board_no
 	</select>
+	
 	<!-- goods 리뷰 리스트 호출 -->
-
 	<select id="reviewList"
 		resultType="com.team.prj.review.service.ReviewVO">
 		select * from review where board_no=#{goodsNo} and
@@ -68,15 +68,54 @@
 	<select id="deliveryList" resultType="com.team.prj.orders.service.OrderVO">
 		SELECT *
 		FROM orders
-		WHERE delivery_state &lt;= '3'
+		WHERE delivery_state IN ('1','2','3')
 		AND seller_no = #{sellerNo}
+		ORDER BY order_no DESC
+	</select>
+	
+	<!-- 반품/교환 상품 조회(상태 5,6) 1004 선희 추가 -->
+	<select id="sellerCancelList" resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE delivery_state IN ('5','6')
+		AND seller_no = #{sellerNo}
+		ORDER BY order_no DESC
+	</select>
+	
+	<!-- 판매완료(구매확정) 상품 조회(상태 7) 1004 선희 추가 -->
+	<select id="sellerDoneList" resultType="com.team.prj.orders.service.OrderVO">
+		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
+		FROM orders
+		WHERE seller_no = 1
+		AND delivery_state = '7'
+		ORDER BY order_no DESC
 	</select>
 	
 	<!-- 배송 상태 업데이트 1003 선희 추가 -->
-	<!-- <update id="sellerDeliUpdate" parameterType="com.team.prj.orders.service.OrderVO">
+	<update id="sellerDeliUpdate" parameterType="com.team.prj.orders.service.OrderVO">
 		UPDATE orders
 		SET delivery_state = '2'
 		WHERE seller_no = #{sellerNo}
 		AND goods_no = #{goodsNo}
-	</update> -->
+	</update>
+	
+	<!-- 등록한 상품 검색 -->
+	<select id="goodsSearch" resultType="com.team.prj.goods.service.GoodsVO">
+		select *
+		from goods
+		where
+		<choose>
+			<when test="key == 1">name LIKE '%' || #{val} || '%'</when>
+		</choose>
+	</select>
+	
+	<!-- 오더 상품 검색 -->
+	<select id="orderSearch" resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE
+		<choose>
+			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+	</select>
 </mapper>

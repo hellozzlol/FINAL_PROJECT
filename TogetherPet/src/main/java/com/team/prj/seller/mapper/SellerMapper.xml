@@ -80,7 +80,7 @@
 	
 	<!-- 판매자 상품 조회 -->
 	<select id="goodsList" resultType="com.team.prj.goods.service.GoodsVO">
-		select goods_no, name, upload_state, sell_state, amount
+		select goods_no, name, upload_state, sell_state, amount, upload_date
 		from goods
 		where seller_no = #{sellerNo}
 		order by goods_no
