@@ -6,6 +6,8 @@
 	<select id="classSelectList" resultType="com.team.prj.classes.service.ClassVO">
 		SELECT * 
 		FROM CLASS
+		where upload_state=1  <!-- 1004 추가 / 지혜  -->
+		order by class_no     <!-- 1004 추가 / 지혜  -->
 	</select>
 	
 	
@@ -158,6 +160,14 @@
 		and to_char(START_DT, 'yyyy-MM-DD') = #{param1}
 	</select>
 	
+	
+	<!-- (관리자 페이지)클래스 리스트 1004 추가 / 지혜 -->
+	<select id="classList" resultType="com.team.prj.classes.service.ClassVO">
+		SELECT * 
+		FROM CLASS
+		where upload_state=0  
+		order by class_no     
+	</select>
 	
 
 </mapper>

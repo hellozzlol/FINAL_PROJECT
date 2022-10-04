@@ -111,4 +111,11 @@ public class GoodsServiceImpl implements GoodsService {
 
 	
 
+	// 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	@Override
+	public List<GoodsVO> goodsList(String key) {
+		// TODO Auto-generated method stub
+		return map.goodsList(key);
+	}
+
 }

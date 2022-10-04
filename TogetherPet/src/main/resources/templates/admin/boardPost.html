@@ -19,6 +19,27 @@
 <body>
 	<article layout:fragment="content">
 	
+	<script>
+		$(document).ready().ready(function(){
+			$('#deleteButton').on('click', function(){
+				var $checked = $('.table input[type=checkbox]:checked'); 
+				//console.log($checked.length); // 체크박스 선택 값
+				
+				if($checked.length < 1) {
+					alert('삭제할 항목을 선택해주세요.');
+				 	return false;
+				}
+				var boardNoList = []; 
+				
+				$.each($checked, function(k, v){
+					boardNoList.push($(this).val());
+				});
+					console.log(boardNoList); // 체크박스 선택 값 / boardNo 못 불러오고있음..
+			});
+		});
+	</script>
+	
+	
 		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
 			<span class="text-muted ">전체 게시글 조회 / </span> 
@@ -45,7 +66,7 @@
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${b.boardNo}"></td>
 							<td th:text="${b.category}"></td>
-							<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+							<td><a th:href="@{/boardSel(boardNo=${b.boardNo})}"
 								th:text="${b.title}"></a></td>
 							<td th:text="${b.nickname}"></td>
 							<td th:text="${b.dt}"></td>     
@@ -57,7 +78,8 @@
 		<!-- Table end-->
 		<br>
 		
-		<button type="button" class="btn btn-sm btn-primary" data-boardNo="${boardList.boardNo}" id="delete">삭제</button>
+		<button type="button" class="btn btn-sm btn-primary" id="deleteButton">삭제</button>
+		
 		<br> <br>
 
 
@@ -93,10 +115,7 @@
 			}
 		</script>
 		<!-- 페이지네이션 -->
-		<script>
-
-		</script>
-		
+				
 		
 		</article>
 	</body>

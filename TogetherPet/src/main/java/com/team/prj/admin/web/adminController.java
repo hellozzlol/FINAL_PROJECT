@@ -1,6 +1,5 @@
 package com.team.prj.admin.web;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -8,17 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -78,8 +75,7 @@ public class adminController {
 	}
 	
 	@RequestMapping("/manager/mypage")
-	public String adminSelect(Model model, HttpServletRequest request) { 
-		HttpSession session = request.getSession();
+	public String adminSelect(Model model, HttpSession session) { 
 		adminVO vo = (adminVO) session.getAttribute("admin");
 		
 		// 관리자 정보 가져오기
@@ -87,7 +83,7 @@ public class adminController {
 		
 		// 근태 리스트 가져오기
 		model.addAttribute("attendList", attend.attendSelectList(vo.getAdNo()));
-		System.out.println("controller:"+model.getAttribute("attendList"));
+		//System.out.println("controller:"+model.getAttribute("attendList"));
 		
 		return "admin/mypage";
 	}
@@ -145,7 +141,7 @@ public class adminController {
 
 	
 	
-	// 전체 글 조회, 삭제 (커뮤니티, 상품, 클래스)
+	// 전체 글 조회, 삭제 (커뮤니티)
 	@GetMapping("/manager/boardPost")
 	public String boardPost(Model model, BoardVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
@@ -155,47 +151,54 @@ public class adminController {
 		return "admin/boardPost";
 	}
 	
-	// *** 수정해야함! 
-	// 전체글 조회 - 커뮤니티 단건 조회
-	@GetMapping("/manager/boardSelect")
-	public String boardSelect(BoardVO vo, Model model) {
-		model.addAttribute("boardSel", board.boardSelect(vo));
-		return "board/boardSel";	
+	
+	@GetMapping("/manager/goodsPost") // (state가 1인것만 조회)
+	public String goodsPost (String key, Model model, BoardVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			if(key==null) {
+				key="1";
+			}
+			model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll(key)));
+
+		return "admin/goodsPost";
 	}
 	
 	
-//	@GetMapping("/manager/goodsPost")
-//	public String goodsPost (Model model, BoardVO vo, HttpServletRequest request,
-//			@RequestParam(required = false, defaultValue = "1") int pageNum,
-//			@RequestParam(required = false, defaultValue = "10") int pageSize) {
-//			PageHelper.startPage(pageNum, pageSize); 
-//			model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll()));
-//
-//		return "admin/goodsPost";
-//	}
-	
-	
+	// 전체 글 조회, 삭제 (클래스) // (state가 1인것만 조회)
+	@GetMapping("/manager/classPost")
+	public String boardPost(Model model, ClassVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList()));
+		return "admin/classPost";
+	}
 	
 	
 		
-//	// 글 등록 검토 (상품)
-//	@GetMapping("/manager/goodsConfirm")
-//	public String goodsConfirm(Model model, GoodsVO vo, HttpServletRequest request,
-//			@RequestParam(required = false, defaultValue = "1") int pageNum,
-//			@RequestParam(required = false, defaultValue = "10") int pageSize) {
-//			PageHelper.startPage(pageNum, pageSize); 
-//			model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll()));
-//		return "admin/goodsConfirm";
-//	}
+	//글 등록 검토 (상품) // 상태 조건 걸기(state가 0인것만 조회)
+	@GetMapping("/manager/goodsConfirm")
+	public String goodsConfirm(String key, Model model, GoodsVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			if(key==null) {
+				key="1";
+			}
+			model.addAttribute("pageInfo", PageInfo.of(goods.goodsList(key)));
+		return "admin/goodsConfirm";
+	}
 	
 	
-	// 글 등록 검토(클래스)
+	// 글 등록 검토(클래스) // (state가 0인것만 조회)
 	@GetMapping("/manager/classConfirm")
 	public String classConfirm(Model model, ClassVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 			PageHelper.startPage(pageNum, pageSize); 
-			model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList()));
+			model.addAttribute("pageInfo", PageInfo.of(cs.classList()));
 		return "admin/classConfirm";
 	}
 	
@@ -203,6 +206,7 @@ public class adminController {
 		
 	
 	// 출퇴근 등록
+	@ResponseBody
 	@RequestMapping("/admin/workIn")
 		public String workIn(String checkVal, HttpServletRequest request) {
 			
@@ -243,7 +247,7 @@ public class adminController {
 			attend.insertWorkIn(ato);
 		} 
 			
-			return "admin/admin";
+			return "admin/admin"; // 처리 결과를 넘기기 page x  
 		}
 	}
 	

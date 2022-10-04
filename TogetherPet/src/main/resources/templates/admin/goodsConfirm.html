@@ -40,8 +40,7 @@
 							<th>카테고리</th>
 							<th>상품 명</th>
 							<th>등록일자</th>
-							<th>등록상태</th>
-							
+							<th>상태</th>
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0">
@@ -49,9 +48,10 @@
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${g.goodsNo}"></td>
 							<td th:text="${g.category}"></td>
-							<td><a th:href="@{goodsSel(goodsNo=${b.goodsNo})}"
-								th:text="${g.uploadTitle}"></a></td>
-							<td th:text="${g.uploadState}"></td>     
+							<td><a th:href="@{/goods(goodsNo=${g.goodsNo})}"
+								th:text="${g.name}"></a></td>
+							<td th:text="${g.uploadDate}"></td>  
+							<td th:text="${g.uploadState}"></td>
 						</tr>
 					</tbody>
 				</table>
