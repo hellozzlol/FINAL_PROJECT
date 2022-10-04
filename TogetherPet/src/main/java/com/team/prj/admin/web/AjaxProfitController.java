@@ -36,7 +36,14 @@ public class AjaxProfitController {
 		if(start == "") {
 			start = null;
 		}
-		return ps.monthlyList(start);
+		System.out.println("start month" + start);
+		
+		List<Map<String, Object>> ml =  ps.monthlyList(start);
+		
+		System.out.println("==========================");
+		System.out.println(ml);
+		
+		return ml;
 	}
 
 }
