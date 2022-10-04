@@ -9,6 +9,11 @@
 	</select>
 	
 	
+	<!-- 이미지 그룹넘버 조회 -->
+	<select id="getGroupNo" resultType="int">
+		SELECT MAX(GROUP_NO)
+		FROM PHOTO
+	</select>
 	
 	
 	<!-- 클래스 단건조회 -->
@@ -32,24 +37,22 @@
 	</select>
 	
 	
-	
-	
 	<!-- 클래스 등록 인서트 -->
 	<insert id="classInsert" parameterType="com.team.prj.classes.service.ClassVO">
 			<selectKey keyProperty="classNo" order="BEFORE" resultType="int">
-			SELECT
-				CASE WHEN MAX(CLASS_NO) IS NULL THEN 1 ELSE MAX(CLASS_NO) + 1 END AS NO
-			FROM CLASS
+				SELECT
+					CASE WHEN MAX(CLASS_NO) IS NULL THEN 1 ELSE MAX(CLASS_NO) + 1 END AS classNo
+				FROM CLASS
 			</selectKey>
 		INSERT INTO CLASS
 		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,sysdate,0,#{maxHeadcount},#{tutorNo},#{groupNo},
-		#{address},#{latitude},#{longitude},'C','',#{thumb},'',#{postcode},#{da})
+		#{address},#{latitude},#{longitude},'c','',#{thumb},'',#{postcode},#{da})
 	</insert>
 	
 	
 	
 	<!-- 클래스 옵션등록 -->
-	<insert id="classOptionInsert" parameterType="java.util.HashMap">
+	<insert id="classOptionInsert" parameterType="java.util.Map">
 		INSERT INTO CLASS_OPTION
 		(CLASS_NO, START_DT, END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO)
 		SELECT A.*, OPTIONNO_SEQ.NEXTVAL
@@ -61,7 +64,30 @@
 			</foreach>
 		) A
 	</insert>
+	
+	
+	<!-- 클래스 그룹이미지 등록 -->
+	<insert id="classPhotoInsert" parameterType="java.util.Map">
+		INSERT INTO PHOTO
+		(GROUP_NO, NAME, DIR)
+		SELECT A.*
+		from (
+			<foreach collection="photoList" item="item" separator="UNION ALL ">
+				SELECT  #{item.groupNo} AS GROUP_NO, #{item.name} AS NAME, #{item.dir} AS DIR
+				FROM DUAL
+			</foreach>
+		) A
+	</insert>
 
+
+	
+	
+	<!-- 그룹이미지 등록-->
+	<insert id="photoInsert" parameterType="java.util.List">
+		
+
+	</insert>
+	
 	
 	
 	<!-- 클래스 수정 -->
