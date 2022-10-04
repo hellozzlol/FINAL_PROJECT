@@ -9,6 +9,7 @@
 		order by board_no     <!-- 0930 desc삭제 / 지혜  -->
 	</select>
 
+
 	<!-- 댓글리스트조회 -->
 	<select id="commentSelectList"
 		resultType="com.team.prj.comment.service.CommentVO"
@@ -43,7 +44,7 @@
 	<!-- 댓글삭제  -->
 	
 	<delete id="commentDelete">
-		delete from comment
+		delete from comments
 		where comment_no = #{commentNo}
 	</delete>
 	
