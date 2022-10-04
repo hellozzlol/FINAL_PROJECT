@@ -40,4 +40,14 @@ public class attendServiceImpl implements attendService {
 		return null;
 	}
 
+	@Override
+	public void insertWorkIn(attendVO ato) {
+		map.insertWorkIn(ato);
+	}
+
+	@Override
+	public void updateWorkIn() {
+		map.updateWorkIn();
+	}
+
 }

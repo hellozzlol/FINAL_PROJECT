@@ -43,29 +43,24 @@ public class SellerController {
 
 	// 판매자 회원(개인정보) 단건 조회
 	@RequestMapping("/sellerMyPage")
-	public String sellerMyPage(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		SellerVO vo = (SellerVO) session.getAttribute("seller");
-		seller.sellerMyPage(vo);
+	public String sellerMyPage() {
 		return "seller/sellerMyPage";
 	}
 
 	// 판매자 회원(개인정보) 수정 폼 호출
 	@RequestMapping("/sellerMyPageUpdForm")
-	public String sellerMyPageUpdForm(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
+	public String sellerMyPageUpdForm(HttpSession session, Model model) {
 		SellerVO vo = new SellerVO();
 		String id = (String) session.getAttribute("id");
 		vo.setId(id);
 		vo = seller.sellerMyPage(vo);
-		request.setAttribute("sellerList", vo);
+		model.addAttribute("sellerList", vo);
 		return "seller/sellerMyPageUpdForm";
 	}
 
 	// 판매자 회원(개인정보) 수정
 	@PostMapping("/sellerMyPageUpd")
-	public String sellerUpdate(SellerVO vo, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerUpdate(SellerVO vo, HttpSession session) {
 		seller.sellerUpdate(vo);
 		vo = seller.sellerMyPage(vo);
 		session.setAttribute("seller", vo);
@@ -74,8 +69,7 @@ public class SellerController {
 
 	// 판매자 회원(사업자) 단건 조회
 	@RequestMapping("/sellerComList")
-	public String sellerComList(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerComList(Model model, HttpSession session) {
 		SellerVO vo = (SellerVO) session.getAttribute("seller");
 		seller.sellerMyPage(vo);
 		return "seller/sellerComList";
@@ -83,20 +77,18 @@ public class SellerController {
 
 	// 판매자 정보(사업자) 수정 폼 호출
 	@RequestMapping("/sellerComUpForm")
-	public String sellerComUpForm(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
+	public String sellerComUpForm(HttpSession session, Model model) {
 		SellerVO vo = new SellerVO();
 		String id = (String) session.getAttribute("id");
 		vo.setId(id);
 		vo = seller.sellerMyPage(vo);
-		request.setAttribute("sellerList", vo);
+		model.addAttribute("sellerList", vo);
 		return "seller/sellerComUpForm";
 	}
 
 	// 판매자 정보(사업자) 수정 처리
 	@PostMapping("/sellerComUpdate")
-	public String sellerComUpdate(SellerVO vo, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerComUpdate(SellerVO vo, HttpSession session) {
 		seller.sellerUpdate(vo);
 		vo = seller.sellerMyPage(vo);
 		session.setAttribute("seller", vo);
@@ -111,13 +103,11 @@ public class SellerController {
 
 	// 판매 상품 등록 처리
 	@PostMapping("/sellerGI")
-	public String goodsInsert(Model model, HttpServletRequest request, GoodsVO gvo,
+	public String goodsInsert(Model model, HttpSession session, GoodsVO gvo,
 			@RequestPart(value = "file", required = false) MultipartFile file)
 			throws IllegalStateException, IOException {
-		HttpSession session = request.getSession();
 		SellerVO svo = new SellerVO();
 		svo.setSellerNo(gvo.getSellerNo());
-		model.addAttribute("goodsList", seller.goodsList(gvo));
 
 		// file UpLoad 처리해야함.
 		String saveFolder = (""); // 저장할 공간 변수 명
@@ -138,7 +128,7 @@ public class SellerController {
 		seller.goodsInsert(gvo);
 		return "redirect:/sellerGoodsList";
 	}
-	
+
 	// 판매 상품 삭제
 	@RequestMapping("/deleteGoods")
 	public String deleteGoods(GoodsVO vo) {
@@ -148,41 +138,37 @@ public class SellerController {
 
 	// 판매 상품 조회
 	@RequestMapping("/sellerGoodsList")
-	public String sellerGoodsList(Model model, HttpServletRequest request, GoodsVO gvo,
+	public String sellerGoodsList(Model model, HttpSession session, GoodsVO gvo,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		HttpSession session = request.getSession();
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		gvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("pageInfo", PageInfo.of(seller.goodsList(gvo)));
 		return "seller/sellerGoodsList";
 	}
-	
+
 	// 상품 상세보기
 	@RequestMapping("/sellerGoodsDetail")
-	public String sellerGoodsDetail(GoodsVO gvo, Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerGoodsDetail(GoodsVO gvo, Model model, HttpSession session) {
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		gvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("goodsList", goods.goodsSelectOne(gvo));
 		return "seller/sellerGoodsDetail";
 	}
-	
+
 	// 상품 수정 폼 호출
 	@RequestMapping("/sellerGUForm")
-	public String sellerGUForm(GoodsVO gvo, Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerGUForm(GoodsVO gvo, Model model, HttpSession session) {
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		gvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("goodsList", goods.goodsSelectOne(gvo));
 		return "seller/sellerGUForm";
 	}
-	
+
 	// 상품 수정 처리
 	@PostMapping("/sellerGoodsUpdate")
-	public String sellerGoodsUpdate(GoodsVO gvo, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String sellerGoodsUpdate(GoodsVO gvo, HttpSession session) {
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		gvo.setSellerNo(svo.getSellerNo());
 		goods.updateGoods(gvo);
@@ -193,40 +179,48 @@ public class SellerController {
 
 	// 배송 상품 조회
 	@RequestMapping("/sellerDeliList")
-	public String sellerDeliList(Model model, OrderVO ovo, HttpServletRequest request,
+	public String sellerDeliList(Model model, OrderVO ovo, HttpSession session,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
-		HttpSession session = request.getSession();
+		PageHelper.startPage(pageNum, pageSize);
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		ovo.setSellerNo(svo.getSellerNo());
-		PageHelper.startPage(pageNum, pageSize);
 		model.addAttribute("pageInfo", PageInfo.of(goods.deliveryList(ovo)));
 		return "seller/sellerDeliList";
 	}
 
-	// 배송 상태 업데이트
-//	@PostMapping("/sellerDeliUpdate")
-//	public String sellerDeliUpdate(OrderVO ovo, HttpServletRequest request) {
-//		HttpSession session = request.getSession();
-//		SellerVO svo = (SellerVO) session.getAttribute("seller");
-//		ovo.setSellerNo(svo.getSellerNo());
-//		goods.updateGoods(ovo);
-//		session.setAttribute("goods", gvo);
-//		return "redirect:/sellerGoodsList";
-//	}
-	
-	// 취소/반품 관리 페이지
+	// 반품/교환 상품 조회
 	@RequestMapping("/sellerCanList")
-	public String sellerCanList(Model model) {
-		model.addAttribute("sellerList", seller.sellerSelectList());
+	public String sellerCanList(Model model, OrderVO ovo, HttpSession session,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		ovo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("pageInfo", PageInfo.of(goods.sellerCancelList(ovo)));
 		return "seller/sellerCanList";
 	}
 
 	// 판매완료 상품 관리 페이지
 	@RequestMapping("/sellerDoneList")
-	public String sellerDoneList(Model model) {
-		model.addAttribute("sellerList", seller.sellerSelectList());
+	public String sellerDoneList(Model model, OrderVO ovo, HttpSession session,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		ovo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("pageInfo", PageInfo.of(goods.sellerDoneList(ovo)));
 		return "seller/sellerDoneList";
+	}
+
+	// 배송 상태 업데이트
+	@PostMapping("/sellerDeliUpdate")
+	public String sellerDeliUpdate(Model model, OrderVO ovo, HttpSession session) {
+//		SellerVO svo = (SellerVO) session.getAttribute("seller");
+//		ovo.setSellerNo(svo.getSellerNo());
+//		model.addAttribute("goods", goods.sellerDeliUpdate(ovo))
+		goods.sellerDeliUpdate(ovo);
+		return "redirect:/sellerGoodsList";
 	}
 
 }

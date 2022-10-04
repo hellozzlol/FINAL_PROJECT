@@ -1,9 +1,19 @@
 package com.team.prj.admin.web;
 
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +26,12 @@ import com.team.prj.admin.service.adminService;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.attend.service.attendService;
 import com.team.prj.attend.service.attendVO;
+import com.team.prj.board.service.BoardService;
+import com.team.prj.board.service.BoardVO;
+import com.team.prj.classes.service.ClassService;
+import com.team.prj.classes.service.ClassVO;
+import com.team.prj.goods.service.GoodsService;
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.tutor.service.TutorService;
@@ -23,7 +39,9 @@ import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Controller
 public class adminController {
 	
@@ -41,6 +59,15 @@ public class adminController {
 	
 	@Autowired
 	private SellerService seller;
+	
+	@Autowired
+	private BoardService board;
+	
+	@Autowired
+	private GoodsService goods;
+	
+	@Autowired
+	private ClassService cs;
 
 
 	
@@ -120,35 +147,102 @@ public class adminController {
 	
 	// 전체 글 조회, 삭제 (커뮤니티, 상품, 클래스)
 	@GetMapping("/manager/boardPost")
-	public String boardPost(Model model) {
-
+	public String boardPost(Model model, BoardVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(board.boardSelectList()));
 		return "admin/boardPost";
 	}
+	
+	// *** 수정해야함! 
+	// 전체글 조회 - 커뮤니티 단건 조회
+	@GetMapping("/manager/boardSelect")
+	public String boardSelect(BoardVO vo, Model model) {
+		model.addAttribute("boardSel", board.boardSelect(vo));
+		return "board/boardSel";	
+	}
+	
+	
+//	@GetMapping("/manager/goodsPost")
+//	public String goodsPost (Model model, BoardVO vo, HttpServletRequest request,
+//			@RequestParam(required = false, defaultValue = "1") int pageNum,
+//			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+//			PageHelper.startPage(pageNum, pageSize); 
+//			model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll()));
+//
+//		return "admin/goodsPost";
+//	}
+	
+	
+	
+	
 		
-	//  
-	@GetMapping("/manager/postManage")
-	public String postManage(Model model) {
-		
-		return "admin/postManage";
+//	// 글 등록 검토 (상품)
+//	@GetMapping("/manager/goodsConfirm")
+//	public String goodsConfirm(Model model, GoodsVO vo, HttpServletRequest request,
+//			@RequestParam(required = false, defaultValue = "1") int pageNum,
+//			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+//			PageHelper.startPage(pageNum, pageSize); 
+//			model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll()));
+//		return "admin/goodsConfirm";
+//	}
+	
+	
+	// 글 등록 검토(클래스)
+	@GetMapping("/manager/classConfirm")
+	public String classConfirm(Model model, ClassVO vo, HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+			PageHelper.startPage(pageNum, pageSize); 
+			model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList()));
+		return "admin/classConfirm";
 	}
 	
 
 		
 	
-	// 출근 등록
+	// 출퇴근 등록
 	@RequestMapping("/admin/workIn")
 		public String workIn(String checkVal, HttpServletRequest request) {
-			HttpSession session = request.getSession();
-			attendVO vo = (attendVO) session.getAttribute("admin");
+			
+		HttpSession session = request.getSession();
+		adminVO ado = (adminVO) session.getAttribute("admin");
+		attendVO ato = new attendVO();
+		ato.setAdNo(ado.getAdNo());
 		
-		// Ad넘버를 받아
-			attendVO avo = new attendVO();
-			avo.setAdNo(vo.getAdNo());
-			avo.setWorkCk(checkVal);
+		//날짜,시간 구해오기
+		LocalDate now = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		ato.setState(0); // 디폴트 값 0(정상)으로 설정
+		
+		// 오늘 날짜 데이터 있는지 확인
+		ato.setStartDt(now.toString()+" "+time.toString().substring(0, 8));
+		List<HashMap<String,Object>> attendList = attend.attendSelectList(ato.getAdNo());
+		
+		
+		for(HashMap<String,Object> map : attendList) {
+			System.out.println("출근날짜::" + map.get("START_DT"));
+			if(map.get("START_DT").toString().substring(0, 8).equals(now.toString())) {
+				
+			}
+		}
+		
+		//9시 넘으면 지각
+		if(time.getHour()>9||(time.getHour()==9&&time.getSecond()>1)){
+			ato.setState(1);
+		};
+		
+		attend.insertWorkIn(ato);
+		
+		if(checkVal!=null) {
+			//퇴근
+			attend.updateWorkIn();
+		}else{
+			//출근
+			attend.insertWorkIn(ato);
+		} 
 			
-			// insert
-			
-			// update
 			return "admin/admin";
 		}
 	}

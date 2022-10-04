@@ -10,4 +10,7 @@ public class ScrapVO {
 	int boardNo; // 글번호
 	Date dt; // 스크랩 일자
 	String categoryId; // 카테고리 아이디
+	
+	String name; // 병원,장례,숙박,게시판 이름 1004 선희추가
+	String title; // 게시판 이름 1004 선희추가
 }
