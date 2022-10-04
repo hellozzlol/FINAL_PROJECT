@@ -102,7 +102,9 @@ public class BoardController {
 	// 커뮤니티 글 등록
 	@PostMapping("/boardIns")
 
-	public String boardInsert(BoardVO vo, @RequestParam("file") MultipartFile file, HttpServletRequest request)
+	public String boardInsert(BoardVO vo, 
+			                  @RequestParam("file") MultipartFile file, 
+			                  HttpServletRequest request)
 			throws IllegalStateException, IOException {
 
 		HttpSession session = request.getSession();
@@ -115,6 +117,7 @@ public class BoardController {
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		System.out.println(sfile);
 		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름 .원래파일네임
+		
 		if (!oFileName.isEmpty()) {
 
 			// 파일명 충돌방지를 위한 별명 만듦
@@ -146,14 +149,15 @@ public class BoardController {
                 String agent = request.getHeader("User-Agent");
 
                 //브라우저별 한글파일 명 처리
-                if(agent.contains("Trident"))//Internet Explore
+                if(agent.contains("Trident")) {//Internet Explore
                     onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8").replaceAll("\\+", " ");
-                    
-                else if(agent.contains("Edge")) //Micro Edge
+                }    
+                else if(agent.contains("Edge")) { //Micro Edge
                     onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8");
                     
-                else //Chrome
+                }else {//Chrome
                     onlyFileName = new String(onlyFileName.getBytes("UTF-8"), "ISO-8859-1");
+                }
                 //브라우저별 한글파일 명 처리
 
                 response.setHeader("Content-Type", "application/octet-stream");
@@ -178,6 +182,8 @@ public class BoardController {
         }
     }
 
+	
+	
 	// 커뮤니티 글 삭제
 
 	@PostMapping("/boardDelete")
@@ -194,14 +200,14 @@ public class BoardController {
 
 	@GetMapping("/boardUpdateForm")
 
-	public String boardUpdate(BoardVO bvo, Model model,HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String boardUpdate(BoardVO bvo, Model model ,HttpSession session) {
+
 		UsersVO vo = new UsersVO();
 		String id = (String) session.getAttribute("id");
 		vo.setId(id);
+		
 		vo = user.usersSelect(vo);
-		request.setAttribute("userList", vo);
-		System.out.println("=====================" + bvo.getBoardNo());
+		model.addAttribute("userList", vo);
 		model.addAttribute("boardSel", dao.boardSelect(bvo));
 		return "board/boardUpdateForm";
 	}
@@ -213,8 +219,14 @@ public class BoardController {
 			throws IllegalStateException, IOException {
 
 		System.out.println("=======" + request.getParameter("boardNo"));
+		
+		
 		if (!file.getOriginalFilename().isEmpty()) {
+			
 			String boardupd = System.getProperty("user.dir") + "/"; // 프로젝트 경로
+			//기존파일 삭제 
+			
+			//새로운파일업로드 
 			UUID uuid = UUID.randomUUID();
 			String filename = uuid + "_" + file.getOriginalFilename();
 			File saveFile = new File(boardupd, filename);
@@ -229,16 +241,15 @@ public class BoardController {
 
 	}
 
-	// 검색 아작스
-
 	@RequestMapping("/boardSearch")
 
-	public String boarSearch(BoardVO vo, String key, String val, Model model) {
+	public String boarSearch() {
 		return "board/boardSearch";
 
 	}
 	
-	/////////////////////////////////////////여기서 부터는 댓글임둥 >_< /////////////////////////////////////////////
+	
+	
 	
 
 	

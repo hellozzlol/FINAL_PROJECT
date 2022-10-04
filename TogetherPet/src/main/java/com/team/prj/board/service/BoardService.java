@@ -12,6 +12,7 @@ import com.team.prj.comment.service.CommentVO;
 
 public interface BoardService {
 	List<BoardVO> boardSelectList();
+
 	
 	BoardVO boardSelect(BoardVO vo);
 	

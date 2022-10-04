@@ -19,9 +19,8 @@ public interface accomoService {
 	//조회수 증가
 	int accomoHitUpdate(accomoVO vo);
 	
-	//검색기능
-	
-	List<accomoVO> accomoSearch(@Param("key")String key, @Param("val") String val);
+	//검색기능	
+	List<accomoVO> accomoSearch(String key,String val);
 
 	List<accomoVO> accomoSelectList(String key);
 
