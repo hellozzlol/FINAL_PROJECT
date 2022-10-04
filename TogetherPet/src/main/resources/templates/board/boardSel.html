@@ -375,6 +375,7 @@ a {
 								<div class="board_view">
 									<div class="title" th:text="${boardSel.title}">글 제목이
 										들어갑니다.</div>
+
 									<div class="info">
 										<dl>
 											<dt>번호</dt>
@@ -405,6 +406,7 @@ a {
 										<dl>
 											<dt>첨부파일</dt>
 											<dd>
+
 												<a th:href="@{/download(fileName=${boardSel.attechDir})}"
 													th:text="${boardSel.attech}">33</a>
 											</dd>
@@ -412,10 +414,20 @@ a {
 
 
 									</div>
+
 									<div class="cont">[(${boardSel.content})]</div>
 
-								</div>
 
+									
+									<div class="cont">
+										[(${boardSel.content})] <img
+											th:src="@{/download(fileName=${boardSel.attechDir})}"
+											alt="이미지 확인하기" width="300px" />
+									</div>
+								
+
+								</div>
+ 
 
 								<br> <br> <br>
 								<div class="btnn">
@@ -429,7 +441,9 @@ a {
 										<button
 											th:if="${#authentication.principal.login.no == boardSel.userNo}"
 											type="button" class="btn btn-primary" id="btnm"
+
 											th:value="${#authentication.principal.login.no}"
+
 											onClick="alert('수정하시겠습니까?')">수정</button>
 									</a>
 
@@ -444,7 +458,6 @@ a {
 							<!-- start 댓글 -->
 							<div class="card-header">댓글[[
 								${#lists.size(commentSelectList)} ]]건</div>
-
 							<div class="card mb-2 mt-5">
 								<div class="card-header bg-light">
 									<i class="fa fa-comment fa"></i> 댓글
@@ -456,6 +469,7 @@ a {
 												class="review-reply" id="content" name="content" rows="5"
 												style="resize: none;"></textarea></li>
 									</ul>
+
 									<br>
 									<div >
 										<input type="text" id="nickname" name="nickname"
@@ -476,6 +490,7 @@ a {
 
 									<hr>
 								</div>
+
 							</div>
 
 							<!-- end 댓글 -->
@@ -495,22 +510,20 @@ a {
 					</div>
 				</div>
 			</div>
-		</div>
 
 		</div>
+
+
+		</div>
+
 
 
 
 		<script type="text/javascript">
 
-		let csrfHeaderName = $("meta[name='_csrf']").attr("content");
-		let csrfTokenValue = $("meta[name='_csrf_header']").attr("content");
-		
-		
-		let header = $("input[name='_csrf']").val();
-		console.log(header)
-		let csrfToken = $("input[name='_csrf_token']").val();
-		console.log(csrfToken)
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
 		
 		//==============댓글==============
 		//댓글 등록 버튼 클릭시
@@ -523,62 +536,79 @@ a {
 				console.log(userNo);
 			let nickname =$("#nickname").val(); //댓글 쓴 사람 닉네임
 				console.log(nickname);
-			let SelectList = $("<div>").attr("id", "SelectList"); 
-						//댓글 등록 처리
+			let SelectList = $("<div>").attr("id", "Select"); 
+			
+			//댓글 등록 처리
 			$.ajax({
 		         url:'/commentInsert.do',
 		         type:'post',
-		         beforeSend:function(xhr){
-		 			//xhr.setRequestHeader(csrfHeaderName,csrfTokenValue);
-		        	 xhr.setRequestHeader("AJAX", true);
-		 		     xhr.setRequestHeader("X-CSRF-TOKEN", header);
-		     	  }, 
+		         beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
 		     	 dataType:'json',
 		         data:{'boardNo':boardNo, 'content':content, 'userNo':userNo, 'nickname':nickname},
 		         success:function(data,idx,arr){
 				console.log(arr); 
 				if(data == 1){
 					alert("댓글이 성공 적 으로 등록 되었습니다.")
-					location.href="boardSel?boardNo="+boardNo 
-							
-			function commentSelectList(){
-						$.ajax({ 
-							url : "commentSelectList.do",
-							type : "get",
-							data : {'boardNo' : boardNo},
-							beforeSend: function(xhr){
-								xhr.setRequestHeader("AJAX", true);
-							    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-							},
-							success : function(data){
-								//console.log(data);
-								data.forEach(element=>{
-									$("#rList").append(makeTr(element));
-								})
-							}
-						})
-					} 
-					function makeTr(data){
-		        	 let div = $("<div>").append($("<span>").html(res.cwriter)).append("")
-											.append($("<span>").html(res.dt))
-											.append($("<br>"))
-											.append($("<span>").html(res.content)).append("")
-											.append($("<span>").html(res.dt)).append("")
-											.append($("<span>").append($("<i>").addClass("ri-edit-2-line update")
-													.attr("data-no", res.commentNo)).append(""))
-											.append($("<span>").append($("<i>").addClass("ri-delete-bin-line delete")
-													.attr("data-no", res.commentNo)))
-											.append($("<hr>"))
-						$("#rList").append(div);
-					}
+					$('#rList').html('');
+					
+					commentSelectList();
 				}
 		       }
 		    })
 		});
 		
 		
+		function commentSelectList(){
+			let boardNo = $("#boardNo").val(); //게시글 번호
+			console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', boardNo)
+			$.ajax({ 
+				url : "commentSelectList.do",
+				type : "post",
+				data : {'boardNo' : boardNo},
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token)},
+				success : function(data){
+					console.log('???????????????',data); // [{}]
+					
+					data.forEach(element=>{
+						$("#rList").append(makeTr(element));
+					}) 
+				}
+			})
+		}
 		
-
+		function makeTr(res){
+		let div = $("<div>").attr("id", res.commentNo)
+							.append(`<span></span> <span>${res.nickname}</span>&nbsp; <br>
+									<span>${res.content}</span>&nbsp;&nbsp; 
+									<span>${res.dt}</span>&nbsp;&nbsp;
+									
+								<button type="button" id="replyD" class="btn btn-danger">삭제</button><hr>
+								`)
+		
+				return div;
+			}
+		
+		$("#replyD").on("click", function(){
+		
+		       let commentNo = $(this).closest('div').attr('id');
+		       $.ajax({
+		           data :{'commentNo' : commentNo},
+		           url : 'commentDelete.do',
+		           type : 'post',
+		           beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+				       dataType:'json',
+		           	   success : function(data){
+		           	   document.getElementById(commentNo).remove()	   
+		               alert('댓글삭제하시겠습니까?!');
+		               
+		               
+		               
+		           }
+		       })
+		   })
 		</script>
 	</article>
 

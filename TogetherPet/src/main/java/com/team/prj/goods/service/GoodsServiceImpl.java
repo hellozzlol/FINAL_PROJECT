@@ -47,10 +47,16 @@ public class GoodsServiceImpl implements GoodsService {
 		return map.deleteGoods(vo);
 	}
 
+	// 검색 기능(1004 선희 수정 => String value -> String val로 변경)
 	@Override
-	public List<GoodsVO> goodsSearch(String key, String value) {
-		// TODO Auto-generated method stub
-		return map.goodsSearch(key, value);
+	public List<GoodsVO> goodsSearch(String key, String val) {
+		return map.goodsSearch(key, val);
+	}
+	
+	// 오더 검색 기능(1004 선희 추가)
+	@Override
+	public List<OrderVO> orderSearch(String key, String val) {
+		return map.orderSearch(key, val);
 	}
 
 	@Override
@@ -90,6 +96,20 @@ public class GoodsServiceImpl implements GoodsService {
 	public int sellerDeliUpdate(OrderVO vo) {
 		return map.sellerDeliUpdate(vo);
 	}
+	
+	// 반품/교환 상품 조회(1004 선희 추가)
+	@Override
+	public List<OrderVO> sellerCancelList(OrderVO vo) {
+		return map.sellerCancelList(vo);
+	}
+
+	// 판매완료 상품 조회(1004 선희 추가)
+	@Override
+	public List<OrderVO> sellerDoneList(OrderVO vo) {
+		return map.sellerDoneList(vo);
+	}
+
+	
 
 	// 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
 	@Override

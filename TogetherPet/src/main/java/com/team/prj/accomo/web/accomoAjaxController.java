@@ -18,15 +18,11 @@ public class accomoAjaxController {
 	@Autowired
 	private accomoService ajaxdao;
 	
-	@RequestMapping("/accomoajaxSearch")
-	@ResponseBody
-	
+	@RequestMapping("/accomoajaxSearch")	
 	public List<accomoVO> ajaxSearch(String key, @RequestParam String val){
-		//System.out.println(key);System.out.println(val);
+
 		List<accomoVO> list = ajaxdao.accomoSearch(key, val);
-		for(accomoVO v : list) {
-			System.out.println(v);
-		}
+
 		return list;
 	}
 	

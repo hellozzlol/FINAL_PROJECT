@@ -15,8 +15,8 @@ select accomo_no,
 	   hit,
 	   category
 	
-	from accomo
-	order by accomo_no ASC
+ from accomo
+order by accomo_no ASC
 
 
 
@@ -26,15 +26,15 @@ select accomo_no,
 resultType="com.team.prj.accomo.service.accomoVO" 
 parameterType="com.team.prj.accomo.service.accomoVO">
 
-select accomo_no,
+select  accomo_no,
 		name,
 		address,
 		info,
 		price,
 		aphoto,
 		hit
-		from accomo
-		where accomo_no = #{accomoNo}
+ from accomo
+where accomo_no = #{accomoNo}
 </select>
 
 
@@ -62,17 +62,11 @@ where
 
 
 
-	<update id="accomoHitUpdate">
-	UPDATE accomo SET HIT = HIT + 1 WHERE accomo_no = #{accomoNo}
+<update id="accomoHitUpdate">
+	UPDATE accomo SET 
+	       HIT = HIT + 1 
+	 WHERE accomo_no = #{accomoNo}
 </update>
-
-
-
-
-
-
-
-
 
 
 

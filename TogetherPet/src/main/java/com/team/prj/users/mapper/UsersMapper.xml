@@ -9,7 +9,7 @@
 		ORDER BY user_no
 	</select>
 
-	<!-- 주문 내역 불러오기(배송상태 1,2,3,4 인것만 조회) -->
+	<!-- 주문 내역 불러오기(배송상태 1,2,3,4,7 인것만 조회) -->
 	<select id="orderList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.orders.service.OrderVO">
@@ -17,18 +17,9 @@
 				o.amount, o.pay, o.delivery_state, o.dt
 		FROM orders o, goods g
 		WHERE o.goods_no = g.goods_no
+		AND o.delivery_state IN ('1','2','3','4','7')
         AND o.user_no = #{userNo}
         ORDER BY order_no DESC
-		
-		<!-- SELECT o.order_no, g.thumb, g.name, o.total_price,
-				o.amount, o.pay, o.delivery_state, o.dt
-		FROM orders o, goods g
-		WHERE o.goods_no = g.goods_no
-        AND o.delivery_state &lt; ALL(select delivery_state
-                                from orders
-                                where delivery_state = '5')
-        AND o.user_no = #{userNo}
-        ORDER BY order_no DESC -->
 	</select>
 
 	<!-- 장바구니 내역 조회 -->
@@ -65,50 +56,73 @@
 	<!-- 전체 스크랩 리스트 조회 -->
 	<select id="scrapList"
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT *
-		FROM scrap
-		WHERE user_no = #{userNo}
-		ORDER BY board_no DESC
+		SELECT s.category_id, h.name, s.dt
+			FROM scrap s, hospital h
+			WHERE s.category_id = 'h'
+	        AND s.board_no = h.hospital_no
+			AND s.user_no = #{userNo}
+	UNION ALL 
+		SELECT s.category_id, a.name, s.dt
+			FROM scrap s, accomo a
+			WHERE s.category_id = 'a'
+	        AND s.board_no = a.accomo_no
+			AND s.user_no = #{userNo}
+	UNION ALL
+	    SELECT s.category_id, f.name, s.dt
+			FROM scrap s, funeral f
+			WHERE s.category_id = 'f'
+	        AND s.board_no = f.funeral_no
+			AND s.user_no = #{userNo}
+	UNION ALL
+	    SELECT s.category_id, b.title, s.dt
+			FROM scrap s, board b
+			WHERE s.category_id = 'b'
+	        AND s.board_no = b.board_no
+			AND s.user_no = #{userNo}
 	</select>
 	
 	<!-- 병원 스크랩 조회 -->
 	<select id="hospitalScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT *
-		FROM scrap
-		WHERE category_id = 'h'
-		AND user_no = #{userNo}
-		ORDER BY board_no DESC
+		SELECT s.category_id, h.name, s.dt
+		FROM scrap s, hospital h
+		WHERE s.category_id = 'h'
+        AND s.board_no = h.hospital_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
 	</select>
 	
 	<!-- 장례 스크랩 조회 -->
 	<select id="funeralScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT *
-		FROM scrap
-		WHERE category_id = 'f'
-		AND user_no = #{userNo}
-		ORDER BY board_no DESC
+		SELECT s.category_id, f.name, s.dt
+		FROM scrap s, funeral f
+		WHERE s.category_id = 'f'
+        AND s.board_no = f.funeral_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
 	</select>
 	
 	<!-- 숙박 스크랩 조회 -->
 	<select id="accomoScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT *
-		FROM scrap
-		WHERE category_id = 'a'
-		AND user_no = #{userNo}
-		ORDER BY board_no DESC
+		SELECT s.category_id, a.name, s.dt
+		FROM scrap s, accomo a
+		WHERE s.category_id = 'a'
+        AND s.board_no = a.accomo_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
 	</select>
 	
 	<!-- 커뮤니티 스크랩 조회 -->
 	<select id="communityScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT *
-		FROM scrap
-		WHERE category_id = 'b'
-		AND user_no = #{userNo}
-		ORDER BY board_no DESC
+		SELECT s.category_id, b.title, s.dt
+		FROM scrap s, board b
+		WHERE s.category_id = 'b'
+        AND s.board_no = b.board_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
 	</select>
 
 	<!-- 작성 글 조회 -->
@@ -128,8 +142,7 @@
 		SELECT *
 		FROM comments
 		WHERE user_no = #{userNo}
-		ORDER BY
-		comment_no DESC
+		ORDER BY comment_no DESC
 	</select>
 
 	<!-- 사진 불러오기 -->

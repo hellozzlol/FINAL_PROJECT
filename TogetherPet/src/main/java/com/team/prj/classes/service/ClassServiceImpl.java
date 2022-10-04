@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -28,11 +29,13 @@ public class ClassServiceImpl implements ClassService {
 		return map.classSelect(vo);
 	}
 
+
 	@Override
 	public int classInsert(ClassVO vo) {
 		//클래스 입력
 		return map.classInsert(vo);
 	}
+
 
 	@Override
 	public int classUpdate(ClassVO vo) {
@@ -64,12 +67,34 @@ public class ClassServiceImpl implements ClassService {
 		return map.classPhotoList(vo);
 	}
 
+
 	// 클래스 조회(state=0 (미 승인) 1004 추가 / 지혜)
 	@Override
 	public List<ClassVO> classList() {
 		// TODO Auto-generated method stub
 		return map.classList();
 	}
+
+
+	@Override
+	public List<Map<String, Object>> classOptionInsert(HashMap<String, Object> maps) {
+		//클래스 날짜 옵션 인서트
+		return map.classOptionInsert(maps);
+	}
+
+	@Override
+	public List<Map<String, Object>> classPhotoInsert(HashMap<String, Object> maps) {
+		//그룹사진 리스트 인서트
+		return map.classPhotoInsert(maps);
+	}
+
+	@Override
+	public int getGroupNo() {
+		//그룹넘버 조회
+		return map.getGroupNo();
+	}
+
+
 
 
 
