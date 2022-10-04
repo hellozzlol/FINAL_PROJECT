@@ -28,37 +28,41 @@
 <meta name="description" content="" />
 
 <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/admin/assets/img/favicon/favicon.ico" />
+<link rel="icon" type="image/x-icon"
+	href="/admin/assets/img/favicon/favicon.ico" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
 
-    <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="/admin/assets/vendor/fonts/boxicons.css" />
+<!-- Icons. Uncomment required icon fonts -->
+<link rel="stylesheet" href="/admin/assets/vendor/fonts/boxicons.css" />
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="/admin/assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/admin/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/admin/assets/css/demo.css" />
+<!-- Core CSS -->
+<link rel="stylesheet" href="/admin/assets/vendor/css/core.css"
+	class="template-customizer-core-css" />
+<link rel="stylesheet" href="/admin/assets/vendor/css/theme-default.css"
+	class="template-customizer-theme-css" />
+<link rel="stylesheet" href="/admin/assets/css/demo.css" />
 
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <link rel="stylesheet" href="/admin/assets/vendor/libs/apex-charts/apex-charts.css" />
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/apex-charts/apex-charts.css" />
 
-    <!-- Page CSS -->
+<!-- Page CSS -->
 
-    <!-- Helpers -->
-    <script src="/admin/assets/vendor/js/helpers.js"></script>
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
 
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="/admin/assets/js/config.js"></script>
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
 
 
 
@@ -92,11 +96,26 @@
 </script>
  -->
 <script>
-	function modalClick() {
-		//let iTime = 
-		//$('checkWork').val('Y');
-		location.href = "admin/workIn?checkVal=Y";
 
+	function inWork(checkVal){
+		 console.log(checkVal);
+		$.ajax({
+	        url: "/admin/workIn",
+	        type: "post",
+	        data : {
+	        	checkVal : checkVal
+	        },
+	        success: function (result) {
+/* 	        	if(result="Y"){
+	        		//모달로 띄우기
+		        		console.log("이미 등록하셨습니다.");
+	        	} */
+	        },
+	        error: function () {
+	            console.log("error!!!!");
+	        }
+        });
+		
 	}
 </script>
 
@@ -188,7 +207,7 @@
 					<li class="menu-item" data-bs-toggle="modal"
 						data-bs-target="#Modal1"><a id="workIn" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-mobile-vibration"></i>
-							<div data-i18n="Account" onclick="modalClick()">
+							<div data-i18n="Account" onclick="inWork('IN');">
 								<input type="hidden" id="checkWork" /> 출근
 							</div>
 					</a></li>
@@ -196,7 +215,7 @@
 					<li class="menu-item" data-bs-toggle="modal"
 						data-bs-target="#Modal2"><a id="workOut" class="menu-link">
 							<i class="menu-icon tf-icons bx bxs-mobile-vibration"></i>
-							<div data-i18n="Account">퇴근</div>
+							<div data-i18n="Account" onclick="inWork('OUT')";>퇴근</div>
 					</a></li>
 
 
@@ -225,56 +244,56 @@
 					<!-- 회원관리 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">회원 관리</span></li>
-					<li class="menu-item"><a href="/manager/userManage"class="menu-link">
-					<i class="menu-icon tf-icons bx bx-user"></i>
-							<div data-i18n="Form Elements">일반 회원</div></a>
-					 <a href="/manager/buserManage" class="menu-link">
-					<i class="menu-icon tf-icons bx bxs-group"></i>
-							<div data-i18n="Form Elements">판매자 회원</div></a>
-						<a href="/manager/tutorManage" class="menu-link">
-					<i class="menu-icon tf-icons bx bxs-group"></i>
-							<div data-i18n="Form Elements">튜터 회원</div></a>							
-
-
-					 <!-- 글 관리 -->
+					<li class="menu-item"><a href="/manager/userManage"
+						class="menu-link"> <i class="menu-icon tf-icons bx bx-user"></i>
+							<div data-i18n="Form Elements">일반 회원</div></a> <a
+						href="/manager/buserManage" class="menu-link"> <i
+							class="menu-icon tf-icons bx bxs-group"></i>
+							<div data-i18n="Form Elements">판매자 회원</div></a> <a
+						href="/manager/tutorManage" class="menu-link"> <i
+							class="menu-icon tf-icons bx bxs-group"></i>
+							<div data-i18n="Form Elements">튜터 회원</div></a> <!-- 글 관리 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">글 관리</span></li>
-					<li class="menu-item"><a href="/manager/boardPost"
-						class="menu-link"> <i class="menu-icon tf-icons bx bx-file"></i>
-							<div data-i18n="Support">전체 글 조회</div>
-					</a></li>
-					<li class="menu-item"><a href="/manager/postManage"
-						class="menu-link"> <i class="menu-icon tf-icons bx bx-file"></i>
-							<div data-i18n="Support">검토</div>
-					</a></li>
-					
-					
-			<li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="pages-account-settings-account.html" class="menu-link">
-                    <div data-i18n="Account">Account</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-notifications.html" class="menu-link">
-                    <div data-i18n="Notifications">Notifications</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-connections.html" class="menu-link">
-                    <div data-i18n="Connections">Connections</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-					
-					
-					
+
+					<li class="menu-item"><a href="javascript:void(0);"
+						class="menu-link menu-toggle"> <i
+							class="menu-icon tf-icons bx bx-file"></i>
+							<div data-i18n="Account Settings">전체 글 조회</div>
+					</a>
+						<ul class="menu-sub">
+							<li class="menu-item"><a href="/manager/boardPost"
+								class="menu-link">
+									<div data-i18n="Account">커뮤니티</div>
+							</a></li>
+							<li class="menu-item"><a
+								href="pages-account-settings-notifications.html"
+								class="menu-link">
+									<div data-i18n="Notifications">상품</div>
+							</a></li>
+							<li class="menu-item"><a
+								href="pages-account-settings-connections.html" class="menu-link">
+									<div data-i18n="Connections">클래스</div>
+							</a></li>
+						</ul></li>
+
+
+					<li class="menu-item"><a href="javascript:void(0);"
+						class="menu-link menu-toggle"> <i
+							class="menu-icon tf-icons bx bx-file"></i>
+							<div data-i18n="Account Settings">검토</div>
+					</a>
+						<ul class="menu-sub">
+							<li class="menu-item"><a href="/manager/goodsConfirm"
+								class="menu-link">
+									<div data-i18n="Notifications">상품</div>
+							</a></li>
+							<li class="menu-item"><a href="/manager/classConfirm"
+								class="menu-link">
+									<div data-i18n="Connections">클래스</div>
+							</a></li>
+						</ul>
+					</li>
 
 
 					<!-- 매출 -->
@@ -282,12 +301,11 @@
 						class="menu-header-text">매출 관리</span></li>
 					<li class="menu-item"><a href="/manager/profit"
 						class="menu-link"> <i class="menu-icon tf-icons bx bx-receipt"></i>
-							<div data-i18n="Form Elements">매출 조회</div></a>
-					</li>
-					
+							<div data-i18n="Form Elements">매출 조회</div></a></li>
 
-					</ul>
-					
+
+				</ul>
+
 			</aside>
 			<!-- / Menu -->
 
@@ -354,24 +372,25 @@
 
 
 
-  <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="/admin/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="/admin/assets/vendor/libs/popper/popper.js"></script>
-    <script src="/admin/assets/vendor/js/bootstrap.js"></script>
-    <script src="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<!-- Core JS -->
+	<!-- build:js assets/vendor/js/core.js -->
+	<script src="/admin/assets/vendor/libs/jquery/jquery.js"></script>
+	<script src="/admin/assets/vendor/libs/popper/popper.js"></script>
+	<script src="/admin/assets/vendor/js/bootstrap.js"></script>
+	<script
+		src="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="/admin/assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
+	<script src="/admin/assets/vendor/js/menu.js"></script>
+	<!-- endbuild -->
 
-    <!-- Vendors JS -->
+	<!-- Vendors JS -->
 
-    <!-- Main JS -->
-    <script src="/admin/assets/js/main.js"></script>
+	<!-- Main JS -->
+	<script src="/admin/assets/js/main.js"></script>
 
-    <!-- Page JS -->
+	<!-- Page JS -->
 
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+	<!-- Place this tag in your head or just before your close body tag. -->
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

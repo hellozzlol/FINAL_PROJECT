@@ -49,7 +49,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		lvo.setId(id);
 		lvo = login.login(lvo);
 		int no = lvo.getNo();
-
+		
+		//String userType = "user";
+		
 		if (auth.equals("[ROLE_USER]")) {
 
 			// UsersVO 추출
@@ -57,6 +59,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			uvo.setUserNo(no);
 			uvo = user.usersSelect(uvo);
 			session.setAttribute("user", uvo);
+			//session.setAttribute(userType, uvo);
 
 		} else if (auth.equals("[ROLE_SELLER]")) {
 			// SellerVO 추출
@@ -64,6 +67,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			svo.setSellerNo(no);
 			svo = seller.sellerMyPage(svo);
 			session.setAttribute("seller", svo);
+			//session.setAttribute(userType, svo);
 			
 		} else if (auth.equals("[ROLE_TUTOR]")) {
 			// TutorVO 추출
@@ -71,6 +75,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			tvo.setTutorNo(no);
 			tvo = tutor.tutorSelect(tvo);
 			session.setAttribute("tutor", tvo);
+			//session.setAttribute(userType, tvo);
 			
 		} else if (auth.equals("[ROLE_ADMIN]")) {
 			// AdminVO 추출
@@ -78,10 +83,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			avo.setAdNo(no);
 			avo = admin.adminSelect(avo);
 			session.setAttribute("admin", avo);
+			//session.setAttribute(userType, avo);
 		}
 
 		String cpath = request.getContextPath();
-
+		
 		response.sendRedirect(cpath + "/index");
 	}
 

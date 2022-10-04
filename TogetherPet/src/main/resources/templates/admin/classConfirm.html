@@ -11,7 +11,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<title>회원 관리 - 판매자 회원</title>
+<title>검토 - 클래스</title>
 <style>
 .uList {
 
@@ -21,50 +21,44 @@
 </head>
 <body>
 	<article layout:fragment="content">
-
 		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
-			<span class="text-muted ">회원 관리 </span>
-		</h5>
+			<span class="text-muted ">등록 검토 / </span> 
+			클래스
+			</h5>
 		<br><br>
-		<!-- Basic Table -->
+		
+		<!-- 테이블 -->
 		<div class="card">
-			<h5 class="card-header">판매자 회원</h5>
+			<h5 class="card-header"></h5>
 			<div class="table-responsive text-nowrap">
 				<table class="table">
 					<thead>
 						<tr>
 							<th>선택</th>
-							<th>회원번호</th>
-							<th>아이디</th>
-							<th>이름</th>
-							<th>상호</th>
-							<th>상태</th>
+							<th>클래스 번호</th>
+							<th>카테고리</th>
+							<th>클래스 명</th>
+							<th>등록일자</th>
+							<th>등록 상태</th>
+							
 						</tr>
 					</thead>
-				<tbody class="table-border-bottom-0">
-		<!--			<tr th:each="s:${seller}"> 
+					<tbody class="table-border-bottom-0">
+						<tr th:each="c:${pageInfo.list}">
 							<td><input type="checkbox" id="ckbox"></td>
-								<td th:text="${s.sellerNo}"></td>
-								<td th:text="${s.id}"></td>
-								<td th:text="${s.name}"></td>
-								<td th:text="${s.company}"></td>
-								<td th:text="${s.state}"></td> -->
-
-
- 						<tr th:each="s:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox"></td>
-							<td th:text="${s.sellerNo}"></td>
-							<td th:text="${s.id}"></td>
-							<td th:text="${s.name}"></td>
-							<td th:text="${s.company}"></td>
-							<td th:text="${s.state}"></td>
-						</tr> 
+							<td th:text="${c.classNo}"></td>
+							<td th:text="${c.category}"></td>
+							<td><a th:href="@{classSel(classNo=${c.classNo})}"
+								th:text="${c.name}"></a></td>
+							<td th:text="${c.uploadDate}"></td>
+							<td th:text="${c.uploadState}"></td>        
+						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<!--/ Basic Bootstrap Table -->
+		<!-- Table end-->
 		<br>
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
@@ -97,11 +91,11 @@
 
 		<script>
 			function gopage(p) {
-				location.href = '/manager/buserManage?pageNum=' + p;
+				location.href = '/manager/classConfirm?pageNum=' + p;
 			}
-		</script> 
+		</script>
 		<!-- 페이지네이션 -->
-	</article>
-
-</body>
+		
+		</article>
+	</body>
 </html>
