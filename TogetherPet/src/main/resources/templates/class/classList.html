@@ -145,45 +145,45 @@
 											
 											<div id="addr">
 												<div id="img14">
-													<input type="radio" name="address" value="경상남도" id="chk14">
+													<input type="radio" name="address" value="전남,전북" id="chk14">
 													<label for="chk14">
 														<img src="	https://mochaclass.com/static/media/location9_default.92e5b652.svg" alt="경상남도" id="i14">
 														<img src="https://mochaclass.com/static/media/location9_over.a07f5aec.svg" alt="경상남도" id="i14-1">
 													</label>
-													<br><a id="a14">경상남도</a>
+													<br><a id="a14">전남 전북</a>
 												</div>
 											</div>
 											
 											<div id="addr">
 												<div id="img15">
-													<input type="radio" name="address" value="경상북도" id="chk15">
+													<input type="radio" name="address" value="경남,경북" id="chk15">
 													<label for="chk15">
 														<img src="https://mochaclass.com/static/media/location10_default.ee80bfb5.svg" alt="경상북도" id="i15">
 														<img src="https://mochaclass.com/static/media/location10_over.76d3f6e2.svg" alt="경상북도" id="i15-1">
 													</label>
-													<br><a id="a15">경상북도</a>
+													<br><a id="a15">경남 경북</a>
 												</div>
 											</div>
 											
 											<div id="addr">
 												<div id="img16">
-													<input type="radio" name="address" value="전라남도" id="chk16">
+													<input type="radio" name="address" value="제주" id="chk16">
 													<label for="chk16">
 														<img src="	https://mochaclass.com/static/media/location11_default.4c2666de.svg" alt="전라남도" id="i16">
 														<img src="https://mochaclass.com/static/media/location11_over.221d6521.svg" alt="전라남도" id="i16-1">
 													</label>
-													<br><a id="a16">전라남도</a>
+													<br><a id="a16">제주</a>
 												</div>
 											</div>
 											
 											<div id="addr">
 												<div id="img17">
-													<input type="radio" name="address" value="전라북도" id="chk17">
+													<input type="radio" name="address" value="강원" id="chk17">
 													<label for="chk17">
 														<img src="https://mochaclass.com/static/media/location12_default.52013261.svg" alt="전라북도" id="i17">
 														<img src="https://mochaclass.com/static/media/location12_over.c2a687ed.svg" alt="전라북도" id="i17-1">
 													</label>
-													<br><a id="a17">전라북도</a>
+													<br><a id="a17">강원</a>
 												</div>
 											</div>
 											
@@ -196,7 +196,7 @@
 
 											<div id="cate">
 												<div id="img1">
-													<input type="checkbox" name="categories" value="FOOD" id="chk1" >
+													<input type="checkbox" name="categories" value="food" id="chk1" >
 													<label for="chk1"><img src="https://mochaclass.com/static/media/cook.c9477baa.svg" alt="펫 푸드" id="i1"></label>
 													<br><a id="a1">펫 푸드</a>
 												</div>
@@ -204,7 +204,7 @@
 
 											<div id="cate">
 												<div id="img2">
-													<input type="checkbox" name="categories" value="HAND" id="chk2">
+													<input type="checkbox" name="categories" value="handmade" id="chk2">
 													<label for="chk2"><img src="https://mochaclass.com/static/media/craft.13dd03d8.svg" alt="펫 핸드메이드"></label>
 													<br><a id="a2">펫 핸드메이드</a>
 												</div>
@@ -212,7 +212,7 @@
 
 											<div id="cate">
 												<div id="img3">
-													<input type="checkbox" name="categories" value="BEAUTY" id="chk3">
+													<input type="checkbox" name="categories" value="beauty" id="chk3">
 													<label for="chk3"><img src="https://mochaclass.com/static/media/pet.6855bdf3.svg" alt="펫 미용"></label>
 													<br><a id="a3">펫 미용</a>
 												</div>
@@ -220,7 +220,7 @@
 
 											<div id="cate">
 												<div id="img4">
-													<input type="checkbox" name="categories" value="DRAWING" id="chk4">
+													<input type="checkbox" name="categories" value="drawing" id="chk4">
 													<label for="chk4"><img src="https://mochaclass.com/static/media/drawing.04d157cf.svg" alt="펫 드로잉"></label>
 													<br><a id="a4">펫 드로잉</a>
 												</div>
@@ -228,7 +228,7 @@
 
 											<div id="cate">
 												<div id="img5">
-													<input type="checkbox" name="categories" value="ETC" id="chk5">
+													<input type="checkbox" name="categories" value="etc" id="chk5">
 													<label for="chk5"><img src="https://mochaclass.com/static/media/flower.107080ef.svg" alt="기타"></label>
 													<br><a id="a5">기타</a>
 												</div>
@@ -312,7 +312,8 @@
 									<!----썸네일?---->
 									<div class="product_thumb">
 										<a th:href="@{classSelect(classNo=${c.classNo})}"> 
-											<img class="primary_img" th:src="@{display(fileName=${c.thumb})}" alt="consectetur">
+											<img th:src="@{display(fileName=${c.thumb})}" alt="consectetur" 
+											class="card-img-top embed-responsive-item">
 										</a>
 
 										<div class="product_action">
@@ -567,7 +568,7 @@
 								<!----썸네일?---->
 								<div class="product_thumb">
 									<a href="/classSelect?classNo=${c.classNo}"> 
-										<img class="primary_img" src="${c.thumb}" alt="consectetur">
+										<img class="primary_img" src="display?fileName=${c.thumb}" alt="consectetur" class="card-img-top embed-responsive-item">
 									</a>
 									
 									<div class="product_action">

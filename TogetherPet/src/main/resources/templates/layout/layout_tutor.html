@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="/assets/css/font.awesome.css">
 <link rel="stylesheet" href="/assets/css/animate.css">
 <link rel="stylesheet" href="/assets/css/nice-select.css">
-<link rel="stylesheet" href="/assets/css/jquery-ui.css">
+<link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
 <link rel="stylesheet" href="/assets/css/magnific-popup.css">
 
 <!-- Main Style CSS -->
@@ -86,7 +86,6 @@
         "url": "Replace_with_your_site_URL"
         }
 </script>
-
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		var token = $("meta[name='_csrf']").attr("content");
@@ -116,33 +115,6 @@
 	})
 </script>
 
-<style>
-.container h1 {
-	margin-top: 0;
-}
-
-.small-menu {
-	font-size: 1.2em;
-}
-
-.menu_title>a {
-	font-size: 1.4em;
-	font-weight: 600;
-}
-
-.menu_title>a {
-	font-size: 1.4em;
-	font-weight: 600;
-	line-height: 1.48;
-}
-
-a:focus, a:hover {
-	color: #ff385c;
-	text-decoration: none;
-}
-</style>
-
-
 </head>
 
 <body>
@@ -168,7 +140,7 @@ a:focus, a:hover {
 							<ul class="d-flex">
 								<li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
 								<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
-								<li><a href="manager/admin">관리자 페이지로</a></li>
+								<li><a href="#"><i class="icon-social-instagram icons"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -224,13 +196,21 @@ a:focus, a:hover {
 
 							<div class="header_logo">
 								<a class="sticky_none" href="/"><img
-									src="assets/img/logo/logo.png" alt=""></a>
+									src="/assets/img/logo/logo.png" alt=""></a>
 							</div>
 							<!--main menu start-->
 							<div class="main_menu d-none d-lg-block">
 								<nav>
 									<ul class="d-flex">
-										<li><a href="shop">shop</a></li>
+										<li><a href="shop">shop</a>
+											<ul class="sub_menu">
+												<li><a href="#">사료</a></li>
+												<li><a href="#">간식</a></li>
+												<li><a href="#">장난감</a></li>
+												<li><a href="#">생활용품</a></li>
+												<li><a href="#">위생/배변</a></li>
+												<li><a href="#">건강관리</a></li>
+											</ul></li>
 										<li><a href="classList">class</a>
 											<ul class="sub_menu">
 												<li><a href="#">펫 푸드</a></li>
@@ -241,12 +221,12 @@ a:focus, a:hover {
 											</ul></li>
 										<li><a href="#">pet info</a>
 											<ul class="sub_menu">
-												<li><a href="hospitalList">병원/약국</a></li>
-												<li><a href="Trproduct">여행상품</a></li>
-												<li><a href="accomoList">숙박</a></li>
+												<li><a href="#">병원/약국</a></li>
+												<li><a href="#">여행상품</a></li>
+												<li><a href="#">숙박</a></li>
 												<li><a href="funeralList">장례업체</a></li>
 											</ul></li>
-										<li><a href="boardList">community</a></li>
+										<li><a href="#">community</a></li>
 									</ul>
 								</nav>
 							</div>
@@ -266,7 +246,6 @@ a:focus, a:hover {
 											</div>
 											<div sec:authorize="isAuthenticated()">
 												<li><a id="logout">Logout</a></li>
-
 												<form action="logout" method="post" id="logoutFrm">
 													<input type="hidden" th:name="${_csrf.parameterName}"
 														th:value="${_csrf.token}">
@@ -340,7 +319,7 @@ a:focus, a:hover {
 										<ul class="widget_dropdown_categories collapse show"
 											id="footwear">
 											<li><a href="tutorMyPage">기본 정보</a></li>
-											<li><a href="tutorComList">판매 정보</a></li>
+											<li><a href="tutorComList">튜터 정보</a></li>
 										</ul></li>
 									<hr>
 									<li class="widget_sub_categories"><a
@@ -382,6 +361,8 @@ a:focus, a:hover {
 		</div>
 	</div>
 
+
+
 	<!--footer area start-->
 	<footer class="footer_widgets">
 		<div class="container">
@@ -389,7 +370,7 @@ a:focus, a:hover {
 				<div class="col-lg-5 col-md-5 col-sm-5">
 					<div class="footer_widget_list">
 						<div class="footer_logo">
-							<a href="#"><img src="assets/img/logo/logo.png" alt=""></a>
+							<a href="#"><img src="/assets/img/logo/logo.png" alt=""></a>
 						</div>
 						<div class="footer_contact">
 							<div class="footer_contact_list">
@@ -407,7 +388,7 @@ a:focus, a:hover {
 						<div class="footer_menu">
 							<ul class="d-flex justify-content-end">
 								<li><a href="/">home</a></li>
-								<li><a href="/shop">Shop</a></li>
+								<li><a href="shop">Shop</a></li>
 								<li><a href="classSelectList">class</a></li>
 								<li><a href="#">pet info</a></li>
 								<li><a href="blog.html">community</a></li>
@@ -445,6 +426,23 @@ a:focus, a:hover {
 		</div>
 	</footer>
 	<!--footer area end-->
+	
+	<!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="/admin/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/admin/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/admin/assets/vendor/js/bootstrap.js"></script>
+    <script src="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/admin/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Main JS -->
+    <script src="/admin/assets/js/main.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+	
 </body>
 
 </html>

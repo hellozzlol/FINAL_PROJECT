@@ -69,12 +69,12 @@ public class ClassController {
 	}
 	
 
-	//클래스 등록페이지
-	@GetMapping("classInsert")
-	public String classInsert(Model model) {
+	//클래스 등록페이지 튜터 컨트롤러로 넘김
+	//@GetMapping("classInsert")
+	//public String classInsert(Model model) {
 
-		return "class/classInsert";
-	}
+	//	return "class/classInsert";
+	//}
 
 
 	
