@@ -16,7 +16,22 @@
 	
 	<delete id="scrapDelete">
 		delete from scrap
-		where scrap_no = #{scrap_no}
+		where scrap_no = #{scrapNo}
 	</delete>
+	
+	<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
+		INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
+		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},#{dt},#{categoryId})
+	</insert>
+	
+	<!-- 게시글의 스크랩 수 -->
+	<select id="scrapCount" resultType="int">
+		SELECT COUNT(*)
+		FROM hospital h, scrap s
+		WHERE h.category_id = s.category_id
+		AND h.name = #{name};
+	</select>
+	
+
 	
 </mapper>

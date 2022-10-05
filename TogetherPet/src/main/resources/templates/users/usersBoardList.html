@@ -81,7 +81,9 @@
 									<td style="width: 150px; border-right: 1px solid lightgray;">
 										<strong>[[${list.category}]]</strong>
 									</td>
-									<td th:onClick="|location.href='@{boardSel(boardNo=${list.boardNo})}'|">[[${list.title}]]</td>
+									<td>
+									<a th:onClick="|location.href='@{boardSel(boardNo=${list.boardNo})}'|">[[${list.title}]]</a>
+									</td>
 									<td>[[${list.dt}]]</td>
 									<td>[[${list.hit}]]</td>
 									<td>

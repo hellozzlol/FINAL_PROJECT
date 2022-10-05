@@ -27,11 +27,32 @@
 			<span class="text-muted ">회원 관리 </span>
 		</h5>
 		<br><br>
-		<!-- Basic Table -->
+		
+		<!-- 검색 -->
+		<form class="row gy-2 gx-3 align-items-center" id="btn">
+		<div class="col-auto">
+			<select id="key" name="key" class="form-select">
+				<option value="1">아이디</option>
+				<option value="2">이름</option>
+				<option value="3">상호</option>
+			</select>
+		</div>
+	
+		<div class="col-auto">
+			<input class="form-control" type="text" id="val" name="val">
+		</div>
+		<div class="col-auto">
+			<button type="button" class="btn btn-primary" id="searchBtn"
+				onclick="searchDo()">검색</button>
+		</div>
+		</form>
+		<br>
+		
+		<!-- 판매자 회원 테이블 -->
 		<div class="card">
 			<h5 class="card-header">판매자 회원</h5>
 			<div class="table-responsive text-nowrap">
-				<table class="table">
+				<table class="table" id="sTable">
 					<thead>
 						<tr>
 							<th>선택</th>
@@ -42,16 +63,7 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-				<tbody class="table-border-bottom-0">
-		<!--			<tr th:each="s:${seller}"> 
-							<td><input type="checkbox" id="ckbox"></td>
-								<td th:text="${s.sellerNo}"></td>
-								<td th:text="${s.id}"></td>
-								<td th:text="${s.name}"></td>
-								<td th:text="${s.company}"></td>
-								<td th:text="${s.state}"></td> -->
-
-
+				<tbody class="table-border-bottom-0" id="body">
  						<tr th:each="s:${pageInfo.list}">
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${s.sellerNo}"></td>
@@ -64,7 +76,6 @@
 				</table>
 			</div>
 		</div>
-		<!--/ Basic Bootstrap Table -->
 		<br>
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
@@ -101,6 +112,56 @@
 			}
 		</script> 
 		<!-- 페이지네이션 -->
+		
+		
+		<!-- 검색 Ajax -->
+		<script>
+		$("#searchBtn").on('click', searchDo)
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			function searchDo(){
+				let key = document.getElementById('key').value;
+				let val = document.getElementById('val').value;
+				
+					$.ajax({
+						url: "/sUserSearchAjax",
+						type: 'post',
+						beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+						data: {'key':key, 'val':val},
+						dataType: 'json',
+							success: function(response){
+							htmlView(response);	
+						},
+							error: function(){
+								console.log('error!!');
+							}
+					});
+					
+			function htmlView(data) { // 검색 결과 
+				 $("#body").remove();
+		         var tbody = $("<tbody id='body' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchDo("+ item.sellerNo +")")
+                    .append(
+                    		 $("<td />").text(item.ckbox),
+		                     $("<td />").text(item.sellerNo),
+		                     $("<td />").text(item.id),
+		                     $("<td />").text(item.name),
+		                     $("<td />").text(item.company),
+		                     $("<td />").text(item.state),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#sTable").append(tbody);
+			}			
+	};
+	
+		</script>		
+		
 	</article>
 
 </body>

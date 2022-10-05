@@ -2,7 +2,13 @@ package com.team.prj.tutor.service;
 
 import java.util.List;
 
+
+import org.apache.ibatis.annotations.Param;
+
+import com.team.prj.users.service.UsersVO;
+
 import com.team.prj.classes.service.ClassVO;
+
 
 public interface TutorService {
 	List<TutorVO> tutorSelectList();
@@ -18,7 +24,13 @@ public interface TutorService {
 	
 	int tutorDelete(TutorVO vo);
 	
+
+	// 튜터회원 검색 / 1005 지혜 추가
+	List<TutorVO> tutorSearch(@Param("key")String key, @Param("val") String val);
+
+
 	//튜터가 생성한 클래스 조회
 	List<ClassVO> myClassList(ClassVO vo);
 	
+
 }

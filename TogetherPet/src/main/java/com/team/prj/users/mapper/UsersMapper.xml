@@ -6,7 +6,7 @@
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
 		SELECT * FROM USERS
-		ORDER BY user_no
+		ORDER BY user_no desc
 	</select>
 
 	<!-- 주문 내역 불러오기(배송상태 1,2,3,4,7 인것만 조회) -->
@@ -47,6 +47,13 @@
 	<select id="likeList"
 		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
+		<!-- SELECT s.category_id, c.name, s.dt
+		FROM scrap s, class c
+		WHERE s.category_id = 'c'
+        AND s.board_no = h.class_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC -->
+		
 		SELECT c.thumb, c.category, c.name, c.address, c.price, c.class_no
 		FROM scrap s, class c
 		WHERE s.class_no = c.class_no
@@ -223,5 +230,17 @@
 	<!-- 일반회원 상태 변경 / 0929 지혜 추가 <update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO"> 
 		update users ser state = case wher (select state from users where user_no 
 		= #{userNo} = ) </update> -->
-
+		
+	<!-- 일반회원 검색 / 1005 지혜 추가 -->
+	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
+		select *
+		from users
+		where
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> nickname like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+		
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.tutor.mapper.TutorMapper;
+import com.team.prj.users.service.UsersVO;
 
 @Service
 public class TutorServiceImpl implements TutorService {
@@ -34,6 +35,13 @@ public class TutorServiceImpl implements TutorService {
 	}
 
 	@Override
+
+	public List<TutorVO> tutorSearch(String key, String val) {
+		return map.tutorSearch(key, val);
+	}
+
+
+
 	public TutorVO tutorMyPage(TutorVO vo) {
 		// TODO Auto-generated method stub
 		return map.tutorMyPage(vo);
@@ -44,5 +52,6 @@ public class TutorServiceImpl implements TutorService {
 		// TODO Auto-generated method stub
 		return map.myClassList(vo);
 	}
+
 
 }

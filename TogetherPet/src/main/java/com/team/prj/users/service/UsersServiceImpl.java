@@ -132,4 +132,10 @@ public class UsersServiceImpl implements UsersService {
 		return map.communityScrap(vo);
 	}
 
+	// 일반회원 검색 / 1005 지혜 추가
+	@Override
+	public List<UsersVO> userSearch(String key, String val) {
+		return map.userSearch(key, val);
+	}
+
 }

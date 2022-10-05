@@ -464,10 +464,11 @@ $(document).ready(function(){
 	height: 600px;
 }
 
-#parent img {
+#slide {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 100%;
+	object-fit:cover;
 }
 
 .scontainer {
@@ -657,7 +658,7 @@ $(document).ready(function(){
 												<input type="hidden" name="classNo" id="classNo" th:value="${clas.classNo}">
 												<input type="hidden" name="classOptionNo" id="classOptionNo">
 												<input type="number" name="userNo" id="userNo" style="display:none"
-													th:value="${session.user.userNo}">
+													th:value="${#authentication.principal.login.no}"> <!-- 1005 지혜 수정 -->
 
 												</form>
 
@@ -812,7 +813,7 @@ $(document).ready(function(){
 														<div class="col-lg-6 col-md-6">
 															<!-- 수강자명 -->
 															<input id="author" type="text"
-																th:value="${session.user.name}" readonly>
+																th:value="${#authentication.principal.login.no}" readonly> <!-- 1005 지혜 수정 -->
 														</div>
 														<br>
 														<textarea name="comment" id="review_comment"></textarea>

@@ -208,7 +208,7 @@ public class adminController {
 	// 출퇴근 등록
 	@ResponseBody
 	@RequestMapping("/admin/workIn")
-		public String workIn(String checkVal, HttpServletRequest request) {
+		public String workIn(@RequestParam("checkVal") String checkVal, HttpServletRequest request) {
 			
 		HttpSession session = request.getSession();
 		adminVO ado = (adminVO) session.getAttribute("admin");
@@ -225,23 +225,21 @@ public class adminController {
 		List<HashMap<String,Object>> attendList = attend.attendSelectList(ato.getAdNo());
 		
 		
-		for(HashMap<String,Object> map : attendList) {
-			System.out.println("출근날짜::" + map.get("START_DT"));
-			if(map.get("START_DT").toString().substring(0, 8).equals(now.toString())) {
-				
-			}
-		}
+		/*
+		 * for(HashMap<String,Object> map : attendList) {
+		 * if(map.get("START_DT").toString().substring(0, 8).equals(now.toString())) { }
+		 * }
+		 */
 		
 		//9시 넘으면 지각
-		if(time.getHour()>9||(time.getHour()==9&&time.getSecond()>1)){
+		if(time.getHour()>9||(time.getHour()==9&&time.getMinute()>=1)){
 			ato.setState(1);
 		};
 		
-		attend.insertWorkIn(ato);
-		
-		if(checkVal!=null) {
+		if(checkVal.equals("OUT")) {
 			//퇴근
-			attend.updateWorkIn();
+			ato.setEndDt(ato.getStartDt());
+			attend.updateWorkIn(ato);
 		}else{
 			//출근
 			attend.insertWorkIn(ato);

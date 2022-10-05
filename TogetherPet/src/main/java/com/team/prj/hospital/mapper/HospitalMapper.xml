@@ -9,7 +9,8 @@
 			   working_Hour,
 			   hphoto,
 			   hit,
-			   category
+			   category,
+			   category_id
 		 from hospital
 		 order by hospital_no ASC
 	</select>

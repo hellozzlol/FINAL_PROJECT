@@ -2,6 +2,8 @@ package com.team.prj.users.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
@@ -68,5 +70,8 @@ public interface UsersService {
 
 	// 일반회원 상태 변경 / 0929 지혜 추가
 	int usersStateUpdate(UsersVO vo);
+	
+	// 일반회원 검색 / 1005 지혜 추가
+	List<UsersVO> userSearch(@Param("key")String key, @Param("val") String val);
 
 }

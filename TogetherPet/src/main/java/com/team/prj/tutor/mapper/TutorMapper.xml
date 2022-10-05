@@ -7,7 +7,7 @@
 		resultType="com.team.prj.tutor.service.TutorVO">
 		select * 
 		from tutor
-		order by tutor_no
+		order by tutor_no desc
 	</select>
 
 	<select id="tutorMyPage"
@@ -18,6 +18,10 @@
 		where tutor_no = #{tutorNo}
 	</select>
 	
+
+	
+	<update id="tutorUpdate">
+
 	<!-- 튜터 등록 0929 JH 주석처리
 	<insert id="tutorInsert">
 		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
@@ -42,34 +46,29 @@
 				,1
 				,SYSDATE)
 	</insert> -->
-	<!--
-	<update id="tutorUpdate" 
-			parameterType="com.team.prj.tutor.service.TutorVO">
+
+	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
+
 		update tutor
 		<set>
 			<if test="id != null">id = #{id},</if>
 			<if test="password != null">password = #{password},</if>
 			<if test="name != null">name = #{name},</if>
 			<if test="introduce != null">introduce = #{introduce},</if>
-			
 			<if test="email != null">email = #{email},</if>
 			<if test="call != null">call = #{call},</if>
 			<if test="address != null">address = #{address},</if>
-			
-			
 			<if test="dt != null">dt = #{dt},</if>
 			<if test="postcode != null">postcode = #{postcode},</if>
-			<if test="da != null">da = #{da}</if>
-			
+			<if test="da != null">da = #{da},</if>
 			<if test="snsInsta != null">sns_insta = #{snsInsta},</if>
 			<if test="snsBlog != null">sns_blog = #{snsBlog},</if>
 			<if test="snsYoutube != null">sns_youtube = #{snsYoutube},</if>
-			
 			<if test="attechDir != null">attech_dir = #{attechDir},</if>
 			<if test="attech != null">attech = #{attech}</if>		
 		</set>
 		where tutor_no = #{tutorNo}
-	</update>  -->
+	</update>
 	
 	
 	<delete id="tutorDelete">
@@ -78,6 +77,19 @@
 	</delete>
 	
 	
+
+	<!-- 튜터회원 검색 / 1005 지혜 추가 -->
+	<select id="tutorSearch" resultType="com.team.prj.tutor.service.TutorVO">
+		select *
+		from tutor
+		where
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> company like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+
 	<!-- 튜터 클래스 조회 -->
 	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
 		select *
@@ -86,4 +98,5 @@
 		order by class_no
 	</select>
 	
+
 </mapper>
