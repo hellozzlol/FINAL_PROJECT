@@ -26,4 +26,18 @@ public class ScrapServiceImpl implements ScrapService {
 	public int scrapDelete(ScrapVO vo) {
 		return map.scrapDelete(vo);
 	}
+
+	@Override
+	public int scrapInsert(ScrapVO vo) {
+		//20221005소현추가
+		return map.scrapInsert(vo);
+	}
+
+	@Override
+	public int scrapCount(ScrapVO vo) {
+		//20221005소현추가
+		return map.scrapCount(vo);
+	}
+
+	
 }

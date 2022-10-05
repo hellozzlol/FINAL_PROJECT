@@ -2,7 +2,7 @@ package com.team.prj.board.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+
 
 import com.team.prj.comment.service.CommentVO;
 
@@ -26,15 +26,11 @@ public interface BoardService {
 	int boardHitUpdate(BoardVO vo);
 	
 	//검색기능
-		List<BoardVO> boardSearch (@Param("key")String key, @Param("val") String val);
+		List<BoardVO> boardSearch (String key,String val);
 
 		
-		/*
-		 * //페이징 처리 List<BoardVO> findAll(BoardVO vo);
-		 * 
-		 */
 	
-		//댓글기능
+	//댓글기능
 		List<CommentVO> commentSelectList (CommentVO vo);
 		
 		int commentInsert(CommentVO vo);

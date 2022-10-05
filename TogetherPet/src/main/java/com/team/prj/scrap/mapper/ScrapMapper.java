@@ -9,5 +9,13 @@ public interface ScrapMapper {
 
 	ScrapVO scrapSelect(ScrapVO vo);
 
-	int scrapDelete(ScrapVO vo);
+	int scrapDelete(ScrapVO vo); //20221005소현추가
+	
+	int scrapInsert(ScrapVO vo);//20221005소현추가
+	
+	int scrapCount(ScrapVO vo);//20221005소현추가
+	
+	
+	
+	
 }

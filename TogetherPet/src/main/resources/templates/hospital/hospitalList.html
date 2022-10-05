@@ -28,8 +28,6 @@ form {
 	display: inline-block;
 	position:  absolute;
 }
-
-
 </style>
 <title>동물병원</title>
 
@@ -53,10 +51,10 @@ form {
 							</ul>
 						</div>
 						<!--breadcrumbs area end-->
-									
-									
-									
-<script>
+
+
+
+						<script>
 	document.addEventListener('DOMContentLoaded', function() {
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -78,43 +76,47 @@ form {
 		
 	})
 </script>
-									
-			
-									<!-- 카테고리 시작  -->
-			
-							<div id="category"
+
+
+						<!-- 카테고리 시작  -->
+
+						<div id="category"
 							class="blog_messonry_button d-flex justify-content-center"
 							style="margin-top: 100px;">
-							
+
 							<button class="active" data-filter="ALL">
 								<img
 									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
 							</button>
-							
+
 							<button data-filter="DAEGU">
 								<img
-									src="https://cdn.clien.net/web/api/file/F01/8384364/fe733d011dfc7.gif?w=390&h=30000" width="100" height="100"/><br>대구
+									src="https://cdn.clien.net/web/api/file/F01/8384364/fe733d011dfc7.gif?w=390&h=30000"
+									width="100" height="100" /><br>대구
 							</button>
-							
+
 							<button data-filter="GWANGJU">
 								<img
-									src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/7Cdd/image/f3nuEtGBejVIyewzBIHl3L2aSB4.jpg" width="100" height="100"/><br>광주
+									src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/7Cdd/image/f3nuEtGBejVIyewzBIHl3L2aSB4.jpg"
+									width="100" height="100" /><br>광주
 							</button>
-							
+
 							<button data-filter="SEOUL">
 								<img
-									src="https://www.seoul.go.kr/seoulcom/fileDownload.do?fileName=symbol/icon4.png" width="100" height="100"/><br>서울
+									src="https://www.seoul.go.kr/seoulcom/fileDownload.do?fileName=symbol/icon4.png"
+									width="100" height="100" /><br>서울
 							</button>
-							
-							
+
+
 							<button data-filter="GYEONGGIDO">
 								<img
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQJPhWeL8QO6SNNjHJXj14PRAIFczcQXW0Q&usqp=CAU" width="100" height="100"/><br>경기도
+									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQJPhWeL8QO6SNNjHJXj14PRAIFczcQXW0Q&usqp=CAU"
+									width="100" height="100" /><br>경기도
 							</button>
-			
-							</div>
-						
-							<!-- 카테고리 끝  -->
+
+						</div>
+
+						<!-- 카테고리 끝  -->
 
 
 
@@ -132,12 +134,11 @@ form {
 						</div>
 
 
-						
-										<h1>동물병원 조회</h1>
-										<br>
-										<h3>투게더 펫 에서  ,전국에있는 동물병원을 조회해보아요🐾</h3>
-										<br>
-										<br>
+
+						<h1>동물병원 조회</h1>
+						<br>
+						<h3>투게더 펫 에서 ,전국에있는 동물병원을 조회해보아요🐾</h3>
+						<br> <br>
 						<!-- 검색기능 시작  -->
 						<form class="row gy-2 gx-3 align-items-center" id="btn">
 							<div class="col-auto">
@@ -156,48 +157,140 @@ form {
 							</div>
 						</form>
 						<!-- 검색기능 끝  -->
-							<br>
-							<br>
-							<br>
-							
-				
+						<br> <br> <br>
+
+
 
 						<!-- 병원리스트 반복문 시작 -->
-					<div class="row shop_wrapper" id="all">
+						<div class="row shop_wrapper" id="all">
 							<div th:each="h : ${hospital}"
-								 class="col-lg-4 col-md-4 col-sm-6 col-6 category" style="width: 18rem;"
-								 th:data-category="${h.category}">
-								<div class="embed-responsive embed-responsive-4by3" >
-								<img th:src="${h.hphoto}"class="card-img-top embed-responsive-item" alt="tree">
-								                        <!--스크랩기능 시작  -->
-														<div class="product_action">
-															<ul>
-																<li class="wishlist"><a href="#"
-																	data-tippy="Wishlist" data-tippy-inertia="true"
-																	data-tippy-delay="50" data-tippy-arrow="true"
-																	data-tippy-placement="left"><i
-																		class="icon-heart icons" onClick="alert('스크랩하시겠습니까?')"></i></a></li>
-															</ul>
-														</div>
-														<!--스크랩기능 끝  -->
+								class="col-lg-4 col-md-4 col-sm-6 col-6 category"
+								style="width: 18rem;" th:data-category="${h.category}">
+								<div class="embed-responsive embed-responsive-4by3">
+									<img th:src="${h.hphoto}"
+										class="card-img-top embed-responsive-item" alt="tree">
+
+									<!--스크랩기능 시작  -->
+									<div class="product_action">
+										<ul>
+											<li class="wishlist"><a href="#" data-tippy="Wishlist"
+												data-tippy-inertia="true" data-tippy-delay="50"
+												data-tippy-arrow="true" data-tippy-placement="left"> 
+												<input type="hidden" th:value="${session.user.userNo}" name="userNo">	
+									            <input type="hidden" th:value="${h.categoryId}" name="categoryId"> 
+												<input type="hidden" th:value="${h.hospitalNo}" name="boardNo">
+												<i class="icon-heart scrapBtn"></i>
+
+											</a></li>
+										</ul>
+									</div>
+									-->
+									<!--스크랩기능 끝  -->
+
+
 								</div>
-								
 								<div class="card-body">
 									<h5 class="card-title">🐶[[${h.name}]]</h5>
 									<p class="card-text">⏰[[${h.workingHour}]]</p>
 									<p class="card-text" th:text="${h.address}"></p>
 									<p class="card-text">😄[[${h.hit}]]</p>
 									<a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"
-										class="btn btn-primary">더보기</a>
+										class="btn btn-primary">더보기</a> 
+									
 								</div>
 							</div>
-						</div> 
+						</div>
 						<!-- 병원리스트 반복문 끝 -->
+
+
+						<!-- 스크랩 스크립트 시작 20221005 소현 추가  -->
+
+						<script>
+													
+						var token = $("meta[name='_csrf']").attr("content");
+						var header = $("meta[name='_csrf_header']").attr("content");
+												    
+						//스크랩 하트버튼 클릭시
+												    
+						/* $("#all").on('click','.icon-heart', function() {
+							let categoryId = $(this).val(); //카테고리 h
+							console.log('카테고리 잘 넘어오니 ?',categoryId)
+							let name = $(this).val();//이름							
+							console.log('이름 잘 넘어오니 ?',name)
+						}) */
+						
+						
+						$("#all").on('click','.icon-heart', function() {
+							
+							
+							
+							/* console.log('유저',$(this).prev().prev().prev().val()); // categoryId
+							console.log('카테고리아이디',$(this).prev().prev().val()); // userNo
+							console.log('병원번호',$(this).prev().val());// hospitalNo */
+							
+							alert('스크랩 하시겠습니까?')
+									
+							let categoryId = $("#categoryId").prev().prev().val();//병원카테고리 h
+							console.log('카테고리->',$(this).prev().prev().val());
+							
+							
+							let userNo = $("#userNo").prev().prev().prev().val();// userNo 유저번호
+							console.log('유저번호->',$(this).prev().prev().prev().val());
+							
+							
+							let boardNo =$("#boardNo").prev().val();//boardNo 병원번호
+							console.log('병원번호->',$(this).prev().val());
+							
+							
+							
+							//댓글 등록 처리
+							$.ajax({
+						         url:'/ajaxScrapInsert.do',
+						         type:'post',
+						         beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token)},
+						     	 dataType:'json',
+						         data:{'categoryId':categoryId, 'userNo':userNo, 'boardNo':boardNo},
+						         success:function(data,idx,arr){
+								console.log(arr); 
+								if(data == 1){
+									alert("스크랩이 성공 적 으로 등록 되었습니다.")
+									$('#rList').html('');
+									
+									scrapHospital();
+								}
+						       }
+						    })
+							
+							
+							
+							
+						})
+						
+						
+						
+						
+						
+						
+						
+						
+						</script>
+
+
+
+
+
+
+						<!-- 스크랩 스크립트 시작 20221005 소현 끝  -->
+
+
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
+
+
 		<!-- 검색아작스 스크립트 시작  -->
 		<script>
 		
