@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.mapper.SellerMapper;
+import com.team.prj.users.service.UsersVO;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -53,6 +54,13 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public int goodsInsert(GoodsVO vo) {
 		return map.goodsInsert(vo);
+	}
+
+	// 판매자 회원 검색 / 1005 지혜 추가
+	@Override
+	public List<UsersVO> sUserSearch(String key, String val) {
+		// TODO Auto-generated method stub
+		return map.sUserSearch(key, val) ;
 	}
 
 	

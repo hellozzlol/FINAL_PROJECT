@@ -11,14 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderVO;
+
+import com.team.prj.seller.service.SellerService;
+import com.team.prj.users.service.UsersVO;
+
 import com.team.prj.state.service.StateVO;
+
 
 @RestController
 public class SellerAjaxController {
 	@Autowired
 	GoodsService goods;
 
+
+
+	// 상품 검색
+
 	// 상품 검색 goods
+
 	@RequestMapping("/goodsAjaxSearch")
 	@ResponseBody
 	public List<GoodsVO> goodsAjaxSearch(String key, @RequestParam String val) {
@@ -31,6 +41,7 @@ public class SellerAjaxController {
 	public List<OrderVO> orderAjaxSearch(String key, @RequestParam String val) {
 		return goods.orderSearch(key, val);
 	}
+
 
 	// 상품 검색 state
 	@RequestMapping("/stateAjaxSearch")
@@ -45,5 +56,6 @@ public class SellerAjaxController {
 	public List<OrderVO> goodsSellSearch(String key, @RequestParam String val) {
 		return goods.goodsSellSearch(key, val);
 	}
+
 
 }

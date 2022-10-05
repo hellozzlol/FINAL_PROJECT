@@ -46,8 +46,8 @@ public class attendServiceImpl implements attendService {
 	}
 
 	@Override
-	public void updateWorkIn() {
-		map.updateWorkIn();
+	public void updateWorkIn(attendVO ato) {
+		map.updateWorkIn(ato);
 	}
 
 }

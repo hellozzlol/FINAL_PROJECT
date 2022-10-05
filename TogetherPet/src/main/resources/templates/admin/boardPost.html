@@ -23,7 +23,7 @@
 		$(document).ready().ready(function(){
 			$('#deleteButton').on('click', function(){
 				var $checked = $('.table input[type=checkbox]:checked'); 
-				//console.log($checked.length); // 체크박스 선택 값
+				console.log($checked.length); // 체크박스 선택 값
 				
 				if($checked.length < 1) {
 					alert('삭제할 항목을 선택해주세요.');

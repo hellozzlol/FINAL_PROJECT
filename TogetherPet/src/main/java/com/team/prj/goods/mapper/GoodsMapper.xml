@@ -143,15 +143,19 @@
 		AND order_no = #{orderNo}
 	</update>
 
-	<!-- 상품 조회(state=0 (미 승인) 1004 추가 / 지혜) -->
+	<!-- 1004 추가 / 지혜) --> <!-- 관리자 - 상품 검토 -->
 	<select id="goodsList"
 		resultType="com.team.prj.goods.service.GoodsVO">
-		select * from goods
+		select  goods_no, category, name, upload_date, 
+				case when upload_state = '0' then '승인대기'
+					 when upload_state = '1' then '승인완료'
+				else ' '
+				end as upload_state
+		from goods
 		where upload_state=0
 		order by
 		<choose>
 			<when test="key == 1"> 1 </when>
-			<when test="key == 2"> 10 desc</when>
 		</choose>
 	</select>
 

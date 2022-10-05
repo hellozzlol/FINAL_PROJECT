@@ -9,5 +9,5 @@ public interface attendService {
 	attendVO attendInsert(attendVO tvo);
 	attendVO attendUpdate(attendVO tvo);
 	void insertWorkIn(attendVO ato);
-	void updateWorkIn();
+	void updateWorkIn(attendVO ato);
 }
