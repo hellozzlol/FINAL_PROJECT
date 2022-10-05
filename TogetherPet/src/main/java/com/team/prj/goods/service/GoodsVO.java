@@ -13,8 +13,7 @@ public class GoodsVO {
 	private Date uploadDate;
 	private double dc;
 	
-	//0925 희수 추가
-	private String thumb, detail;
-	
+	private String thumb, detail; // 0925 희수 추가
 	private Date dt; // 0928 선희 추가
+	private String idList; // 1005 선희 추가
 }

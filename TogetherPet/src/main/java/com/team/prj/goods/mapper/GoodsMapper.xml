@@ -67,23 +67,23 @@
 		AND goods_no = #{goodsNo}
 	</update>
 
-	<!-- 배송 상품 조회(상태 1,2,3) 1003 선희 추가 -->
+	<!-- 배송 상품 조회(상태 1,2,3,4) 1003 선희 추가 -->
 	<select id="deliveryList"
 		resultType="com.team.prj.orders.service.OrderVO">
 		SELECT *
 		FROM orders
-		WHERE delivery_state IN ('1','2','3')
+		WHERE delivery_state IN ('1','2','3','4')
 		AND seller_no = #{sellerNo}
 		ORDER BY order_no DESC
 	</select>
 
-	<!-- 반품/교환 상품 조회(상태 1,3) 1004 선희 추가 -->
+	<!-- 반품/교환 상품 조회 1004 선희 추가 -->
 	<select id="sellerCancelList"
 		resultType="com.team.prj.orders.service.OrderVO"
 		parameterType="com.team.prj.state.service.StateVO">
 		SELECT s.order_no, o.goods_no, o.goods_name, o.amount, o.name, o.call, o.address, s.state
 		FROM orders o, state s
-		WHERE state IN ('1','3')
+		WHERE state IN ('1','2','3','4')
 		AND o.order_no = s.order_no
 		AND o.seller_no = #{sellerNo}
 		ORDER BY o.order_no DESC
@@ -92,12 +92,10 @@
 	<!-- 판매완료(구매확정) 상품 조회(상태 7) 1004 선희 추가 -->
 	<select id="sellerDoneList"
 		resultType="com.team.prj.orders.service.OrderVO">
-		SELECT order_no, goods_no, goods_name, amount, name, call,
-		address, delivery_state
+		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
 		FROM orders
-		WHERE seller_no = 1
-		AND
-		delivery_state = '7'
+		WHERE seller_no = #{sellerNo}
+		AND delivery_state = '7'
 		ORDER BY order_no DESC
 	</select>
 
@@ -120,19 +118,28 @@
 		AND order_no = #{orderNo}
 	</update>
 	
+	<!-- 배송 상태 업데이트(배송완료) 1005 선희 추가 -->
+	<update id="deliveryDone"
+		parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '4'
+		WHERE delivery_state = '3'
+		AND order_no = #{orderNo}
+	</update>
+	
 	<!-- 반품 상태 업데이트(접수) 1004 선희 추가 -->
 	<update id="cancelUpdate" parameterType="com.team.prj.state.service.StateVO">
 		UPDATE state
-		SET state = '1'
-		WHERE state = '2'
+		SET state = '2'
+		WHERE state = '1'
 		AND order_no = #{orderNo}
 	</update>
 	
 	<!-- 교환 상태 업데이트(접수) 1004 선희 추가 -->
 	<update id="changeUpdate" parameterType="com.team.prj.state.service.StateVO">
 		UPDATE state
-		SET state = '3'
-		WHERE state = '4'
+		SET state = '4'
+		WHERE state = '3'
 		AND order_no = #{orderNo}
 	</update>
 
@@ -151,9 +158,9 @@
 	<!-- 등록한 상품 검색 -->
 	<select id="goodsSearch"
 		resultType="com.team.prj.goods.service.GoodsVO">
-		select *
-		from goods
-		where
+		SELECT *
+		FROM goods
+		WHERE
 		<choose>
 			<when test="key == 1">name LIKE '%' || #{val} || '%'</when>
 		</choose>
@@ -164,9 +171,40 @@
 		resultType="com.team.prj.orders.service.OrderVO">
 		SELECT *
 		FROM orders
-		WHERE
+		WHERE delivery_state IN ('1','2','3','4')
+		AND
 		<choose>
 			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
 		</choose>
+		ORDER BY order_no DESC
 	</select>
+	
+	<!-- 반품교환 상품 검색 -->
+	<select id="stateSearch"
+		resultType="com.team.prj.orders.service.OrderVO"
+		parameterType="com.team.prj.state.service.StateVO">
+		SELECT s.order_no, o.goods_no, o.goods_name, o.amount, o.name, o.call, o.address, s.state
+		FROM orders o, state s
+		WHERE state IN ('1','2','3','4')
+		AND o.order_no = s.order_no
+		AND
+		<choose>
+			<when test="key == 1">o.goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY o.order_no DESC
+	</select>
+	
+	<!-- 판매완료 상품 검색 -->
+	<select id="goodsSellSearch"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
+		FROM orders
+		WHERE delivery_state = '7'
+		AND 
+		<choose>
+			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY order_no DESC
+	</select>
+	
 </mapper>
