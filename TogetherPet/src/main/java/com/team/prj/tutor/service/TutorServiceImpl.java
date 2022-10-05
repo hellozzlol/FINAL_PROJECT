@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.tutor.mapper.TutorMapper;
+import com.team.prj.users.service.UsersVO;
 
 @Service
 public class TutorServiceImpl implements TutorService {
@@ -36,5 +37,12 @@ public class TutorServiceImpl implements TutorService {
 	public int tutorDelete(TutorVO vo) {
 		return map.tutorDelete(vo);
 	}
+
+	@Override
+	public List<TutorVO> tutorSearch(String key, String val) {
+		return map.tutorSearch(key, val);
+	}
+
+
 
 }

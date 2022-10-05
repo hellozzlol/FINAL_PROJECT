@@ -49,9 +49,9 @@
 		values (#{adNo},#{state},#{startDt}, atd_seq.NEXTVAL)
 	</insert>
 	
-	<update id="updateWorkIn">
+	<update id="updateWorkIn" parameterType="com.team.prj.attend.service.attendVO">
 		update attend
-		set end_dt = sysdate
+		set end_dt = #{endDt}
 		where at_no = (select max(at_no) from attend)
 	</update>
 

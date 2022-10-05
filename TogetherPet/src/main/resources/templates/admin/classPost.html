@@ -49,7 +49,7 @@
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${c.classNo}"></td>
 							<td th:text="${c.category}"></td>
-							<td><a th:href="@{classSel(classNo=${c.classNo})}"
+							<td><a th:href="@{/classSelect(classNo=${c.classNo})}"
 								th:text="${c.name}"></a></td>
 							<td th:text="${c.uploadDate}"></td>
 							<td th:text="${c.uploadState}"></td>        
@@ -60,7 +60,7 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">변경</button>
+		<button type="button" class="btn btn-sm btn-primary">삭제</button>
 		<br> <br>
 
 		<!-- 페이지네이션 -->

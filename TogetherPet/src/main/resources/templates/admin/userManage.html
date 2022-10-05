@@ -29,11 +29,34 @@
 			<span class="text-muted ">회원 관리 </span>
 			</h5>
 		<br><br>
+		
+		
+		<!-- 검색 -->
+		<form class="row gy-2 gx-3 align-items-center" id="btn">
+		<div class="col-auto">
+			<select id="key" name="key" class="form-select">
+				<option value="1">아이디</option>
+				<option value="2">이름</option>
+				<option value="3">닉네임</option>
+			</select>
+		</div>
+	
+		<div class="col-auto">
+			<input class="form-control" type="text" id="val" name="val">
+		</div>
+		<div class="col-auto">
+			<button type="button" class="btn btn-primary" id="searchBtn"
+				onclick="searchDo()">검색</button>
+		</div>
+		</form>
+		<br>
+		
+		
 		<!-- 일반 회원 테이블 -->
 		<div class="card">
 			<h5 class="card-header">일반 회원</h5>
 			<div class="table-responsive text-nowrap">
-				<table class="table">
+				<table class="table" id="uTable">
 					<thead>
 						<tr>
 							<th>선택</th>
@@ -44,7 +67,7 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-					<tbody class="table-border-bottom-0">
+					<tbody class="table-border-bottom-0" id="body">
 						<tr th:each="u:${pageInfo.list}">
 							<td><input type="checkbox" id="ckbox"></td>
 							<td th:text="${u.userNo}"></td>
@@ -61,7 +84,6 @@
 		<br>
 		<button type="button" class="btn btn-sm btn-primary">변경</button>
 		<br> <br>
-
 
 		<!-- 페이지네이션 -->
 		<nav aria-label="Page navigation example">
@@ -96,27 +118,7 @@
 		</script>
 		<!-- 페이지네이션 -->
 		
-		
-		<!-- 검색 -->
-		<form class="row gy-2 gx-3 align-items-center" id="btn">
-		<div class="col-auto">
-			<select id="key" name="key">
-				<option value="1">아이디</option>
-				<option value="2">이름</option>
-				<option value="3">닉네임</option>
-			</select>
-		</div>
-	
-		<div class="col-auto">
-			<input class="form-control" type="text" id="val" name="val">
-		</div>
-		<div class="col-auto">
-			<button type="button" class="btn btn-dark" id="searchBtn"
-				onclick="searchDo()">검색</button>
-		</div>
-		</form>
-			
-		
+				
 		<!-- 검색 Ajax -->
 		<script>
 		$("#searchBtn").on('click', searchDo)
@@ -128,20 +130,40 @@
 				let val = document.getElementById('val').value;
 				
 					$.ajax({
-						url: 'userSearch',
+						url: "/userSearchAjax",
 						type: 'post',
 						beforeSend : function(xhr){
 						xhr.setRequestHeader(header, token)},
 						data: {'key':key, 'val':val},
 						dataType: 'json',
 							success: function(response){
-							htmlView(response);
+							htmlView(response);	
 						},
 							error: function(){
 								console.log('error!!');
 							}
 					});
-			}
+					
+			function htmlView(data) { // 검색 결과 
+				 $("#body").remove();
+		         var tbody = $("<tbody id='body' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchDo("+ item.userNo +")")
+                    .append(
+                    		 $("<td />").text(item.ckbox),
+		                     $("<td />").text(item.userNo),
+		                     $("<td />").text(item.id),
+		                     $("<td />").text(item.name),
+		                     $("<td />").text(item.nickname),
+		                     $("<td />").text(item.state),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#uTable").append(tbody);
+			}			
+	};
 	
 		</script>
 		

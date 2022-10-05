@@ -7,7 +7,7 @@
 		resultType="com.team.prj.tutor.service.TutorVO">
 		select * 
 		from tutor
-		order by tutor_no
+		order by tutor_no desc
 	</select>
 
 	<select id="tutorSelect"
@@ -18,30 +18,6 @@
 		where tutor_no = #{tutorNo}
 	</select>
 	
-	<!-- 튜터 등록 0929 JH 주석처리
-	<insert id="tutorInsert">
-		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(tutor_no) IS NULL 
-			    THEN 1
-			    ELSE max(tutor_no) + 1 
-			    END AS no
-			FROM tutor
-		</selectKey>
-		
-		INSERT INTO tutor
-		VALUES(#{userNo}
-				,#{id}
-				,#{password}
-				,#{name}
-				,#{company}
-				,#{email}
-				,#{call}
-				,#{address}
-				,'TUTOR'
-				,1
-				,SYSDATE)
-	</insert> -->
 	
 	<update id="tutorUpdate">
 		update tutor
@@ -57,4 +33,17 @@
 		delete from tutor
 		where tutor_no = #{tutorNo}
 	</delete>
+	
+	
+	<!-- 튜터회원 검색 / 1005 지혜 추가 -->
+	<select id="tutorSearch" resultType="com.team.prj.tutor.service.TutorVO">
+		select *
+		from tutor
+		where
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> company like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
 </mapper>

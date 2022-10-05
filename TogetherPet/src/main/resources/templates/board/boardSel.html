@@ -458,7 +458,7 @@ a {
 									<i class="fa fa-comment fa"></i> 댓글
 								</div>
 
-								<div class="card-body">
+								<div class="card-body" th:if="${#authentication.principal.login.author == 'ROLE_USER'}">>
 									<ul class="list-group list-group-flush">
 										<li class="list-group-item"><textarea
 												class="review-reply" id="content" name="content" rows="5"
