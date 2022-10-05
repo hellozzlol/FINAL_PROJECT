@@ -20,7 +20,7 @@ public class ScrapAjaxController {
 	
 	// 스크랩 확인 여부 용 데이터 가져오기 (리스트 GetMapping)
 	
-	@GetMapping("/ajaxScrapCount.do")
+	@GetMapping("/ajaxScrapCount")
 	@ResponseBody
 	
 	public int scrapCount(ScrapVO vo) {
