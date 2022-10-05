@@ -257,12 +257,14 @@ public class SellerController {
 			key = "1";
 		}
 		svo = (SellerVO) session.getAttribute("seller");
-
+		
 		svo.setSellerNo(svo.getSellerNo());
 		List<ProfitVO> list = seller.sellerProfitList(svo, key);
 		int sum = 0;
 		for(int i = 0; i<list.size();i++) {
-			sum += list.get(i).getMinusPrice();
+			if(list.get(i).getMinusYn().equals("1")) {
+				sum += list.get(i).getMinusPrice();
+			}
 		}
 		model.addAttribute("sum", sum);
 		model.addAttribute("profitList", list);

@@ -2,17 +2,21 @@ package com.team.prj.seller.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderVO;
 
 import com.team.prj.seller.service.SellerService;
+import com.team.prj.seller.service.SellerVO;
 import com.team.prj.users.service.UsersVO;
 
 import com.team.prj.state.service.StateVO;
@@ -23,7 +27,8 @@ public class SellerAjaxController {
 	@Autowired
 	GoodsService goods;
 
-
+	@Autowired
+	private SellerService seller;
 
 	// 상품 검색
 
@@ -57,5 +62,19 @@ public class SellerAjaxController {
 		return goods.goodsSellSearch(key, val);
 	}
 
-
+	// 정산 페이지 // 1005 희수 추가
+	@RequestMapping("/ajaxProfitOrderBy")
+	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session, String key){
+		svo = (SellerVO) session.getAttribute("seller");
+		svo.setSellerNo(svo.getSellerNo());
+		List<ProfitVO> list = seller.sellerProfitList(svo, key);
+		for(int i=0; i<list.size();i++) {
+			if(list.get(i).getMinusYn().equals("0")) {
+				list.get(i).setMinusYn("정산대기");
+			}else if(list.get(i).getMinusYn().equals("1")) {
+				list.get(i).setMinusYn("정산완료");
+			}
+		}
+		return list;
+	}
 }
