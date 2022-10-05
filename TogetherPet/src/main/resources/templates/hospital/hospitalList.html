@@ -54,28 +54,28 @@ form {
 
 
 
-						<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		// 필터링
-		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
-		$('#category').on('click', 'button', function() {
-			let filter = $(this).data('filter');
-			let categories = $('.category') // <div> 태그 배열
+		<script>
+				document.addEventListener('DOMContentLoaded', function() {
+					var token = $("meta[name='_csrf']").attr("content");
+					var header = $("meta[name='_csrf_header']").attr("content");
+					// 필터링
+					// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+						$('#category').on('click', 'button', function() {
+							let filter = $(this).data('filter');
+							let categories = $('.category') // <div> 태그 배열
 			
-			for(category of categories){ 
-				category.style='';
-				if(filter == 'ALL'){
-					category.style='';
-				}else if(category.getAttribute('data-category') != filter){
-					category.style.display='none';
-				}
-			}
-		})
+					for(category of categories){ 
+							category.style='';
+								if(filter == 'ALL'){
+										category.style='';
+								}else if(category.getAttribute('data-category') != filter){
+									category.style.display='none';
+											}
+										}
+									})
 		
-	})
-</script>
+								})
+		</script>
 
 
 						<!-- 카테고리 시작  -->
@@ -184,7 +184,7 @@ form {
 											</a></li>
 										</ul>
 									</div>
-									-->
+									
 									<!--스크랩기능 끝  -->
 
 
@@ -243,9 +243,9 @@ form {
 							
 							
 							
-							//댓글 등록 처리
+							//스크랩 등록 처리
 							$.ajax({
-						         url:'/ajaxScrapInsert.do',
+						         url:'/ajaxScrapInsert',
 						         type:'post',
 						         beforeSend : function(xhr){
 										xhr.setRequestHeader(header, token)},
