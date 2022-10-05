@@ -101,14 +101,14 @@
 			$('#layoutcartFrm').submit();
 		})
 		
-		let userNo = $('#userNo').val();
+		let tutorNo = $('#tutorNo').val();
 		$.ajax({
 			url: 'ajaxCartCount',
 			type: 'post',
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader(header, token)
 			},
-			data: {userNo:userNo}
+			data: {tutorNo:tutorNo}
 		})
 		.done(res => {
 			$('#item_count').html(res);
@@ -258,7 +258,7 @@ a:focus, a:hover {
 											class="icon-user icons"></i></a>
 										<ul class="dropdown_account_link">
 											<li><a href="/users/usersSelect">My Account</a></li>
-											<li><a href="/sellerMyPage">seller(임시용)</a></li>
+											<li><a href="/tutorMyPage">tutor(임시용)</a></li>
 											<!-- 0926 희수가 추가 -->
 											<div sec:authorize="isAnonymous()">
 												<li><a href="loginForm">Login</a></li>
@@ -322,18 +322,65 @@ a:focus, a:hover {
 	</header>
 	<!--header area end-->
 
-	<article layout:fragment="content"></article>
-	
-	<!-- 0926 희수가 추가 -->
-	<div sec:authorize="isAuthenticated()">
-		<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
-			method="post">
-			<input type="hidden" th:name="${_csrf.parameterName}"
-				th:value="${_csrf.token}"> <input type="hidden"
-				name="userNo" id="userNo" th:value="${session.user.userNo}">
-		</form>
+	<!--shop  area start-->
+	<br>
+	<br>
+	<br>
+	<div class="shop_section shop_reverse">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 col-md-12">
+					<!--sidebar widget start-->
+					<aside class="sidebar_widget">
+						<div class="widget_inner">
+							<div class="widget_list widget_categories">
+								<ul>
+									<li class="widget_sub_categories"><a
+										data-toggle="collapse">내 정보</a>
+										<ul class="widget_dropdown_categories collapse show"
+											id="footwear">
+											<li><a href="tutorMyPage">기본 정보</a></li>
+											<li><a href="tutorComList">판매 정보</a></li>
+										</ul></li>
+									<hr>
+									<li class="widget_sub_categories"><a
+										data-toggle="collapse">클래스 관리</a>
+										<ul class="widget_dropdown_categories collapse show"
+											id="footwear">
+											<li><a href="/tutorclassList">내 클래스 조회/수정</a></li>
+											<li><a href="/classInsert">내 클래스 등록</a></li>
+										</ul></li>
+									<hr>
+									<hr>
+									<li class="widget_sub_categories"><a
+										href="/tutorCalList">정산관리</a></li>
+									<hr>
+									<li class="widget_sub_categories"><a
+										href="/">고객문의</a></li>
+								</ul>
+							</div>
+						</div>
+					</aside>
+					<!--sidebar widget end-->
+				</div>
+
+				<!-- body start -->
+				<div layout:fragment="content"></div>
+				<!-- body end -->
+				<!-- 0926 희수가 추가 -->
+				<div sec:authorize="isAuthenticated()">
+					<div th:if=${session.user}>
+						<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
+							method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}"> <input type="hidden"
+								name="userNo" id="userNo" th:value="${session.user.userNo}">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<!-- goods body end -->
 
 	<!--footer area start-->
 	<footer class="footer_widgets">

@@ -47,6 +47,13 @@
 	<select id="likeList"
 		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
+		<!-- SELECT s.category_id, c.name, s.dt
+		FROM scrap s, class c
+		WHERE s.category_id = 'c'
+        AND s.board_no = h.class_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC -->
+		
 		SELECT c.thumb, c.category, c.name, c.address, c.price, c.class_no
 		FROM scrap s, class c
 		WHERE s.class_no = c.class_no

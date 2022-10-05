@@ -136,7 +136,7 @@ public class SellerController {
 		goods.deleteGoods(vo);
 		return "redirect:/sellerGoodsList";
 	}
-
+	
 	// 판매 상품 조회
 	@RequestMapping("/sellerGoodsList")
 	public String sellerGoodsList(Model model, HttpSession session, GoodsVO gvo,
@@ -225,6 +225,13 @@ public class SellerController {
 	@PostMapping("/deliveryUpdate")
 	public String deliveryUpdate(OrderVO ovo) {
 		goods.deliveryUpdate(ovo);
+		return "redirect:/sellerDeliList";
+	}
+
+	// 배송 상태 업데이트(배송완료)
+	@PostMapping("/deliveryDone")
+	public String deliveryDone(OrderVO ovo) {
+		goods.deliveryDone(ovo);
 		return "redirect:/sellerDeliList";
 	}
 

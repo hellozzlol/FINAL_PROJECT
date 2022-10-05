@@ -73,7 +73,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			// TutorVO 추출
 			TutorVO tvo = new TutorVO();
 			tvo.setTutorNo(no);
-			tvo = tutor.tutorSelect(tvo);
+			tvo = tutor.tutorMyPage(tvo);
 			session.setAttribute("tutor", tvo);
 			//session.setAttribute(userType, tvo);
 			

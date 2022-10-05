@@ -90,8 +90,9 @@
 											<p th:case="h">병원</p>
 										</div>
 									</td>
+									<!-- th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|" -->
 									<td style="width: 500px; border-right: 1px solid lightgray;">
-										[[${list.name}]]
+									[[${list.name}]]
 									</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>

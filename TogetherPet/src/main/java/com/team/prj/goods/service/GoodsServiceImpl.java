@@ -3,6 +3,7 @@ package com.team.prj.goods.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,18 @@ public class GoodsServiceImpl implements GoodsService {
 		return map.orderSearch(key, val);
 	}
 
+	// 반품교환 검색 기능(1005 선희 추가)
+	@Override
+	public List<StateVO> stateSearch(String key, String val) {
+		return map.stateSearch(key, val);
+	}
+
+	// 판매완료 상품 검색 기능(1005 선희 추가)
+	@Override
+	public List<OrderVO> goodsSellSearch(String key, String val) {
+		return map.goodsSellSearch(key, val);
+	}
+
 	@Override
 	public int goodsHitUpdate(GoodsVO vo) {
 		return map.goodsHitUpdate(vo);
@@ -91,6 +104,12 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public int deliveryUpdate(OrderVO vo) {
 		return map.deliveryUpdate(vo);
+	}
+
+	// 배송 상태 업데이트 => 배송완료(1005 선희 추가)
+	@Override
+	public int deliveryDone(OrderVO vo) {
+		return map.deliveryDone(vo);
 	}
 
 	// 반품/교환 상품 조회(1004 선희 추가)

@@ -7,7 +7,7 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
-<title>classInsert</title>
+<title>My page - 클래스 등록</title>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -55,37 +55,6 @@ $(function(){
 		$(".modal").click(function(){
 				$(".modal").fadeOut();
 		});
-	
-	
-	//////////////////////////////////////// 대분류 카테고리 눌렀을시 소분류 불러오기
-	/*$('.categoryL').on('click',function(){
-		
-		$("#classCategorySUL").html("");
-		categoryNumL = $(this).val();
-		var category_no;
-		var url = "makeClass/ajaxList" 
-			var params = {"no":categoryNumL};
-			$.ajax({
-				url : url,
-				data : params,
-				success:function(r){
-					var rr = $(r);
-					rr.each(function(idx, vo){
-						category_no = vo.category_no;
-						$("#classCategorySUL").append("<li><input type='checkbox' value='"+vo.category_no+"' name='"+vo.category_no+"' class='categoryS'>"+vo.category_name+"</li>"); 
-					});
-						$('.categoryS').on('click',function(){
-							$(".categoryS").prop("checked",false);
-							$(this).prop('checked',true);
-							var dsds = $(this).attr('value');
-							$("#categoryReal").val(dsds);
-						});
-				},error:function(e){
-					console.log("List전송 에러발생함",e.responseText)
-				}
-			});
-			$("input:checkbox[name='NAME']").is(":checked")
-	});*/
 	
 	
 		/*-----------------------
@@ -575,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					let intro = sHTML;
 					let price = $('#class_fee').val();
 					let maxHeadcount = $('#class_nop').val();
-					let tutorNo = $('#userNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
+					let tutorNo = $('#tutorNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
 					let address = $('#address').val();
 					let postcode = $('#postcode').val();
 					let da = $('#da').val();
@@ -1293,7 +1262,7 @@ input[type="radio"]:after {
 									<input type="text" name="name" class="inputCommonClass"
 										placeholder="클래스명을 입력하세요" id="class_name">
 									<!-- 튜터 번호로 나중에 바꾸기!!! -->
-									<input type="hidden" id="userNo" th:value="${session.user.userNo}">
+									<input type="hidden" id="tutorNo" th:value="${session.tutor.tutorNo}">
 									<!-- 클래스번호 -->
 									<input type="hidden" th:name="classNo" th:id="classNo">
 									

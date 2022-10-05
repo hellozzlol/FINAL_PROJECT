@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 import com.team.prj.funeral.service.FuneralService;
 import com.team.prj.hospital.service.HospitalService;
 import com.team.prj.scrap.service.ScrapService;
@@ -34,5 +35,12 @@ public class ScrapController {
 		model.addAttribute("scrapList", scrap.scrapSelect(vo));
 		return "scrap/scrapSelect";
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
