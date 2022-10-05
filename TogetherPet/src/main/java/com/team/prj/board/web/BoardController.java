@@ -34,7 +34,7 @@ import com.team.prj.users.service.UsersVO;
 @Controller
 public class BoardController {
 	@Autowired
-	private BoardService dao;
+	private BoardService service;
 	
 	@Autowired
 	private UsersService user; // 개인회원
@@ -45,14 +45,14 @@ public class BoardController {
 	// 유저 게시판 전체 조회
 	@GetMapping("/boardSelectList")
 	public String boardSelectList(Model model) {
-		model.addAttribute("boardList", dao.boardSelectList());
+		model.addAttribute("boardList", service.boardSelectList());
 		return "users/boardSelectList";
 	}
 
 	// 유저 게시판 단건 조회
 	@GetMapping("/boardSelect")
 	public String boardSelect(BoardVO vo, Model model) {
-		model.addAttribute("boardList", dao.boardSelect(vo));
+		model.addAttribute("boardList", service.boardSelect(vo));
 		return "users/boardSelect";
 	}
 
@@ -77,7 +77,7 @@ public class BoardController {
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		/* model.addAttribute("boardList", dao.boardSelectList()); */
-		model.addAttribute("pageInfo", PageInfo.of(dao.boardSelectList()));
+		model.addAttribute("pageInfo", PageInfo.of(service.boardSelectList()));
 		return "board/boardList";
 	}
 
@@ -85,11 +85,11 @@ public class BoardController {
 	@GetMapping("/boardSel")
 	public String boardselect(BoardVO vo,CommentVO cvo ,Model model) {
 		System.out.println("=====================" + vo.getBoardNo());
-		model.addAttribute("boardSel", dao.boardSelect(vo));
-		dao.boardHitUpdate(vo);// 조회수증가
+		model.addAttribute("boardSel", service.boardSelect(vo));
+		service.boardHitUpdate(vo);// 조회수증가
 		//댓글리스트
 		cvo.setCommentNo(vo.getBoardNo());
-		model.addAttribute("commentSelectList",dao.commentSelectList(cvo));
+		model.addAttribute("commentSelectList",service.commentSelectList(cvo));
 		return "board/boardSel";
 	}
 
@@ -130,7 +130,7 @@ public class BoardController {
 			vo.setAttechDir(saveFolder + "/" + sFileName);
 		}
 
-		dao.boardInsert(vo);
+		service.boardInsert(vo);
 		return "redirect:boardList";
 	}
 	
@@ -190,7 +190,7 @@ public class BoardController {
 	public String boradDelete(BoardVO vo, Model model, int boardNo) {
 		System.out.println("=====================" + vo.getBoardNo());
 		// vo.setBoardNo(Integer.parseInt(("boardNo")));
-		dao.boardDelete(vo);
+		service.boardDelete(vo);
 		return "redirect:boardList";
 
 	}
@@ -207,7 +207,7 @@ public class BoardController {
 		
 		vo = user.usersSelect(vo);
 		model.addAttribute("userList", vo);
-		model.addAttribute("boardSel", dao.boardSelect(bvo));
+		model.addAttribute("boardSel", service.boardSelect(bvo));
 		return "board/boardUpdateForm";
 	}
 
@@ -225,6 +225,7 @@ public class BoardController {
 			String boardupd = System.getProperty("user.dir") + "/"; // 프로젝트 경로
 			//기존파일 삭제 
 			
+			
 			//새로운파일업로드 
 			UUID uuid = UUID.randomUUID();
 			String filename = uuid + "_" + file.getOriginalFilename();
@@ -235,7 +236,7 @@ public class BoardController {
 			vo.setAttechDir(path);
 		}
 
-		dao.boardUpdate(vo);
+		service.boardUpdate(vo);
 		return "redirect:boardList";
 
 	}
