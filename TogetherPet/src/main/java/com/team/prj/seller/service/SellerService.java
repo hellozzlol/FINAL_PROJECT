@@ -32,7 +32,6 @@ public interface SellerService {
 	// 정산내역조회(1005 희수 추가)
 	List<ProfitVO> sellerProfitList(@Param("svo") SellerVO vo, @Param("key") String key);
 	
-}
 	// 판매자회원 검색 / 1005 지혜 추가
 	List<UsersVO> sUserSearch(@Param("key")String key, @Param("val") String val);
 

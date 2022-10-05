@@ -60,6 +60,7 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public List<ProfitVO> sellerProfitList(SellerVO svo, String key) {
 		return map.sellerProfitList(svo, key);
+	}	
 
 	// 판매자 회원 검색 / 1005 지혜 추가
 	@Override
