@@ -51,31 +51,27 @@
 				<!--breadcrumbs area end-->
 
 				<!-- 검색 -->
-				<div class="card mb-4">
-					<div class="card-body">
-						<div class="mb-3 row">
-							<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
-							<div class="col-md-10">
-								<input class="form-control" type="search" value=""
-									placeholder="검색할 상품을 입력하세요." id="html5-search-input" />
-							</div>
-						</div>
-						<div class="search-box">
-							<div class="mb-3 row">
-								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">조회기간</label>
+				<form id="btn">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
 								<div class="col-md-10">
-									<input type="date" id="dateSearchFirst" value=""
-										class="form-control" /> <label>~</label> <input type="date"
-										id="dateSearchLast" value="" class="form-control" />
+									<input type="hidden" id="key" name="key" value="1">
+									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
 								</div>
 							</div>
-							<div class="mt-2" style="text-align: center;">
-								<a href="" class="btn btn-primary me-2">검색하기</a>
-								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+							<div class="search-box">
+								<div class="mt-2" style="text-align: center;">
+									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
+									검색하기
+									</button>
+									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 
 
 				<!-- Hoverable Table rows -->
@@ -85,7 +81,7 @@
 					</h4>
 
 					<div class="table-responsive text-nowrap">
-						<table class="table table-hover" style="text-align: center; vertical-align: middle;">
+						<table id="all" class="table table-hover" style="text-align: center; vertical-align: middle;">
 							<thead>
 								<tr>
 									<th>주문번호</th>
@@ -111,7 +107,9 @@
 									<td>
 										<div th:switch="${list.state}">
 											<p th:case="1">반품요청</p>
+											<p th:case="2">반품요청접수</p>
 											<p th:case="3">교환요청</p>
+											<p th:case="4">교환요청접수</p>
 										</div>
 									</td>
 									<td>
@@ -192,20 +190,68 @@
 	// 상태 업데이트(반품)
 	$("#btnList").on("click", "#cancelRequest", function () {
 		if (confirm('반품요청을 접수 하시겠습니까?')) {
-			let orderNo = Number($(this).closest('tr').attr('id'));
-			$('#changeSubmit').val(orderNo);
-			$("#changeCall").submit();
+			let orderNo = $(this).closest('tr').find('td').eq(0).html();
+			$('#cancelSubmit').val(orderNo);
+			$("#cancelCall").submit();
+			
 		}
 	})
 	
 	// 상태 업데이트(교환)
 	$("#btnList").on("click", "#changeRequest", function () {
+			// console.log($(this).closest('tr').find('td').eq(0).html());
 		if (confirm('교환요청을 접수 하시겠습니까?')) {
-			let orderNo = Number($(this).closest('tr').attr('id'));
-			$('#cancelSubmit').val(orderNo);
-			$("#cancelCall").submit();
+			let orderNo = $(this).closest('tr').find('td').eq(0).html();
+			$('#changeSubmit').val(orderNo);
+			$("#changeCall").submit();
 		}
 	})
+	
+	// 검색
+	$("#searchBtn").on("click", searchCall) 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
+			
+			$.ajax({
+				url: "stateAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val},
+				dataType: "json",
+						success:function(response) {
+						console.log(response);
+						htmlView(response);
+					},
+					error:function() {
+						alert("오류발생");
+					}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.orderNo + ")")
+						.append($("<td />").text(item.orderNo),
+								$("<td />").text(item.goodsNo),
+								$("<td />").text(item.goodsName),
+								$("<td />").text(item.amount),
+								$("<td />").text(item.name),
+								$("<td />").text(item.call),
+								$("<td />").text(item.address),
+								$("<td />").text(item.state));
+						tbody.append(row);
+			});
+			$("#all").append(tbody);
+			}	
+		}
 </script>
 
 		<!--shop wrapper end-->
