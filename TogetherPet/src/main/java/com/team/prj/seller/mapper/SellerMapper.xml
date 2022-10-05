@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.seller.mapper.SellerMapper">
-	
+
 	<!-- 0930 order by 추가 / 지혜 -->
 	<select id="sellerSelectList"
 		resultType="com.team.prj.seller.service.SellerVO">
-		select * 
+		select *
 		from seller
 		order by seller_no desc
 	</select>
@@ -19,6 +19,12 @@
 		where seller_no = #{sellerNo}
 	</select>
 
+	<!-- 판매자 정보 등록 0929 JH 주석처리 <insert id="sellerInsert" parameterType="com.team.prj.seller.service.SellerVO"> 
+		<selectKey keyProperty="sellerNo" order="BEFORE" resultType="int"> SELECT 
+		CASE WHEN max(seller_no) IS NULL THEN 1 ELSE max(seller_no) + 1 END AS no 
+		FROM seller </selectKey> INSERT INTO seller VALUES(#{sellerNo} ,#{id} ,#{password} 
+		,#{name} ,#{company} ,#{email} ,#{call} ,#{address} ,#{companyNo} ,#{author} 
+		,#{groupNo} ,#{dt} ,#{attach} ,#{attachDir} ,#{postcode} ,#{da}) </insert> -->
 
 	<!-- 판매자 정보 수정 -->
 	<update id="sellerUpdate"
@@ -45,48 +51,52 @@
 		delete from seller
 		where seller_no = #{sellerNo}
 	</delete>
-	
+
 	<!-- 판매자 상품 조회 -->
-	<select id="goodsList" resultType="com.team.prj.goods.service.GoodsVO">
-		select goods_no, name, upload_state, sell_state, amount, upload_date
+	<select id="goodsList"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		select goods_no, name, upload_state, sell_state, amount,
+		upload_date
 		from goods
 		where seller_no = #{sellerNo}
 		order by goods_no
 	</select>
-	
+
 	<!-- 판매자 상품 등록 -->
-	<insert id="goodsInsert" parameterType="com.team.prj.goods.service.GoodsVO">
+	<insert id="goodsInsert"
+		parameterType="com.team.prj.goods.service.GoodsVO">
 		<selectKey keyProperty="goodsNo" order="BEFORE"
 			resultType="int">
 			SELECT
 			CASE WHEN max(goods_no) IS NULL
 			THEN 1
-			ELSE max(goods_no)
+			ELSE
+			max(goods_no)
 			+ 1
 			END AS no
 			FROM goods
 		</selectKey>
-		
+
 		INSERT INTO GOODS
 		VALUES(#{goodsNo},
-			#{name},
-			#{amount},
-			#{category},
-			#{price},
-			#{info},
-			0,
-			sysdate,
-			0,
-			#{hit},
-			#{sellerNo},
-			#{dc},
-			's',
-			10,
-			'',
-			#{thumb, jdbcType = VARCHAR},
-			#{detail, jdbcType = VARCHAR})
+		#{name},
+		#{amount},
+		#{category},
+		#{price},
+		#{info},
+		0,
+		sysdate,
+		0,
+		#{hit},
+		#{sellerNo},
+		#{dc},
+		's',
+		10,
+		'',
+		#{thumb, jdbcType = VARCHAR},
+		#{detail, jdbcType = VARCHAR})
 	</insert>
-	
+
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
@@ -94,9 +104,37 @@
 		select *
 		from photo
 		where group_no = #{groupNo}
-		and name = '리스트'
+		and name =
+		'리스트'
 	</select>
-	
+
+	<!-- 정산관리, 정산내역 전체조회 -->
+	<select id="sellerProfitList"
+		resultType="com.team.prj.admin.service.ProfitVO">
+		select no,
+		to_char(minus_dt, 'yyyy-mm-dd') minus_dt,
+		to_char(order_dt,
+		'yyyy-mm-dd') order_dt,
+		user_name,
+		seller_name,
+		category_id,
+		name,
+		total_price,
+		minus_price,
+		minus_yn
+		from profit
+		where
+		seller_no=#{svo.sellerNo}
+		<choose>
+			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
+			<when test="key == 2"> and minus_yn 1
+				order by 1 desc
+			</when>
+			<when test="key == 3"> and minus_yn 1
+				order by 1 desc
+			</when>
+		</choose>
+	</select>
 	
 	<!-- 판매자회원 검색 / 1005 지혜 추가 -->
 	<select id="sUserSearch" resultType="com.team.prj.seller.service.SellerVO">
