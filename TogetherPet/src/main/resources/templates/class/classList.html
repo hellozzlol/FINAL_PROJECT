@@ -310,10 +310,10 @@
 								<div class="single_product">
 
 									<!----썸네일?---->
-									<div class="product_thumb">
+									<div class="product_thumb" id="product_thumb">
 										<a th:href="@{classSelect(classNo=${c.classNo})}"> 
 											<img th:src="@{display(fileName=${c.thumb})}" alt="consectetur" 
-											class="card-img-top embed-responsive-item">
+											class="card-img-top embed-responsive-item" id="thumb_img">
 										</a>
 
 										<div class="product_action">
@@ -566,9 +566,9 @@
 				
 							<div class="single_product">
 								<!----썸네일?---->
-								<div class="product_thumb">
+								<div class="product_thumb"  id="product_thumb">
 									<a href="/classSelect?classNo=${c.classNo}"> 
-										<img class="primary_img" src="display?fileName=${c.thumb}" alt="consectetur" class="card-img-top embed-responsive-item">
+										<img class="primary_img"  id="thumb_img" src="display?fileName=${c.thumb}" alt="consectetur" class="card-img-top embed-responsive-item">
 									</a>
 									
 									<div class="product_action">

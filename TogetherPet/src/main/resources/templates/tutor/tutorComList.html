@@ -97,7 +97,7 @@
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="name">소개</label>
 											<textarea class="form-control" type="text" id="introduce"  style="resize: none;"
-												name="email" th:value="${session.tutor.introduce}" rows="10" 
+												name="email" th:text="${session.tutor.introduce}" rows="10" 
 												placeholder="튜터님의 경력, 주요 클래스 등을
 												자유롭게 소개해주세요." disabled="disabled" ></textarea>
 										</div>
