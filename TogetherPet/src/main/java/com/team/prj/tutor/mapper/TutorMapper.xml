@@ -17,10 +17,6 @@
 		from tutor
 		where tutor_no = #{tutorNo}
 	</select>
-	
-
-	
-	<update id="tutorUpdate">
 
 	<!-- 튜터 등록 0929 JH 주석처리
 	<insert id="tutorInsert">
