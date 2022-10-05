@@ -7,7 +7,7 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
    th:content="${_csrf.headerName}" />
-<title>My page</title>
+<title>Together Pet</title>
 <style>
 .shipping_text h3 {
 	margin-bottom: 7px;
@@ -110,6 +110,15 @@
 								<label for="exampleFormControlInput1" class="form-label"><strong>상품설명</strong></label>
 								<textarea class="form-control" id="exampleFormControlTextarea1" name="info"
 									rows="3" readonly="readonly">[[${list.info}]]</textarea>
+							</div>
+							<div class="mb-3 col-md-6">
+								<label for="type" class="form-label">
+								<strong>판매상태</strong></label>
+								<div th:switch="${list.sellState}">
+									<p th:case="0" class="form-control">판매대기</p>
+									<p th:case="1" class="form-control">판매중</p>
+									<p th:case="2" class="form-control">판매완료</p>
+								</div>
 							</div>
 						</div>
 							<hr>

@@ -34,4 +34,7 @@ public interface ClassMapper {
 	//그룹사진 리스트 인서트
 	List<Map<String,Object>> classPhotoInsert(HashMap<String,Object> maps);
 	
+	
+	// 클래스 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	List<ClassVO> classList(); 
 }

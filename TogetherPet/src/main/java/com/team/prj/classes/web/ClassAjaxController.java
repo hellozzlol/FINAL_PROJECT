@@ -175,6 +175,9 @@ public class ClassAjaxController {
 	@PostMapping(value="classPhoto", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 
+
+
+
 	 public ResponseEntity<List<PhotoVO>> classPhoto(MultipartFile[] uploadFile){
 		
 		///// 이미지 파일 맞는지 체크 /////
@@ -246,6 +249,7 @@ public class ClassAjaxController {
 		//int groupNo = vo.getGroupNo();
 		//vo.setGroupNo(groupNo);
 		
+	 
 
 			
 		return result;
@@ -272,4 +276,5 @@ public class ClassAjaxController {
 	}
 
 
+	
 }

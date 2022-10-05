@@ -67,6 +67,15 @@ public class ClassServiceImpl implements ClassService {
 		return map.classPhotoList(vo);
 	}
 
+
+	// 클래스 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	@Override
+	public List<ClassVO> classList() {
+		// TODO Auto-generated method stub
+		return map.classList();
+	}
+
+
 	@Override
 	public List<Map<String, Object>> classOptionInsert(HashMap<String, Object> maps) {
 		//클래스 날짜 옵션 인서트
@@ -84,6 +93,7 @@ public class ClassServiceImpl implements ClassService {
 		//그룹넘버 조회
 		return map.getGroupNo();
 	}
+
 
 
 

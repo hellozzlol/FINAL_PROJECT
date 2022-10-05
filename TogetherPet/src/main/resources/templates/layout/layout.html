@@ -304,7 +304,7 @@
 			method="post">
 			<input type="hidden" th:name="${_csrf.parameterName}"
 				th:value="${_csrf.token}"> <input type="hidden"
-				name="userNo" id="userNo" th:value="${session.user.userNo}">
+				name="userNo" id="userNo" th:value="${#authentication.principal.login.no}">
 		</form>
 	</div>
 	<!-- goods body end -->

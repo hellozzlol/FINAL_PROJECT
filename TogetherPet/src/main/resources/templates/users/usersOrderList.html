@@ -54,8 +54,8 @@
 								<tr th:each="list : ${pageInfo.list}" th:id="${list.orderNo}">
 									<td>
 										<strong>[[${list.orderNo}]]</strong><br>
-										<input type="button" class="btn btn-primary mb-1" id="changeBtn" value="교환신청"><br>
-										<input type="button" class="btn btn-primary mb-1" id="cancelBtn" value="반품신청">
+										<input th:if="${list.deliveryState == '4'}" type="button" class="btn btn-primary mb-1" id="changeBtn" value="교환신청"><br>
+										<input th:if="${list.deliveryState == '4'}" type="button" class="btn btn-primary mb-1" id="cancelBtn" value="반품신청">
 									</td>
 									<td><img th:src="${list.thumb}" style="height: 100px;"></td>
 									<td>[[${list.name}]]</td>
@@ -74,7 +74,7 @@
 										</div>
 									</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]<br>
-									<input type="button" id="confirmBtn" value="구매확정" class="btn btn-primary mb-1">
+									<input th:if="${list.deliveryState == '4'}" type="button" id="confirmBtn" value="구매확정" class="btn btn-primary mb-1">
 									</td>
 								</tr>
 							</tbody>
@@ -190,7 +190,7 @@
 		}
 	})
 	
-	// 구매확정 버튼 클릭시 상태 업데이트하고 구매확정 버튼 비활성화
+	// 구매확정 버튼 클릭시 상태 업데이트
 	$("#btnList").on("click", "#confirmBtn", function () {
 		if (confirm('구매확정 하시겠습니까?')) {
 			let orderNo = Number($(this).closest('tr').attr('id'));

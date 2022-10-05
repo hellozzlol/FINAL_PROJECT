@@ -7,7 +7,7 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
-<title>Insert title here</title>
+<title>Together Pet</title>
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -68,7 +68,9 @@
 											<p th:case="b">커뮤니티</p>
 										</div>
 									</td>
-									<td style="width: 500px; border-right: 1px solid lightgray;">제목</td>
+									<td style="width: 500px; border-right: 1px solid lightgray;">
+										[[${list.title}]]
+									</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>
 										<div class="dropdown">

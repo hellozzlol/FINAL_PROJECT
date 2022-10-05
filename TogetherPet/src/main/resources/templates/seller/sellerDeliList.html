@@ -7,7 +7,7 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
-<title>Insert title here</title>
+<title>Together Pet</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -94,31 +94,27 @@
 				</div>
 
 				<!-- 검색 -->
-				<div class="card mb-4">
-					<div class="card-body">
-						<div class="mb-3 row">
-							<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
-							<div class="col-md-10">
-								<input class="form-control" type="search" value=""
-									placeholder="검색할 상품을 입력하세요." id="html5-search-input" />
-							</div>
-						</div>
-						<div class="search-box">
-							<div class="mb-3 row">
-								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">조회기간</label>
+				<form id="btn">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
 								<div class="col-md-10">
-									<input type="date" id="dateSearchFirst" value=""
-										class="form-control" /> <label>~</label> <input type="date"
-										id="dateSearchLast" value="" class="form-control" />
+									<input type="hidden" id="key" name="key" value="1">
+									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
 								</div>
 							</div>
-							<div class="mt-2" style="text-align: center;">
-								<a href="" class="btn btn-primary me-2">검색하기</a>
-								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+							<div class="search-box">
+								<div class="mt-2" style="text-align: center;">
+									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
+									검색하기
+									</button>
+									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 
 
 				<!-- Hoverable Table rows -->
@@ -128,11 +124,11 @@
 					</h4>
 
 					<div class="table-responsive text-nowrap">
-						<table class="table table-hover" style="text-align: center;">
+						<table id="all" class="table table-hover" style="text-align: center; vertical-align: middle;">
 							<thead>
 								<tr>
-									<th>상품번호</th>
 									<th>주문번호</th>
+									<th>상품번호</th>
 									<th>운송장번호</th>
 									<th>상품명</th>
 									<th>수량</th>
@@ -144,10 +140,11 @@
 									<th></th>
 								</tr>
 							</thead>
-							<tbody id="1" class="table-border-bottom-0" th:each="list : ${pageInfo.list}">
-								<tr class="category" th:data-category="${list.deliveryState}" style="">
-									<td>[[${list.goodsNo}]]</td>
+							<tbody id="btnList" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}" class="category"
+									th:data-category="${list.deliveryState}" th:id="${list.orderNo}" style="">
 									<td>[[${list.orderNo}]]</td>
+									<td>[[${list.goodsNo}]]</td>
 									<td>[[${list.deliveryNo}]]</td>
 									<td>[[${list.goodsName}]]</td>
 									<td>[[${list.amount}]]</td>
@@ -163,7 +160,8 @@
 									</td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
 									<td>
-										<button type="button" class="btn-primary3" id="goodsUpd">발주확인처리</button>
+										<input th:if="${list.deliveryState == '1'}" type="button" id="goodsReady" value="발주확인처리" class="btn-primary3">
+										<input th:if="${list.deliveryState == '2'}" type="button" id="goodsDelivery" value="배송처리" class="btn-primary3">
 									</td>
 								</tr>
 							</tbody>
@@ -201,9 +199,25 @@
 				</ul>
 			</nav>
 			<!-- 페이지네이션 -->
-
 		</div>
 		<!-- Content wrapper -->
+		
+		<!-- 상태변경(상품준비중) -->
+		<form name="readyCall" id="readyCall" method="post" action="deliveryReadyUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="readySubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(상품준비중) -->
+		
+		<!-- 상태변경(배송지시) -->
+		<form name="deliveryCall" id="deliveryCall" method="post" action="deliveryUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="deliverySubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(배송지시) -->
+		
 
 <style>
 .search-box .form-control {
@@ -217,15 +231,12 @@
 </style>
 
 <script>
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
 	//페이지 이동
 	function gopage(p) {
 		location.href = '/sellerDeliList?pageNum=' + p;
 	}
 	
-	//필터링
+	// 필터링
 	// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
 	$("#categorySel").on("click", "a", function() {
 		let filter = $(this).data("filter");
@@ -240,6 +251,73 @@
 			}
 		}
 	})
+	
+	// 검색
+	$("#searchBtn").on("click", searchCall) 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
+			
+			$.ajax({
+				url: "orderAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val},
+				dataType: "json",
+						success:function(response) {
+						console.log(response);
+						htmlView(response);
+					},
+					error:function() {
+						alert("오류발생");
+					}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.orderNo + ")")
+						.append($("<td />").text(item.orderNo),
+								$("<td />").text(item.goodsNo),
+								$("<td />").text(item.deliveryNo),
+								$("<td />").text(item.goodsName),
+								$("<td />").text(item.amount),
+								$("<td />").text(item.name),
+								$("<td />").text(item.call),
+								$("<td />").text(item.address),
+								$("<td />").text(item.deliveryState),
+								$("<td />").text(item.dt),
+								$("<td />").append($("<button>").addClass("btn-primary3").html("발주확인처리")));
+						tbody.append(row);
+			});
+			$("#all").append(tbody);
+			}	
+		}
+		
+		// 배송 상태 업데이트(상품준비중)
+		$("#btnList").on("click", "#goodsReady", function () {
+			if (confirm('배송상태를 상품준비중으로 변경하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#readySubmit').val(orderNo);
+				$("#readyCall").submit();
+			}
+		})
+		
+		// 배송 상태 업데이트(배송지시)
+		$("#btnList").on("click", "#goodsDelivery", function () {
+			if (confirm('배송처리 하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#deliverySubmit').val(orderNo);
+				$("#deliveryCall").submit();
+			}
+		})
 </script>
 
 		<!--shop wrapper end-->
