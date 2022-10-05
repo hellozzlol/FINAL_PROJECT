@@ -10,8 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.prj.classes.service.ClassService;
+import com.team.prj.classes.service.ClassVO;
 import com.team.prj.tutor.service.TutorService;
 import com.team.prj.tutor.service.TutorVO;
 
@@ -75,6 +79,38 @@ public class TutorController {
 		session.setAttribute("tutor", vo);
 		return "redirect:/tutorComList";
 	}
-			
+	
+	//튜터가 등록신청한 클래스 리스트
+	@RequestMapping("/tutorClassList")
+	public String tutorClassList(Model model,  HttpServletRequest request, 
+			ClassVO clvo, 
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
+		clvo.setTutorNo(tuvo.getTutorNo());
+		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
+		
+		return "tutor/tutorClassList";
+	}
+	
+	//튜터가 등록신청한 클래스 리스트
+	@RequestMapping("/classTuteeList")
+	public String classTuteeList(Model model,  HttpServletRequest request, 
+			ClassVO clvo, 
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
+		//PageHelper.startPage(pageNum, pageSize);
+		//HttpSession session = request.getSession();
+		//TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
+		//clvo.setTutorNo(tuvo.getTutorNo());
+		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
+		
+		return "tutor/classTuteeList";
+	}
+	
 	
 }
