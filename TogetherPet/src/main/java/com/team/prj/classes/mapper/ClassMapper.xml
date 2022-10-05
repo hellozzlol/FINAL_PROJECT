@@ -128,25 +128,20 @@
 				#{category}
 				</foreach>
 			</if>
-			<!--<if test="addresses != null">
-				and address in <foreach item="address" collection="addresses" open="(" close=")" separator=",">
-				#{address}
-				</foreach>
-			</if>-->
 			
-			<if test="address != null">
-					AND ADDRESS LIKE '%'|| #{address} ||'%'
-			</if>
-			
-			<!--<choose>
-				<when test="searchkey == 'name'">
-					AND NAME LIKE '%'|| #{searchval} ||'%'
+			<choose>
+				<when test="address != null and address=='address.equals(경남,경북)'">
+					AND ADDRESS LIKE '%'|| '경남' ||'%'
+						OR ADDRESS LIKE '%'|| '경북' ||'%'
 				</when>
-				  
-				<when test="searchkey == 'address'">
-					AND ADDRESS LIKE '%'|| #{searchval} ||'%'
-				</when> 
-			</choose>  -->
+				<when test ="address != null and address=='address.equals(전남,전북)'">
+					AND ADDRESS LIKE '%'|| '전남' ||'%'
+						OR ADDRESS LIKE '%'|| '전북' ||'%'
+				</when>
+				<otherwise>
+					AND ADDRESS LIKE '%'|| #{address} ||'%'
+				</otherwise>
+			</choose>
 		</where>	
 	</select>
 

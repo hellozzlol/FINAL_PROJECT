@@ -10,7 +10,7 @@
 		order by tutor_no
 	</select>
 
-	<select id="tutorSelect"
+	<select id="tutorMyPage"
 		resultType="com.team.prj.tutor.service.TutorVO"
 		parameterType="com.team.prj.tutor.service.TutorVO">
 		select *
@@ -42,19 +42,48 @@
 				,1
 				,SYSDATE)
 	</insert> -->
-	
-	<update id="tutorUpdate">
+	<!--
+	<update id="tutorUpdate" 
+			parameterType="com.team.prj.tutor.service.TutorVO">
 		update tutor
-		set password = #{password}
-			,company = #{company}
-			,email = #{email}
-			,call = #{call}
-			,address = #{address}
-			,dt = #{dt}
-	</update>
+		<set>
+			<if test="id != null">id = #{id},</if>
+			<if test="password != null">password = #{password},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="introduce != null">introduce = #{introduce},</if>
+			
+			<if test="email != null">email = #{email},</if>
+			<if test="call != null">call = #{call},</if>
+			<if test="address != null">address = #{address},</if>
+			
+			
+			<if test="dt != null">dt = #{dt},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="da != null">da = #{da}</if>
+			
+			<if test="snsInsta != null">sns_insta = #{snsInsta},</if>
+			<if test="snsBlog != null">sns_blog = #{snsBlog},</if>
+			<if test="snsYoutube != null">sns_youtube = #{snsYoutube},</if>
+			
+			<if test="attechDir != null">attech_dir = #{attechDir},</if>
+			<if test="attech != null">attech = #{attech}</if>		
+		</set>
+		where tutor_no = #{tutorNo}
+	</update>  -->
+	
 	
 	<delete id="tutorDelete">
 		delete from tutor
 		where tutor_no = #{tutorNo}
 	</delete>
+	
+	
+	<!-- 튜터 클래스 조회 -->
+	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
+		select *
+		from class
+		where tutor_no = #{tutorNo}
+		order by class_no
+	</select>
+	
 </mapper>
