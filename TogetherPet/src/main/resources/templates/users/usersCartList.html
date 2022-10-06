@@ -25,106 +25,7 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-	
-    // 장바구니가 비워져있으면
-    if($('#cartSize').html()=='0'){
-    	$('#tb').html('');
-    	$('#th').html('');
-    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
-    	$('.grand_totall_area').html('').css('background-color', 'white');
-    }
-    
-    // 총액 계산
-	getTotal();
 
-	function getTotal() {
-
-		//subtotal
-		let total = $('.sTotal')
-		let sTotal = 0;
-		for (t of total) {
-			sTotal += Number(t.innerHTML);
-		}
-		// 천단위 콤마
-		sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-		$('#sTotal').html(sTotal)
-
-		//grandtotal 할인 적용 후 
-		total = $('.gTotal')
-		let gTotal = 0;
-		for (t of total) {
-			gTotal += Number(t.innerHTML);
-		}
-		//천단위 콤마
-		gTotal = gTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-		$('#gTotal').html(gTotal)
-	}
-
-	// 장바구니 삭제	
-	$('.remove').on('click', '.removeCart', function () {
-		 
-		let cartNo = $(this).closest('tr').attr('id')
-		$.ajax({
-				url: 'ajaxCartDelete',
-				type: 'post',
-				beforeSend : function(xhr){
-					xhr.setRequestHeader(header, token)},
-				data: {
-					cartNo: cartNo
-				}
-			})
-			.done(res => {
-				alert(res);
-				document.getElementById(cartNo).remove();
-				getTotal();
-			})
-	})
-	// 장바구니 수량 업데이트
-	$('.update').on('change', '.updateCart', function () {
-		let cartNo = $(this).closest('tr').attr('id');
-		let tr = document.getElementById(cartNo);
-		let qty = Number(tr.children[3].children[0].children[0].value)
-		let dc = Number(tr.children[5].children[0].innerHTML)
-		let price = Number(tr.children[5].children[1].innerHTML)
-		let amount = Number(tr.children[6].innerHTML);
-		
-		if(amount<qty){
-			alert('재고보다 많은 수량을 입력할 수 없습니다.');
-			tr.children[3].children[0].children[0].value= amount;
-			return;
-		}
-		$.ajax({
-				url: 'ajaxCartUpdate',
-				type: 'post',
-				beforeSend : function(xhr){
-					xhr.setRequestHeader(header, token)},
-				data: {
-					cartNo: cartNo,
-					qty: qty
-				}
-			})
-			.done(res => {
-				if (res == "1") {
-					// 수량 * 단가 동적 계산
-					tr.children[4].children[0].children[0].innerText = qty * price
-					tr.children[4].children[0].children[1].innerText = qty * price * (1 - dc);
-
-					getTotal();
-				}
-			})
-	})
-	// order로 이동
-	$('#orderCallBtn').on('click', function () {
-		if (confirm('주문 페이지로 넘어가시겠습니까?')) {
-			$('#orderCall').submit();
-		}
-	})
-})
-	</script>
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -156,14 +57,16 @@ document.addEventListener('DOMContentLoaded', function () {
 								<div class="row">
 									<div class="col-12">
 										<div class="cart_page_tabel">
+										<div id="cartSize" style="display: none" th:text="${#lists.size(cartList)}"></div>
 											<table>
-												<thead>
+												<thead id="th">
 													<tr>
 														<th>product</th>
 														<th>information</th>
 														<th>Price</th>
 														<th>Quantity</th>
 														<th>Total</th>
+														<th id="cartSize" style="display: none">[[${#lists.size(cartList)}]]</th>
 													</tr>
 												</thead>
 												<tbody id="tb">
@@ -201,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 															</div>
 														</td>
 														<td style="display: none"><span>[[${c.dc}]]</span><span>[[${c.price}]]</span></td>
+														<td style="display: none">[[${c.amount}]]</td>
 														<td>
 															<div class="cart_product_remove text-right remove">
 																<a class="removeCart"><i class="ion-android-close"></i></a>
@@ -245,6 +149,108 @@ document.addEventListener('DOMContentLoaded', function () {
 			</div>
 		</div>
 		<!--shop wrapper end-->
+		
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+		
+	    // 장바구니가 비워져있으면
+	    if($('#cartSize').html()=='0'){
+	    	$('#tb').html('');
+	    	$('#th').html('');
+	    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
+	    	$('.grand_totall_area').html('').css('background-color', 'white');
+	    }
+	    
+	    // 총액 계산
+		getTotal();
+	
+		function getTotal() {
+	
+			//subtotal
+			let total = $('.sTotal')
+			let sTotal = 0;
+			for (t of total) {
+				sTotal += Number(t.innerHTML);
+			}
+			// 천단위 콤마
+			sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			$('#sTotal').html(sTotal)
+	
+			//grandtotal 할인 적용 후 
+			total = $('.gTotal')
+			let gTotal = 0;
+			for (t of total) {
+				gTotal += Number(t.innerHTML);
+			}
+			//천단위 콤마
+			gTotal = gTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			$('#gTotal').html(gTotal)
+		}
+	
+		// 장바구니 삭제	
+		$('.remove').on('click', '.removeCart', function () {
+			 
+			let cartNo = $(this).closest('tr').attr('id')
+			$.ajax({
+					url: 'ajaxCartDelete',
+					type: 'post',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+					data: {
+						cartNo: cartNo
+					}
+				})
+				.done(res => {
+					alert(res);
+					document.getElementById(cartNo).remove();
+					getTotal();
+				})
+		})
+		// 장바구니 수량 업데이트
+		$('.update').on('change', '.updateCart', function () {
+			let cartNo = $(this).closest('tr').attr('id');
+			let tr = document.getElementById(cartNo);
+			let qty = Number(tr.children[3].children[0].children[0].value)
+			let dc = Number(tr.children[5].children[0].innerHTML)
+			let price = Number(tr.children[5].children[1].innerHTML)
+			let amount = Number(tr.children[6].innerHTML);
+			
+			if(amount<qty){
+				alert('재고보다 많은 수량을 입력할 수 없습니다.');
+				tr.children[3].children[0].children[0].value= amount;
+				return;
+			}
+			$.ajax({
+					url: 'ajaxCartUpdate',
+					type: 'post',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+					data: {
+						cartNo: cartNo,
+						qty: qty
+					}
+				})
+				.done(res => {
+					if (res == "1") {
+						// 수량 * 단가 동적 계산
+						tr.children[4].children[0].children[0].innerText = qty * price
+						tr.children[4].children[0].children[1].innerText = qty * price * (1 - dc);
+	
+						getTotal();
+					}
+				})
+		})
+		// order로 이동
+		$('#orderCallBtn').on('click', function () {
+			if (confirm('주문 페이지로 넘어가시겠습니까?')) {
+				$('#orderCall').submit();
+			}
+		})
+	})
+	</script>
+		
 	</div>
 	<!--shop  area end-->
 </body>

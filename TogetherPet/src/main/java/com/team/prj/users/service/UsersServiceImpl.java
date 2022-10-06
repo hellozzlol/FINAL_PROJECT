@@ -23,7 +23,7 @@ import com.team.prj.users.mapper.UsersMapper;
 public class UsersServiceImpl implements UsersService {
 	@Autowired
 	private UsersMapper map;
-	
+
 	// 전체 유저 조회
 	@Override
 	public List<UsersVO> usersSelectList() {
@@ -53,19 +53,19 @@ public class UsersServiceImpl implements UsersService {
 	public int usersDelete(UsersVO vo) {
 		return map.usersDelete(vo);
 	}
-	
+
 	// 주문 내역 조회
 	@Override
 	public List<OrderVO> orderList(OrderVO vo) {
 		return map.orderList(vo);
 	}
-	
+
 	// 사진 불러오기
 	@Override
 	public List<PhotoVO> photoList(PhotoVO vo) {
 		return map.photoList(vo);
 	}
-	
+
 	// 작성 게시글 조회
 	@Override
 	public List<BoardVO> boardList(BoardVO vo) {
@@ -89,11 +89,17 @@ public class UsersServiceImpl implements UsersService {
 	public List<ClassVO> classList(ClassReserveVO vo) {
 		return map.classList(vo);
 	}
-	
+
 	// 위시리스트 조회
 	@Override
 	public List<LikesVO> likeList(ScrapVO vo) {
 		return map.likeList(vo);
+	}
+
+	// 위시리스트 삭제
+	@Override
+	public int likeDelete(ScrapVO vo) {
+		return map.likeDelete(vo);
 	}
 
 	// 전체 스크랩 내역 조회
@@ -119,7 +125,7 @@ public class UsersServiceImpl implements UsersService {
 	public List<ScrapVO> funeralScrap(ScrapVO vo) {
 		return map.funeralScrap(vo);
 	}
-	
+
 	// 숙박 스크랩 조회
 	@Override
 	public List<ScrapVO> accomoScrap(ScrapVO vo) {
@@ -136,6 +142,24 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public List<UsersVO> userSearch(String key, String val) {
 		return map.userSearch(key, val);
+	}
+
+	// 작성 글 삭제
+	@Override
+	public int usersBoardDelete(BoardVO vo) {
+		return map.usersBoardDelete(vo);
+	}
+
+	// 작성 댓글 삭제
+	@Override
+	public int usersCommentDelete(CommentVO vo) {
+		return map.usersCommentDelete(vo);
+	}
+
+	// 스크랩 삭제
+	@Override
+	public int usersScrapDelete(ScrapVO vo) {
+		return map.usersScrapDelete(vo);
 	}
 
 }

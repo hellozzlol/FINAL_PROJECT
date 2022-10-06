@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.mapper.SellerMapper;
 import com.team.prj.users.service.UsersVO;
 
@@ -67,5 +68,29 @@ public class SellerServiceImpl implements SellerService {
 	public List<UsersVO> sUserSearch(String key, String val) {
 		// TODO Auto-generated method stub
 		return map.sUserSearch(key, val) ;
+	}
+
+	// 고객문의 조회
+	@Override
+	public List<QnaVO> qnaSelectList(QnaVO vo) {
+		return map.qnaSelectList(vo);
+	}
+
+	// 고객문의 상세조회
+	@Override
+	public QnaVO qnaSelect(QnaVO vo) {
+		return map.qnaSelect(vo);
+	}
+
+	// 문의 검색
+	@Override
+	public List<QnaVO> qnaSearch(String key, String val) {
+		return map.qnaSearch(key, val);
+	}
+
+	// 문의 답변
+	@Override
+	public int qnaAnswer(QnaVO vo) {
+		return map.qnaAnswer(vo);
 	}
 }

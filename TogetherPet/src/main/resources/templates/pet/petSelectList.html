@@ -9,28 +9,7 @@
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
 <title>Together Pet</title>
-<script>
-	// 페이지 이동
-	function gopage(p) {
-		location.href = '/pet/petSelectList?pageNum=' + p;}
-</script>
-<style>
-.shipping_text h3 {
-	margin-bottom: 7px;
-	font-size: 23px;
-	line-height: 18px;
-}
 
-.petrow {
-	padding-top: 30px;
-}
-
-.col-form-label {
-	text-align: center;
-	font-weight: bold;
-	font-size: 15px;
-}
-</style>
 </head>
 
 <body>
@@ -53,8 +32,10 @@
 					<h3>내 반려동물 정보보기</h3>
 				</div>
 
+				<div id="petEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</div>
+				<div id="all">
 				<div class="mt-2" style="text-align: right;">
-					<a href="/pet/petInsertForm" class="btn btn-primary me-2 mb-2">
+					<a href="/petInsertForm" class="btn btn-primary me-2 mb-2">
 						+ 내 반려동물정보 등록</a>
 				</div>
 				<div class="row">
@@ -64,7 +45,7 @@
 							<div class="row petrow">
 								<div class="col-md-4" align="center"
 									style="display: block; margin: auto;">
-									<a th:href="@{/pet/petSelect(petNo=${list.petNo})}"> <img
+									<a th:href="@{/petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
 										src="/admin/assets/img/elements/dog.png" alt="Card image"
 										style="width: 220px; height: 220px;" />
@@ -129,6 +110,7 @@
 						</div>
 					</div>
 				</div>
+				</div>
 			</div>
 		</div>
 		<!-- / Content -->
@@ -160,9 +142,38 @@
 			</ul>
 		</nav>
 		<!-- 페이지네이션 -->
-
-		<div class="content-backdrop fade"></div>
 		<!-- Content wrapper -->
+	
+	<style>
+		.shipping_text h3 {
+			margin-bottom: 7px;
+			font-size: 23px;
+			line-height: 18px;
+		}
+		
+		.petrow {
+			padding-top: 30px;
+		}
+		
+		.col-form-label {
+			text-align: center;
+			font-weight: bold;
+			font-size: 15px;
+		}
+	</style>	
+	<script>
+		// 페이지 이동
+		function gopage(p) {
+			location.href = '/petSelectList?pageNum=' + p;}
+	
+		// 등록된 펫정보 없을때
+	    if($('#petEmpty').html()=='0'){
+	    	$("#all").html('');
+	    	$('#all').html("<div align=center><h3> <br>등록된 펫정보가 없습니다.</h3><br><a class='btn btn-primary me-2 mb-2' href='/petInsertForm'>+ 내 반려동물정보 등록</a> <div><br>");
+	    }
+	</script>
+	
+		
 	</div>
 
 	<!--shop wrapper end-->
