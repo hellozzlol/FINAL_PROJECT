@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.calendar.mapper.CalendarMapper">
-	<select id="calendarSelectList" resultType="com.team.prj.calendar.service.CalendarVO">
-		SELECT * FROM calendar
+	<!-- 전체 일정 -->
+	<select id="calendarSelectList"
+		resultType="com.team.prj.calendar.service.CalendarVO">
+		SELECT *
+		FROM calendar
 	</select>
-	
-	<select id="calendarSelect" resultType="com.team.prj.calendar.service.CalendarVO" parameterType="com.team.prj.calendar.service.CalendarVO">
-		SELECT * FROM calendar WHERE calendar_no = #{calendarNo}
+
+	<!-- 일정 상세 조회 -->
+	<select id="calendarSelect"
+		resultType="com.team.prj.calendar.service.CalendarVO"
+		parameterType="com.team.prj.calendar.service.CalendarVO">
+		SELECT *
+		FROM calendar
+		WHERE calendar_no = #{calendarNo}
 	</select>
-	
-	<insert id="calendarInsert" parameterType="com.team.prj.calendar.service.CalendarVO">
-		<selectKey keyProperty="calendarNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(calendar_no) IS NULL 
-			    THEN 1
-			    ELSE max(calendar_no) + 1 
-			    END AS no
+
+	<!-- 일정 등록 -->
+	<insert id="calendarInsert"
+		parameterType="com.team.prj.calendar.service.CalendarVO">
+		<selectKey keyProperty="calendarNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(calendar_no) IS NULL
+			THEN 1
+			ELSE max(calendar_no) + 1
+			END AS no
 			FROM calendar
 		</selectKey>
-		
 		INSERT INTO calendar
 		VALUES(#{calendarNo}
-			  ,#{title}
-			  ,#{content}
-			  ,#{startDt}
-			  ,#{endDt})
+				,#{title}
+				,#{content}
+				,#{startDt}
+				,#{endDt})
 	</insert>
-	
+
+	<!-- 일정 수정 -->
 	<update id="calendarUpdate"
 		parameterType="com.team.prj.calendar.service.CalendarVO">
 		UPDATE calendar
 		SET title = #{title}
-					,content = #{content}
-					,start_dt = #{startDt}
-					,end_dt = #{endDt}
+			,content = #{content}
+			,start_dt = #{startDt}
+			,end_dt = #{endDt}
 		WHERE calendar_no = #{calendarNo}
 	</update>
 
+	<!-- 일정 삭제 -->
 	<delete id="calendarDelete">
-		DELETE FROM calendar WHERE calendar_no = #{calendarNo}
+		DELETE
+		FROM calendar
+		WHERE calendar_no = #{calendarNo}
 	</delete>
-
 </mapper>

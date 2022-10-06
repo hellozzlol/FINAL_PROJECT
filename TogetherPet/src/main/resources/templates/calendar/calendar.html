@@ -15,12 +15,33 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<title>My page</title>
+<title>Together Pet</title>
 
 </head>
 
 <body>
 	<div class="col-lg-9 col-md-12" layout:fragment="content">
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>My Page</li>
+						<li>my calendar</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<!-- 캘린더 시작 -->
+				<div id='calendar-container'>
+					<div id='calendar'></div>
+				</div>
+				<!-- 캘린더 종료 -->
+			</div>
+		</div>
+		
 		<script>
 			let calendar = null;
 			let Alldata = {};
@@ -116,37 +137,8 @@
 			});
 		</script>
 		
-		<!--shop wrapper start-->
-		<!-- Content wrapper -->
-		<div class="content-wrapper">
-			<!-- Content -->
-			<div class="container-xxl flex-grow-1 container-p-y">
-				<!--breadcrumbs area start-->
-				<div class="breadcrumb_content">
-					<ul>
-						<li><a href="/">home</a></li>
-						<li>My Page</li>
-						<li>my calendar</li>
-					</ul>
-				</div>
-				<!--breadcrumbs area end-->
-
-				<!-- 캘린더 시작 -->
-				<div id='calendar-container'>
-					<div id='calendar'></div>
-				</div>
-				<!-- 캘린더 종료 -->
-
-				<div class="content-backdrop fade"></div>
-			</div>
-			<!-- Content wrapper -->
-
-
-			<!--shop wrapper end-->
-		</div>
 	</div>
 	<!--shop  area end-->
 	
 </body>
-
 </html>

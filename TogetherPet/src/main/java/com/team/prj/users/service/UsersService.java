@@ -85,4 +85,5 @@ public interface UsersService {
 	
 	// 스크랩 삭제
 	int usersScrapDelete(ScrapVO vo);
+	
 }

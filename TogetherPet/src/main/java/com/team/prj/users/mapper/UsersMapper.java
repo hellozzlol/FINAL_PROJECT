@@ -89,4 +89,5 @@ public interface UsersMapper {
 
 	// 스크랩 삭제
 	int usersScrapDelete(ScrapVO vo);
+
 }

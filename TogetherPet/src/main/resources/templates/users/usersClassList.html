@@ -70,7 +70,7 @@
 							<tbody id="tb" class="table-border-bottom-0">
 								<tr th:each="list : ${pageInfo.list}">
 									<td>
-										<strong th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|">[[${list.className}]]</strong>
+										<a style="font-weight: bold;" th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|">[[${list.className}]]</a>
 									</td>
 									<td>[[${list.name}]]</td>
 									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>

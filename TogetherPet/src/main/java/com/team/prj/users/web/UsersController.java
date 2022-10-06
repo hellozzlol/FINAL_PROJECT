@@ -20,28 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.calendar.service.CalendarService;
 import com.team.prj.calendar.service.CalendarVO;
-import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassVO;
-import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
-import com.team.prj.comment.service.CommentService;
 import com.team.prj.comment.service.CommentVO;
-import com.team.prj.goods.service.GoodsVO;
-import com.team.prj.like.service.LikesService;
-import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetService;
 import com.team.prj.pet.service.PetVO;
-import com.team.prj.scrap.service.ScrapService;
 import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.state.service.StateService;
 import com.team.prj.state.service.StateVO;
-import com.team.prj.tutor.service.TutorService;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
@@ -278,25 +269,6 @@ public class UsersController {
 		return "users/usersWishList";
 	}
 
-	// 전체 일정 조회
-	@RequestMapping("/calendarSelectList")
-	public String calendarSelectList() {
-		return "calendar/calendarSelectList";
-	}
-
-	// 일정 상세 조회
-	@RequestMapping("/calendar/calendarSelect")
-	public String calendarSelect(CalendarVO vo, Model model) {
-		model.addAttribute("cal", cal.calendarSelect(vo));
-		return "calendar/calendarSelect";
-	}
-
-	// 일정 등록 처리
-	@PostMapping("/users/calendarInsert")
-	public String calendarInsert(CalendarVO vo) {
-		return "redirect:calendar/calendarSelect";
-	}
-
 	// 반려동물 전체 리스트
 	@RequestMapping("/petSelectList")
 	public String petSelectList(HttpSession session, Model model, PetVO pvo,
@@ -383,7 +355,7 @@ public class UsersController {
 		user.usersBoardDelete(bvo);
 		return "redirect:/usersBoardList";
 	}
-	
+
 	// 작성댓글 삭제
 	@RequestMapping("/usersCommentDelete")
 	public String usersCommentDelete(CommentVO cvo, HttpSession session) {
@@ -392,7 +364,7 @@ public class UsersController {
 		user.usersCommentDelete(cvo);
 		return "redirect:/usersCommentList";
 	}
-	
+
 	// 스크랩 삭제
 	@RequestMapping("/usersScrapDelete")
 	public String usersScrapDelete(ScrapVO svo, HttpSession session) {
@@ -400,6 +372,42 @@ public class UsersController {
 		svo.setUserNo(uvo.getUserNo());
 		user.usersScrapDelete(svo);
 		return "redirect:/usersScrapList";
+	}
+
+	// 숙박 스크랩 삭제
+	@RequestMapping("/accomoScrapDelete")
+	public String accomoScrapDelete(ScrapVO svo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		user.usersScrapDelete(svo);
+		return "redirect:/scrapAccomo";
+	}
+
+	// 커뮤니티 스크랩 삭제
+	@RequestMapping("/commuScrapDelete")
+	public String commuScrapDelete(ScrapVO svo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		user.usersScrapDelete(svo);
+		return "redirect:/scrapCommunity";
+	}
+
+	// 장례 스크랩 삭제
+	@RequestMapping("/funeralScrapDelete")
+	public String funeralScrapDelete(ScrapVO svo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		user.usersScrapDelete(svo);
+		return "redirect:/scrapFuneral";
+	}
+
+	// 병원 스크랩 삭제
+	@RequestMapping("/hospitalScrapDelete")
+	public String hospitalScrapDelete(ScrapVO svo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		user.usersScrapDelete(svo);
+		return "redirect:/scrapHospital";
 	}
 
 }
