@@ -41,4 +41,5 @@ public class ClassVO {
 	
 	int postcode; //우편번호
 	String da; //상세주소
+	int scrapNo; // 1006 선희 추가
 }

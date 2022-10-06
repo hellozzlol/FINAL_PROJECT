@@ -4,6 +4,9 @@
 	layout:decorate="~{layout/layout_mypage}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
 <title>Together Pet</title>
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,24 +25,7 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-<script>
-	//페이지 이동
-	function gopage(p) {
-		location.href = '/usersWishList?pageNum=' + p;
-	}
-</script>
-<style>
-.product_label span {
-	width: 80px;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-	display: inline-block;
-	font-weight: 600;
-	color: #ffffff;
-	background: #ff2f2f;
-}
-</style>
+
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -60,19 +46,24 @@
 
 				<div class="shipping_text">
 					<h3>위시리스트</h3>
+					<h4 id="wishListEmpty" style="display: none">[[${#lists.size(pageInfo.list)}]]</h4>
 				</div>
 				<br>
 
-				<div class="row shop_wrapper">
+				<div class="row shop_wrapper" id="wish">
 					<!-- wishlist start -->
-					<div class="col-lg-3 col-md-3" id="point" th:each="list : ${pageInfo.list}">
+					<div class="col-lg-3 col-md-3 closest" th:each="list : ${pageInfo.list}"
+						th:id="${list.scrapNo}">
 						<div class="single_product">
 							<div class="product_thumb">
 								<a th:href="@{classSelect(classNo=${list.classNo})}">
-									<img class="primary_img" th:src="${list.thumb}" alt="consectetur">
+									<img th:src="${list.thumb}">
 								</a>
 								<div class="product_label">
 									<span>[[${list.category}]]</span>
+								</div>
+								<div class="cart_product_remove text-right remove">
+									<a class="removeWish"><i class="ion-android-close"></i></a>
 								</div>
 							</div>
 						</div>
@@ -130,11 +121,51 @@
 				</ul>
 			</nav>
 			<!-- 페이지네이션 -->
-
-			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
-
+<style>
+	.product_label span {
+		width: 80px;
+		height: 25px;
+		line-height: 25px;
+		text-align: center;
+		display: inline-block;
+		font-weight: 600;
+		color: #ffffff;
+		background: #ff2f2f;
+	}
+</style>
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersWishList?pageNum=' + p;
+	}
+	
+	// 위시리스트 없을때
+    if($('#wishListEmpty').html()=='0'){
+    	$('#wish').html("<div align=center><h3> <br>위시리스트에 담긴 클래스가 없습니다.</h3><div><br>");
+    }
+	
+	// 위시리스트 삭제
+	$(".remove").on("click", ".removeWish", function () {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		let scrapNo = $(this).closest('.closest').attr('id')
+		$.ajax({
+			url:'ajaxLikeDelete',
+			type:'post',
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)},
+			data:{
+				scrapNo : scrapNo
+			}
+		})
+		.done(res => {
+			alert(res);
+			document.getElementById(scrapNo).remove();
+		})
+	})
+</script>
 
 		<!--shop wrapper end-->
 	</div>
