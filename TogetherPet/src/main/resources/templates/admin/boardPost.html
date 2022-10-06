@@ -19,28 +19,6 @@
 <body>
 	<article layout:fragment="content">
 	
-	<script>
-		$(document).ready().ready(function(){
-			$('#deleteButton').on('click', function(){
-				var $checked = $('.table input[type=checkbox]:checked'); 
-				console.log($checked.length); // 체크박스 선택 값
-				
-				if($checked.length < 1) {
-					alert('삭제할 항목을 선택해주세요.');
-				 	return false;
-				}
-				var boardNoList = []; 
-				
-				$.each($checked, function(k, v){
-					boardNoList.push($(this).val());
-				});
-					console.log(boardNoList); // 체크박스 선택 값 / boardNo 못 불러오고있음..
-					console.log(boardNoList.join(',')); // 배열을 문자열로 변경
-			});
-		});
-	</script>
-	
-	
 		<br><br>
 		<h5 class="fw-bold py-3 mb-4">
 			<span class="text-muted ">전체 게시글 조회 / </span> 
@@ -54,7 +32,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th><input type="checkbox" class="allCheck"></th>
+							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
 							<th>글 번호</th>
 							<th>카테고리</th>
 							<th>글 제목</th>
@@ -63,8 +41,8 @@
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0">
-						<tr th:each="b:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox"></td>
+						<tr th:each="b:${pageInfo.list}" th:id="${b.boardNo}">
+							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${b.boardNo}"></td>
 							<td th:text="${b.category}"></td>
 							<td><a th:href="@{/boardSel(boardNo=${b.boardNo})}"
@@ -117,9 +95,88 @@
 		</script>
 		<!-- 페이지네이션 -->
 		
-		<form name="deleteForm" method="post" action="/admin/delete.do">
-			<input type="hidden" name="boardNoList"/>
-		</form>
+	<!-- 체크박스 -->	
+		<script>
+		// 체크박스 전체 선택
+		function allChecked(target){
+			//전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			//전체 체크박스 제외한 모든 체크박스
+			if(is_checked){
+				//체크박스 전체 체크
+				chkAllChecked()
+			}else{
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
+		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked(){
+			//체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			//체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			//체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if(allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+				//같지 않으면 전체 체크박스 해제
+			}else{
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		//체크박스 전체 체크
+		function chkAllChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		//체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}	
+		</script>
+		
+		<!-- 삭제 -->
+		<script>
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
+			$('#deleteButton').on('click', function(){
+			    let chkbox = document.querySelectorAll(".chk");
+			    chkbox.forEach(elem => {
+				    if(elem.checked==true){
+				    	//console.log(elem.closest('tr').getAttribute('id'))
+				    	let boardNo = elem.closest('tr').getAttribute('id')
+				    	$.ajax({
+							url: '/ajaxboardDelete',
+							type: 'post',
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
+							data: {
+								boardNo: boardNo
+							}
+						})
+						.done(res => {
+							document.getElementById(boardNo).remove();
+							
+						})
+				    }
+			    });
+			})
+		</script>
+		
 		
 		</article>
 	</body>

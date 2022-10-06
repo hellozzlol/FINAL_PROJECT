@@ -11,8 +11,19 @@
 	</select>
 
 
+	<update id="postUpdate">
+		UPDATE goods set upload_state='1'   
+		WHERE goods_no = #{goodsNo}
+	</update>
 
+	
+	<update id="cpostUpdate">
+		UPDATE class set upload_state='1'   
+		WHERE class_no = #{classNo}
+		
+	</update>
 
+	<!-- #{category} #{no} -->
 
 
 </mapper>

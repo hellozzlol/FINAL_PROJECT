@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.admin.mapper.adminMapper;
+import com.team.prj.classes.service.ClassVO;
+import com.team.prj.goods.service.GoodsVO;
 @Service
 public class adminServiceImpl implements adminService {
 	@Autowired
@@ -28,6 +30,19 @@ public class adminServiceImpl implements adminService {
 		// 관리자 수정
 		return map.adminUpdate(vo);
 	}
+
+	@Override
+	public int postUpdate(GoodsVO vo) {
+		// 상품 상태 업데이트
+		return map.postUpdate(vo);
+	}
+
+	@Override
+	public int cpostUpdate(ClassVO vo) {
+		// 클래스 상태 업데이트
+		return map.cpostUpdate(vo);
+	}
+
 
 
 }

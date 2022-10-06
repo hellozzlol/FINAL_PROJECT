@@ -6,11 +6,15 @@ import java.nio.file.Files;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.ui.Model;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +66,7 @@ public class BoardAjaxController {
 	public List<CommentVO> commentList(CommentVO vo){
 		return Service.commentSelectList(vo);
 	}
+
 	//이미지 화면에 보여줌 
 	@RequestMapping("/displayy")
 	public ResponseEntity<byte[]> getImage(String fileName){
@@ -83,4 +88,5 @@ public class BoardAjaxController {
 		
 		return result;
 	}
+
 }
