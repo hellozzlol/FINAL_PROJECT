@@ -1,10 +1,5 @@
 package com.team.prj.admin.web;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,14 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.prj.admin.service.adminService;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.attend.service.attendService;
-import com.team.prj.attend.service.attendVO;
 import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.classes.service.ClassService;
@@ -36,9 +29,7 @@ import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 @Controller
 public class adminController {
 
@@ -103,7 +94,7 @@ public class adminController {
 	@GetMapping("/manager/userManage")
 	public String userManage(Model model, UsersVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "7") int pageSize) {
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		model.addAttribute("pageInfo", PageInfo.of(users.usersSelectList()));
 		// model.addAttribute("users", us.usersSelectList());

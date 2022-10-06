@@ -40,7 +40,6 @@
 							<th>카테고리</th>
 							<th>클래스 명</th>
 							<th>등록일자</th>
-							<th>등록 상태</th>
 							
 						</tr>
 					</thead>
@@ -52,7 +51,6 @@
 							<td><a th:href="@{/classSelect(classNo=${c.classNo})}"
 								th:text="${c.name}"></a></td>
 							<td th:text="${c.uploadDate}"></td>
-							<td th:text="${c.uploadState}"></td>        
 						</tr>
 					</tbody>
 				</table>
