@@ -67,17 +67,13 @@ public class SellerAjaxController {
 
 	// 정산 페이지 // 1005 희수 추가
 	@RequestMapping("/ajaxProfitOrderBy")
-	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session, String key) {
+	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session, String key){
+		System.out.println(key);
+		System.out.println("===============================================");
 		svo = (SellerVO) session.getAttribute("seller");
 		svo.setSellerNo(svo.getSellerNo());
 		List<ProfitVO> list = seller.sellerProfitList(svo, key);
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getMinusYn().equals("0")) {
-				list.get(i).setMinusYn("정산대기");
-			} else if (list.get(i).getMinusYn().equals("1")) {
-				list.get(i).setMinusYn("정산완료");
-			}
-		}
+
 		return list;
 	}
 

@@ -26,10 +26,76 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-
 <!-- datepicker 한국어로 -->
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+<script>
+
+
+$(document).ready(function(){
+	
+		/*-----------------------
+		//클래스 카드 선택시 삭제 후 테이블 생성	
+		-------------------------*/	
+		$(".col-md-4").on("click", function() {
+				var classNo = $(this).children('input:eq(0)').val();
+				var className = $(this).children('input:eq(1)').val();
+				console.log(classNo);
+				
+			 	$.ajax({
+						url : "classOptionList",
+						type:'get',
+						data : {classNo : classNo},
+						success : htmlView
+				});
+				$("#wrap").empty();
+				$("#cdheader").empty();
+				$("#cdheader").append(`<a> 클래스 [ ${className} ] 의 수강자 및 정산 현황</a>`)
+		})
+		/*.then((arg)) => {
+				var classOptionNo = $("#clop").val();
+				
+		}
+		
+		
+		
+		
+		
+		/*-----------------------
+		//콜백함수 클래스 옵션 조회
+		-------------------------*/	
+		function htmlView(list) {		
+			
+				for (c of list) {
+					var result = `
+						<div class="col-md-6">
+							<div class="card">
+								<table>
+									<tbody>
+										<input id="clop" value="${c.classOptionNo}"></input>
+										<tr>
+											<td>수업시간 : ${c.startDt}</td>
+										</tr>
+										<tr>
+											<td>수강인원 : ${c.maxHeadcount} / ${c.allHeadcount}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>`
+					$("#wrap").append(result);
+				}
+		}
+		
+		
+		
+		
+
+
+
+})// end of document.ready
+
+</script>
 
 </head>
 <body>
@@ -44,7 +110,7 @@
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>클래스 수강자내역</li>
+						<li>수강자 및 정산관리</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
@@ -76,73 +142,67 @@
 					</div>
 				</div>
 
-				
-				
-				<div class="mb-3 classSelect">
-					<select id="defaultSelect" class="form-select">
-						<option>===전체===</option>
-						<option value="1">승인대기</option>
-						<option value="2">승인완료</option>
-						<option value="3">승인반려</option>
-					</select>&nbsp;
-					<button type="button" class="btn-primary3" id="classDel">삭제</button>
-				</div>
-				<!-- Hoverable Table rows -->
-				<div class="card">
-					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
-						등록된 클래스 목록 (총 [[${#lists.size(pageInfo.list)}]]개)
-					</h4>
 
-					<div class="table-responsive text-nowrap" style="vertical-align: middle; text-align: center;">
-						<table class="table table-hover" id="all">
-							<thead>
-								<tr>
-									<th>
-										<input type='checkbox' name='selectall' 
-										value='selectall'  onclick='selectAll(this)'/>
-									</th>
-									<th></th>
-									<th>클래스명</th>
-									<th>개설일자</th>
-									<th>승인 상태</th>
-									<th>수정/삭제</th>
-								</tr>
-							</thead>
-							<tbody id="btnList" class="table-border-bottom-0">
-								<tr th:each="list : ${pageInfo.list}" class="category"
-									th:data-category="${list.uploadState}" style="" th:id="${list.classNo}">
-									<td>
-										<br><br><input type='checkbox' name='class' onclick='checkSelectAll()'/>
-									</td>
-									
-									<td>
-										<img th:src="@{display(fileName=${list.thumb})}" alt="consectetur" 
-											class="card-img-top embed-responsive-item" id="thumb_img" style="height: 10em; width:13em;">
-									</td>
-									
-									<td th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|">
-										<br><br>[[${list.name}]]
-									</td>
-									<td><br><br>[[${list.uploadDate}]]</td>
-									<td>
-										<br><br><div th:switch="${list.uploadState}">
-											<p th:case="0">승인대기</p>
-											<p th:case="1">승인완료</p>
-											<p th:case="2">승인반려</p>
-										</div>
-									</td>
-									<td>
-										<br><br><input type="button" value="수정" class="btn-primary3"
-											th:onClick="|location.href='@{/sellerGoodsDetail(classNo=${list.classNo})}'|">
-										<input type="button" id="deleteBtn" value="삭제" class="btn-primary3">
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+				<!-- 클래스 카드리스트 반복문 -->
+				<div class="card mb-4"  id="border">
+					
+					<h4 class="card-header" id="cdheader" style="font-weight: bold; font-size: 17px">
+						<a>조회하실 클래스를 선택하세요.</a> 
+					</h4>
+					
+					
+					<div class="col-md-6">
+						<div class="card" style="backgroud-color: gray;">
+							<a>정산 예정액 150,000 |정산 완료액 50,000 </a>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-3">
+								<div class="card">전체</div>
+							</div>
+							<div class="col-md-3">
+								<div class="card">정산예정</div>
+							</div>
+							<div class="col-md-3">
+								<div class="card">정산완료</div>
+							</div>
+						</div>
+					</div>						
+					
+					
+						<div class="card-body">
+							<div class="row gy-4" id="wrap" >
+								<div class="col-md-4" th:each="list : ${pageInfo.list}" th:id="${list.classNo}">
+									<input id="clno" type="hidden" th:value="${list.classNo}">
+									<input id="clna" type="hidden" th:value="${list.name}">
+									<div class="card">	
+										<ul>
+											<li>
+												<img th:src="@{display(fileName=${list.thumb})}" alt="consectetur" 
+												class="card-img-top embed-responsive-item" id="thumb_img" style="height: 15em; width:100%em;">
+											</li>
+											<li>
+												개설일 [[${list.uploadDate}]]
+											</li>
+											<li>
+												<h4>[[${list.name}]]</h4>
+											</li>
+										</ul>		
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					
+	
 				</div>
+				
+				
+				
+				
+
 				<!--/ Hoverable Table rows -->
-			<p>* 클래스 이름 클릭시 상세 페이지로 이동합니다.</p>
+			<p>* 클래스 클릭시 수강자 내역이 표시됩니다.</p>
 			</div>
 			<!-- / Content -->
 

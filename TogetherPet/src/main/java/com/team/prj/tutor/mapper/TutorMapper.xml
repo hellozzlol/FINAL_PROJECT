@@ -10,6 +10,7 @@
 		order by tutor_no desc
 	</select>
 
+	<!-- 튜터 마이페이지 단건조회 -->
 	<select id="tutorMyPage"
 		resultType="com.team.prj.tutor.service.TutorVO"
 		parameterType="com.team.prj.tutor.service.TutorVO">
@@ -43,6 +44,7 @@
 				,SYSDATE)
 	</insert> -->
 
+	<!-- 마이페이지에서 튜터정보 수정 -->
 	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
 
 		update tutor
@@ -86,13 +88,29 @@
 		</choose>
 	</select>
 
-	<!-- 튜터 클래스 조회 -->
+	<!-- 튜터가 생성한 클래스 리스트 조회 -->
 	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
 		select *
 		from class
 		where tutor_no = #{tutorNo}
 		order by class_no
 	</select>
+	
+	<!-- 특정 클래스의 모든 날짜옵션 리스트-->
+	<select id="classOptionList"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount
+		from class_option o, class c
+		where o.class_no = 4
+		and o.class_no = c.class_no
+		order by o.start_dt
+	</select>
+
+	<!-- SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
+		R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
+		R.CLASS_NAME FROM CLASS_OPTION O, CLASS_RESERVE R WHERE R.CLASS_OPTION_NO 
+		= 115 AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO ORDER BY RESERVE_NO; -->
 	
 
 </mapper>

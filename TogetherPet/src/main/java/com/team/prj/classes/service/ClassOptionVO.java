@@ -11,5 +11,23 @@ public class ClassOptionVO {
 	String startDt;
 	String endDt;
 	String allHeadcount;
+	
+	//classOptionNo;
+	//startDt;
+	//endDt;
+	//allHeadcount; 
+	
+	int maxHeadcount; 
+	int reserveNo; 
+	String dt;
+	String orderDate; 
+	String pay;
+	String payYn; 
+	int userNo;
+	int minusPrice; 
+	int totalPrice; 
+	String call;
+	String name;
+	String className;
 
 }

@@ -127,10 +127,10 @@
 		seller_no=#{svo.sellerNo}
 		<choose>
 			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
-			<when test="key == 2"> and minus_yn 1
+			<when test="key == 2"> and minus_yn = 1
 				order by 1 desc
 			</when>
-			<when test="key == 3"> and minus_yn 1
+			<when test="key == 3"> and minus_yn = 0
 				order by 1 desc
 			</when>
 		</choose>
