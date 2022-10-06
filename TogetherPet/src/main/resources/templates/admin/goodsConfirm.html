@@ -7,17 +7,11 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
+<title>검토 - 상품</title>
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<title>검토 - 상품</title>
-<style>
-.uList {
-
-	margin-top: 100px;
-}
-</style>
 </head>
 <body>
 	<article layout:fragment="content">
@@ -35,7 +29,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>선택</th>
+							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
 							<th>상품 번호</th>
 							<th>카테고리</th>
 							<th>상품 명</th>
@@ -44,8 +38,8 @@
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0">
-						<tr th:each="g:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox"></td>
+						<tr th:each="g:${pageInfo.list}" th:id="${g.goodsNo}">
+							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${g.goodsNo}"></td>
 							<td th:text="${g.category}"></td>
 							<td><a th:href="@{/goods(goodsNo=${g.goodsNo})}"
@@ -59,8 +53,8 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">승인</button>
-		<button type="button" class="btn btn-sm btn-primary">반려</button>
+		<button type="button" class="btn btn-sm btn-primary" id="approve">승인</button>
+		<button type="button" class="btn btn-sm btn-primary" id="disapprove">반려</button>
 		<br> <br>
 
 		<!-- 페이지네이션 -->
@@ -89,12 +83,162 @@
 			</ul>
 		</nav>
 
+
+ 		<!-- 반려 클릭 시 -->
+         <div class="col-lg-4 col-md-6">
+           <small class="text-light fw-semibold">Default</small>
+          
+           <div class="mt-3">
+             <!-- Button trigger modal -->
+             <button
+               type="button"
+               class="btn btn-primary"
+               data-bs-toggle="modal"
+               data-bs-target="#basicModal"
+             >
+               Launch modal
+             </button>
+
+             <!-- Modal -->
+             <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                   <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                     <button
+                       type="button"
+                       class="btn-close"
+                       data-bs-dismiss="modal"
+                       aria-label="Close"
+                     ></button>
+                   </div>
+                   <div class="modal-body">
+                     <div class="row">
+                       <div class="col mb-3">
+                         <label for="nameBasic" class="form-label">Name</label>
+                         <input type="text" id="nameBasic" class="form-control" placeholder="Enter Name" />
+                       </div>
+                     </div>
+                     <div class="row g-2">
+                       <div class="col mb-0">
+                         <label for="emailBasic" class="form-label">Email</label>
+                         <input type="text" id="emailBasic" class="form-control" placeholder="xxxx@xxx.xx" />
+                       </div>
+                       <div class="col mb-0">
+                         <label for="dobBasic" class="form-label">DOB</label>
+                         <input type="text" id="dobBasic" class="form-control" placeholder="DD / MM / YY" />
+                       </div>
+                     </div>
+                   </div>
+                   <div class="modal-footer">
+                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                       Close
+                     </button>
+                     <button type="button" class="btn btn-primary">Save changes</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+
+
+
+
+
 		<script>
 			function gopage(p) {
 				location.href = '/manager/goodsConfirm?pageNum=' + p;
 			}
 		</script>
 		<!-- 페이지네이션 -->
+
+		<!-- 체크박스 -->	
+		<script>
+		// 체크박스 전체 선택
+		function allChecked(target){
+			//전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			//전체 체크박스 제외한 모든 체크박스
+			if(is_checked){
+				//체크박스 전체 체크
+				chkAllChecked()
+			}else{
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
+		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked(){
+			//체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			//체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			//체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if(allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+				//같지 않으면 전체 체크박스 해제
+			}else{
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		//체크박스 전체 체크
+		function chkAllChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		//체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}	
+		</script>
+		
+		<!-- 승인 클릭 시 -->
+		<script>
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
+			$('#approve').on('click', function(){
+			    let chkbox = document.querySelectorAll(".chk");
+			    chkbox.forEach(elem => {
+			    	//console.log('?')
+				    //console.log(elem.checked)
+				    if(elem.checked==true){
+				    	let no = elem.closest('tr').getAttribute('id')
+				    	$.ajax({
+							url: '/postUpdateAjax',
+							type: 'post',
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
+							data: {
+								category : 'S',
+								no : no
+							}
+						})
+						.done(res => {
+							document.getElementById(no).remove();
+							
+						})
+				    }
+			    });
+			})
+		</script>
 		
 		</article>
 	</body>
