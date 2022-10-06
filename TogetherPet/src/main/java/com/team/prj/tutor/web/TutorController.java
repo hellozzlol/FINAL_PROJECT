@@ -1,8 +1,11 @@
 package com.team.prj.tutor.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,9 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.tutor.service.TutorService;
@@ -96,21 +101,29 @@ public class TutorController {
 		return "tutor/tutorClassList";
 	}
 	
-	//튜터가 등록신청한 클래스 리스트
+	//클래스 수강자 및 정산 리스트 카드로 표시
 	@RequestMapping("/classTuteeList")
 	public String classTuteeList(Model model,  HttpServletRequest request, 
 			ClassVO clvo, 
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
-			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+			@RequestParam(required = false, defaultValue = "9") int pageSize) {
 		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
-		//PageHelper.startPage(pageNum, pageSize);
-		//HttpSession session = request.getSession();
-		//TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
-		//clvo.setTutorNo(tuvo.getTutorNo());
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
+		clvo.setTutorNo(tuvo.getTutorNo());
 		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
 		
 		return "tutor/classTuteeList";
 	}
 	
-	
+	//클래스 수강자 및 정산 리스트에서 해당 클래스의 옵션리스트
+	@RequestMapping("classOptionList")
+	@ResponseBody
+	public List<ClassOptionVO> classOptionList(Model model, @RequestParam(value="classNo") int classNo){
+		List<ClassOptionVO> list = tutor.classOptionList(classNo);
+		model.addAttribute("option", list);
+		return list;
+	}
+
 }

@@ -137,6 +137,8 @@ public class ClassAjaxController {
 		return classNo;
 	}
 	
+	
+	
 	@RequestMapping("classOptionInsert")
 	@ResponseBody
 	public void classOptionInsert(@RequestBody List<Map<String,Object>> opparams) {
