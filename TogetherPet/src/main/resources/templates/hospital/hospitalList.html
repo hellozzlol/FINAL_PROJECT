@@ -54,17 +54,17 @@ form {
 
 
 
-		<script>
-				document.addEventListener('DOMContentLoaded', function() {
-					var token = $("meta[name='_csrf']").attr("content");
-					var header = $("meta[name='_csrf_header']").attr("content");
+						<script>
+						document.addEventListener('DOMContentLoaded', function() {
+							var token = $("meta[name='_csrf']").attr("content");
+							var header = $("meta[name='_csrf_header']").attr("content");
 					// 필터링
 					// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
 						$('#category').on('click', 'button', function() {
-							let filter = $(this).data('filter');
-							let categories = $('.category') // <div> 태그 배열
+								let filter = $(this).data('filter');
+								let categories = $('.category') // <div> 태그 배열
 			
-					for(category of categories){ 
+							for(category of categories){ 
 							category.style='';
 								if(filter == 'ALL'){
 										category.style='';
@@ -75,7 +75,7 @@ form {
 									})
 		
 								})
-		</script>
+						</script>
 
 
 						<!-- 카테고리 시작  -->
@@ -173,18 +173,19 @@ form {
 									<!--스크랩기능 시작  -->
 									<div class="product_action">
 										<ul>
-											<li class="wishlist"><a href="#" data-tippy="Wishlist"
+											<li class="wishlist">
+											<a href="#" data-tippy="Wishlist"
 												data-tippy-inertia="true" data-tippy-delay="50"
 												data-tippy-arrow="true" data-tippy-placement="left"> 
-												<input type="hidden" th:value="${session.user.userNo}" name="userNo">	
-									            <input type="hidden" th:value="${h.categoryId}" name="categoryId"> 
+											
+												<input type="hidden" th:value="${h.categoryId}" name="categoryId"> 
 												<input type="hidden" th:value="${h.hospitalNo}" name="boardNo">
-												<i class="icon-heart scrapBtn"></i>
-
+												<input type="hidden" th:value="${session.user.userNo}" name="userNo">
+													<i class="icon-heart scrapBtn"></i>
 											</a></li>
 										</ul>
 									</div>
-									
+
 									<!--스크랩기능 끝  -->
 
 
@@ -195,8 +196,7 @@ form {
 									<p class="card-text" th:text="${h.address}"></p>
 									<p class="card-text">😄[[${h.hit}]]</p>
 									<a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"
-										class="btn btn-primary">더보기</a> 
-									
+										class="btn btn-primary">더보기</a>
 								</div>
 							</div>
 						</div>
@@ -221,66 +221,44 @@ form {
 						
 						
 						$("#all").on('click','.icon-heart', function() {
-							
-							
-							
-							/* console.log('유저',$(this).prev().prev().prev().val()); // categoryId
-							console.log('카테고리아이디',$(this).prev().prev().val()); // userNo
-							console.log('병원번호',$(this).prev().val());// hospitalNo */
-							
+						
 							alert('스크랩 하시겠습니까?')
 									
-							let categoryId = $("#categoryId").prev().prev().val();//병원카테고리 h
-							console.log('카테고리->',$(this).prev().prev().val());
+							let categoryId = $(this).prev().prev().prev().val();//병원카테고리 h
+							console.log('카테고리->',$(this).prev().prev().prev().val());
+							
+							let boardNo =$(this).prev().prev().val();//boardNo 병원번호
+							console.log('병원번호->',$(this).prev().prev().val());
 							
 							
-							let userNo = $("#userNo").prev().prev().prev().val();// userNo 유저번호
-							console.log('유저번호->',$(this).prev().prev().prev().val());
+							let userNo = $(this).prev().val();// userNo 유저번호
+							console.log('유저번호->',$(this).prev().val());
 							
 							
-							let boardNo =$("#boardNo").prev().val();//boardNo 병원번호
-							console.log('병원번호->',$(this).prev().val());
+							
 							
 							
 							
 							//스크랩 등록 처리
 							$.ajax({
-						         url:'/ajaxScrapInsert',
+						         url:'/scrapInsert.do',
 						         type:'post',
 						         beforeSend : function(xhr){
 										xhr.setRequestHeader(header, token)},
 						     	 dataType:'json',
-						         data:{'categoryId':categoryId, 'userNo':userNo, 'boardNo':boardNo},
+						         data:{categoryId:categoryId, userNo:userNo, boardNo:boardNo},
 						         success:function(data,idx,arr){
 								console.log(arr); 
-								if(data == 1){
+			
 									alert("스크랩이 성공 적 으로 등록 되었습니다.")
-									$('#rList').html('');
-									
-									scrapHospital();
-								}
+							
 						       }
 						    })
-							
-							
-							
-							
+								
 						})
 						
 						
-						
-						
-						
-						
-						
-						
 						</script>
-
-
-
-
-
-
 						<!-- 스크랩 스크립트 시작 20221005 소현 끝  -->
 
 

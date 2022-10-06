@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.team.prj.accomo.service.accomoVO;
+import com.team.prj.scrap.service.ScrapVO;
 
 public interface accomoMapper {
 	List<accomoVO> accomoSelectList(@Param("key") String key);
@@ -24,4 +25,11 @@ public interface accomoMapper {
 	
 	List<accomoVO> accomoSearch(@Param("key")String key, @Param("val") String val);
 
+	
+	
+	
+	//소현스크랩기능
+	  int scrapInsert(ScrapVO vo);//20221005소현추가
+	
+	
 }
