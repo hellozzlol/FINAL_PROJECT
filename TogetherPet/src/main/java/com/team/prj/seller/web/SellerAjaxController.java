@@ -5,11 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
 import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
@@ -67,10 +69,14 @@ public class SellerAjaxController {
 
 	// 정산 페이지 // 1005 희수 추가
 	@RequestMapping("/ajaxProfitOrderBy")
-	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session, String key){
+	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session,  String key){
 		System.out.println(key);
 		System.out.println("===============================================");
+		if (key == null) {
+			key = "1";
+		}
 		svo = (SellerVO) session.getAttribute("seller");
+		
 		svo.setSellerNo(svo.getSellerNo());
 		List<ProfitVO> list = seller.sellerProfitList(svo, key);
 

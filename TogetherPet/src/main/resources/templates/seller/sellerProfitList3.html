@@ -102,8 +102,6 @@
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
-						정산 완료 내역: 총 [[${#lists.size(pageInfo.list)}]]건</h4>
 					<div class="table-responsive text-nowrap" style="padding: 20px">
 						<div id="orderby">
 							<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;<label
@@ -125,16 +123,6 @@
 									<th>정산여부</th>
 								</tr>
 							</thead>
-							<tbody id="tbd" class="table-border-bottom-0">
-								<tr th:each="list : ${pageInfo.list}">
-									<td>[[${list.minusDt}]]</td>
-									<td>[[${list.orderDt}]]</td>
-									<td>[[${list.name}]]</td>
-									<td>[[${list.totalPrice}]]</td>
-									<td>[[${list.minusPrice}]]</td>
-									<td>[[${list.minusYn}]]</td>
-								</tr>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -143,38 +131,12 @@
 			<br>
 			<!-- / Content -->
 
-			<!-- 페이지네이션 -->
-			<nav aria-label="Page navigation example">
-				<ul class="pagination pagination-info  justify-content-center">
-					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
-						class="page-link">«</span></li>
-					<li class="page-item"
-						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
-						class="page-link"
-						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
-						rel="prev">«</a></li>
-					<li
-						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
-						th:each="page:${pageInfo.navigatepageNums}"><span
-						class="page-link" th:if="${pageInfo.pageNum eq page}"
-						th:text="${page}"></span> <a class="page-link"
-						th:unless="${pageInfo.pageNum eq page}"
-						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
-							}}</a></li>
-					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
-						class="page-link"
-						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
-						rel="next">»</a></li>
-					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
-						class="page-link">»</span></li>
-				</ul>
-			</nav>
-			<!-- 페이지네이션 -->
+
 			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
 
-<style>
+		<style>
 .search-box .form-control {
 	width: 48%;
 	display: inline;
@@ -186,24 +148,74 @@
 }
 </style>
 
+		<script type="text/javascript"
+			src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" type="text/css"
+			href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+		<script
+			src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+
 		<script>
-		//페이지 이동
-		function gopage(p) {
-			location.href = '/sellerProfitList?pageNum=' + p;
-		}
-		
 		var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");
 	    
-	   // profitList();
+	    //profitList();
 	    let key = "1";
+		let table = Datatables();
+	    /* Datatables */
+	    function Datatables(){
+		//let key = $('input[name=key]:checked').val();
 
+			let table = $('#tb').DataTable({
+				destroy: true,
+		        empty: true,
+				dom : 'iftp',
+				info : true,
+				ordering: false,
+				language : {
+								info : "총 _TOTAL_건"
+							},
+			    ajax:{
+			        	url:"ajaxProfitOrderBy",
+			        	type:"post",
+			        	dataSrc :'',
+			        	data: {key:key},
+			        	beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)}
+			        },
+			    columns:[
+			        	{data:"minusDt"},
+			        	{data:"orderDt"},
+			        	{data:"name"},
+			        	{data:"totalPrice"},
+			        	{data:"minusPrice"},
+			        	{data:"minusYn"}
+			            ]
+			});
+			
+			return table
+	    }
+		/* 정렬 */
 			$('#orderby').on('change', function(){
-				let key = $('input[name=key]:checked').val();
-				profitList(key);
+				key = $('input[name=key]:checked').val();
+				table.destroy();
+				//table.empty();
+				$('tbody').remove();
+				table = Datatables(); // 안됨
 			})
 			
 			function profitList(key){
+				//let key = $('input[name=key]:checked').val();
 				$.ajax({
 					url: 'ajaxProfitOrderBy',
 					type: 'post',
@@ -216,9 +228,9 @@
 				.done(res => {
 					console.log("=======")
 					console.log(res); // [{}, {}...]
-					$('#tbd').html('');
+					$('<tbody>').html('');
 					for(obj of res){
-						$('#tbd').append(makeTr(obj))
+						$('#tbody').append(makeTr(obj))
 					}
 				})
 			}
@@ -236,7 +248,7 @@
 							<td>${obj.name}</td>
 							<td>${obj.totalPrice}</td>
 							<td>${obj.minusPrice}</td>
-							${td}
+							<td>${td}</td>
 						</tr>`
 				return tr;		
 			};
