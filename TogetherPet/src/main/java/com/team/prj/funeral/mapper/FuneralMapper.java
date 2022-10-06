@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.team.prj.funeral.service.FuneralVO;
 
+
 public interface FuneralMapper {
 
 	List<FuneralVO> findAll();//장례목록

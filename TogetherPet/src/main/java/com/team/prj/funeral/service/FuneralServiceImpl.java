@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.funeral.mapper.FuneralMapper;
 
+
 @Service
 public class FuneralServiceImpl implements FuneralService {
 	@Autowired
@@ -42,5 +43,6 @@ public class FuneralServiceImpl implements FuneralService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 }
