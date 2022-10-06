@@ -60,7 +60,7 @@
 										</a>
 										<h4 class="card-title">전체</h4>
 										<p class="text-success fw-semibold">
-											[[${#lists.size(pageInfo.list)}]] 개</p>
+											[[${#lists.size(pageInfo.list)}]]</p>개
 									</div>
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA3xJREFUaEPtmY+RjVEMxc9WgApQATqgAlSAClABKkAFqGCpABWgAlSACpjfzL07ednc/xezM5uZNzs77/uSnOQkNzfvSGdcjs64/zoH8L8zuDMD1yXdlsTfK+mvxfdZ0jdJHyR9lMT/y7IKAEcfSrqTnB5xCDBvJb1MwEbePXl2FsBFSU8kPZqyevqlF5KeSfo5qm8GANF+JQkQOwXnH6SsdOsdBfC8EfV3yQHogUOZ59QFgKEcAaBWSkI2Hvci6AWAcaKOcS+/Eij43EsB9KELZy8EOl8nEE19vQCOC87DW5xoGipEFCDUEfXkBRBQqio9AHCQTmOFqN/c1QpTy6W9+mzQoaqNogWANBN9K1+S87NRL0WU+oCG19wDd2uFXQNAer+6bkPkMbTb+ewzuil8mwlsXS3ZrAGAg/dcNG4M0Oa3e7eV7fw4HeuTe7dIpZJSIkH0rVCwT1tFZb6fBYAK7PjCJgu05wMpAfCFO0OdFQDQF2ctlcIAlgAQfbKQhXYGpUZkBQB27qezJ9sEEFloZiDi4KWJwl0FQBZ+tGowyoDnH+NBdAK3srEKAP20VTt2MGJA7xOJAPiXZuiDgR0AOMSYv7KcCmYEgBYGjbLcSpeQVsT99zsAcNq/N4o5I2jl1Qx4wyO93+reASCqx4OgRxnYYTii0F+h4r8EAKgZENWA9gCYpZDv45leIyCmKESh2IlwtohxeBWEL2ImYdtgwsXWrjaaI74CYqqN7jrIbEcqgQgHNPPi1EG2a5Tw54IH0aqF6VECwwxOl40HLWO9h1wG0aPPA/4eLc96x+nqrajX+/QcU+6pud7piG6DQ+P0jgvNIK6Dx5cvNGhbvVLOAthypcR4dCvaSaUIIJlnmLRry+ptsHXRjtYqHHSsOlo8Hs0AzrPCOTioki3aaSgtALwULbbIBCf0lh1/cpqx2S+MlxdbGXVUD3xHsWFkdk+Ew2z9om3HmzSKVDPZk4FcD2TC74n4Duc58rkt9QLBca6K6IzW9DiPzqa+XgA5ChGdbITgKh/qg+Kz63VWJPCbAa12x27SxhocBcC7GIdS0Vp8tHDt8wDm9C0WbKR8BkCmFLz1W+tZAEQdfU3KeAOzALIeWh9cJSt2duoBwmxDJvlMt+RVANbRzG84DjC/Jucykn9m5beALS14J4CeqG9/5hzA9pAOKjzzGfgDGdjKMTxl4A4AAAAASUVORK5CYII=" />
 										</a>
 										<h4 class="card-title">판매대기</h4>
-										<p class="text-success fw-semibold" id="wait">개</p>
+										<p class="text-success fw-semibold" id="wait"></p>개
 									</div>
 								</div>
 							</div>
@@ -86,7 +86,7 @@
 											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAmNJREFUaEPtWe0xBEEQfRcBIkAEiAARIAIyQASIABkQASJABIiADBAB9cqMmuvrnunZ21uuaubX3W53T79+/TG7O8Kcr9Gc+48G4K8ZrGFgEcA5gF0A/D2L9QbgAcAxgA/PBl4AdPgJwIrHaA8yzwC2PSC8AK4A7PfgWI2JawAHJQUPgC0A9yVDM7pPFphS5vIAYOqsJxZexH/eOgVwksichWvpxh4Zps5aosT/G9MAOAqFm9rQosIobSZCewBuxcYs/pvk2iMAspsujW0W9IUFIscAC/dVdBwrL9+F3CoAdpR0sQHQXlzsMkuKY7LeKEd7alfKAZCGPkMXkoakY5Sz2ix1FxKnNaDUJfhUzixoC0ANlZ7UiD57Uo2y3tQ1jxKewo1OeYqzi6yroDUG3OiDV96oUryGLVcWaABkQZYGiqeAIwPeQo7yWkGPFb4G4Et0Bq3QLId4nRtY5xgJoIv8mM8aAHaA5UJPj7dlSvC6NgP6kp8YohoADo3DBIA1DbU5QTUGgNNTslArT1uymVyGDvXrngZAo5mFSmB3YRZw3DM/rX5PEGwGnLaU4ZRmt7JOs1GeEebvnaAvJ/VEOltzQLJgTfIhr2vnq+wjpSzmIZ3V9lKDnTtKNAA9U9YY6Dmg1eZ6Y6D0FDer2mkAIueNgers/1H48xSalrkGoCPz2YNjarPUvXpjoCuQf5NCDYARgZZCMjCliNSmUqsB91NOEJx7BuTrldqUSeW1bwrSXm4/Uz+Xl/y8wzcJ6TuiLiC4Od9QZL+0hM9J2n5Z/VJhdXF4UJ0GYNBwK5s1BhoDU0bgG2zFoTEMnelOAAAAAElFTkSuQmCC" />
 										</a>
 										<h4 class="card-title">판매중</h4>
-										<p class="text-success fw-semibold" id="ing">개</p>
+										<p class="text-success fw-semibold" id="ing"></p>개
 									</div>
 								</div>
 							</div>
@@ -99,7 +99,7 @@
 											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA1RJREFUaEPtmI2RTUEQhc9GgAjYCBABIkAEiAARIAJEgAgQwRIBIkAEiID61LSa12/uTPe99731qt5UbW3t3vnp0326+8yc6MDHyYHbryOA847gWhG4JumtpIuSXkh6KemnA8e3h5IelW93JX1e6oC1AHySBAgb3yQ9lfSm/ONe+ftKNQfjr/8PAPDo8wlDPpT/35z4/kDS6yUglkYAWnwt1JljBzQ7bdAtvFcGAMZedTvfl8TPkkEEfBS+REFFAZCYJOA+B4UAenZHBACe/zHaaEffL40iEQFAAp7tyMDRtrckWSFozt0lAL/375G1je9HADglQ6FfpaIQ9ncTFetGIhKLI0AC06QipfJZkRFeQnh7e43Pz6W8Pu4lci8HKJvIAUCMRrajZkDgEOabLNmwpQUAvYIwq7VND8DHQrMRSP8dvXQ5sQjthABk3b/RAuCF2egMz1Mi9qSAwgl4kJwgSjW9MlEwG7YEYAtA1jN+D3pGS7y9l3Sn8kamONgyJMYGM1oA4D0ejA6/B16+EF2cnEehwL4uhaAAoYryE01fX0zwLPTg95pAvhfvb1S5qSpE2XwV9M6WVxrrcAqh5wcaZXqBbdesdL0ySuJFDsIjJHLmekh0aHTRCE1Wuh6AqWRsBQYQlLiu8HILiQYVLzLYFydtjTUoVG9qEoJoRC4lmXtGmEJLr4lTEQIc+VJTLRMFyjsFY5jE2TIaoYDN4XAuKfXIyOxQGeX2FdE/ZoSnIR72d2eb20rGDICddGKSt5bO9rhFpbFeguFQCM7XFKCkoruiI9SJ4SUydsqL/jCMB8Sckal0GA/goZgzQ2hmeCxSq7NymjOizZJLEp29+QA2uhMbHXgaHA2SnyQbDVOrwyeTcgewt9TmviMALMqoRviNp6AVvK/H7bIXno8WicVXyiyA2uDjq0SRD+f2LjTKhcj3VSh08E+LeCojuiKejcxZ7XHXDrNLSX04FSVSYnsG81ziazySYfS+9HfPSBntHQ4oOmOk2bX2oUnxjBMytrXBUgCjjmq9YOpmN6eDb+BYAwAbegXKBZzObNSAavxdPxRsCbNIYvg5awEwAQgdSHivOjkXuiELTBogzDL36NlSYo5j9rZmrQjszeBdUegIYK4H/gCvh68xe1Nn+AAAAABJRU5ErkJggg==" />
 										</a>
 										<h4 class="card-title">판매완료</h4>
-										<p class="text-success fw-semibold" id="done">개</p>
+										<p class="text-success fw-semibold" id="done"></p>개
 									</div>
 								</div>
 							</div>
@@ -411,20 +411,20 @@
 		
 		// 판매상태
 		let sellSt = $('.sellSt');
-		let stWait=0; // 판매대기 카운트
-		let stIng=0; // 판매중 카운트
-		let stDone=0; // 판매완료 카운트
+		let stWait = 0; // 판매대기 카운트
+		let stIng = 0; // 판매중 카운트
+		let stDone = 0; // 판매완료 카운트
 		
 		for(st of sellSt){
 			let stat = st.children[0].innerHTML;
-			if(stat == "판매대기"){
+			if (stat == "판매대기") {
 				stWait += 1;
-			}else if(stat == "판매중"){
+			} else if (stat == "판매중") {
 				stIng += 1;
-			}else if(stat == "판매완료"){
+			} else if (stat == "판매완료") {
 				stDone += 1;
-			}else{
-				console.log('ㄴㄴ')
+			} else {
+				alert("오류발생");
 			}
 		}
 		$('#wait').html(stWait);

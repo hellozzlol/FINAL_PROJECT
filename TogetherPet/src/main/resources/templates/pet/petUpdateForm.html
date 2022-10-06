@@ -9,36 +9,10 @@
 <meta id="_csrf_header" name="_csrf_header"
    th:content="${_csrf.headerName}" />
 <title>Together Pet</title>
-<script>
-	// select 박스 값이 input 태그에 들어감
-	var selectBoxChange1 =  function(value) {
-		$("#changeInput1").val(value);
-	}
-	var selectBoxChange2 =  function(value) {
-		$("#changeInput2").val(value);
-	}
-	var selectBoxChange3 =  function(value) {
-		$("#changeInput3").val(value);
-	}
-	var selectBoxChange4 =  function(value) {
-		$("#changeInput4").val(value);
-	}
-</script>
-<style>
-.shipping_text h3 {
-	margin-bottom: 7px;
-	font-size: 23px;
-	line-height: 18px;
-}
-#changeInput1, #changeInput2, #changeInput3, #changeInput4 {
-	width: 240px;
-	display: inline;
-}
-</style>
 </head>
 
 <body>
-	<div class="col-lg-9 col-md-12" layout:fragment="content">
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
 		<!--shop wrapper start-->
 		<!-- Content wrapper -->
 		<div class="content-wrapper">
@@ -94,7 +68,7 @@
 											<label for="type" class="form-label">반려동물종류</label><br>
 											<input class="form-control" type="text" id="changeInput1" name="type"
 												th:value="${list.type}" placeholder="Pet Type"/>
-											<select id="defaultSelect" class="form-select" onchange="selectBoxChange1(this.value);">
+											<select id="defaultSelect" onchange="selectBoxChange1(this.value);">
 												<option value="0">===선택===</option>
 												<option value="강아지">강아지</option>
 												<option value="고양이">고양이</option>
@@ -111,7 +85,7 @@
 											<label for="breed" class="form-label">품종</label><br>
 											<input class="form-control" type="text" id="changeInput2" name="breed"
 												th:value="${list.breed}" placeholder="breed"/>
-											<select id="defaultSelect" class="form-select" onchange="selectBoxChange2(this.value);">
+											<select id="defaultSelect" onchange="selectBoxChange2(this.value);">
 												<option value="0">===선택===</option>
 												<option value="말티즈">말티즈</option>
 												<option value="푸들">푸들</option>
@@ -128,7 +102,7 @@
 											<label for="gender" class="form-label">성별</label><br>
 											<input type="text" id="changeInput3" name="gender"
 												class="form-control" th:value="${list.gender}" placeholder="Gender" />
-											<select id="defaultSelect" class="form-select" onchange="selectBoxChange3(this.value);">
+											<select id="defaultSelect" onchange="selectBoxChange3(this.value);">
 												<option value="0">===선택===</option>
 												<option value="여자">여자</option>
 												<option value="남자">남자</option>
@@ -142,7 +116,7 @@
 											<label for="neu" class="form-label">중성화여부</label><br>
 											<input type="text" id="changeInput4" name="neu"
 												class="form-control" th:value="${list.neu}" placeholder="neu" />
-											<select id="defaultSelect" class="form-select" onchange="selectBoxChange4(this.value);">
+											<select id="defaultSelect" onchange="selectBoxChange4(this.value);">
 												<option value="0">===선택===</option>
 												<option value="완료">완료</option>
 												<option value="미완료">미완료</option>
@@ -160,11 +134,38 @@
 				</div>
 			</div>
 			<!-- / Content -->
-
-			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
 
+<script>
+	// select 박스 값이 input 태그에 들어감
+	var selectBoxChange1 =  function(value) {
+		$("#changeInput1").val(value);
+	}
+	var selectBoxChange2 =  function(value) {
+		$("#changeInput2").val(value);
+	}
+	var selectBoxChange3 =  function(value) {
+		$("#changeInput3").val(value);
+	}
+	var selectBoxChange4 =  function(value) {
+		$("#changeInput4").val(value);
+	}
+</script>
+<style>
+	.shipping_text h3 {
+		margin-bottom: 7px;
+		font-size: 23px;
+		line-height: 18px;
+	}
+	#defaultSelect {
+		width: 100px;
+	}
+	#changeInput1, #changeInput2, #changeInput3, #changeInput4 {
+		width: 290px;
+		display: inline;
+	}
+</style>
 
 		<!--shop wrapper end-->
 	</div>

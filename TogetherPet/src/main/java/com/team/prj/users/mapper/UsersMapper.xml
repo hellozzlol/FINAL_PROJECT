@@ -100,7 +100,7 @@
 	<!-- 병원 스크랩 조회 -->
 	<select id="hospitalScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT s.category_id, h.name, s.dt
+		SELECT s.category_id, h.name, s.dt, s.scrap_no
 		FROM scrap s, hospital h
 		WHERE s.category_id = 'h'
         AND s.board_no = h.hospital_no
@@ -111,7 +111,7 @@
 	<!-- 장례 스크랩 조회 -->
 	<select id="funeralScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT s.category_id, f.name, s.dt
+		SELECT s.category_id, f.name, s.dt, s.scrap_no
 		FROM scrap s, funeral f
 		WHERE s.category_id = 'f'
         AND s.board_no = f.funeral_no
@@ -122,7 +122,7 @@
 	<!-- 숙박 스크랩 조회 -->
 	<select id="accomoScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT s.category_id, a.name, s.dt
+		SELECT s.category_id, a.name, s.dt, s.scrap_no
 		FROM scrap s, accomo a
 		WHERE s.category_id = 'a'
         AND s.board_no = a.accomo_no
@@ -133,7 +133,7 @@
 	<!-- 커뮤니티 스크랩 조회 -->
 	<select id="communityScrap" 
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT s.category_id, b.title, s.dt
+		SELECT s.category_id, b.title, s.dt, s.scrap_no
 		FROM scrap s, board b
 		WHERE s.category_id = 'b'
         AND s.board_no = b.board_no
