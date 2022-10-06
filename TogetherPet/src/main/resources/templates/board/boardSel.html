@@ -416,9 +416,20 @@ a {
 									</div>
 
 									<div class="cont">
-										[(${boardSel.content})] <img
-											th:src="@{/download(fileName=${boardSel.attechDir})}"
+										[(${boardSel.content})]
+										
+										[[${boardSel.attechDir}]]
+										 <!-- 
+										 
+										<img th:src="@{/download(fileName=${boardSel.attechDir})}"
 											alt="이미지 확인하기" width="300px" />
+										  -->
+										  <!-- 
+										<img th:src="${boardSel.attechDir}"
+											 />
+										   -->
+								   		<img th:src="@{/displayy(fileName=${boardSel.attechDir})}" alt="이미지 확인하기" width="300px">
+								
 									</div>
 								
 

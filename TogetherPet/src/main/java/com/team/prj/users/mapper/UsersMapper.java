@@ -51,6 +51,9 @@ public interface UsersMapper {
 	// 위시리스트 조회
 	List<LikesVO> likeList(ScrapVO vo);
 
+	// 위시리스트 삭제
+	int likeDelete(ScrapVO vo);
+
 	// 내 스크랩조회
 	List<ScrapVO> scrapList(ScrapVO vo);
 
@@ -74,7 +77,16 @@ public interface UsersMapper {
 
 	// 일반회원 상태 변경 / 0929 지혜 추가
 	int usersStateUpdate(UsersVO vo);
-	
+
 	// 일반회원 검색 / 1005 지혜 추가
-	List<UsersVO> userSearch(@Param("key")String key, @Param("val") String val);
+	List<UsersVO> userSearch(@Param("key") String key, @Param("val") String val);
+
+	// 작성글 삭제
+	int usersBoardDelete(BoardVO vo);
+
+	// 작성 댓글 삭제
+	int usersCommentDelete(CommentVO vo);
+
+	// 스크랩 삭제
+	int usersScrapDelete(ScrapVO vo);
 }

@@ -21,7 +21,7 @@
 	
 	<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
 		INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
-		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},#{dt},#{categoryId})
+		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
 	</insert>
 	
 	<!-- 게시글의 스크랩 수 -->

@@ -23,6 +23,7 @@ import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderVO;
+import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.state.service.StateVO;
@@ -270,5 +271,40 @@ public class SellerController {
 		model.addAttribute("profitList", list);
 		return "seller/sellerProfitList";
 	}
+	
+	// 문의 리스트 전체 조회
+	@RequestMapping("/sellerQnaSelectList")
+	public String sellerQnaSelectList(Model model, QnaVO qvo, HttpSession session,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		qvo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("pageInfo", PageInfo.of(seller.qnaSelectList(qvo)));
+		return "/seller/sellerQnaSelectList";
+	}
+	
+	// 문의 상세보기
+	@RequestMapping("/sellerQnaSelect")
+	public String sellerQnaSelect(Model model, QnaVO qvo, HttpSession session) {
+		SellerVO svo = (SellerVO) session.getAttribute("seller");
+		qvo.setSellerNo(svo.getSellerNo());
+		model.addAttribute("qna", seller.qnaSelect(qvo));
+		return "/seller/sellerQnaSelect";
+	}
+	
+	// 문의 답변 폼 호출
+	@RequestMapping("/sellerQnaAnswer")
+	public String sellerQnaAnswer(Model model, QnaVO qvo, HttpSession session) {
+		model.addAttribute("qna", seller.qnaSelect(qvo));
+		return "/seller/sellerQnaAnswer";
+	}
 
+	// 문의 답변 처리
+	@PostMapping("/qnaAnswer")
+	public String qnaAnswer(QnaVO qvo) {
+		seller.qnaAnswer(qvo);
+		return "redirect:/sellerQnaSelectList";
+	}
+	
 }
