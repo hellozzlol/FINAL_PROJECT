@@ -22,12 +22,7 @@
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
-<script>
-	//페이지 이동
-	function gopage(p) {
-		location.href = '/usersClassList?pageNum=' + p;
-	}
-</script>
+
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -62,16 +57,17 @@
 				<div class="card">
 					<div class="table-responsive text-nowrap" style="text-align: center;">
 						<table class="table table-hover">
-							<thead>
+							<thead id="th">
 								<tr>
 									<th>클래스명</th>
 									<th>튜터명</th>
 									<th>수업시작일</th>
 									<th>수업장소</th>
 									<th style="text-align: center;">결제상태</th>
+									<th id="classEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
 							</thead>
-							<tbody class="table-border-bottom-0">
+							<tbody id="tb" class="table-border-bottom-0">
 								<tr th:each="list : ${pageInfo.list}">
 									<td>
 										<strong th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|">[[${list.className}]]</strong>
@@ -121,10 +117,20 @@
 				</ul>
 			</nav>
 			<!-- 페이지네이션 -->
-
-			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
+
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersClassList?pageNum=' + p;
+	}
+	
+	// 수강 클래스 없을때
+    if($('#classEmpty').html()=='0'){
+    	$('#tb').html("<td colspan=5 align=center><h3> <br>수강중인 클래스가 없습니다.</h3></td>");
+    }
+</script>
 
 
 		<!--shop wrapper end-->

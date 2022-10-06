@@ -49,9 +49,10 @@
 												<th>상품명</th>
 												<th>가격</th>
 												<th>수량</th>
+												<th id="cancelEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 											</tr>
 										</thead>
-										<tbody class="table-border-bottom-0"
+										<tbody id="all" class="table-border-bottom-0"
 											style="text-align: center; vertical-align: middle;">
 											<tr th:id="${ovo.orderNo}">
 												<td><img th:src="${ovo.thumb}" style="height: 100px;"></td>
@@ -138,26 +139,32 @@
 		</div>
 		<!-- / Content -->
 
-		<style>
-.shipping_text h3 {
-	margin-bottom: 7px;
-	font-size: 23px;
-	line-height: 18px;
-}
-</style>
+	<style>
+		.shipping_text h3 {
+			margin-bottom: 7px;
+			font-size: 23px;
+			line-height: 18px;
+		}
+	</style>
 
-		<script>
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
+	<script>
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
 
-			// 반품 신청 처리
-			$("#btnList").on("click", "#cancelFormBtn", function() {
-				if (confirm('반품신청 하시겠습니까?')) {
-					$("#cancelConfirmCall").submit();
+		// 반품 신청 처리
+		$("#btnList").on("click", "#cancelFormBtn", function() {
+			if (confirm('반품신청 하시겠습니까?')) {
+				$("#cancelConfirmCall").submit();
 
-				}
-			})
-		</script>
+			}
+		})
+		
+		// 교환반품 신청내역 없을때
+	    if($('#cancelEmpty').html()=='0'){
+	    	$("#all").html('');
+	    	$('#all').html("<td colspan=4 align=center><h3> <br>교환/반품 신청한 상품이 없습니다.</h3></td>");
+	    }
+	</script>
 
 	</div>
 	<!-- Content wrapper -->

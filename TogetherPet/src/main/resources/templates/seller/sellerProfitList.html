@@ -123,6 +123,8 @@
 									<th>정산여부</th>
 								</tr>
 							</thead>
+							<tbody id="tbd">
+							</tbody>
 						</table>
 					</div>
 				</div>
@@ -169,50 +171,10 @@
 		var token = $("meta[name='_csrf']").attr("content");
 	    var header = $("meta[name='_csrf_header']").attr("content");
 	    
-	    //profitList();
+	    profitList();
 	    let key = "1";
-		let table = Datatables();
-	    /* Datatables */
-	    function Datatables(){
-		//let key = $('input[name=key]:checked').val();
 
-			let table = $('#tb').DataTable({
-				destroy: true,
-		        empty: true,
-				dom : 'iftp',
-				info : true,
-				ordering: false,
-				language : {
-								info : "총 _TOTAL_건"
-							},
-			    ajax:{
-			        	url:"ajaxProfitOrderBy",
-			        	type:"post",
-			        	dataSrc :'',
-			        	data: {key:key},
-			        	beforeSend : function(xhr){
-							xhr.setRequestHeader(header, token)}
-			        },
-			    columns:[
-			        	{data:"minusDt"},
-			        	{data:"orderDt"},
-			        	{data:"name"},
-			        	{data:"totalPrice"},
-			        	{data:"minusPrice"},
-			        	{data:"minusYn"}
-			            ]
-			});
 			
-			return table
-	    }
-		/* 정렬 */
-			$('#orderby').on('change', function(){
-				key = $('input[name=key]:checked').val();
-				table.destroy();
-				//table.empty();
-				$('tbody').remove();
-				table = Datatables(); // 안됨
-			})
 			
 			function profitList(key){
 				//let key = $('input[name=key]:checked').val();
@@ -228,9 +190,9 @@
 				.done(res => {
 					console.log("=======")
 					console.log(res); // [{}, {}...]
-					$('<tbody>').html('');
+					$('#tbd').html('');
 					for(obj of res){
-						$('#tbody').append(makeTr(obj))
+						$('#tbd').append(makeTr(obj))
 					}
 				})
 			}

@@ -1,8 +1,16 @@
 package com.team.prj.board.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,5 +61,26 @@ public class BoardAjaxController {
 	@RequestMapping("/commentSelectList.do")
 	public List<CommentVO> commentList(CommentVO vo){
 		return Service.commentSelectList(vo);
+	}
+	//이미지 화면에 보여줌 
+	@RequestMapping("/displayy")
+	public ResponseEntity<byte[]> getImage(String fileName){
+		 File file = new File("C:\\Temp", fileName);
+		
+		ResponseEntity<byte[]> result = null;
+		
+		try {
+
+			MultiValueMap<String,String> header = new LinkedMultiValueMap<String, String>();
+	
+			header.add("Content-type", Files.probeContentType(file.toPath()));
+			
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

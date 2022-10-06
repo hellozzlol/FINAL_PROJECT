@@ -37,7 +37,7 @@
 					<div class="table-responsive text-nowrap">
 					<div id="orderList" style="display: none" th:text="${#lists.size(pageInfo.list)}"></div>
 						<table class="table table-hover" style="height: 100px;">
-							<thead>
+							<thead id="th">
 								<tr style="text-align: center;">
 									<th>주문번호</th>
 									<th>상품이미지</th>
@@ -47,6 +47,7 @@
 									<th>주문상태</th>
 									<th>배송상태</th>
 									<th>주문일자</th>
+									<th id="orderEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
 							</thead>
 							<tbody class="table-border-bottom-0" id="btnList"
@@ -198,6 +199,12 @@
 			$("#confirmCall").submit();
 		}
 	})
+	
+	// 주문 내역 없을때
+    if($('#orderEmpty').html()=='0'){
+    	$("#btnList").html('');
+    	$('#tb').html("<td colspan=8 align=center><h3> <br>주문한 상품이 없습니다.</h3></td>");
+    }
 </script>
 
 	</div>

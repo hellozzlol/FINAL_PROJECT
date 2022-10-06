@@ -127,10 +127,10 @@
 		seller_no=#{svo.sellerNo}
 		<choose>
 			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
-			<when test="key == 2"> and minus_yn 1
+			<when test="key == 2"> and minus_yn = 1
 				order by 1 desc
 			</when>
-			<when test="key == 3"> and minus_yn 1
+			<when test="key == 3"> and minus_yn = 0
 				order by 1 desc
 			</when>
 		</choose>
@@ -148,4 +148,38 @@
 		</choose>
 	</select>
 	
+	<!-- 고객문의 전체 조회 -->
+	<select id="qnaSelectList" resultType="com.team.prj.qna.service.QnaVO">
+		SELECT *
+		FROM qna
+		WHERE seller_no = #{sellerNo}
+		ORDER BY qna_no DESC
+	</select>
+	
+	<!-- 고객문의 단건 조회 -->
+	<select id="qnaSelect" resultType="com.team.prj.qna.service.QnaVO">
+		SELECT *
+		FROM qna
+		WHERE qna_no = #{qnaNo}
+	</select>
+	
+	<!-- 문의 검색 -->
+	<select id="qnaSearch"
+		resultType="com.team.prj.qna.service.QnaVO">
+		SELECT *
+		FROM qna
+		WHERE
+		<choose>
+			<when test="key == 1">title LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY qna_no DESC
+	</select>
+	
+	<!-- 문의 답변(update) -->
+	<update id="qnaAnswer" parameterType="com.team.prj.qna.service.QnaVO">
+		UPDATE qna
+		SET answer = #{answer},
+			answer_date = sysdate
+		WHERE qna_no = #{qnaNo}
+	</update>
 </mapper>

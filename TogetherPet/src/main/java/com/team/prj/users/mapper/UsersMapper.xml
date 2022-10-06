@@ -47,46 +47,55 @@
 	<select id="likeList"
 		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
-		<!-- SELECT s.category_id, c.name, s.dt
+		SELECT s.scrap_no, c.thumb as thumb, c.category, c.name, c.address, c.price, c.class_no
 		FROM scrap s, class c
-		WHERE s.category_id = 'c'
-        AND s.board_no = h.class_no
+		WHERE s.category_id = c.category_id
+        AND s.board_no = c.class_no
 		AND s.user_no = #{userNo}
-		ORDER BY s.board_no DESC -->
-		
-		SELECT c.thumb, c.category, c.name, c.address, c.price, c.class_no
-		FROM scrap s, class c
-		WHERE s.class_no = c.class_no
-		AND user_no = #{userNo}
 	</select>
+	
+	<!-- 위시리스트 삭제 -->
+	<delete id="likeDelete">
+		DELETE
+		FROM scrap
+		WHERE scrap_no = #{scrapNo}
+	</delete>
 
 	<!-- 전체 스크랩 리스트 조회 -->
 	<select id="scrapList"
 		resultType="com.team.prj.scrap.service.ScrapVO">
-		SELECT s.category_id, h.name, s.dt
+		SELECT s.category_id, h.name, s.dt, s.scrap_no
 			FROM scrap s, hospital h
 			WHERE s.category_id = 'h'
 	        AND s.board_no = h.hospital_no
 			AND s.user_no = #{userNo}
 	UNION ALL 
-		SELECT s.category_id, a.name, s.dt
+		SELECT s.category_id, a.name, s.dt, s.scrap_no
 			FROM scrap s, accomo a
 			WHERE s.category_id = 'a'
 	        AND s.board_no = a.accomo_no
 			AND s.user_no = #{userNo}
 	UNION ALL
-	    SELECT s.category_id, f.name, s.dt
+	    SELECT s.category_id, f.name, s.dt, s.scrap_no
 			FROM scrap s, funeral f
 			WHERE s.category_id = 'f'
 	        AND s.board_no = f.funeral_no
 			AND s.user_no = #{userNo}
 	UNION ALL
-	    SELECT s.category_id, b.title, s.dt
+	    SELECT s.category_id, b.title, s.dt, s.scrap_no
 			FROM scrap s, board b
 			WHERE s.category_id = 'b'
 	        AND s.board_no = b.board_no
 			AND s.user_no = #{userNo}
 	</select>
+	
+	<!-- 스크랩 삭제 -->
+	<delete id="usersScrapDelete">
+		DELETE
+		FROM scrap
+		WHERE scrap_no = #{scrapNo}
+		AND user_no = #{userNo}
+	</delete>
 	
 	<!-- 병원 스크랩 조회 -->
 	<select id="hospitalScrap" 
@@ -142,6 +151,14 @@
 		ORDER BY
 		board_no DESC
 	</select>
+	
+	<!-- 작성 글 삭제 -->
+	<delete id="usersBoardDelete">
+		DELETE
+		FROM board
+		WHERE board_no = #{boardNo}
+		AND user_no = #{userNo}
+	</delete>
 
 	<!-- 작성 댓글 조회 -->
 	<select id="commentList"
@@ -151,6 +168,14 @@
 		WHERE user_no = #{userNo}
 		ORDER BY comment_no DESC
 	</select>
+	
+	<!-- 작성 댓글 삭제 -->
+	<delete id="usersCommentDelete">
+		DELETE
+		FROM comments
+		WHERE comment_no = #{commentNo}
+		AND user_no = #{userNo}
+	</delete>
 
 	<!-- 사진 불러오기 -->
 	<select id="photoList"
@@ -233,9 +258,9 @@
 		
 	<!-- 일반회원 검색 / 1005 지혜 추가 -->
 	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
-		select *
-		from users
-		where
+		SELECT *
+		FROM users
+		WHERE
 		<choose>  
 			<when test="key==1"> id like '%' || #{val}||'%'</when>
 			<when test="key==2"> name like '%' || #{val}||'%'</when>
