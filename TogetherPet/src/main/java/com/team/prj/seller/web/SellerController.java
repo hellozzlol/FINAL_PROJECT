@@ -138,7 +138,7 @@ public class SellerController {
 		goods.deleteGoods(vo);
 		return "redirect:/sellerGoodsList";
 	}
-	
+
 	// 판매 상품 조회
 	@RequestMapping("/sellerGoodsList")
 	public String sellerGoodsList(Model model, HttpSession session, GoodsVO gvo,
@@ -253,7 +253,10 @@ public class SellerController {
 
 	// 정산 페이지 // 1005 희수 추가
 	@RequestMapping("/sellerProfitList")
-	public String profitPageCall(Model model, SellerVO svo, HttpSession session, String key) {
+	public String profitPageCall(Model model, SellerVO svo, HttpSession session, String key,
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "10") int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
 		if (key == null) {
 			key = "1";
 		}
@@ -268,10 +271,10 @@ public class SellerController {
 			}
 		}
 		model.addAttribute("sum", sum);
-		model.addAttribute("profitList", list);
-		return "seller/sellerProfitList";
+		//model.addAttribute("pageInfo", PageInfo.of(list));
+		return "seller/sellerProfitList2";
 	}
-	
+
 	// 문의 리스트 전체 조회
 	@RequestMapping("/sellerQnaSelectList")
 	public String sellerQnaSelectList(Model model, QnaVO qvo, HttpSession session,
@@ -283,7 +286,7 @@ public class SellerController {
 		model.addAttribute("pageInfo", PageInfo.of(seller.qnaSelectList(qvo)));
 		return "/seller/sellerQnaSelectList";
 	}
-	
+
 	// 문의 상세보기
 	@RequestMapping("/sellerQnaSelect")
 	public String sellerQnaSelect(Model model, QnaVO qvo, HttpSession session) {
@@ -292,7 +295,7 @@ public class SellerController {
 		model.addAttribute("qna", seller.qnaSelect(qvo));
 		return "/seller/sellerQnaSelect";
 	}
-	
+
 	// 문의 답변 폼 호출
 	@RequestMapping("/sellerQnaAnswer")
 	public String sellerQnaAnswer(Model model, QnaVO qvo, HttpSession session) {
@@ -306,5 +309,5 @@ public class SellerController {
 		seller.qnaAnswer(qvo);
 		return "redirect:/sellerQnaSelectList";
 	}
-	
+
 }
