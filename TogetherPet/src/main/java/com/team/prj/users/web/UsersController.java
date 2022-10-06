@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -32,8 +31,8 @@ import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.comment.service.CommentService;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.like.service.LikesService;
-import com.team.prj.like.service.LikesVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.pet.service.PetService;
@@ -46,34 +45,16 @@ import com.team.prj.tutor.service.TutorService;
 import com.team.prj.users.service.UsersService;
 import com.team.prj.users.service.UsersVO;
 
-import lombok.RequiredArgsConstructor;
-
 @Controller
 public class UsersController {
 	@Autowired
 	private UsersService user; // 개인회원
 	@Autowired
-	private CartService cart; // 장바구니
-	@Autowired
-	private OrderService order; // 주문내역
-	@Autowired
 	private StateService state; // 반품교환상태
-	@Autowired
-	private CommentService comment; // 댓글조회
-	@Autowired
-	private BoardService board; // 작성글조회
-	@Autowired
-	private ScrapService scrap; // 스크랩 내역
-	@Autowired
-	private TutorService tutor; // 클래스 튜터
-	@Autowired
-	private LikesService like; // 위시리스트
 	@Autowired
 	private CalendarService cal; // 캘린더
 	@Autowired
 	private PetService pet; // 반려동물 정보
-	@Autowired
-	private ClassReserveService cr; // 수강내역
 
 	@Value("${file.dir}")
 	private String fileDir;
@@ -317,7 +298,7 @@ public class UsersController {
 	}
 
 	// 반려동물 전체 리스트
-	@RequestMapping("/pet/petSelectList")
+	@RequestMapping("/petSelectList")
 	public String petSelectList(HttpSession session, Model model, PetVO pvo,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "2") int pageSize) {
@@ -330,7 +311,7 @@ public class UsersController {
 	}
 
 	// 반려동물 단건 조회
-	@RequestMapping("/pet/petSelect")
+	@RequestMapping("/petSelect")
 	public String petSelect(HttpSession session, PetVO pvo, Model model) {
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
@@ -339,7 +320,7 @@ public class UsersController {
 	}
 
 	// 반려동물 정보 수정 폼 호출
-	@RequestMapping("/pet/petUpdateForm")
+	@RequestMapping("/petUpdateForm")
 	public String petUpdateForm(HttpSession session, PetVO pvo, Model model) {
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
@@ -348,24 +329,24 @@ public class UsersController {
 	}
 
 	// 반려동물 정보 수정 처리
-	@PostMapping("/pet/petUpdate")
+	@PostMapping("/petUpdate")
 	public String petUpdate(PetVO pvo, HttpSession session) {
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
 		pet.petUpdate(pvo);
 		pvo = pet.petSelect(pvo);
 		session.setAttribute("pet", pvo);
-		return "redirect:/pet/petSelectList";
+		return "redirect:/petSelectList";
 	}
 
 	// 반려동물 정보 등록 폼 호출
-	@RequestMapping("/pet/petInsertForm")
+	@RequestMapping("/petInsertForm")
 	public String perInsertForm() {
 		return "pet/petInsertForm";
 	}
 
 	// 반려동물 정보 등록 처리
-	@PostMapping("/pet/petInsert")
+	@PostMapping("/petInsert")
 	public String petInsert(Model model, HttpSession session, PetVO pvo,
 			@RequestPart(value = "file", required = false) MultipartFile file)
 			throws IllegalStateException, IOException {
@@ -377,7 +358,7 @@ public class UsersController {
 		System.out.println(saveFolder);
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름.원래파일네임
-		
+
 		if (!oFileName.isEmpty()) {
 
 			// 파일명 충돌방지를 위한 별명 만듦
@@ -391,7 +372,34 @@ public class UsersController {
 		}
 
 		pet.petInsert(pvo);
-		return "redirect:/pet/petSelectList";
+		return "redirect:/petSelectList";
+	}
+
+	// 작성글 삭제
+	@RequestMapping("/usersBoardDelete")
+	public String usersBoardDelete(BoardVO bvo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		bvo.setUserNo(uvo.getUserNo());
+		user.usersBoardDelete(bvo);
+		return "redirect:/usersBoardList";
+	}
+	
+	// 작성댓글 삭제
+	@RequestMapping("/usersCommentDelete")
+	public String usersCommentDelete(CommentVO cvo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		cvo.setUserNo(uvo.getUserNo());
+		user.usersCommentDelete(cvo);
+		return "redirect:/usersCommentList";
+	}
+	
+	// 스크랩 삭제
+	@RequestMapping("/usersScrapDelete")
+	public String usersScrapDelete(ScrapVO svo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		svo.setUserNo(uvo.getUserNo());
+		user.usersScrapDelete(svo);
+		return "redirect:/usersScrapList";
 	}
 
 }

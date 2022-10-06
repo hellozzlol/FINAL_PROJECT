@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.hospital.mapper.HospitalMapper;
+import com.team.prj.scrap.service.ScrapVO;
 
 @Service
 public class HospitalServiceImpl implements HospitalService {
@@ -48,6 +49,12 @@ public class HospitalServiceImpl implements HospitalService {
 	public List<HospitalVO> hospitalSelectList(String key) {
 		// 리스트 조회
 		return map.hospitalSelectList(key);
+	}
+
+	@Override
+	public int scrapInsert(ScrapVO vo) {
+		// 소현 스크랩 기능 추가 20221006
+		return map.scrapInsert(vo);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.team.prj.accomo.service;
 
 import java.util.List;
 
+import com.team.prj.scrap.service.ScrapVO;
+
 
 
 public interface accomoService {
@@ -23,5 +25,8 @@ public interface accomoService {
 	List<accomoVO> accomoSearch(String key,String val);
 
 	List<accomoVO> accomoSelectList(String key);
+	
+	//소현 스크랩 기능추가 1006
+	 int scrapInsert(ScrapVO vo);//20221005소현추가
 
 }
