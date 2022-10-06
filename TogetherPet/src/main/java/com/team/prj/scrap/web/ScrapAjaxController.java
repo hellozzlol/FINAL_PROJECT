@@ -20,7 +20,7 @@ public class ScrapAjaxController {
 	
 	// 스크랩 확인 여부 용 데이터 가져오기 (리스트 GetMapping)
 	
-	@GetMapping("/ajaxScrapCount")
+	@GetMapping("/ScrapCount")
 	@ResponseBody
 	
 	public int scrapCount(ScrapVO vo) {
@@ -28,7 +28,7 @@ public class ScrapAjaxController {
 	}
 	
 	//스크랩기능등록(등록PostMapping)
-	@PostMapping("/ajaxScrapInsert.do")
+	@PostMapping(value = "/scrapInsert.do")
 	@ResponseBody
 	public int scrapInsert(ScrapVO vo) {
 		return service.scrapInsert(vo);
@@ -37,7 +37,7 @@ public class ScrapAjaxController {
 	
 	//스크랩 기능삭제(삭제 GetMapping)
 	
-	@GetMapping("ajaxScrapDelete.do")
+	@GetMapping("ScrapDelete.do")
 	@ResponseBody
 	public int scrapDelete(ScrapVO vo) {
 		return service.scrapDelete(vo);

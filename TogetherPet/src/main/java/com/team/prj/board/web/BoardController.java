@@ -85,8 +85,14 @@ public class BoardController {
 	@GetMapping("/boardSel")
 	public String boardselect(BoardVO vo,CommentVO cvo ,Model model) {
 		System.out.println("=====================" + vo.getBoardNo());
-		model.addAttribute("boardSel", service.boardSelect(vo));
-		service.boardHitUpdate(vo);// 조회수증가
+		BoardVO b = service.boardSelect(vo);
+		//b.setAttechDir( "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp"+b.getAttechDir());
+		System.out.println("============================"+b.getAttechDir());
+		model.addAttribute("boardSel", b);
+
+		// 조회수증가
+		service.boardHitUpdate(vo);
+		
 		//댓글리스트
 		cvo.setCommentNo(vo.getBoardNo());
 		model.addAttribute("commentSelectList",service.commentSelectList(cvo));
@@ -112,7 +118,7 @@ public class BoardController {
 		vo.setUserNo(uvo.getUserNo());
 		vo.setNickname(uvo.getNickname());
 		// file UpLoad 처리해야함.
-		String saveFolder = (""); // 저장할 공간 변수 명
+		String saveFolder = ("");//저장할변수명 
 		System.out.println(saveFolder);
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		System.out.println(sfile);
@@ -121,11 +127,9 @@ public class BoardController {
 		if (!oFileName.isEmpty()) {
 
 			// 파일명 충돌방지를 위한 별명 만듦
-			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것
-																												// //랜덤파일네임
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것																									// //랜덤파일네임
 			String path = fileDir + "/" + sFileName;
 			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장한다.
-
 			vo.setAttech(oFileName);
 			vo.setAttechDir(saveFolder + "/" + sFileName);
 		}
@@ -143,7 +147,7 @@ public class BoardController {
             String onlyFileName = originFileName.substring(originFileName.lastIndexOf("_") + 1);
 
             File file = new File("C:\\Temp", originFileName);
-
+            
             if(file.exists()) {
                 String agent = request.getHeader("User-Agent");
 
@@ -232,7 +236,7 @@ public class BoardController {
 			File saveFile = new File(boardupd, filename);
 			file.transferTo(saveFile);
 			vo.setAttech(filename);
-			String path = "/files/" + filename;
+			String path = fileDir+"/files/" + filename;
 			vo.setAttechDir(path);
 		}
 
