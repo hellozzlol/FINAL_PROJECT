@@ -2,6 +2,8 @@ package com.team.prj.funeral.service;
 
 import java.util.List;
 
+
+
 public interface FuneralService {
 	List<FuneralVO> findAll();// 장례목록
 
@@ -12,4 +14,6 @@ public interface FuneralService {
 	int funeralUpdate(FuneralVO vo);// 장례수정
 
 	int funeralDelete(FuneralVO vo);// 장례 삭제
+	
+	
 }
