@@ -3,6 +3,7 @@ package com.team.prj.funeral.mapper;
 import java.util.List;
 
 import com.team.prj.funeral.service.FuneralVO;
+import com.team.prj.scrap.service.ScrapVO;
 
 
 public interface FuneralMapper {
@@ -14,5 +15,8 @@ public interface FuneralMapper {
 	int funeralUpdate(FuneralVO vo);//장례수정
 	int funeralDelete(FuneralVO vo);//장례 삭제
 	
+	
+		//소현스크랩기능
+		int scrapInsert(ScrapVO vo);//20221007소현추가
 	
 }

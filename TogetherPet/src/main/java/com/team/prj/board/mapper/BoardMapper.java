@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.scrap.service.ScrapVO;
 
 
 public interface BoardMapper {
@@ -27,9 +28,7 @@ public interface BoardMapper {
 	//검색기능
 	List<BoardVO> boardSearch (@Param("key")String key, @Param("val") String val);
 	
-	/*
-	 * //페이징 처리 List<BoardVO> findAll(BoardVO vo);
-	 */
+
 	
 	//댓글기능
 			List<CommentVO> commentSelectList (CommentVO vo);

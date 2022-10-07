@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.prj.board.mapper.BoardMapper;
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.scrap.service.ScrapVO;
 
 
 @Service
@@ -76,6 +77,7 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return map.commentSelectList(vo);
 	}
+
 
 	
 
