@@ -69,9 +69,7 @@
 											<input
 												class="form-control" type="text" id="companyNo"
 												name="companyNo" placeholder="Email"
-												th:value="${session.seller.companyNo}" style="display: inline; width: 310px;"/>
-											<button type="button" class="btn btn-primary me-2">사업자
-												인증</button>
+												th:value="${session.seller.companyNo}" disabled="disabled"/>
 										</div>
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="company">상호</label>
@@ -98,9 +96,7 @@
 											<label class="col-sm-2 col-form-label" for="name">이메일</label><br>
 											<input
 												class="form-control" type="text" id="email" name="email"
-												th:value="${session.seller.email}"  style="display: inline; width: 310px;"/>
-											<button type="button" class="btn btn-primary me-2">이메일
-												인증</button>
+												th:value="${session.seller.email}"/>
 										</div>
 										<div class="mb-3 col-md-6 addressForm">
 											<label for="address" class="form-label">주소 Address</label><br>

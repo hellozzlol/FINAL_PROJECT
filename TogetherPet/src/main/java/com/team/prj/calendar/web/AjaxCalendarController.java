@@ -1,11 +1,11 @@
 package com.team.prj.calendar.web;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,21 +22,30 @@ public class AjaxCalendarController {
 	@RequestMapping("/calendarSelectList")
 	public List<CalendarVO> calendarSelectList(CalendarVO cvo, HttpSession session){
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		cvo.setUserNo(uvo.getUserNo());
 		return calendar.calendarSelectList();
 	}
 	
 	// 일정 등록
-	@RequestMapping("/calendarInsert")
-	public int calendarInsert(CalendarVO cvo) {
+	@PostMapping("/calendarInsert")
+	public int calendarInsert(CalendarVO cvo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		cvo.setUserNo(uvo.getUserNo());
 		calendar.calendarInsert(cvo);
 		int calendarNo = cvo.getCalendarNo();
 		return calendarNo;
 	}
 	
 	// 일정 삭제
-	@RequestMapping("/calendarDelete")
-	public int calendarDelete(CalendarVO cvo) {
-		
-		return 0;
+	@PostMapping("/calendarDelete")
+	public int calendarDelete(CalendarVO cvo, HttpSession session) {
+		UsersVO uvo = (UsersVO) session.getAttribute("user");
+		cvo.setUserNo(uvo.getUserNo());
+		System.out.println("==========");
+		System.out.println(cvo.getCalendarNo());
+		int calendarNo = cvo.getCalendarNo();
+		calendar.calendarDelete(cvo);
+		return calendarNo;
 	}
+	
 }
