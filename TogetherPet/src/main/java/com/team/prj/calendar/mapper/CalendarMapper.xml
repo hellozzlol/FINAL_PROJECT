@@ -15,6 +15,7 @@
 		SELECT *
 		FROM calendar
 		WHERE calendar_no = #{calendarNo}
+		AND user_no = #{userNo}
 	</select>
 
 	<!-- 일정 등록 -->
@@ -30,22 +31,24 @@
 			FROM calendar
 		</selectKey>
 		INSERT INTO calendar
-		VALUES(#{calendarNo}
-				,#{title}
-				,#{content}
-				,#{startDt}
-				,#{endDt})
+		VALUES(#{calendarNo},
+				#{title},
+				#{content},
+				#{startDt},
+				#{endDt},
+				#{userNo})
 	</insert>
 
 	<!-- 일정 수정 -->
 	<update id="calendarUpdate"
 		parameterType="com.team.prj.calendar.service.CalendarVO">
 		UPDATE calendar
-		SET title = #{title}
-			,content = #{content}
-			,start_dt = #{startDt}
-			,end_dt = #{endDt}
+		SET title = #{title},
+			content = #{content},
+			start_dt = #{startDt},
+			end_dt = #{endDt}
 		WHERE calendar_no = #{calendarNo}
+		AND user_no = #{userNo}
 	</update>
 
 	<!-- 일정 삭제 -->
@@ -53,5 +56,6 @@
 		DELETE
 		FROM calendar
 		WHERE calendar_no = #{calendarNo}
+		AND user_no = #{userNo}
 	</delete>
 </mapper>
