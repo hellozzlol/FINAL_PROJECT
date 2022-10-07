@@ -35,7 +35,7 @@
 		SELECT * 
 		FROM PHOTO 
 		WHERE GROUP_NO =#{groupNo} 
-		AND NAME='리스트'
+		AND NAME='클래스'
 	</select>
 	
 	

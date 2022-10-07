@@ -200,7 +200,7 @@
 														class="icon-heart icons"></i></a></li>
 
 												<li class="quick_view"><a data-toggle="modal"
-													data-target="#modal_box" data-tippy="Quick View" href="#"
+													th:data-target="|#modal_box_${g.goodsNo}|" data-tippy="Quick View" href="#"
 													data-tippy-inertia="true" data-tippy-delay="50"
 													data-tippy-arrow="true" data-tippy-placement="left"><i
 														class="icon-size-fullscreen icons"></i></a></li>
@@ -243,7 +243,8 @@
 													method="post">
 													<input type="hidden" th:name="${_csrf.parameterName}"
 														th:value="${_csrf.token}"> <input type="hidden"
-														name="userNo" th:value="${#authentication.principal.login.no}">
+														name="userNo"
+														th:value="${#authentication.principal.login.no}">
 												</form>
 											</div>
 											<div class="hiddenInfo" style="display: none">
@@ -288,7 +289,8 @@
 													method="post">
 													<input type="hidden" th:name="${_csrf.parameterName}"
 														th:value="${_csrf.token}"> <input type="hidden"
-														name="userNo" th:value="${#authentication.principal.login.no}">
+														name="userNo"
+														th:value="${#authentication.principal.login.no}">
 												</form>
 											</div>
 											<div class="hiddenInfo" style="display: none">
@@ -310,89 +312,94 @@
 											</div>
 										</div>
 									</div>
-								</div>
-								<!-- modal area start-->
-								<div class="modal fade" id="modal_box" tabindex="-1"
-									role="dialog" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-centered" role="document">
-										<div class="modal-content">
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true"><i class="ion-android-close"></i></span>
-											</button>
-											<div class="modal_body">
-												<div class="container">
-													<div class="row">
-														<div class="col-lg-6 col-md-6 col-sm-12">
-															<div class="modal_zoom_gallery">
-																<div class="product_zoom_thumb">
-																	<img th:src="${g.thumb}" alt="">
-																</div>
-															</div>
-														</div>
-														<div class="col-lg-6 col-md-6 col-sm-12">
-															<div class="modal_right">
-																<div class="modal_title mb-10">
-																	<a th:href="@{goods/{goodsNo}(goodsNo=${g.goodsNo})}">[[${g.name}]]</a>
-																</div>
-																<div class="modal_price mb-10">
-																	<span class="current_price">KRW
-																		[[${#numbers.formatInteger(g.price*(1-g.dc),3,'COMMA')}]]
-																	</span> <span class="old_price" th:if="${g.dc}">KRW
-																		[[${#numbers.formatInteger(g.price,3,'COMMA')}]]</span>
-																</div>
-																<br><br><br>
-																<div class="modal_description mb-15">
-																	<p th:text="${g.info}"></p>
-																</div>
-																<div class="variants_selects">
-																	<div class="modal_add_to_cart">
-																		<div sec:authorize="isAuthenticated()">
-																			<form id="cartCall" name="cartCall" action="cart"
-																				method="post">
-																				<input type="hidden"
-																					th:name="${_csrf.parameterName}"
-																					th:value="${_csrf.token}"> <input
-																					type="hidden" name="userNo"
-																					th:value="${#authentication.principal.login.no}">
-																			</form>
-																		</div>
-																		<div class="hiddenInfo" style="display: none">
-																			<!-- 상품번호 -->
-																			<input type="number" name="goodsNo"
-																				th:value="${g.goodsNo}">
-																			<!-- 재고 -->
-																			<input type="number" name="amount"
-																				th:value="${g.amount}">
-																		</div>
-																		<div sec:authorize="isAuthenticated()">
-																			<button class="button btn btn-primary addCart"
-																				type="button">
-																				<i class="ion-android-add"></i> Add To Cart
-																			</button>
-																		</div>
-																		<div sec:authorize="isAnonymous()">
-																			<button class="button btn btn-primary" type="button"
-																				onclick="location.href='loginForm'">
-																				<i class="ion-android-add"></i> Add To Cart
-																			</button>
-																		</div>
+
+									<!-- modal area start-->
+									<div class="modal fade" th:id="|modal_box_${g.goodsNo}|" tabindex="-1"
+										role="dialog" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered"
+											role="document">
+											<div class="modal-content">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true"><i
+														class="ion-android-close"></i></span>
+												</button>
+												<div class="modal_body">
+													<div class="container">
+														<div class="row">
+															<div class="col-lg-6 col-md-6 col-sm-12">
+																<div class="modal_zoom_gallery">
+																	<div class="product_zoom_thumb">
+																		<img th:src="${g.thumb}" alt="">
 																	</div>
 																</div>
-																<div class="modal_social">
-																	<h2>Share this product</h2>
-																	<ul>
-																		<li class="facebook"><a href="#"><i
-																				class="fa fa-facebook"></i></a></li>
-																		<li class="twitter"><a href="#"><i
-																				class="fa fa-twitter"></i></a></li>
-																		<li class="pinterest"><a href="#"><i
-																				class="fa fa-pinterest"></i></a></li>
-																		<li class="google-plus"><a href="#"><i
-																				class="fa fa-google-plus"></i></a></li>
-																		<li class="linkedin"><a href="#"><i
-																				class="fa fa-linkedin"></i></a></li>
-																	</ul>
+															</div>
+															<div class="col-lg-6 col-md-6 col-sm-12">
+																<div class="modal_right">
+																	<div class="modal_title mb-10">
+																		<a th:href="@{goods/{goodsNo}(goodsNo=${g.goodsNo})}">[[${g.name}]]</a>
+																	</div>
+																	<div class="modal_price mb-10">
+																		<span class="current_price">KRW
+																			[[${#numbers.formatInteger(g.price*(1-g.dc),3,'COMMA')}]]
+																		</span> <span class="old_price" th:if="${g.dc}">KRW
+																			[[${#numbers.formatInteger(g.price,3,'COMMA')}]]</span>
+																	</div>
+																	<br>
+																	<br>
+																	<br>
+																	<div class="modal_description mb-15">
+																		<p th:text="${g.info}"></p>
+																	</div>
+																	<div class="variants_selects">
+																		<div class="modal_add_to_cart">
+																			<div sec:authorize="isAuthenticated()">
+																				<form id="cartCall" name="cartCall" action="cart"
+																					method="post">
+																					<input type="hidden"
+																						th:name="${_csrf.parameterName}"
+																						th:value="${_csrf.token}"> <input
+																						type="hidden" name="userNo"
+																						th:value="${#authentication.principal.login.no}">
+																				</form>
+																			</div>
+																			<div class="hiddenInfo" style="display: none">
+																				<!-- 상품번호 -->
+																				<input type="number" name="goodsNo"
+																					th:value="${g.goodsNo}">
+																				<!-- 재고 -->
+																				<input type="number" name="amount"
+																					th:value="${g.amount}">
+																			</div>
+																			<div sec:authorize="isAuthenticated()">
+																				<button class="button btn btn-primary addCart"
+																					type="button">
+																					<i class="ion-android-add"></i> Add To Cart
+																				</button>
+																			</div>
+																			<div sec:authorize="isAnonymous()">
+																				<button class="button btn btn-primary" type="button"
+																					onclick="location.href='loginForm'">
+																					<i class="ion-android-add"></i> Add To Cart
+																				</button>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="modal_social">
+																		<h2>Share this product</h2>
+																		<ul>
+																			<li class="facebook"><a href="#"><i
+																					class="fa fa-facebook"></i></a></li>
+																			<li class="twitter"><a href="#"><i
+																					class="fa fa-twitter"></i></a></li>
+																			<li class="pinterest"><a href="#"><i
+																					class="fa fa-pinterest"></i></a></li>
+																			<li class="google-plus"><a href="#"><i
+																					class="fa fa-google-plus"></i></a></li>
+																			<li class="linkedin"><a href="#"><i
+																					class="fa fa-linkedin"></i></a></li>
+																		</ul>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -401,8 +408,8 @@
 											</div>
 										</div>
 									</div>
+									<!-- modal area end-->
 								</div>
-								<!-- modal area end-->
 							</div>
 							<!-- 반복되는 곳 -->
 						</div>

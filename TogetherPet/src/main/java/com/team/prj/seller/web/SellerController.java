@@ -253,26 +253,47 @@ public class SellerController {
 
 	// 정산 페이지 // 1005 희수 추가
 	@RequestMapping("/sellerProfitList")
-	public String profitPageCall(Model model, SellerVO svo, HttpSession session, String key,
+	public String profitPageCall(Model model, @RequestParam(required = false, defaultValue = "1") int pageNum) {
+		model.addAttribute("pageNum", pageNum);
+		return "seller/sellerProfitList";
+	}
+
+	// 정산 테이블
+	@RequestMapping("/profitTable")
+	public String profitTableCall(Model model, SellerVO svo, HttpSession session, String key, String start, String end,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		if (key == null) {
 			key = "1";
 		}
-		svo = (SellerVO) session.getAttribute("seller");
 		
+		if (start == null) {
+			start = null;
+		}
+		
+		if (end == null) {
+			end = null;
+		}
+		
+		svo = (SellerVO) session.getAttribute("seller");
 		svo.setSellerNo(svo.getSellerNo());
-		List<ProfitVO> list = seller.sellerProfitList(svo, key);
+		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end);
+		model.addAttribute("listSize", list.size());
+		model.addAttribute("pageInfo", PageInfo.of(list));
+		
+		// 매출 합계
+		System.out.println("===============매출합계================");
+		
+		list = seller.sellerProfitList(svo, "2", start, end);
 		int sum = 0;
 		for(int i = 0; i<list.size();i++) {
-			if(list.get(i).getMinusYn().equals("1")) {
-				sum += list.get(i).getMinusPrice();
-			}
+			System.out.println("=============== FOR ================");
+			System.out.println(list.get(i).getMinusPrice());
+			sum += list.get(i).getMinusPrice();
 		}
 		model.addAttribute("sum", sum);
-		//model.addAttribute("pageInfo", PageInfo.of(list));
-		return "seller/sellerProfitList2";
+		return "seller/profitTable";
 	}
 
 	// 문의 리스트 전체 조회

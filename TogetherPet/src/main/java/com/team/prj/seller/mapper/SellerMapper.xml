@@ -119,6 +119,12 @@
 		from profit
 		where
 		seller_no=#{svo.sellerNo}
+		<if test="start != null and end != null">
+				and minus_dt
+					between to_date(#{start}, 'yyyy-mm-dd')
+					and
+					to_char(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
+		</if>
 		<choose>
 			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
 			<when test="key == 2"> and minus_yn = 1

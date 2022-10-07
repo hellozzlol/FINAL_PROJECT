@@ -62,9 +62,17 @@
 						}
 					})
 					.done(res => {
-						alert(res);
 						document.getElementById(cartNo).remove();
 						getTotal();
+						
+						if($('#gTotal').html()==0){
+							$('#tb').html('');
+					    	$('#th').html('');
+					    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
+					    	$('.grand_totall_area').html('').css('background-color', 'white');
+						}
+						
+						alert(res);
 					})
 			})
 			// 장바구니 수량 업데이트
@@ -78,7 +86,7 @@
 				
 				if(amount<qty){
 					alert('재고보다 많은 수량을 입력할 수 없습니다.');
-					tr.children[3].children[0].children[0].value= amount;
+					//tr.children[3].children[0].children[0].value= amount;
 					return;
 				}
 				$.ajax({
@@ -104,6 +112,17 @@
 			// order로 이동
 			$('#orderCallBtn').on('click', function () {
 				if (confirm('주문 페이지로 넘어가시겠습니까?')) {
+					let amount;
+					let qty;
+					let ttrr = $('.ttrr');
+					for(tr of ttrr){
+						amount = Number(tr.children[6].innerHTML);
+						qty = Number(tr.children[3].children[0].children[0].value);
+						if(amount<qty){
+							alert('재고보다 주문 수량이 많습니다. 재고를 확인해 주세요.')
+							return;
+						}
+					}
 					$('#orderCall').submit();
 				}
 			})
@@ -155,7 +174,7 @@
 										</thead>
 										<tbody id="tb">
 											<!-- tr 반복  -->
-											<tr th:each="c:${cartList}" class="border-top"
+											<tr th:each="c:${cartList}" class="border-top ttrr"
 												th:id="${c.cartNo}">
 												<td>
 													<div class="cart_product_thumb">
@@ -177,6 +196,9 @@
 													<div class="cart_product_quantity update">
 														<input min="1" max="100" th:value="${c.qty}" type="number"
 															class="updateCart">
+													</div>
+													<div class="cart_product_quantity update">
+														<p>현재 잔여수량: [[${c.amount}]]</p>
 													</div>
 												</td>
 												<td>
