@@ -195,6 +195,8 @@
 			// 장바구니 추가
 			$('#addCart').on('click', function () {
 				let qty = Number($('#setQty').val());
+				
+						
 				if (amount == 0) {
 					alert('해당 상품의 재고가 없습니다.');
 					return;
@@ -267,9 +269,11 @@
 							<div class="zoom_gallery_inner d-flex">
 								<div class="zoom_tab_img">
 									<!-- 반복되는 구간 -->
+									<div th:if="${photoList}">
 									<div th:each="ph:${photoList}">
 										<a class="imgClick"><img
 											th:src="${ph.dir}" alt="tab-thumb"></a>
+									</div>
 									</div>
 									<!-- 반복되는 구간 -->
 								</div>

@@ -78,10 +78,14 @@ public class SellerAjaxController {
 		svo = (SellerVO) session.getAttribute("seller");
 		
 		svo.setSellerNo(svo.getSellerNo());
-		List<ProfitVO> list = seller.sellerProfitList(svo, key);
+		List<ProfitVO> list=null;
+		//= seller.sellerProfitList(svo, key);
 
 		return list;
 	}
+	
+	// 매출 합계 // 1007 희수 추가
+	
 
 	// 상품 일괄 삭제
 	@RequestMapping("/ajaxGoodsDelete")

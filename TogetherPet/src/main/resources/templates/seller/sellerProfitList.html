@@ -30,8 +30,6 @@
 <!-- datepicker 한국어로 -->
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
-
-
 </head>
 <body>
 	<div class="col-lg-10 col-md-12" layout:fragment="content">
@@ -53,26 +51,29 @@
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="search-box">
-							<div class="mb-3 row">
-								<label for="html5-search-input" class="col-md-2 col-form-label"
-									id="search">정산일자로 검색</label>
-								<div class="col-md-10">
-									<input type="date" id="dateSearchFirst" value=""
-										class="form-control" /> <label>~</label> <input type="date"
-										id="dateSearchLast" value="" class="form-control" />
-								</div>
-							</div>
-							<div class="mb-3 row">
-								<label for="html5-search-input" class="col-md-2 col-form-label"
-									id="search">거래일자로 검색</label>
-								<div class="col-md-10">
-									<input type="date" id="dateSearchFirst" value=""
-										class="form-control" /> <label>~</label> <input type="date"
-										id="dateSearchLast" value="" class="form-control" />
-								</div>
+							<input type="radio" id="byMinus" name="searchBy" value="M">
+							&nbsp;&nbsp;&nbsp;<label class="col-md-2 col-form-label"
+								for="byMinus">정산일자로 검색</label> <input type="date" id="start"
+								value="" class="form-control" style="width: 250px" />&nbsp;&nbsp;&nbsp;
+							<label>~</label>&nbsp;&nbsp;&nbsp; <input type="date" id="end"
+								value="" class="form-control" style="width: 250px" /><br>
+							<br> <input type="radio" id="byOrder" name="searchBy"
+								value="O">&nbsp;&nbsp;&nbsp; <label
+								class="col-md-2 col-form-label" for="byOrder">거래일자로 검색</label> <input
+								type="date" id="startByOrder" value="" class="form-control"
+								style="width: 250px" /> &nbsp;&nbsp;&nbsp;<label>~</label>&nbsp;&nbsp;&nbsp;
+							<input type="date" id="endByOrder" value="" class="form-control"
+								style="width: 250px" /> <br> <br>
+							<div id="orderby">
+								<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusAll">전체</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="radio" id="minusY" name="key" value="2">&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusY">정산 완료</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="radio" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusN">정산 대기</label>
 							</div>
 							<div class="mt-2" style="text-align: center;">
-								<a href="" class="btn btn-primary me-2">검색하기</a>
+								<a id="searchBtn" class="btn btn-primary me-2">검색하기</a>
 								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
 							</div>
 						</div>
@@ -86,7 +87,9 @@
 								<h2>매출액 합계</h2>
 							</div>
 							<div class="slider_text" align=right>
-								<p>기간 : 전체</p>
+								<p>
+									기간 : <span id="period">전체</span>
+								</p>
 								<br>
 								<h1 id="minusPSum">[[${#numbers.formatInteger(sum,3,'COMMA')}]]
 									원</h1>
@@ -102,79 +105,22 @@
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
-					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
-						정산 완료 내역: 총 [[${#lists.size(pageInfo.list)}]]건</h4>
+
 					<div class="table-responsive text-nowrap" style="padding: 20px">
-						<div id="orderby">
-							<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;<label
-								for="minusAll">전체</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
-								type="radio" id="minusY" name="key" value="2">&nbsp;&nbsp;&nbsp;&nbsp;<label
-								for="minusY">정산 완료</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
-								type="radio" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;<label
-								for="minusN">정산 대기</label>
-						</div>
-						<table class="table table-hover"
-							style="text-align: center; vertical-align: middle;" id="tb">
-							<thead>
-								<tr>
-									<th>정산일자</th>
-									<th>거래일자</th>
-									<th>거래품명</th>
-									<th>거래금액</th>
-									<th>정산금액</th>
-									<th>정산여부</th>
-								</tr>
-							</thead>
-							<tbody id="tbd" class="table-border-bottom-0">
-								<tr th:each="list : ${pageInfo.list}">
-									<td>[[${list.minusDt}]]</td>
-									<td>[[${list.orderDt}]]</td>
-									<td>[[${list.name}]]</td>
-									<td>[[${list.totalPrice}]]</td>
-									<td>[[${list.minusPrice}]]</td>
-									<td>[[${list.minusYn}]]</td>
-								</tr>
-							</tbody>
-						</table>
+						<div id="subHtml"></div>
+						<div th:if="${pageNum}" id="pageNum" th:text="${pageNum}"
+							style="display: none"></div>
 					</div>
 				</div>
 				<!--/ Hoverable Table rows -->
 			</div>
 			<br>
 			<!-- / Content -->
-
-			<!-- 페이지네이션 -->
-			<nav aria-label="Page navigation example">
-				<ul class="pagination pagination-info  justify-content-center">
-					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
-						class="page-link">«</span></li>
-					<li class="page-item"
-						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
-						class="page-link"
-						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
-						rel="prev">«</a></li>
-					<li
-						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
-						th:each="page:${pageInfo.navigatepageNums}"><span
-						class="page-link" th:if="${pageInfo.pageNum eq page}"
-						th:text="${page}"></span> <a class="page-link"
-						th:unless="${pageInfo.pageNum eq page}"
-						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
-							}}</a></li>
-					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
-						class="page-link"
-						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
-						rel="next">»</a></li>
-					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
-						class="page-link">»</span></li>
-				</ul>
-			</nav>
-			<!-- 페이지네이션 -->
 			<div class="content-backdrop fade"></div>
 		</div>
 		<!-- Content wrapper -->
 
-<style>
+		<style>
 .search-box .form-control {
 	width: 48%;
 	display: inline;
@@ -187,60 +133,50 @@
 </style>
 
 		<script>
-		//페이지 이동
-		function gopage(p) {
-			location.href = '/sellerProfitList?pageNum=' + p;
-		}
-		
-		var token = $("meta[name='_csrf']").attr("content");
-	    var header = $("meta[name='_csrf_header']").attr("content");
-	    
-	   // profitList();
-	    let key = "1";
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
 
-			$('#orderby').on('change', function(){
+			let key = "1";
+			let url = "/profitTable?pageNum=" + Number($('#pageNum').html());
+			
+			// 디폴트
+			$("#subHtml").load(url);
+
+			// 필터링 들어갔을 때
+			$('#searchBtn').on('click', function() {
 				let key = $('input[name=key]:checked').val();
-				profitList(key);
+				let start = $('#start').val();
+				let end = $('#end').val();
+				console.log(start, end);
+				let period = start + " ~ " + end
+				$('#period').html(period)
+				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key;
+				$("#subHtml").load(url);
+
 			})
 			
-			function profitList(key){
-				$.ajax({
-					url: 'ajaxProfitOrderBy',
-					type: 'post',
-					beforeSend : function(xhr){
-						xhr.setRequestHeader(header, token)},
-					data: {
-						key: key
-					}
-				})
-				.done(res => {
-					console.log("=======")
-					console.log(res); // [{}, {}...]
-					$('#tbd').html('');
-					for(obj of res){
-						$('#tbd').append(makeTr(obj))
-					}
-				})
-			}
-			
-			function makeTr(obj){
-				let td;
-				if(obj.minusYn == "1"){
-					td = '<td style="color: green">정산완료</td>';
-				}else{
-					td = '<td style="color: red">정산대기</td>';
+			// 데이트박스 컨트롤
+			$('input[name=searchBy]').on('change', searchControl);
+			function searchControl() {
+				console.log('ctrl in')
+				let searchBy = $('input[name=searchBy]:checked').val();
+				if (searchBy == 'M') {
+					console.log('ctrl if in')
+					$('#startByOrder').attr('readonly', true)
+					$('#endByOrder').attr('readonly', true);
+					$('#start').attr('readonly', false)
+					$('#end').attr('readonly', false);
+				} else {
+					$('#startByOrder').attr('readonly', false)
+					$('#endByOrder').attr('readonly', false);
+					$('#start').attr('readonly', true)
+					$('#end').attr('readonly', true);
 				}
-				let tr = `<tr>
-							<td>${obj.minusDt}</td>
-							<td>${obj.orderDt}</td>
-							<td>${obj.name}</td>
-							<td>${obj.totalPrice}</td>
-							<td>${obj.minusPrice}</td>
-							${td}
-						</tr>`
-				return tr;		
-			};
+			}
 
+			function getSum() {
+
+			}
 		</script>
 
 		<!--shop wrapper end-->

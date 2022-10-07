@@ -26,7 +26,7 @@
 		parameterType="com.team.prj.goods.service.GoodsVO"
 		resultType="com.team.prj.photo.service.PhotoVO">
 		select * from photo where group_no=#{groupNo} and
-		name='리스트'
+		name='상품'
 	</select>
 
 	<!-- shop에서 리뷰갯수 -->

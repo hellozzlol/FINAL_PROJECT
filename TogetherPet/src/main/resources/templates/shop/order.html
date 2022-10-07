@@ -114,8 +114,14 @@
 								}
 							})
 							.done(res => {
+								if(res==0){
+									alert('주문 수량이 상품의 재고보다 많습니다. 상품의 재고수량을 다시 확인해 주세요.');
+								}else if(res==-1){
+									alert('해당 상품이 품절되었습니다.');
+								}else{
 								$('#orderNo').val(res);
 								$('#orderConfirmCall').submit();
+								}
 							})
 					}
 					

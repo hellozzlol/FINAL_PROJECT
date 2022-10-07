@@ -1,12 +1,13 @@
 package com.team.prj.goods.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
+import com.team.prj.goods.service.GoodsService;
+import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 
@@ -17,6 +18,8 @@ public class AjaxGoodsController {
 	private CartService cart;
 	@Autowired
 	private OrderService order;
+	@Autowired
+	private GoodsService goods;
 
 	@RequestMapping("/ajaxCartInsert")
 	public String insertCart(CartVO vo, int amount) {
@@ -68,19 +71,32 @@ public class AjaxGoodsController {
 	// 주문 및 결제 하기 (등록)
 	@RequestMapping("/ajaxOrderInsert")
 	public int orderInsert(OrderVO vo) {
-		// 등록
-		order.insertOrder(vo);
-		int orderNo = vo.getOrderNo();
-		int money = vo.getMoney();
+		int orderNo = 0;
+		GoodsVO g = new GoodsVO();
+		g.setGoodsNo(vo.getGoodsNo());
+		
+		int amount = goods.goodsSelectOne(g).getAmount();
 
-		// 재고 관리
-		int qtyUpd = order.updateGoodsQty(vo);
+		// 장바구니에 있는 수량 > 재고 이면
+		if (amount < vo.getAmount()) {
+			orderNo = 0;
+		} else if(amount==0){
+			orderNo = -1;
+		} else {
 
-		// 장바구니 삭제
-		CartVO c = new CartVO();
-		int cartNo = vo.getCartNo();
-		c.setCartNo(cartNo);
-		cart.deleteCart(c);
+			// 등록
+			order.insertOrder(vo);
+			orderNo = vo.getOrderNo();
+
+			// 재고 관리
+			order.updateGoodsQty(vo);
+
+			// 장바구니 삭제
+			CartVO c = new CartVO();
+			int cartNo = vo.getCartNo();
+			c.setCartNo(cartNo);
+			cart.deleteCart(c);
+		}
 
 		return orderNo;
 	}
