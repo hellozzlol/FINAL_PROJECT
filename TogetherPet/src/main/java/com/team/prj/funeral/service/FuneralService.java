@@ -2,6 +2,8 @@ package com.team.prj.funeral.service;
 
 import java.util.List;
 
+import com.team.prj.scrap.service.ScrapVO;
+
 
 
 public interface FuneralService {
@@ -15,5 +17,7 @@ public interface FuneralService {
 
 	int funeralDelete(FuneralVO vo);// 장례 삭제
 	
+		//소현 스크랩 기능추가 1007
+		int scrapInsert(ScrapVO vo);//20221005소현추가
 	
 }

@@ -211,15 +211,7 @@ form {
 						var header = $("meta[name='_csrf_header']").attr("content");
 												    
 						//스크랩 하트버튼 클릭시
-												    
-						/* $("#all").on('click','.icon-heart', function() {
-							let categoryId = $(this).val(); //카테고리 h
-							console.log('카테고리 잘 넘어오니 ?',categoryId)
-							let name = $(this).val();//이름							
-							console.log('이름 잘 넘어오니 ?',name)
-						}) */
-						
-						
+	
 						$("#all").on('click','.icon-heart', function() {
 						
 							alert('스크랩 하시겠습니까?')
@@ -233,9 +225,6 @@ form {
 							
 							let userNo = $(this).prev().val();// userNo 유저번호
 							console.log('유저번호->',$(this).prev().val());
-							
-							
-							
 							
 							
 							

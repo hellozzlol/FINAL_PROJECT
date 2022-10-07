@@ -21,14 +21,19 @@
 		HOMEPAGE,
 		FPHOTO,
 		LATITUDE,
-		LONGITUDE
+		LONGITUDE,
+		CATEGORY_ID
 		
 		FROM FUNERAL
 		WHERE FUNERAL_NO=#{funeralNo}
 
 	</select>
 
-	
+			<!-- 소현 스크랩 용도  -->
+			<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
+				INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
+				VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
+			</insert>
 	
 
 

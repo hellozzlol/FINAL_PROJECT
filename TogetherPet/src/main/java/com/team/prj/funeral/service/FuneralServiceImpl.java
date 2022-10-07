@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.funeral.mapper.FuneralMapper;
+import com.team.prj.scrap.service.ScrapVO;
 
 
 @Service
@@ -42,6 +43,12 @@ public class FuneralServiceImpl implements FuneralService {
 	public int funeralDelete(FuneralVO vo) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int scrapInsert(ScrapVO vo) {
+		// 소현 스크랩 기능 추가 20221007
+		return map.scrapInsert(vo);
 	}
 
 

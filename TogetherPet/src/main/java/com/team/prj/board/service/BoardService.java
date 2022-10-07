@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.team.prj.comment.service.CommentVO;
+import com.team.prj.scrap.service.ScrapVO;
 
 
 
@@ -38,9 +39,6 @@ public interface BoardService {
 		int commentUpdate(CommentVO vo);
 		
 		int commentDelete(CommentVO vo);
-		
-		
-	
 	
 		
 }

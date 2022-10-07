@@ -56,6 +56,9 @@
 		from board
 		where board_no = #{boardNo}
 	</select>
+	
+
+	
 
 	<!-- 그룹별 사진 불러오기 -->
 	<select id="boardPhotoList"
@@ -138,8 +141,7 @@
 			<when test="key == 3"> category like '%' || #{val}||'%'</when>
 		</choose>
 	</select>
-
-
+	
 
 
 

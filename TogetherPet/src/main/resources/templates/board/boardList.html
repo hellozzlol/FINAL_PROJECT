@@ -97,6 +97,13 @@ a {
 .col-auto {
 	text-align: center;
 }
+body {
+    
+    
+    line-height: 1.25;
+   
+}
+
 
 </style>
 </head>
@@ -112,7 +119,7 @@ a {
 						<div class="breadcrumb_content" style="margin: 50px;">
 							<ul>
 								<li><a href="index.html">home</a></li>
-								<li>COMMUNITY</li>
+								<li>커뮤니티</li>
 								<li>게시판</li>
 							</ul>
 						</div>
@@ -129,33 +136,7 @@ a {
 								</p>
 							</div>
 						</div>
-
-
-
-						<h1>TogetherPet🐾</h1>
-						<br>
-						<h2><br>반려동물 이야기 및 마이펫 자랑<br> <br>자유로운 토크 커뮤니티입니다!  </h2>
 						<br><br>
-						<h4>투게더 펫 은 건강한 인터넷문화를 지향합니다.</h4>
-
-						<br> <br> <br>
-
-					<!-- 필터 검색 시작 -->
-		
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					<!-- 필터 검색 끝 -->
-
 						<!-- 검색기능 시작  -->
 						<form class="row gy-2 gx-3 align-items-center" id="btn">
 							<div class="col-auto">
@@ -177,6 +158,8 @@ a {
 						<!-- 검색기능 끝  -->
 						<br> <br>
 
+						<img class="primary_img" src="assets/img/likes/dogcat.png"
+								alt="consectetur" width="auto" height="auto" style = "float : right;">
 
 						<!-- 커뮤니티 게시판 반복문 스타트 -->
 						<div class="board_list_wrap">
@@ -280,26 +263,8 @@ a {
 
 						<br> <br> <br>
 
-						<!-- <!-- 페이징시작 -->
-						<!-- 	<div class="pagination_style pagination justify-content-center">
-							<ul class="d-flex">
-								<li th:classappend="${b.getPrePage() == 0} ? 'disabled'">
-								<a th:href="@{/page(pageNum=${b.getPrePage()}">앞</a></li>
-								<li><a href="#">1</a></li>
-								<li><a class="current" href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">뒤></a></li>
-							</ul>
-						</div>
-						 -->
-
-						<!-- 페이징 끝 -->
-
-
 						<!-- 페이지네이션 -->
-						<nav aria-label="Page navigation example">
+							<nav aria-label="Page navigation example">
 							<ul class="pagination pagination-info  justify-content-center">
 								<li class="page-item disabled"
 									th:if="${pageInfo.isIsFirstPage()}"><span
@@ -327,37 +292,6 @@ a {
 							</ul>
 						</nav>
 
-						<!-- 페이지네이션 -->
-
-
-
-
-						<!-- 페이지네이션 -->
-						<!--  <div class="pagination_style pagination justify-content-center">
-							<ul class="d-flex">
-								<li th:if="${pageInfo.isIsFirstPage()}">pre</li>
-								<li 
-									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
-									class="current"
-									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
-									rel="prev">«</a></li>
-								<li
-									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
-									th:each="page:${pageInfo.navigatepageNums}"><span
-									 th:if="${pageInfo.pageNum eq page}"
-									th:text="${page}"></span> <a class="current"
-									th:unless="${pageInfo.pageNum eq page}"
-									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
-										}}</a></li>
-								<li th:if="${pageInfo.hasNextPage}"><a
-									
-									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
-									rel="next">end</a></li>
-								<li 
-									th:unless="${pageInfo.hasNextPage}"><span
-									class="current"></span></li>
-							</ul>
-						</div> -->
 
 						<!-- 페이지네이션 -->
 					</div>

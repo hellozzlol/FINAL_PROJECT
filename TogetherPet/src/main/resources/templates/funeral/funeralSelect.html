@@ -244,18 +244,76 @@ span.user-review-info {
 									<td th:text="${f.call}" style="width: 70%; text-align: center;"><br></td>
 								</tr>
 
-								<tr th:each="f:${funeral}">
+								<tr th:each="f:${funeral}" id="all">
 									<td
 										style="width: 30%; text-align: center; height: 50px; background-color: #eee;">홈페이지</td>
 									<td style="width: 70%; text-align: center; font-size: 15px">
 										<a th:href="${f.homepage}">[[${f.homepage}]]</a>
+											<input type="hidden" th:value="${f.categoryId}" name="categoryId"> 
+										    <input type="hidden" th:value="${f.funeralNo}" name="boardNo">
+											<input type="hidden" th:value="${session.user.userNo}" name="userNo">
+											<br>
+											<br>
+											
+											<img class="primary_img" src="assets/img/likes/138533.png"
+													alt="consectetur" width="20" height="20">
 									</td>
+									
+									
 								</tr>
 
 							</tbody>
 						</table>
 						<br> <br>
 
+
+						<!-- 스크랩 스크립트 시작 20221007 소현 추가  -->
+						<script>
+						
+						var token = $("meta[name='_csrf']").attr("content");
+						var header = $("meta[name='_csrf_header']").attr("content");
+												    
+						//스크랩 하트버튼 클릭시
+						$("#all").on('click','.primary_img', function() {
+						
+							alert('스크랩 하시겠습니까?')
+									
+							let categoryId = $('#all').find('input:eq(0)').val();//장례카테고리 ㄹ
+							console.log('카테고리->',$('#all').find('input:eq(0)').val());
+							
+							let boardNo =$('#all').find('input:eq(1)').val();//boardNo 장례번호
+							console.log('장례번호->',$('#all').find('input:eq(1)').val());
+							
+							
+							let userNo = $('#all').find('input:eq(2)').val();// userNo 유저번호
+							console.log('유저번호->',$('#all').find('input:eq(2)').val());
+							
+							
+							
+							//스크랩 등록 처리
+							$.ajax({
+						         url:'/scRapInsert.do',
+						         type:'post',
+						         beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token)},
+						     	 dataType:'json',
+						         data:{categoryId:categoryId, userNo:userNo, boardNo:boardNo},
+						         success:function(data,idx,arr){
+								console.log(arr); 
+			
+									alert("스크랩이 성공 적 으로 등록 되었습니다.")
+							
+						       }
+						    })
+								
+						})
+						
+						
+						</script>
+						<!-- 스크랩 스크립트 시작 20221005 소현 끝  -->
+						
+						
+						
 						<!--product info start-->
 						<div class="product_d_info mb-118">
 							<div class="container">
@@ -412,7 +470,6 @@ span.user-review-info {
 
 						<div class="btnn">
 							<button type="button" class="btn btn-primary" onclick="location.href='funeralList'">목록</button>
-							<button type="button" class="btn btn-primary" id="sBtn">스크랩</button>	
 						</div>
 
 					</div>

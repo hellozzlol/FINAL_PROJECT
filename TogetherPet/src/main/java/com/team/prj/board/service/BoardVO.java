@@ -18,4 +18,5 @@ public class BoardVO {
 	private int userNo; // 유저번호
 	private String attech;//파일이름
 	private String attechDir;//파일경로
+	private String categoryId;//카테고리아이디
 }

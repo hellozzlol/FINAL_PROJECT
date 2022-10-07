@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.http.MediaType;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +40,7 @@ import com.team.prj.users.service.UsersVO;
 public class BoardController {
 	@Autowired
 	private BoardService service;
-	
+
 	@Autowired
 	private UsersService user; // 개인회원
 
@@ -76,26 +81,24 @@ public class BoardController {
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		/* model.addAttribute("boardList", dao.boardSelectList()); */
 		model.addAttribute("pageInfo", PageInfo.of(service.boardSelectList()));
 		return "board/boardList";
 	}
 
 	// 커뮤니티게시판상세조회
 	@GetMapping("/boardSel")
-	public String boardselect(BoardVO vo,CommentVO cvo ,Model model) {
+	public String boardselect(BoardVO vo, CommentVO cvo, Model model) {
 		System.out.println("=====================" + vo.getBoardNo());
 		BoardVO b = service.boardSelect(vo);
-		//b.setAttechDir( "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp"+b.getAttechDir());
-		System.out.println("============================"+b.getAttechDir());
+		System.out.println("============================" + b.getAttechDir());
 		model.addAttribute("boardSel", b);
 
 		// 조회수증가
 		service.boardHitUpdate(vo);
-		
-		//댓글리스트
+
+		// 댓글리스트
 		cvo.setCommentNo(vo.getBoardNo());
-		model.addAttribute("commentSelectList",service.commentSelectList(cvo));
+		model.addAttribute("commentSelectList", service.commentSelectList(cvo));
 		return "board/boardSel";
 	}
 
@@ -108,9 +111,7 @@ public class BoardController {
 	// 커뮤니티 글 등록
 	@PostMapping("/boardIns")
 
-	public String boardInsert(BoardVO vo, 
-			                  @RequestParam("file") MultipartFile file, 
-			                  HttpServletRequest request)
+	public String boardInsert(BoardVO vo, @RequestParam("file") MultipartFile file, HttpServletRequest request)
 			throws IllegalStateException, IOException {
 
 		HttpSession session = request.getSession();
@@ -118,16 +119,19 @@ public class BoardController {
 		vo.setUserNo(uvo.getUserNo());
 		vo.setNickname(uvo.getNickname());
 		// file UpLoad 처리해야함.
-		String saveFolder = ("");//저장할변수명 
+		String saveFolder = "";
+		;// 저장할변수명
 		System.out.println(saveFolder);
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		System.out.println(sfile);
 		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름 .원래파일네임
-		
+
 		if (!oFileName.isEmpty()) {
 
 			// 파일명 충돌방지를 위한 별명 만듦
-			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것																									// //랜덤파일네임
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것
+																												// //
+																												// //랜덤파일네임
 			String path = fileDir + "/" + sFileName;
 			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장한다.
 			vo.setAttech(oFileName);
@@ -137,56 +141,52 @@ public class BoardController {
 		service.boardInsert(vo);
 		return "redirect:boardList";
 	}
-	
-	//커뮤니티 파일 다운로드
-	@GetMapping(value = "/download")
-    public void download(String fileName, HttpServletResponse response, HttpServletRequest request){
 
-        try {
-            String originFileName = URLDecoder.decode(fileName, "UTF-8");
-            String onlyFileName = originFileName.substring(originFileName.lastIndexOf("_") + 1);
+	// 커뮤니티 파일 다운로드
+	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public void download(String fileName, HttpServletResponse response, HttpServletRequest request) {
 
-            File file = new File("C:\\Temp", originFileName);
-            
-            if(file.exists()) {
-                String agent = request.getHeader("User-Agent");
+		try {
+			String originFileName = URLDecoder.decode(fileName, "UTF-8");
+			String onlyFileName = originFileName.substring(originFileName.lastIndexOf("_") + 1);
 
-                //브라우저별 한글파일 명 처리
-                if(agent.contains("Trident")) {//Internet Explore
-                    onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8").replaceAll("\\+", " ");
-                }    
-                else if(agent.contains("Edge")) { //Micro Edge
-                    onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8");
-                    
-                }else {//Chrome
-                    onlyFileName = new String(onlyFileName.getBytes("UTF-8"), "ISO-8859-1");
-                }
-                //브라우저별 한글파일 명 처리
+			File file = new File("C:\\Temp", originFileName);
+			if (file.exists()) {
+				String agent = request.getHeader("User-Agent");
 
-                response.setHeader("Content-Type", "application/octet-stream");
-                response.setHeader("Content-Disposition", "attachment; filename=" + onlyFileName);
+				// 브라우저별 한글파일 명 처리
+				if (agent.contains("Trident")) {// Internet Explore
+					onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8").replaceAll("\\+", " ");
+				} else if (agent.contains("Edge")) { // Micro Edge
+					onlyFileName = URLEncoder.encode(onlyFileName, "UTF-8");
 
-                InputStream is = new FileInputStream(file);
-                OutputStream os = response.getOutputStream();
+				} else {// Chrome
+					onlyFileName = new String(onlyFileName.getBytes("UTF-8"), "ISO-8859-1");
+				}
+				// 브라우저별 한글파일 명 처리
 
-                int length;
-                byte[] buffer = new byte[1024];
+				response.setHeader("Content-Type", "application/octet-stream");
+				response.setHeader("Content-Disposition", "attachment; filename=" + onlyFileName);
 
-                while( (length = is.read(buffer)) != -1){
-                    os.write(buffer, 0, length);
-                }
+				InputStream is = new FileInputStream(file);
+				OutputStream os = response.getOutputStream();
 
-                os.flush();
-                os.close();
-                is.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+				int length;
+				byte[] buffer = new byte[1024];
 
-	
-	
+				while ((length = is.read(buffer)) != -1) {
+					os.write(buffer, 0, length);
+				}
+
+				os.flush();
+				os.close();
+				is.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 커뮤니티 글 삭제
 
 	@PostMapping("/boardDelete")
@@ -203,12 +203,12 @@ public class BoardController {
 
 	@GetMapping("/boardUpdateForm")
 
-	public String boardUpdate(BoardVO bvo, Model model ,HttpSession session) {
+	public String boardUpdate(BoardVO bvo, Model model, HttpSession session) {
 
 		UsersVO vo = new UsersVO();
 		String id = (String) session.getAttribute("id");
 		vo.setId(id);
-		
+
 		vo = user.usersSelect(vo);
 		model.addAttribute("userList", vo);
 		model.addAttribute("boardSel", service.boardSelect(bvo));
@@ -222,28 +222,29 @@ public class BoardController {
 			throws IllegalStateException, IOException {
 
 		System.out.println("=======" + request.getParameter("boardNo"));
-		
-		
+
 		if (!file.getOriginalFilename().isEmpty()) {
-			
+		
+
 			String boardupd = System.getProperty("user.dir") + "/"; // 프로젝트 경로
-			//기존파일 삭제 
-			
-			
-			//새로운파일업로드 
+			// 기존파일 삭제
+			 
+			// 새로운파일업로드
 			UUID uuid = UUID.randomUUID();
 			String filename = uuid + "_" + file.getOriginalFilename();
 			File saveFile = new File(boardupd, filename);
 			file.transferTo(saveFile);
 			vo.setAttech(filename);
-			String path = fileDir+"/files/" + filename;
+			String path = fileDir + "C:\\Temp" + filename;
 			vo.setAttechDir(path);
 		}
-
-		service.boardUpdate(vo);
-		return "redirect:boardList";
+		// fileDir이 경로 니까 수정해^_^
+			service.boardUpdate(vo);
+				return "redirect:boardList";
 
 	}
+	
+	
 
 	@RequestMapping("/boardSearch")
 
@@ -251,11 +252,5 @@ public class BoardController {
 		return "board/boardSearch";
 
 	}
-	
-	
-	
-	
 
-	
-	
 }
