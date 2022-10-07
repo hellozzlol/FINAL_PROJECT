@@ -19,4 +19,5 @@ public class ProfitVO {
 	private int minusPrice;
 	private int profit;
 	private String minusYn;
+
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.team.prj.users.service.UsersVO;
+import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassVO;
 
@@ -34,6 +34,12 @@ public interface TutorService {
 	
 	//특정 클래스 옵션 리스트
 	List<ClassOptionVO> classOptionList(int classNo);
+	
+	//특정 클래스 옵션의 예약자 조회
+	List<ClassOptionVO> optionReserv(int classOptionNo);
+	
+	//정산내역조회
+	List<ProfitVO> tutorProfitList(@Param("tvo") TutorVO tvo, @Param("key") String key);
 	
 
 }
