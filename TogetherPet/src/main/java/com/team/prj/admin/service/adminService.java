@@ -2,7 +2,6 @@ package com.team.prj.admin.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.goods.service.GoodsVO;
@@ -14,4 +13,7 @@ public interface adminService {
 	
 	int postUpdate(GoodsVO vo); // 상품 상태 업데이트
 	int cpostUpdate(ClassVO vo); // 클래스 상태 업데이트
+	
+	int goodsRefuse(GoodsVO vo); // 상품 상태 업데이트 - 반려
+	int classRefuse(ClassVO vo); // 클래스 상태 업데이트 - 반려
 }

@@ -83,7 +83,7 @@ public class AjaxadminController {
 	}
 	
 	
-	// 상품, 클래스 상태 업데이트
+	// 상품, 클래스 상태 업데이트 - 승인
 	@RequestMapping("postUpdateAjax")
 	public int postUpdate(String category, int no){
 		System.out.println("ajax===========");
@@ -102,6 +102,30 @@ public class AjaxadminController {
 		}
 		return cnt;
 	}
+	
+	
+	// 상품 상태 업데이트 - 반려
+	@RequestMapping("goodsRefuseAjax")
+	public int goodsRefuse(GoodsVO vo) {
+		int cnt = 0;
+		cnt = admin.goodsRefuse(vo);
+		return cnt;
+	}
+	
+	// 클래스 상태 업데이트 - 반려
+	@RequestMapping("classRefuseAjax")
+	public int classRefuse(ClassVO vo) {
+		int cnt = 0;
+		cnt = admin.classRefuse(vo);
+		return cnt;
+	}
+	
+	// 일반회원 상태 업데이트 - 활동정지
+//	@RequestMapping("userUpdateAjax")
+//	public String usersStateUpdate(UsersVO vo) {
+//		
+//		return null;
+//	}
 	
 	
 	// 출퇴근 등록

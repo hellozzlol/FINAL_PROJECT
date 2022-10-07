@@ -14,4 +14,7 @@ public interface adminMapper {
 	int postUpdate(GoodsVO vo); // 상품 상태 업데이트
 	int cpostUpdate(ClassVO vo); // 클래스 상태 업데이트
 	
+	int goodsRefuse(GoodsVO vo); // 상품 상태 업데이트 - 반려
+	int classRefuse(ClassVO vo); // 클래스 상태 업데이트 - 반려
+	
 }

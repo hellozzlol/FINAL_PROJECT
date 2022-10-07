@@ -12,18 +12,34 @@
 
 
 	<update id="postUpdate">
-		UPDATE goods set upload_state='1'   
+		UPDATE goods 
+		SET upload_state='1'   
 		WHERE goods_no = #{goodsNo}
 	</update>
 
-	
+
+
+	<!-- ! -->
 	<update id="cpostUpdate">
-		UPDATE class set upload_state='1'   
+		UPDATE class 
+		SET upload_state='1'   
 		WHERE class_no = #{classNo}
-		
 	</update>
 
-	<!-- #{category} #{no} -->
+
+
+
+	<update id="goodsRefuse">
+		UPDATE goods
+		SET upload_state='2', return_message=#{returnMessage}   
+		WHERE goods_no = #{goodsNo}
+	</update>
+	
+	<update id="classRefuse">
+		UPDATE class
+		SET upload_state='2', return_message=#{returnMessage}   
+		WHERE class_no = #{classNo}
+	</update>
 
 
 </mapper>

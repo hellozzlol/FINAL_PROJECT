@@ -10,6 +10,7 @@ import com.team.prj.classes.service.ClassVO;
 import com.team.prj.goods.service.GoodsVO;
 @Service
 public class adminServiceImpl implements adminService {
+	
 	@Autowired
 	private adminMapper map;
 	
@@ -33,14 +34,26 @@ public class adminServiceImpl implements adminService {
 
 	@Override
 	public int postUpdate(GoodsVO vo) {
-		// 상품 상태 업데이트
+		// 상품 상태 업데이트 - 승인
 		return map.postUpdate(vo);
 	}
 
 	@Override
 	public int cpostUpdate(ClassVO vo) {
-		// 클래스 상태 업데이트
+		// 클래스 상태 업데이트 - 승인
 		return map.cpostUpdate(vo);
+	}
+
+	@Override
+	public int goodsRefuse(GoodsVO vo) {
+		// 상품 상태 업데이트 - 반려
+		return map.goodsRefuse(vo);
+	}
+
+	@Override
+	public int classRefuse(ClassVO vo) {
+		// 클래스 상태 업데이트 - 반려
+		return map.classRefuse(vo);
 	}
 
 

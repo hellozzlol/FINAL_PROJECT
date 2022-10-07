@@ -51,7 +51,7 @@
 				<table class="table" id="uTable">
 					<thead>
 						<tr>
-							<th>선택</th>
+							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
 							<th>회원번호</th>
 							<th>아이디</th>
 							<th>이름</th>
@@ -61,12 +61,12 @@
 					</thead>
 					<tbody class="table-border-bottom-0" id="body">
 						<tr th:each="u:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox"></td>
+							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${u.userNo}"></td>
 							<td th:text="${u.id}"></td>
 							<td th:text="${u.name}"></td>
 							<td th:text="${u.nickname}"></td>
-							<td th:text="${u.state}"></td>
+							<td th:text="${u.state}" id="uState"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -74,7 +74,7 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">변경</button>
+		<button type="button" class="btn btn-sm btn-primary" id="uUpdate">변경</button>
 		<br> <br>
 
 		<!-- 페이지네이션 -->
@@ -159,6 +159,83 @@
 	
 		</script>
 		
+		<!-- 체크박스 -->	
+		<script>
+		// 체크박스 전체 선택
+		function allChecked(target){
+			//전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			//전체 체크박스 제외한 모든 체크박스
+			if(is_checked){
+				//체크박스 전체 체크
+				chkAllChecked()
+			}else{
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
+		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked(){
+			//체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			//체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			//체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if(allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+				//같지 않으면 전체 체크박스 해제
+			}else{
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		//체크박스 전체 체크
+		function chkAllChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		//체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}	
+		</script>		
+		
+		<!-- 변경 클릭 시 -->
+		<script>
+		$('#uUpdate').on('click', function(){
+			let chkbox = document.querySelectorAll(".chk");
+				//console.log(chkbox)
+			chkbox.forEach(elem => {
+				let no = elem.closest('tr').getAttribute('id')
+				  console.log(no);
+			$.ajax({
+				url: '/userUpdateAjax',
+				type: 'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {no: no
+					 }
+			})
+			.done(res=>{
+				location.href-'/manager/userManage';
+			})
+			})
+		})
+		
+		</script>
 		</article>
 	</body>
 </html>

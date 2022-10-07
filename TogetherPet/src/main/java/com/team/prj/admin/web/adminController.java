@@ -176,4 +176,8 @@ public class adminController {
 		model.addAttribute("pageInfo", PageInfo.of(cs.classList()));
 		return "admin/classConfirm";
 	}
+	
+	
+	
+	
 }

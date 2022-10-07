@@ -76,7 +76,7 @@ public interface UsersMapper {
 	List<CommentVO> commentList(CommentVO vo);
 
 	// 일반회원 상태 변경 / 0929 지혜 추가
-	int usersStateUpdate(UsersVO vo);
+	String usersStateUpdate(UsersVO vo);
 
 	// 일반회원 검색 / 1005 지혜 추가
 	List<UsersVO> userSearch(@Param("key") String key, @Param("val") String val);
