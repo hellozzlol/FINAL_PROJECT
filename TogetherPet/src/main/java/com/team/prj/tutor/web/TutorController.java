@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
+import com.team.prj.seller.service.SellerVO;
 import com.team.prj.tutor.service.TutorService;
 import com.team.prj.tutor.service.TutorVO;
 
@@ -101,28 +103,70 @@ public class TutorController {
 		return "tutor/tutorClassList";
 	}
 	
-	//클래스 수강자 및 정산 리스트 카드로 표시
+	//클래스 수강자 및 정산 페이지 리스트
 	@RequestMapping("/classTuteeList")
-	public String classTuteeList(Model model,  HttpServletRequest request, 
-			ClassVO clvo, 
+	public String classTuteeList(Model model, TutorVO tvo, HttpServletRequest request, 
+			ClassVO clvo, String key,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "9") int pageSize) {
 		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
 		PageHelper.startPage(pageNum, pageSize);
+		if (key == null) {
+			key = "1";
+		}
 		HttpSession session = request.getSession();
-		TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
-		clvo.setTutorNo(tuvo.getTutorNo());
+		tvo = (TutorVO) session.getAttribute("tutor");
+		clvo.setTutorNo(tvo.getTutorNo());
 		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
 		
+		
+		//합계 정산 처리
+		List<ProfitVO> list = tutor.tutorProfitList(tvo, key);
+		int sum = 0;
+		for(int i = 0; i<list.size();i++) {
+			if(list.get(i).getMinusYn().equals("1")) {
+				sum += list.get(i).getMinusPrice();
+			}
+		}
+		model.addAttribute("sum", sum);
+
 		return "tutor/classTuteeList";
 	}
 	
-	//클래스 수강자 및 정산 리스트에서 해당 클래스의 옵션리스트
+	
+	//////////////////////////ajax/////////////////////////////////
+	//클래스 수강자 및 정산 리스트에서 해당 클래스 클릭시 옵션리스트 자세히보기
 	@RequestMapping("classOptionList")
 	@ResponseBody
 	public List<ClassOptionVO> classOptionList(Model model, @RequestParam(value="classNo") int classNo){
 		List<ClassOptionVO> list = tutor.classOptionList(classNo);
 		model.addAttribute("option", list);
+		return list;
+	}
+	
+	
+	//클래스 정산 리스트에서 특정 클래스의 옵션 클릭시 수강자명단 자세히보기
+	@RequestMapping("optionReserv")
+	@ResponseBody
+	public List<ClassOptionVO> optionReserv(Model model, @RequestParam(value="classOptionNo") int classOptionNo){
+		List<ClassOptionVO> list = tutor.optionReserv(classOptionNo);
+		model.addAttribute("reserv", list);
+		return list;
+	}
+	
+	//정산 
+	@RequestMapping("profitOrderBy")
+	public List<ProfitVO> profitOrderBy(TutorVO tvo, HttpSession session,  String key){
+		System.out.println(key);
+		System.out.println("===============================================");
+		if (key == null) {
+			key = "1";
+		}
+		tvo = (TutorVO) session.getAttribute("tutor");
+		
+		tvo.setTutorNo(tvo.getTutorNo());
+		List<ProfitVO> list = tutor.tutorProfitList(tvo, key);
+		
 		return list;
 	}
 

@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.tutor.mapper.TutorMapper;
-import com.team.prj.users.service.UsersVO;
 
 @Service
 public class TutorServiceImpl implements TutorService {
@@ -58,6 +58,18 @@ public class TutorServiceImpl implements TutorService {
 	public List<ClassOptionVO> classOptionList(int classNo) {
 		// TODO Auto-generated method stub
 		return map.classOptionList(classNo);
+	}
+
+	@Override
+	public List<ClassOptionVO> optionReserv(int classOptionNo) {
+		// TODO Auto-generated method stub
+		return map.optionReserv(classOptionNo);
+	}
+
+	@Override
+	public List<ProfitVO> tutorProfitList(TutorVO tvo, String key) {
+		// TODO Auto-generated method stub
+		return map.tutorProfitList(tvo, key);
 	}
 
 

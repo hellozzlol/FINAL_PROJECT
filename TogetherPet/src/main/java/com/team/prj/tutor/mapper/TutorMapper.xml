@@ -102,15 +102,51 @@
 		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
 		c.max_headcount
 		from class_option o, class c
-		where o.class_no = 4
+		where o.class_no = ${classNo}
 		and o.class_no = c.class_no
 		order by o.start_dt
 	</select>
+	
+	
+	<!-- 특정 클래스의 한 옵션을 예약한 예약자 리스트-->
+	<select id="optionReserv"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
+				R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
+				R.CLASS_NAME 
+		FROM CLASS_OPTION O, CLASS_RESERVE R 
+		WHERE R.CLASS_OPTION_NO = ${classOptionNo} 
+		AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO 
+		ORDER BY RESERVE_NO
+	</select>
 
-	<!-- SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
-		R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
-		R.CLASS_NAME FROM CLASS_OPTION O, CLASS_RESERVE R WHERE R.CLASS_OPTION_NO 
-		= 115 AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO ORDER BY RESERVE_NO; -->
+	
+	<!-- 정산관리, 정산내역 전체조회 -->
+	<select id="tutorProfitList" resultType="com.team.prj.admin.service.ProfitVO">
+		select no,
+		to_char(minus_dt, 'yyyy-mm-dd') minus_dt,
+		to_char(order_dt,
+		'yyyy-mm-dd') order_dt,
+		user_name,
+		seller_name,
+		category_id,
+		name,
+		total_price,
+		minus_price,
+		minus_yn
+		from profit
+		where
+		seller_no=#{tvo.tutorNo}
+		<choose>
+			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
+			<when test="key == 2"> and minus_yn = 1
+				order by 1 desc
+			</when>
+			<when test="key == 3"> and minus_yn = 0
+				order by 1 desc
+			</when>
+		</choose>
+	</select>
 	
 
 </mapper>
