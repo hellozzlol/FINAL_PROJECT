@@ -30,7 +30,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>선택</th>
+							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
 							<th>클래스 번호</th>
 							<th>카테고리</th>
 							<th>클래스 명</th>
@@ -40,8 +40,9 @@
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0">
-						<tr th:each="c:${pageInfo.list}">
-							<td><input type="checkbox" id="ckbox" class="ckbox"></td>
+						<tr th:each="c:${pageInfo.list}" th:id="${c.classNo}">
+							<td><input type="checkbox" name="chk" class="chk"
+								onclick="chkClicked()"></td>
 							<td th:text="${c.classNo}"></td>
 							<td th:text="${c.category}"></td>
 							<td><a th:href="@{/classSel(classNo=${c.classNo})}"
@@ -55,8 +56,40 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">변경</button>
-		<button type="button" class="btn btn-sm btn-primary">반려</button>
+		<button type="button" class="btn btn-sm btn-primary" id="approve">승인</button>
+		<button type="button" class="btn btn-sm btn-primary" id="disapprove"
+			data-bs-toggle="modal" data-bs-target="#basicModal">반려</button>
+		
+		<!-- 반려 클릭 시 Modal -->
+		<div class="modal fade" id="basicModal" tabindex="-1"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col mb-3">
+								<label for="nameBasic" class="form-label">반려 메세지</label>
+								<form>
+									<textarea class="form-control" id="Textarea1" rows="5"
+										name="returnMessage"></textarea>
+									<input type="hidden" name="uploadState" value="2">
+								</form>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-secondary"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="cUpdate">저장</button>
+					</div>
+				</div>
+			</div>
+		</div>		
 		<br> <br>
 
 		<!-- 페이지네이션 -->
@@ -92,9 +125,115 @@
 		</script>
 		<!-- 페이지네이션 -->
 		
+		<!-- 체크박스 -->
+		<script>
+		// 체크박스 전체 선택
+		function allChecked(target){
+			//전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			//전체 체크박스 제외한 모든 체크박스
+			if(is_checked){
+				//체크박스 전체 체크
+				chkAllChecked()
+			}else{
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
 		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked(){
+			//체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			//체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			//체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if(allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+				//같지 않으면 전체 체크박스 해제
+			}else{
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		//체크박스 전체 체크
+		function chkAllChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		//체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}	
+		</script>		
 		
-		
+		<!-- 승인 클릭 시 -->
+		<script>
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
+			$('#approve').on('click', function(){
+			    let chkbox = document.querySelectorAll(".chk");
+			    chkbox.forEach(elem => {
+				    if(elem.checked==true){
+				    	let no = elem.closest('tr').getAttribute('id');
+				    	$.ajax({
+							url: '/postUpdateAjax',
+							type: 'post',
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
+							data: {
+								category : 'C',
+								no : no
+							}
+						})
+						.done(res => {
+							document.getElementById(no).remove();
+							
+						})
+				    }
+			    });
+			})
+			
+			// 반려 클릭 시
+			$('#cUpdate').on('click', function(){
+			    let chkbox = document.querySelectorAll(".chk");
+			    let returnMessage = document.getElementById("Textarea1").value;
+			    
+			    console.log(returnMessage);
+			    
+			    chkbox.forEach(elem => {
+			    	if(elem.checked==true){
+				    	let no = elem.closest('tr').getAttribute('id')
+				    $.ajax({
+								url: '/classRefuseAjax',
+								type: 'post',
+								beforeSend: function (xhr) {
+									xhr.setRequestHeader(header, token)
+								},
+								data: {
+									returnMessage: returnMessage,
+									classNo: no
+								}
+							})
+							.done(res => {
+								location.href='/manager/classConfirm';
+							})
+			    	}
+			    })
+			})
+		</script>		
 		</article>
 	</body>
 </html>

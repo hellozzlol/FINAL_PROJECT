@@ -19,12 +19,6 @@
 		where seller_no = #{sellerNo}
 	</select>
 
-	<!-- 판매자 정보 등록 0929 JH 주석처리 <insert id="sellerInsert" parameterType="com.team.prj.seller.service.SellerVO"> 
-		<selectKey keyProperty="sellerNo" order="BEFORE" resultType="int"> SELECT 
-		CASE WHEN max(seller_no) IS NULL THEN 1 ELSE max(seller_no) + 1 END AS no 
-		FROM seller </selectKey> INSERT INTO seller VALUES(#{sellerNo} ,#{id} ,#{password} 
-		,#{name} ,#{company} ,#{email} ,#{call} ,#{address} ,#{companyNo} ,#{author} 
-		,#{groupNo} ,#{dt} ,#{attach} ,#{attachDir} ,#{postcode} ,#{da}) </insert> -->
 
 	<!-- 판매자 정보 수정 -->
 	<update id="sellerUpdate"

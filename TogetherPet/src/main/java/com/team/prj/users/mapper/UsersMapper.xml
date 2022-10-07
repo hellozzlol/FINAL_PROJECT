@@ -252,9 +252,12 @@
 	</delete>
 
 
-	<!-- 일반회원 상태 변경 / 0929 지혜 추가 <update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO"> 
-		update users ser state = case wher (select state from users where user_no 
-		= #{userNo} = ) </update> -->
+	<!-- 일반회원 상태 변경 / 0929 지혜 추가 
+	<update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO"> 
+		update users 
+		set state = case 
+		where user_no = #{userNo} = ) 
+	</update> -->
 		
 	<!-- 일반회원 검색 / 1005 지혜 추가 -->
 	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
