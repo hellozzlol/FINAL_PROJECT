@@ -14,8 +14,8 @@ public class CalendarServiceImpl implements CalendarService {
 	
 	// 전체 일정
 	@Override
-	public List<CalendarVO> calendarSelectList() {
-		return map.calendarSelectList();
+	public List<CalendarVO> calendarSelectList(CalendarVO vo) {
+		return map.calendarSelectList(vo);
 	}
 
 	// 일정 상세 조회

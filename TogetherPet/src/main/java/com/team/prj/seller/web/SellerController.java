@@ -285,6 +285,17 @@ public class SellerController {
 		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end, by);
 		model.addAttribute("pageInfo", PageInfo.of(list));
 
+		// 매출 합계
+		System.out.println("===============매출합계================");
+
+		list = seller.sellerProfitList(svo, "2", start, end);
+		int sum = 0;
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println("=============== FOR ================");
+			System.out.println(list.get(i).getMinusPrice());
+			sum += list.get(i).getMinusPrice();
+		}
+		model.addAttribute("sum", sum);
 		return "seller/profitTable";
 	}
 
@@ -319,6 +330,20 @@ public class SellerController {
 	// 문의 답변 처리
 	@PostMapping("/qnaAnswer")
 	public String qnaAnswer(QnaVO qvo) {
+		seller.qnaAnswer(qvo);
+		return "redirect:/sellerQnaSelectList";
+	}
+
+	// 문의 답변 수정 폼 호출
+	@RequestMapping("/sellerQnaAnswerUp")
+	public String sellerQnaAnswerUp(Model model, QnaVO qvo, HttpSession session) {
+		model.addAttribute("qna", seller.qnaSelect(qvo));
+		return "/seller/sellerQnaAnswerUp";
+	}
+
+	// 문의 답변 수정 처리
+	@PostMapping("/qnaAnswerUp")
+	public String qnaAnswerUp(QnaVO qvo) {
 		seller.qnaAnswer(qvo);
 		return "redirect:/sellerQnaSelectList";
 	}

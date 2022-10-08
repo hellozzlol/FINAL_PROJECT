@@ -3,9 +3,11 @@
 <mapper namespace="com.team.prj.calendar.mapper.CalendarMapper">
 	<!-- 전체 일정 -->
 	<select id="calendarSelectList"
-		resultType="com.team.prj.calendar.service.CalendarVO">
+		resultType="com.team.prj.calendar.service.CalendarVO"
+		parameterType="com.team.prj.calendar.service.CalendarVO">
 		SELECT *
 		FROM calendar
+		WHERE user_no = #{userNo}
 	</select>
 
 	<!-- 일정 상세 조회 -->
@@ -48,7 +50,6 @@
 			start_dt = #{startDt},
 			end_dt = #{endDt}
 		WHERE calendar_no = #{calendarNo}
-		AND user_no = #{userNo}
 	</update>
 
 	<!-- 일정 삭제 -->

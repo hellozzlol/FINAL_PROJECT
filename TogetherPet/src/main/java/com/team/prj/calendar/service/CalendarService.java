@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CalendarService {
 	// 전체 일정
-	List<CalendarVO> calendarSelectList();
+	List<CalendarVO> calendarSelectList(CalendarVO vo);
 	
 	// 일정 상세조회
 	CalendarVO calendarSelect(CalendarVO vo);
