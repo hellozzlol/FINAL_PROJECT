@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_mypage}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>Together Pet</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>cart</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>장바구니</h3>
+				</div>
+				<br>
+
+				<!--shopping cart area start -->
+				<div class="shopping_cart_area">
+					<div class="container">
+						<form action="#">
+							<div class="cart_page_inner mb-60">
+								<div class="row">
+									<div class="col-12">
+										<div class="cart_page_tabel">
+										<div id="cartSize" style="display: none" th:text="${#lists.size(cartList)}"></div>
+											<table>
+												<thead id="th">
+													<tr>
+														<th>product</th>
+														<th>information</th>
+														<th>Price</th>
+														<th>Quantity</th>
+														<th>Total</th>
+														<th id="cartSize" style="display: none">[[${#lists.size(cartList)}]]</th>
+													</tr>
+												</thead>
+												<tbody id="tb">
+													<!-- tr 반복  -->
+													<tr th:each="c:${cartList}" class="border-top"
+														th:id="${c.cartNo}">
+														<td>
+															<div class="cart_product_thumb">
+																<a th:href="@{/goods(goodsNo=${c.goodsNo})}">
+																	<img th:src="${c.thumb}" alt="" style="height: 100px;">
+																</a>
+															</div>
+														</td>
+														<td>
+															<div class="cart_product_text">
+																<h4>[[${c.name}]]</h4>
+															</div>
+														</td>
+														<td>
+															<div class="cart_product_price">
+																<span>[[${#numbers.formatInteger(c.price*(1-c.dc),4)}]]</span>
+
+															</div>
+														</td>
+														<td class="product_quantity">
+															<div class="cart_product_quantity update">
+																<input min="1" max="100" th:value="${c.qty}"
+																	type="number" class="updateCart">
+															</div>
+														</td>
+														<td>
+															<div class="cart_product_price">
+																<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
+																<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
+															</div>
+														</td>
+														<td style="display: none"><span>[[${c.dc}]]</span><span>[[${c.price}]]</span></td>
+														<td style="display: none">[[${c.amount}]]</td>
+														<td>
+															<div class="cart_product_remove text-right remove">
+																<a class="removeCart"><i class="ion-android-close"></i></a>
+															</div>
+														</td>
+
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="col-lg-12 col-md-12 col-sm-12">
+											<div class="grand_totall_area">
+												<div class="grand_totall_inner border-bottom">
+													<div class="cart_subtotal d-flex justify-content-between">
+														<p>할인 전 총액</p>
+														<span id="sTotal"></span>
+													</div>
+													<div class="cart_grandtotal d-flex justify-content-between">
+														<p>할인 후 총액</p>
+														<span id="gTotal"></span>
+													</div>
+												</div>
+
+												<div class="proceed_checkout_btn">
+													<a class="btn btn-primary" id="orderCallBtn">주문 및 결제하기</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--shopping cart area end -->
+				<form name="orderCall" id="orderCall" method="post" action="order">
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}">
+					<input type="hidden" name="userNo" th:value="${session.user.userNo}">
+				</form>
+
+			</div>
+		</div>
+		<!--shop wrapper end-->
+		
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+		
+	    // 장바구니가 비워져있으면
+	    if($('#cartSize').html()=='0'){
+	    	$('#tb').html('');
+	    	$('#th').html('');
+	    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3><br><a class='btn btn-primary me-2 mb-2' href='/shop'>쇼핑하러가기</a></td>");
+	    	$('.grand_totall_area').html('').css('background-color', 'white');
+	    }
+	    
+	    // 총액 계산
+		getTotal();
+	
+		function getTotal() {
+	
+			//subtotal
+			let total = $('.sTotal')
+			let sTotal = 0;
+			for (t of total) {
+				sTotal += Number(t.innerHTML);
+			}
+			// 천단위 콤마
+			sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			$('#sTotal').html(sTotal)
+	
+			//grandtotal 할인 적용 후 
+			total = $('.gTotal')
+			let gTotal = 0;
+			for (t of total) {
+				gTotal += Number(t.innerHTML);
+			}
+			//천단위 콤마
+			gTotal = gTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			$('#gTotal').html(gTotal)
+		}
+	
+		// 장바구니 삭제	
+		$('.remove').on('click', '.removeCart', function () {
+			 
+			let cartNo = $(this).closest('tr').attr('id')
+			$.ajax({
+					url: 'ajaxCartDelete',
+					type: 'post',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+					data: {
+						cartNo: cartNo
+					}
+				})
+				.done(res => {
+					alert(res);
+					document.getElementById(cartNo).remove();
+					getTotal();
+				})
+		})
+		// 장바구니 수량 업데이트
+		$('.update').on('change', '.updateCart', function () {
+			let cartNo = $(this).closest('tr').attr('id');
+			let tr = document.getElementById(cartNo);
+			let qty = Number(tr.children[3].children[0].children[0].value)
+			let dc = Number(tr.children[5].children[0].innerHTML)
+			let price = Number(tr.children[5].children[1].innerHTML)
+			let amount = Number(tr.children[6].innerHTML);
+			
+			if(amount<qty){
+				alert('재고보다 많은 수량을 입력할 수 없습니다.');
+				tr.children[3].children[0].children[0].value= amount;
+				return;
+			}
+			$.ajax({
+					url: 'ajaxCartUpdate',
+					type: 'post',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+					data: {
+						cartNo: cartNo,
+						qty: qty
+					}
+				})
+				.done(res => {
+					if (res == "1") {
+						// 수량 * 단가 동적 계산
+						tr.children[4].children[0].children[0].innerText = qty * price
+						tr.children[4].children[0].children[1].innerText = qty * price * (1 - dc);
+	
+						getTotal();
+					}
+				})
+		})
+		// order로 이동
+		$('#orderCallBtn').on('click', function () {
+			if (confirm('주문 페이지로 넘어가시겠습니까?')) {
+				$('#orderCall').submit();
+			}
+		})
+	})
+	</script>
+		
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.qna.mapper.QnaMapper">
+	<select id="selectQnaAll"
+		resultType="com.team.prj.qna.service.QnaVO">
+		select * from qna where goods_no=#{goodsNo} order by 1 desc
+	</select>
+
+	<select id="selectQnaOne"
+		resultType="com.team.prj.qna.service.QnaVO">
+		select * from qna where qna_no=#{qnaNo}
+	</select>
+
+	<insert id="insertQna">
+		<selectKey keyProperty="qnaNo" order="BEFORE"
+			resultType="int">
+			select case max(qna_no) when null then 1 else
+			max(qna_no)+1 end
+			from qna
+		</selectKey>
+		insert into qna(qna_no, title, content, dt, user_no, goods_no,
+		seller_no)
+		values(#{qnaNo}, #{title}, #{content}, sysdate,
+		#{userNo},
+		#{goodsNo},
+		(select seller_no from goods where
+		goods_no=#{goodsNo}))
+	</insert>
+
+	<delete id="deleteQna">
+		delete qna where qna_no=#{qnaNo}
+	</delete>
+</mapper>

@@ -1,11 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">
+	layout:decorate="~{layout/layout2}">
+
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
+<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var token = $("meta[name='_csrf']").attr("content");
+		    var header = $("meta[name='_csrf_header']").attr("content");
+			
+		    // 장바구니가 비워져있으면
+		    if($('#cartSize').html()=='0'){
+		    	$('#tb').html('');
+		    	$('#th').html('');
+		    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
+		    	$('.grand_totall_area').html('').css('background-color', 'white');
+		    }
+		    
+		    // 총액 계산
+			getTotal();
+
+			function getTotal() {
+
+				//subtotal
+				let total = $('.sTotal')
+				let sTotal = 0;
+				for (t of total) {
+					sTotal += Number(t.innerHTML);
+				}
+				// 천단위 콤마
+				sTotal = sTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				$('#sTotal').html(sTotal)
+
+				//grandtotal 할인 적용 후 
+				total = $('.gTotal')
+				let gTotal = 0;
+				for (t of total) {
+					gTotal += Number(t.innerHTML);
+				}
+				//천단위 콤마
+				gTotal = gTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				$('#gTotal').html(gTotal)
+			}
+
+			// 장바구니 삭제	
+			$('.remove').on('click', '.removeCart', function () {
+				 
+				let cartNo = $(this).closest('tr').attr('id')
+				$.ajax({
+						url: 'ajaxCartDelete',
+						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
+						data: {
+							cartNo: cartNo
+						}
+					})
+					.done(res => {
+						document.getElementById(cartNo).remove();
+						getTotal();
+						
+						if($('#gTotal').html()==0){
+							$('#tb').html('');
+					    	$('#th').html('');
+					    	$('#tb').html("<td colspan=5 align=center><h3> <br><br>장바구니에 상품이 없습니다.</h3></td>");
+					    	$('.grand_totall_area').html('').css('background-color', 'white');
+						}
+						
+						alert(res);
+					})
+			})
+			// 장바구니 수량 업데이트
+			$('.update').on('change', '.updateCart', function () {
+				let cartNo = $(this).closest('tr').attr('id');
+				let tr = document.getElementById(cartNo);
+				let qty = Number(tr.children[3].children[0].children[0].value)
+				let dc = Number(tr.children[5].children[0].innerHTML)
+				let price = Number(tr.children[5].children[1].innerHTML)
+				let amount = Number(tr.children[6].innerHTML);
+				
+				if(amount<qty){
+					alert('재고보다 많은 수량을 입력할 수 없습니다.');
+					//tr.children[3].children[0].children[0].value= amount;
+					return;
+				}
+				$.ajax({
+						url: 'ajaxCartUpdate',
+						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
+						data: {
+							cartNo: cartNo,
+							qty: qty
+						}
+					})
+					.done(res => {
+						if (res == "1") {
+							// 수량 * 단가 동적 계산
+							tr.children[4].children[0].children[0].innerText = qty * price
+							tr.children[4].children[0].children[1].innerText = qty * price * (1 - dc);
+
+							getTotal();
+						}
+					})
+			})
+			// order로 이동
+			$('#orderCallBtn').on('click', function () {
+				if (confirm('주문 페이지로 넘어가시겠습니까?')) {
+					let amount;
+					let qty;
+					let ttrr = $('.ttrr');
+					for(tr of ttrr){
+						amount = Number(tr.children[6].innerHTML);
+						qty = Number(tr.children[3].children[0].children[0].value);
+						if(amount<qty){
+							alert('재고보다 주문 수량이 많습니다. 재고를 확인해 주세요.')
+							return;
+						}
+					}
+					$('#orderCall').submit();
+				}
+			})
+		})
+	</script>
 </head>
+
 <body>
 	<article layout:fragment="content">
 		<!--breadcrumbs area start-->
@@ -35,81 +159,59 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="cart_page_tabel">
+									<div id="cartSize" style="display: none" th:text="${#lists.size(cartList)}">
+										</div>
 									<table>
-										<thead>
+										<thead id="th">
 											<tr>
 												<th>product</th>
 												<th>information</th>
 												<th>Price</th>
 												<th>Quantity</th>
 												<th>Total</th>
+												<th id="cartSize" style="display: none">[[${#lists.size(cartList)}]]</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr class="border-top">
+										<tbody id="tb">
+											<!-- tr 반복  -->
+											<tr th:each="c:${cartList}" class="border-top ttrr"
+												th:id="${c.cartNo}">
 												<td>
 													<div class="cart_product_thumb">
-														<img src="assets/img/product/product4.jpg" alt="">
+														<img th:src="${c.thumb}" alt="">
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_text">
-														<br> <br>
-														<h4>상품이름상품이름상품이름상품이름상품이름상품이름</h4>
+														<h4>[[${c.name}]]</h4>
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>가격가격</span>
-													</div>
-												</td>
-												<td class="product_quantity">
-													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>가격가격</span>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
-													</div>
-												</td>
+														<span>[[${#numbers.formatInteger(c.price*(1-c.dc),4)}]]</span>
 
-											</tr>
-											<tr class="border-top">
-												<td>
-													<div class="cart_product_thumb">
-														<img src="assets/img/product/product6.jpg" alt="">
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_text">
-														<br> <br>
-														<h4>상품이름상품이름상품이름상품이름</h4>
-													</div>
-												</td>
-												<td>
-													<div class="cart_product_price">
-														<span>가격222</span>
 													</div>
 												</td>
 												<td class="product_quantity">
-													<div class="cart_product_quantity">
-														<input min="1" max="100" value="1" type="number">
+													<div class="cart_product_quantity update">
+														<input min="1" max="100" th:value="${c.qty}" type="number"
+															class="updateCart">
+													</div>
+													<div class="cart_product_quantity update">
+														<p>현재 잔여수량: [[${c.amount}]]</p>
 													</div>
 												</td>
 												<td>
 													<div class="cart_product_price">
-														<span>토탈토탈</span>
+														<span class="sTotal" style="display: none">[[${c.price*c.qty}]]</span>
+														<span class="gTotal">[[${#numbers.formatInteger(c.price*(1-c.dc)*c.qty,4)}]]</span>
 													</div>
 												</td>
+												<td style="display: none"><span>[[${c.dc}]]</span><span>[[${c.price}]]</span></td>
+												<td style="display: none">[[${c.amount}]]</td>
 												<td>
-													<div class="cart_product_remove text-right">
-														<a href="#"><i class="ion-android-close"></i></a>
+													<div class="cart_product_remove text-right remove">
+														<a class="removeCart"><i class="ion-android-close"></i></a>
 													</div>
 												</td>
 
@@ -121,18 +223,18 @@
 									<div class="grand_totall_area">
 										<div class="grand_totall_inner border-bottom">
 											<div class="cart_subtotal d-flex justify-content-between">
-												<p>sub total</p>
-												<span>$126.00</span>
+												<p>할인 전 총액</p>
+												<span id="sTotal"></span>
 											</div>
 											<div class="cart_grandtotal d-flex justify-content-between">
-												<p>grand total</p>
-												<span>$126.00</span>
+												<p>할인 후 총액</p>
+												<span id="gTotal"></span>
 											</div>
 										</div>
+
 										<div class="proceed_checkout_btn">
-											<a class="btn btn-primary" href="order">Proceed to Checkout</a>
+											<a class="btn btn-primary" id="orderCallBtn">주문 및 결제하기</a>
 										</div>
-										<a href="#">Checkout with Mutilple Adresses</a>
 									</div>
 								</div>
 							</div>
@@ -142,6 +244,11 @@
 			</div>
 		</div>
 		<!--shopping cart area end -->
+		<form name="orderCall" id="orderCall" method="post" action="order">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}"> <input type="hidden"
+				name="userNo" th:value="${session.user.userNo}">
+		</form>
 
 	</article>
 </body>

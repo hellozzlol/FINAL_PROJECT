@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_admin}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<title>회원 관리 - 판매자 회원</title>
+<style>
+.uList {
+
+	margin-top: 100px;
+}
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+
+		<br><br>
+		<h5 class="fw-bold py-3 mb-4">
+			<span class="text-muted ">회원 관리 </span>
+		</h5>
+		<br><br>
+		
+		<!-- 검색 -->
+		<form class="row gy-2 gx-3 align-items-center" id="btn">
+		<div class="col-auto">
+			<select id="key" name="key" class="form-select">
+				<option value="1">아이디</option>
+				<option value="2">이름</option>
+				<option value="3">상호</option>
+			</select>
+		</div>
+	
+		<div class="col-auto">
+			<input class="form-control" type="text" id="val" name="val">
+		</div>
+		<div class="col-auto">
+			<button type="button" class="btn btn-primary" id="searchBtn"
+				onclick="searchDo()">검색</button>
+		</div>
+		</form>
+		<br>
+		
+		<!-- 판매자 회원 테이블 -->
+		<div class="card">
+			<h5 class="card-header">판매자 회원</h5>
+			<div class="table-responsive text-nowrap">
+				<table class="table" id="sTable">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
+							<th>회원번호</th>
+							<th>아이디</th>
+							<th>이름</th>
+							<th>상호</th>
+							<th>상태</th>
+						</tr>
+					</thead>
+				<tbody class="table-border-bottom-0" id="body">
+ 						<tr th:each="s:${pageInfo.list}">
+							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
+							<td th:text="${s.sellerNo}"></td>
+							<td th:text="${s.id}"></td>
+							<td th:text="${s.name}"></td>
+							<td th:text="${s.company}"></td>
+							<td th:text="${s.state}"></td>
+						</tr> 
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<br>
+		<button type="button" class="btn btn-sm btn-primary" id="sUpdate">변경</button>
+		<br> <br>
+
+		<!-- 페이지네이션 -->
+		<nav aria-label="Page navigation example">
+			<ul class="pagination pagination-info  justify-content-center">
+				<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+					class="page-link">«</span></li>
+				<li class="page-item"
+					th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+					rel="prev">«</a></li>
+				<li
+					th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+					th:each="page:${pageInfo.navigatepageNums}"><span
+					class="page-link" th:if="${pageInfo.pageNum eq page}"
+					th:text="${page}"></span> <a class="page-link"
+					th:unless="${pageInfo.pageNum eq page}"
+					th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page}}</a></li>
+				<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+					rel="next">»</a></li>
+				<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+					class="page-link">»</span></li>
+			</ul>
+		</nav>
+
+		<script>
+			function gopage(p) {
+				location.href = '/manager/buserManage?pageNum=' + p;
+			}
+		</script> 
+		<!-- 페이지네이션 -->
+		
+		
+		<!-- 검색 Ajax -->
+		<script>
+		$("#searchBtn").on('click', searchDo)
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			function searchDo(){
+				let key = document.getElementById('key').value;
+				let val = document.getElementById('val').value;
+				
+					$.ajax({
+						url: "/sUserSearchAjax",
+						type: 'post',
+						beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+						data: {'key':key, 'val':val},
+						dataType: 'json',
+							success: function(response){
+							htmlView(response);	
+						},
+							error: function(){
+								console.log('error!!');
+							}
+					});
+					
+			function htmlView(data) { // 검색 결과 
+				 $("#body").remove();
+		         var tbody = $("<tbody id='body' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchDo("+ item.sellerNo +")")
+                    .append(
+                    		 $("<td />").text(item.ckbox),
+		                     $("<td />").text(item.sellerNo),
+		                     $("<td />").text(item.id),
+		                     $("<td />").text(item.name),
+		                     $("<td />").text(item.company),
+		                     $("<td />").text(item.state),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#sTable").append(tbody);
+			}			
+	};
+		</script>		
+
+		<!-- 체크박스 -->	
+		<script>
+		// 체크박스 전체 선택
+		function allChecked(target){
+			//전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			//전체 체크박스 제외한 모든 체크박스
+			if(is_checked){
+				//체크박스 전체 체크
+				chkAllChecked()
+			}else{
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
+		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked(){
+			//체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			//체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			//체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if(allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+				//같지 않으면 전체 체크박스 해제
+			}else{
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		//체크박스 전체 체크
+		function chkAllChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		//체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}	
+		</script>		
+		
+		
+		
+	</article>
+
+</body>
+</html>

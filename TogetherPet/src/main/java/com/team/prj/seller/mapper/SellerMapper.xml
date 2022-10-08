@@ -107,8 +107,7 @@
 		resultType="com.team.prj.admin.service.ProfitVO">
 		select no,
 		to_char(minus_dt, 'yyyy-mm-dd') minus_dt,
-		to_char(order_dt,
-		'yyyy-mm-dd') order_dt,
+		to_char(order_dt, 'yyyy-mm-dd') order_dt,
 		user_name,
 		seller_name,
 		category_id,
@@ -117,13 +116,18 @@
 		minus_price,
 		minus_yn
 		from profit
-		where
-		seller_no=#{svo.sellerNo}
-		<if test="start != null and end != null">
+		where UPPER(category_id)='S'
+		and seller_no=#{svo.sellerNo}
+		<if test="start != null and end != null and by != null">
+			<if test="by == 1">
 				and minus_dt
-					between to_date(#{start}, 'yyyy-mm-dd')
-					and
-					to_char(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
+			</if>
+			<if test="by == 2">
+				and order_dt
+			</if>
+			between to_date(#{start}, 'yyyy-mm-dd')
+			and
+			to_char(to_date(#{end}, 'yyyy-mm-dd'))
 		</if>
 		<choose>
 			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
@@ -135,34 +139,38 @@
 			</when>
 		</choose>
 	</select>
-	
+
 	<!-- 판매자회원 검색 / 1005 지혜 추가 -->
-	<select id="sUserSearch" resultType="com.team.prj.seller.service.SellerVO">
+	<select id="sUserSearch"
+		resultType="com.team.prj.seller.service.SellerVO">
 		select *
 		from seller
 		where
-		<choose>  
+		<choose>
 			<when test="key==1"> id like '%' || #{val}||'%'</when>
 			<when test="key==2"> name like '%' || #{val}||'%'</when>
 			<when test="key==3"> company like '%' || #{val}||'%'</when>
 		</choose>
 	</select>
-	
+
 	<!-- 고객문의 전체 조회 -->
-	<select id="qnaSelectList" resultType="com.team.prj.qna.service.QnaVO">
+	<select id="qnaSelectList"
+		resultType="com.team.prj.qna.service.QnaVO">
 		SELECT *
 		FROM qna
 		WHERE seller_no = #{sellerNo}
-		ORDER BY qna_no DESC
+		ORDER BY
+		qna_no DESC
 	</select>
-	
+
 	<!-- 고객문의 단건 조회 -->
-	<select id="qnaSelect" resultType="com.team.prj.qna.service.QnaVO">
+	<select id="qnaSelect"
+		resultType="com.team.prj.qna.service.QnaVO">
 		SELECT *
 		FROM qna
 		WHERE qna_no = #{qnaNo}
 	</select>
-	
+
 	<!-- 문의 검색 -->
 	<select id="qnaSearch"
 		resultType="com.team.prj.qna.service.QnaVO">
@@ -174,12 +182,13 @@
 		</choose>
 		ORDER BY qna_no DESC
 	</select>
-	
+
 	<!-- 문의 답변(update) -->
-	<update id="qnaAnswer" parameterType="com.team.prj.qna.service.QnaVO">
+	<update id="qnaAnswer"
+		parameterType="com.team.prj.qna.service.QnaVO">
 		UPDATE qna
 		SET answer = #{answer},
-			answer_date = sysdate
+		answer_date = sysdate
 		WHERE qna_no = #{qnaNo}
 	</update>
 </mapper>

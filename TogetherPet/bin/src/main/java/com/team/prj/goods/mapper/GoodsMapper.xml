@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.goods.mapper.GoodsMapper">
+	<!-- 전체 조회 -->
+	<select id="goodsSelectAll"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		select * from goods
+		where upload_state=1
+		order by
+		<choose>
+			<when test="key == 1"> 1 desc </when>
+			<when test="key == 2"> 10 desc</when>
+			<when test="key == 3"> 5 desc</when>
+			<when test="key == 4"> 5</when>
+		</choose>
+	</select>
+
+	<!-- 단건 조회 -->
+	<select id="goodsSelectOne"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		select * from goods where goods_no=#{goodsNo}
+	</select>
+
+	<!-- 그룹별 사진 불러오기 -->
+	<select id="goodsPhotoList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		select * from photo where group_no=#{groupNo} and
+		name='상품'
+	</select>
+
+	<!-- shop에서 리뷰갯수 -->
+	<select id="reviewCount"
+		resultType="com.team.prj.review.service.ReviewVO">
+		select board_no, count(*) rv_cnt from review where
+		category_id='S' group by board_no
+	</select>
+
+	<!-- goods 리뷰 리스트 호출 -->
+	<select id="reviewList"
+		resultType="com.team.prj.review.service.ReviewVO">
+		select * from review where board_no=#{goodsNo} and
+		category_id='S'
+	</select>
+
+	<!-- 상품 삭제 1003 선희 추가 -->
+	<delete id="deleteGoods">
+		delete
+		from goods
+		where goods_no = #{goodsNo}
+	</delete>
+
+	<!-- 상품 수정 1003 선희 추가 -->
+	<update id="updateGoods"
+		parameterType="com.team.prj.goods.service.GoodsVO">
+		UPDATE GOODS
+		<set>
+			<if test="category != null">category = #{category},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="amount != null">amount = #{amount},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="dc != null">dc = #{dc},</if>
+			<if test="info != null">info = #{info},</if>
+			<if test="sellState != null">sell_state = #{sellState},</if>
+		</set>
+		WHERE seller_no = #{sellerNo}
+		AND goods_no = #{goodsNo}
+	</update>
+
+	<!-- 배송 상품 조회(상태 1,2,3,4) 1003 선희 추가 -->
+	<select id="deliveryList"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE delivery_state IN ('1','2','3','4')
+		AND seller_no = #{sellerNo}
+		ORDER BY order_no DESC
+	</select>
+
+	<!-- 반품/교환 상품 조회 1004 선희 추가 -->
+	<select id="sellerCancelList"
+		resultType="com.team.prj.orders.service.OrderVO"
+		parameterType="com.team.prj.state.service.StateVO">
+		SELECT s.order_no, o.goods_no, o.goods_name, o.amount, o.name, o.call, o.address, s.state
+		FROM orders o, state s
+		WHERE state IN ('1','2','3','4')
+		AND o.order_no = s.order_no
+		AND o.seller_no = #{sellerNo}
+		ORDER BY o.order_no DESC
+	</select>
+
+	<!-- 판매완료(구매확정) 상품 조회(상태 7) 1004 선희 추가 -->
+	<select id="sellerDoneList"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
+		FROM orders
+		WHERE seller_no = #{sellerNo}
+		AND delivery_state = '7'
+		ORDER BY order_no DESC
+	</select>
+
+	<!-- 배송 상태 업데이트(상품준비중) 1003 선희 추가 -->
+	<update id="deliveryReadyUpdate"
+		parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '2'
+		WHERE
+		delivery_state = '1'
+		AND order_no = #{orderNo}
+	</update>
+
+	<!-- 배송 상태 업데이트(배송지시) 1003 선희 추가 -->
+	<update id="deliveryUpdate"
+		parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '3'
+		WHERE delivery_state = '2'
+		AND order_no = #{orderNo}
+	</update>
+	
+	<!-- 배송 상태 업데이트(배송완료) 1005 선희 추가 -->
+	<update id="deliveryDone"
+		parameterType="com.team.prj.orders.service.OrderVO">
+		UPDATE orders
+		SET delivery_state = '4'
+		WHERE delivery_state = '3'
+		AND order_no = #{orderNo}
+	</update>
+	
+	<!-- 반품 상태 업데이트(접수) 1004 선희 추가 -->
+	<update id="cancelUpdate" parameterType="com.team.prj.state.service.StateVO">
+		UPDATE state
+		SET state = '2'
+		WHERE state = '1'
+		AND order_no = #{orderNo}
+	</update>
+	
+	<!-- 교환 상태 업데이트(접수) 1004 선희 추가 -->
+	<update id="changeUpdate" parameterType="com.team.prj.state.service.StateVO">
+		UPDATE state
+		SET state = '4'
+		WHERE state = '3'
+		AND order_no = #{orderNo}
+	</update>
+
+	<!-- 1004 추가 / 지혜) --> <!-- 관리자 - 상품 검토 -->
+	<select id="goodsList"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		select  goods_no, category, name, upload_date, 
+				case when upload_state = '0' then '승인대기'
+					 when upload_state = '1' then '승인완료'
+					 when upload_state = '2' then '반려'
+				else ' '
+				end as upload_state
+		from goods
+		where upload_state != 1
+		order by
+		<choose>
+			<when test="key == 1"> 1 </when>
+		</choose>
+	</select>
+
+	<!-- 등록한 상품 검색 -->
+	<select id="goodsSearch"
+		resultType="com.team.prj.goods.service.GoodsVO">
+		SELECT *
+		FROM goods
+		WHERE
+		<choose>
+			<when test="key == 1">name LIKE '%' || #{val} || '%'</when>
+		</choose>
+	</select>
+
+	<!-- 오더 상품 검색 -->
+	<select id="orderSearch"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE delivery_state IN ('1','2','3','4')
+		AND
+		<choose>
+			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY order_no DESC
+	</select>
+	
+	<!-- 반품교환 상품 검색 -->
+	<select id="stateSearch"
+		resultType="com.team.prj.orders.service.OrderVO"
+		parameterType="com.team.prj.state.service.StateVO">
+		SELECT s.order_no, o.goods_no, o.goods_name, o.amount, o.name, o.call, o.address, s.state
+		FROM orders o, state s
+		WHERE state IN ('1','2','3','4')
+		AND o.order_no = s.order_no
+		AND
+		<choose>
+			<when test="key == 1">o.goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY o.order_no DESC
+	</select>
+	
+	<!-- 판매완료 상품 검색 -->
+	<select id="goodsSellSearch"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT order_no, goods_no, goods_name, amount, name, call, address, delivery_state
+		FROM orders
+		WHERE delivery_state = '7'
+		AND 
+		<choose>
+			<when test="key == 1">goods_name LIKE '%' || #{val} || '%'</when>
+		</choose>
+		ORDER BY order_no DESC
+	</select>
+	
+</mapper>
