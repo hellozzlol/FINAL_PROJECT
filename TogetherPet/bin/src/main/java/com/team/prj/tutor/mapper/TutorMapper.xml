@@ -1,3 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team.prj.tutor.mapper.TutorMapper"></mapper>
+<mapper namespace="com.team.prj.tutor.mapper.TutorMapper">
+	
+	<!-- 0930 order by 추가 / 지혜 -->
+	<select id="tutorSelectList"
+		resultType="com.team.prj.tutor.service.TutorVO">
+		select * 
+		from tutor
+		order by tutor_no desc
+	</select>
+
+	<!-- 튜터 마이페이지 단건조회 -->
+	<select id="tutorMyPage"
+		resultType="com.team.prj.tutor.service.TutorVO"
+		parameterType="com.team.prj.tutor.service.TutorVO">
+		select *
+		from tutor
+		where tutor_no = #{tutorNo}
+	</select>
+
+	<!-- 튜터 등록 0929 JH 주석처리
+	<insert id="tutorInsert">
+		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(tutor_no) IS NULL 
+			    THEN 1
+			    ELSE max(tutor_no) + 1 
+			    END AS no
+			FROM tutor
+		</selectKey>
+		
+		INSERT INTO tutor
+		VALUES(#{userNo}
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{company}
+				,#{email}
+				,#{call}
+				,#{address}
+				,'TUTOR'
+				,1
+				,SYSDATE)
+	</insert> -->
+
+	<!-- 마이페이지에서 튜터정보 수정 -->
+	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
+
+		update tutor
+		<set>
+			<if test="id != null">id = #{id},</if>
+			<if test="password != null">password = #{password},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="introduce != null">introduce = #{introduce},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="call != null">call = #{call},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="dt != null">dt = #{dt},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="da != null">da = #{da},</if>
+			<if test="snsInsta != null">sns_insta = #{snsInsta},</if>
+			<if test="snsBlog != null">sns_blog = #{snsBlog},</if>
+			<if test="snsYoutube != null">sns_youtube = #{snsYoutube},</if>
+			<if test="attechDir != null">attech_dir = #{attechDir},</if>
+			<if test="attech != null">attech = #{attech}</if>		
+		</set>
+		where tutor_no = #{tutorNo}
+	</update>
+	
+	
+	<delete id="tutorDelete">
+		delete from tutor
+		where tutor_no = #{tutorNo}
+	</delete>
+	
+	
+
+	<!-- 튜터회원 검색 / 1005 지혜 추가 -->
+	<select id="tutorSearch" resultType="com.team.prj.tutor.service.TutorVO">
+		select *
+		from tutor
+		where
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> company like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+
+	<!-- 튜터가 생성한 클래스 리스트 조회 -->
+	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
+		select *
+		from class
+		where tutor_no = #{tutorNo}
+		order by class_no
+	</select>
+	
+	<!-- 특정 클래스의 모든 날짜옵션 리스트-->
+	<select id="classOptionList"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount
+		from class_option o, class c
+		where o.class_no = ${classNo}
+		and o.class_no = c.class_no
+		order by o.start_dt
+	</select>
+	
+	
+	<!-- 특정 클래스의 한 옵션을 예약한 예약자 리스트-->
+	<select id="optionReserv"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
+				R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
+				R.CLASS_NAME 
+		FROM CLASS_OPTION O, CLASS_RESERVE R 
+		WHERE R.CLASS_OPTION_NO = ${classOptionNo} 
+		AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO 
+		ORDER BY RESERVE_NO
+	</select>
+
+	
+	<!-- 정산관리, 정산내역 전체조회 -->
+	<select id="tutorProfitList" resultType="com.team.prj.admin.service.ProfitVO">
+		select no,
+		to_char(minus_dt, 'yyyy-mm-dd') minus_dt,
+		to_char(order_dt,
+		'yyyy-mm-dd') order_dt,
+		user_name,
+		seller_name,
+		category_id,
+		name,
+		total_price,
+		minus_price,
+		minus_yn
+		from profit
+		where
+		seller_no=#{tvo.tutorNo}
+		<choose>
+			<when test="key == 1"> order by minus_yn desc, 1 desc </when>
+			<when test="key == 2"> and minus_yn = 1
+				order by 1 desc
+			</when>
+			<when test="key == 3"> and minus_yn = 0
+				order by 1 desc
+			</when>
+		</choose>
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.like.mapper.LikesMapper">
+	<select id="likeSelectList"
+		resultType="com.team.prj.like.service.LikesVO">
+		select * from likes
+	</select>
+
+	<select id="likeSelect"
+		resultType="com.team.prj.like.service.LikesVO"
+		parameterType="com.team.prj.like.service.LikesVO">
+		select * from likes
+		where user_no = #{userNo}
+	</select>
+	
+	<insert id="likeInsert" parameterType="com.team.prj.like.service.LikesVO">
+		<selectKey keyProperty="userNo" order="BEFORE" resultType="int">
+			SELECT 
+			    CASE WHEN max(user_no) IS NULL 
+			    THEN 1
+			    ELSE max(user_no) + 1 
+			    END AS no
+			FROM likes
+		</selectKey>
+		
+		INSERT INTO likes
+		VALUES(#{userNo}
+			  ,#{boardNo})
+	</insert>
+	
+	<update id="likeUpdate" parameterType="com.team.prj.like.service.LikesVO">
+		update likes
+		set board_no = #{boardNo}
+		where user_no = #{userNo}
+	</update>
+	
+	<delete id="likeDelete">
+		delete from likes
+		where board_no = #{boardNo}
+	</delete>
+	
+	
+	
+	<!-- 좋아요 눌럿는지 안눌럿는지 -->
+	<select id="findLike" resultType="int">
+		select count(*) from likes where board_no = #{boardNo} and user_no = #{userNo}
+	</select>
+	
+</mapper>

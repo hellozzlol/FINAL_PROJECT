@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_mypage}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>Together Pet</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>교환/반품 신청내역</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>교환/반품 신청내역</h3>
+				</div>
+				<br>
+				
+				<div id="categorySel">
+					<button data-filter="ALL" class="btn rounded-pill btn-secondary active">
+						<strong>전체</strong>
+					</button>
+					<button data-filter="5" class="btn rounded-pill btn-secondary">
+						<strong>반품</strong>
+					</button>
+					<button data-filter="6" class="btn rounded-pill btn-secondary">
+						<strong>교환</strong>
+					</button>
+				</div>
+				<br>
+
+				<!-- Hoverable Table rows -->
+				<div class="card">
+					<div class="table-responsive text-nowrap">
+						<table class="table table-hover">
+							<thead>
+								<tr style="text-align: center;">
+									<th>신청일자</th>
+									<th>주문번호</th>
+									<th>상품이미지</th>
+									<th>상품명</th>
+									<th>가격</th>
+									<th>수량</th>
+									<th>상태</th>
+								</tr>
+							</thead>
+							<tbody id="all" class="table-border-bottom-0" style="text-align: center; vertical-align: middle;">
+								<tr th:each="list : ${pageInfo.list}" class="category"
+									th:data-category="${list.deliveryState}" style="">
+									<td>
+										<strong>[[${#dates.format(list.cancelDt, 'yyyy-MM-dd')}]]</strong>
+										<strong>[[${#dates.format(list.changeDt, 'yyyy-MM-dd')}]]</strong>
+									</td>
+									<td><strong>[[${list.orderNo}]]</strong></td>
+									<td><img th:src="${list.thumb}" style="height: 100px;"></td>
+									<td>[[${list.name}]]</td>
+									<td>[[${#numbers.formatInteger(list.totalPrice,3,'COMMA')}]]원</td>
+									<td>[[${list.amount}]]</td>
+									<td>
+										<div th:switch="${list.deliveryState}">
+											<p th:case="5">반품요청</p>
+											<p th:case="6">교환요청</p>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div><br>
+			<!-- / Content -->
+
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 -->
+
+			<div class="content-backdrop fade"></div>
+		</div>
+		<!-- Content wrapper -->
+
+
+		<!--shop wrapper end-->
+	<script>
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+		//페이지 이동
+		function gopage(p) {
+			location.href = '/usersStateList?pageNum=' + p;
+		}
+		
+		// 필터링
+		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+		$("#categorySel").on("click", "button", function() {
+			let filter = $(this).data("filter");
+			let categories = $(".category")
+			
+			for(category of categories){ 
+				category.style="";
+				if (filter == "ALL"){
+					category.style="";
+				} else if (category.getAttribute("data-category") != filter){
+					category.style.display="none";
+				}
+			}
+		})
+		
+	</script>
+		
+	</div>
+	<!--shop  area end-->
+	
+</body>
+</html>

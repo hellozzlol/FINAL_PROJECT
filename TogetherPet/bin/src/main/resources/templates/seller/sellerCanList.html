@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<title>Together Pet</title>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+<!-- datepicker 한국어로 -->
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>취소/반품</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<!-- 검색 -->
+				<form id="btn">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
+								<div class="col-md-10">
+									<input type="hidden" id="key" name="key" value="1">
+									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
+								</div>
+							</div>
+							<div class="search-box">
+								<div class="mt-2" style="text-align: center;">
+									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
+									검색하기
+									</button>
+									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+
+				<!-- Hoverable Table rows -->
+				<div class="card">
+					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
+						취소/반품 상품 목록 (총 [[${#lists.size(pageInfo.list)}]]개)
+					</h4>
+
+					<div class="table-responsive text-nowrap">
+						<table id="all" class="table table-hover" style="text-align: center; vertical-align: middle;">
+							<thead>
+								<tr>
+									<th>주문번호</th>
+									<th>상품번호</th>
+									<th>상품명</th>
+									<th>수량</th>
+									<th>수취인</th>
+									<th>연락처</th>
+									<th>배송지</th>
+									<th>신청상태</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="btnList" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}">
+									<td>[[${list.orderNo}]]</td>
+									<td>[[${list.goodsNo}]]</td>
+									<td>[[${list.goodsName}]]</td>
+									<td>[[${list.amount}]]</td>
+									<td>[[${list.name}]]</td>
+									<td>[[${list.call}]]</td>
+									<td>[[${list.address}]]</td>
+									<td>
+										<div th:switch="${list.state}">
+											<p th:case="1">반품요청</p>
+											<p th:case="2">반품요청접수</p>
+											<p th:case="3">교환요청</p>
+											<p th:case="4">교환요청접수</p>
+										</div>
+									</td>
+									<td>
+										<input th:if="${list.state == '1'}" type="button" id="cancelRequest" value="반품요청접수" class="btn-primary3">
+										<input th:if="${list.state == '3'}" type="button" id="changeRequest" value="교환요청접수" class="btn-primary3">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div><br>
+			<!-- / Content -->
+
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 -->
+		</div>
+		<!-- Content wrapper -->
+		
+		<!-- 상태변경(반품접수) -->
+		<form name="cancelCall" id="cancelCall" method="post" action="cancelUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="cancelSubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(반품접수) -->
+		
+		<!-- 상태변경(교환접수) -->
+		<form name="changeCall" id="changeCall" method="post" action="changeUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="changeSubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(교환접수) -->
+		
+<style>
+	.search-box .form-control {
+		width: 48%;
+		display: inline;
+	}
+	#search {
+		font-weight: bold;
+		font-size: 17px;
+	}
+</style>
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/sellerCanList?pageNum=' + p;
+	}
+	
+	// 상태 업데이트(반품)
+	$("#btnList").on("click", "#cancelRequest", function () {
+		if (confirm('반품요청을 접수 하시겠습니까?')) {
+			let orderNo = $(this).closest('tr').find('td').eq(0).html();
+			$('#cancelSubmit').val(orderNo);
+			$("#cancelCall").submit();
+			
+		}
+	})
+	
+	// 상태 업데이트(교환)
+	$("#btnList").on("click", "#changeRequest", function () {
+			// console.log($(this).closest('tr').find('td').eq(0).html());
+		if (confirm('교환요청을 접수 하시겠습니까?')) {
+			let orderNo = $(this).closest('tr').find('td').eq(0).html();
+			$('#changeSubmit').val(orderNo);
+			$("#changeCall").submit();
+		}
+	})
+	
+	// 검색
+	$("#searchBtn").on("click", searchCall) 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
+			
+			$.ajax({
+				url: "stateAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val},
+				dataType: "json",
+						success:function(response) {
+						console.log(response);
+						htmlView(response);
+					},
+					error:function() {
+						alert("오류발생");
+					}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.orderNo + ")")
+						.append($("<td />").text(item.orderNo),
+								$("<td />").text(item.goodsNo),
+								$("<td />").text(item.goodsName),
+								$("<td />").text(item.amount),
+								$("<td />").text(item.name),
+								$("<td />").text(item.call),
+								$("<td />").text(item.address),
+								$("<td />").text(item.state));
+						tbody.append(row);
+			});
+			$("#all").append(tbody);
+			}	
+		}
+</script>
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

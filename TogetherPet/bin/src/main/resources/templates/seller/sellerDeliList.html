@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>Together Pet</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+<!-- datepicker 한국어로 -->
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>상품 배송관리</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+				
+				<div class="col-lg-12 mb-4 order-0" id="categorySel">
+					<div class="row">
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="1"> <img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA1RJREFUaEPtmI2RTUEQhc9GgAjYCBABIkAEiAARIAJEgAgQwRIBIkAEiID61LSa12/uTPe99731qt5UbW3t3vnp0326+8yc6MDHyYHbryOA847gWhG4JumtpIuSXkh6KemnA8e3h5IelW93JX1e6oC1AHySBAgb3yQ9lfSm/ONe+ftKNQfjr/8PAPDo8wlDPpT/35z4/kDS6yUglkYAWnwt1JljBzQ7bdAtvFcGAMZedTvfl8TPkkEEfBS+REFFAZCYJOA+B4UAenZHBACe/zHaaEffL40iEQFAAp7tyMDRtrckWSFozt0lAL/375G1je9HADglQ6FfpaIQ9ncTFetGIhKLI0AC06QipfJZkRFeQnh7e43Pz6W8Pu4lci8HKJvIAUCMRrajZkDgEOabLNmwpQUAvYIwq7VND8DHQrMRSP8dvXQ5sQjthABk3b/RAuCF2egMz1Mi9qSAwgl4kJwgSjW9MlEwG7YEYAtA1jN+D3pGS7y9l3Sn8kamONgyJMYGM1oA4D0ejA6/B16+EF2cnEehwL4uhaAAoYryE01fX0zwLPTg95pAvhfvb1S5qSpE2XwV9M6WVxrrcAqh5wcaZXqBbdesdL0ySuJFDsIjJHLmekh0aHTRCE1Wuh6AqWRsBQYQlLiu8HILiQYVLzLYFydtjTUoVG9qEoJoRC4lmXtGmEJLr4lTEQIc+VJTLRMFyjsFY5jE2TIaoYDN4XAuKfXIyOxQGeX2FdE/ZoSnIR72d2eb20rGDICddGKSt5bO9rhFpbFeguFQCM7XFKCkoruiI9SJ4SUydsqL/jCMB8Sckal0GA/goZgzQ2hmeCxSq7NymjOizZJLEp29+QA2uhMbHXgaHA2SnyQbDVOrwyeTcgewt9TmviMALMqoRviNp6AVvK/H7bIXno8WicVXyiyA2uDjq0SRD+f2LjTKhcj3VSh08E+LeCojuiKejcxZ7XHXDrNLSX04FSVSYnsG81ziazySYfS+9HfPSBntHQ4oOmOk2bX2oUnxjBMytrXBUgCjjmq9YOpmN6eDb+BYAwAbegXKBZzObNSAavxdPxRsCbNIYvg5awEwAQgdSHivOjkXuiELTBogzDL36NlSYo5j9rZmrQjszeBdUegIYK4H/gCvh68xe1Nn+AAAAABJRU5ErkJggg==" />
+										</a>
+										<h4 class="card-title">결제완료</h4>
+										<p class="text-success fw-semibold" id="pDone"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="2">
+											<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA3xJREFUaEPtmY+RjVEMxc9WgApQATqgAlSAClABKkAFqGCpABWgAlSACpjfzL07ednc/xezM5uZNzs77/uSnOQkNzfvSGdcjs64/zoH8L8zuDMD1yXdlsTfK+mvxfdZ0jdJHyR9lMT/y7IKAEcfSrqTnB5xCDBvJb1MwEbePXl2FsBFSU8kPZqyevqlF5KeSfo5qm8GANF+JQkQOwXnH6SsdOsdBfC8EfV3yQHogUOZ59QFgKEcAaBWSkI2Hvci6AWAcaKOcS+/Eij43EsB9KELZy8EOl8nEE19vQCOC87DW5xoGipEFCDUEfXkBRBQqio9AHCQTmOFqN/c1QpTy6W9+mzQoaqNogWANBN9K1+S87NRL0WU+oCG19wDd2uFXQNAer+6bkPkMbTb+ewzuil8mwlsXS3ZrAGAg/dcNG4M0Oa3e7eV7fw4HeuTe7dIpZJSIkH0rVCwT1tFZb6fBYAK7PjCJgu05wMpAfCFO0OdFQDQF2ctlcIAlgAQfbKQhXYGpUZkBQB27qezJ9sEEFloZiDi4KWJwl0FQBZ+tGowyoDnH+NBdAK3srEKAP20VTt2MGJA7xOJAPiXZuiDgR0AOMSYv7KcCmYEgBYGjbLcSpeQVsT99zsAcNq/N4o5I2jl1Qx4wyO93+reASCqx4OgRxnYYTii0F+h4r8EAKgZENWA9gCYpZDv45leIyCmKESh2IlwtohxeBWEL2ImYdtgwsXWrjaaI74CYqqN7jrIbEcqgQgHNPPi1EG2a5Tw54IH0aqF6VECwwxOl40HLWO9h1wG0aPPA/4eLc96x+nqrajX+/QcU+6pud7piG6DQ+P0jgvNIK6Dx5cvNGhbvVLOAthypcR4dCvaSaUIIJlnmLRry+ptsHXRjtYqHHSsOlo8Hs0AzrPCOTioki3aaSgtALwULbbIBCf0lh1/cpqx2S+MlxdbGXVUD3xHsWFkdk+Ew2z9om3HmzSKVDPZk4FcD2TC74n4Duc58rkt9QLBca6K6IzW9DiPzqa+XgA5ChGdbITgKh/qg+Kz63VWJPCbAa12x27SxhocBcC7GIdS0Vp8tHDt8wDm9C0WbKR8BkCmFLz1W+tZAEQdfU3KeAOzALIeWh9cJSt2duoBwmxDJvlMt+RVANbRzG84DjC/Jucykn9m5beALS14J4CeqG9/5hzA9pAOKjzzGfgDGdjKMTxl4A4AAAAASUVORK5CYII=" />
+										</a>
+										<h4 class="card-title">상품준비중</h4>
+										<p class="text-success fw-semibold" id="gReady"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="3">
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAB1UlEQVRoge3Xu24UQRAF0ANsBgEJSPAJGIiBBFkiBJmEHyBA4ISUDCMnpESIAPFIeXwAIoAEiw+ADGQJGwKcEGKQcbC9pne8w85jPes2faXSVE9P3+mrqqnqISMjIyMjI3H8maIttN38/rYE08aeELCvY7szaQFJY88IWNCsirTF7QbvfD1KQEo4j6ODQYoCepib5gbidK3TyG5E614NbqYUgef4HfxZIY1SEvAdb4O/lUZFAV1UnjZ4FvlXSCsC8EIhjVITsIY3we9hriigyllm2hhKo9QiAC8jfzZFAWuR3+sVJuMqsxvSZSxSjMAQ/isBp/EUK/q1eAVPcGpCe5kIf1nHnce60Z15HddrvGPUYa4uf+nJYNTEZWyUkA9sA5caCmjCX1nAASxH997hDA7iLJaiuc/h+ToCFhvyb+2zWCpjRbdwDDfDeBUz+BE9cxgfcDyM7+HbGAEXgglrZxrw3y0j/1cY75eseTBmXVVrxF+nCpU1tkk1vEb8xcliaI7gavC/4oTtIf6on2rw0HCrH4ed5t/2ES/hHA6F6/to7pNqH3GX/Oj/ulUpcxebkHfAj34jKWs0P3GtDXkH/OAkHuMLfoXrI3/L4G7nz8jIyNgBbAKSMCEVS1fkKAAAAABJRU5ErkJggg==">
+										</a>
+										<h4 class="card-title">배송지시</h4>
+										<p class="text-success fw-semibold" id="dCall"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="4">
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAC6klEQVRoge3XP4xVRRQG8B/LrpUJmvBnY7GuNhYgBRuziIXRxkjWLBZUhBA0axCMDQKFhUup0UQrY2FUSk0InVGhsHo+VKChsCAxWQ2NGkgggV2DFjM3O+957333vft2N4v3Syb3zMydM9+ZOWfODA0aNGjQoME6xz9rWObrkh+pq2Ctcd8ZsGEVyumVNGDdoTGgBE9hssc/7+j/5DqfKlgpA6bwDb7H40PW/Sy2ZpWVMGAaF/AwJnB2yPOMYjZtSLenCJOCS/TCNG4k+m7EthTzBktkryfjvk07ehkwgWuRzO6SCabwVw/yDG7AFizFcUsSNyozYARXKpCqsvJ1DSC4ZjZ2LiNYhnt4RVhZ2CQEZ7oTU/g69sFNvIB2n+Sq4MtE3p8JVWJgF/7UucK7VXebFHV2YLMcN6piAPluUtVthmUAfJeMn+vneGvjeZ3utBpu042vEnl/v+fzJewVCGdYTfKEvJLhuUESTFsgnLnQapKHPxJ5dHRAJZk7weV6fOphUANYY+IZ/hfX6QfwJi7idixtvIGxIXLZiTP4DX/H7xd4stfAsjwwjp+7/knLT9jWJ9G8PHAUiwVzLOJIGeciA8aEVe/1wPhBf7HUbcA+4cpSNsc9vJRnQJkLHbJ8hb6Lt/BILCdiGyH7HuzDgBQb8aHw2IcWnsaD2CMsjtj/Ufy/A90rdyqRU1Jv44Ok/n5U+l6sH5dcb3vgmUR+GY9G+Xe8aDlJtmL9qrBoj0UO17sVVnmHjucQGa84tmr5uMDgT8rGVT1GN+S0/Wc7ayJvjrJ2BBd6t6BvH56I8gHBbVIcSORfcK4HwTxsEd4bhCA9pfOe9RBmkvqnOq8SpXjV8lbdEQI3C+KTsS3rPzwAecIu/proaQnBmwVxO+m7ps9dH+1SUFRa6l1JZlU7RmeKFJRhG34sUXxR9dOnDEcUJ7K7eK2O8jEcE87kW7G0hOw5zKvEDnyOBeG5uIDPsH2IczRo0KDBkPEvTUtSJ1uuGPIAAAAASUVORK5CYII=">
+										</a>
+										<h4 class="card-title">배송완료</h4>
+										<p class="text-success fw-semibold" id="dDone"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 검색 -->
+				<form id="btn">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
+								<div class="col-md-10">
+									<input type="hidden" id="key" name="key" value="1">
+									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
+								</div>
+							</div>
+							<div class="search-box">
+								<div class="mt-2" style="text-align: center;">
+									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
+									검색하기
+									</button>
+									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+
+				<!-- Hoverable Table rows -->
+				<div class="card">
+					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
+						상품 목록 (총 [[${#lists.size(pageInfo.list)}]]개)
+					</h4>
+
+					<div class="table-responsive text-nowrap">
+						<table id="all" class="table table-hover" style="text-align: center; vertical-align: middle;">
+							<thead>
+								<tr>
+									<th>주문번호</th>
+									<th>상품번호</th>
+									<th>운송장번호</th>
+									<th>상품명</th>
+									<th>수량</th>
+									<th>수취인</th>
+									<th>연락처</th>
+									<th>배송지</th>
+									<th>배송상태</th>
+									<th>주문일자</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="btnList" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}" class="category"
+									th:data-category="${list.deliveryState}" th:id="${list.orderNo}" style="">
+									<td>[[${list.orderNo}]]</td>
+									<td>[[${list.goodsNo}]]</td>
+									<td>[[${list.deliveryNo}]]</td>
+									<td>[[${list.goodsName}]]</td>
+									<td>[[${list.amount}]]</td>
+									<td>[[${list.name}]]</td>
+									<td>[[${list.call}]]</td>
+									<td>[[${list.address}]]</td>
+									<td>
+										<div th:switch="${list.deliveryState}" class="deliSt">
+											<p th:case="1">결제완료</p>
+											<p th:case="2">상품준비중</p>
+											<p th:case="3">배송지시</p>
+											<p th:case="4">배송완료</p>
+										</div>
+									</td>
+									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
+									<td>
+										<input th:if="${list.deliveryState == '1'}" type="button" id="goodsReady" value="발주확인처리" class="btn-primary3">
+										<input th:if="${list.deliveryState == '2'}" type="button" id="goodsDelivery" value="배송처리" class="btn-primary3">
+										<input th:if="${list.deliveryState == '3'}" type="button" id="goodsDeliveryDone" value="배송완료" class="btn-primary3">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div><br>
+			<!-- / Content -->
+
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 -->
+		</div>
+		<!-- Content wrapper -->
+		
+		<!-- 상태변경(상품준비중) -->
+		<form name="readyCall" id="readyCall" method="post" action="deliveryReadyUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="readySubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(상품준비중) -->
+		
+		<!-- 상태변경(배송지시) -->
+		<form name="deliveryCall" id="deliveryCall" method="post" action="deliveryUpdate">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="deliverySubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(배송지시) -->
+		
+		<!-- 상태변경(배송완료) -->
+		<form name="doneCall" id="doneCall" method="post" action="deliveryDone">
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}">
+			<input type="hidden" id="doneSubmit" name="orderNo">
+		</form>
+		<!-- 상태변경(배송완료) -->
+
+<style>
+.search-box .form-control {
+	width: 48%;
+	display: inline;
+}
+#search {
+	font-weight: bold;
+	font-size: 17px;
+}
+</style>
+
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/sellerDeliList?pageNum=' + p;
+	}
+	
+	// 필터링
+	// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+	$("#categorySel").on("click", "a", function() {
+		let filter = $(this).data("filter");
+		let categories = $(".category")
+		
+		for(category of categories){ 
+			category.style="";
+			if (filter == "1"){
+				category.style="";
+			} else if (category.getAttribute("data-category") != filter){
+				category.style.display="none";
+			}
+		}
+	})
+	
+	// 검색
+	$("#searchBtn").on("click", searchCall) 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
+			
+			$.ajax({
+				url: "orderAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val},
+				dataType: "json",
+						success:function(response) {
+						console.log(response);
+						htmlView(response);
+					},
+					error:function() {
+						alert("오류발생");
+					}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.orderNo + ")")
+						.append($("<td />").text(item.orderNo),
+								$("<td />").text(item.goodsNo),
+								$("<td />").text(item.deliveryNo),
+								$("<td />").text(item.goodsName),
+								$("<td />").text(item.amount),
+								$("<td />").text(item.name),
+								$("<td />").text(item.call),
+								$("<td />").text(item.address),
+								$("<td />").text(item.deliveryState),
+								$("<td />").text(item.dt),
+								$("<td />").append($("<button>").addClass("btn-primary3").html("발주확인처리")));
+						tbody.append(row);
+			});
+			$("#all").append(tbody);
+			}	
+		}
+		
+		// 배송 상태 업데이트(상품준비중)
+		$("#btnList").on("click", "#goodsReady", function () {
+			if (confirm('배송상태를 상품준비중으로 변경하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#readySubmit').val(orderNo);
+				$("#readyCall").submit();
+			}
+		})
+		
+		// 배송 상태 업데이트(배송지시)
+		$("#btnList").on("click", "#goodsDelivery", function () {
+			if (confirm('배송처리 하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#deliverySubmit').val(orderNo);
+				$("#deliveryCall").submit();
+			}
+		})
+		
+		// 배송 상태 업데이트(배송완료)
+		$("#btnList").on("click", "#goodsDeliveryDone", function () {
+			if (confirm('배송완료처리 하시겠습니까?')) {
+				let orderNo = Number($(this).closest('tr').attr('id'));
+				$('#doneSubmit').val(orderNo);
+				$("#doneCall").submit();
+			}
+		})
+		
+		// 배송상태
+		let deliSt = $('.deliSt');
+		let payDone = 0; // 결제완료 카운트
+		let goodsRd = 0; // 상품준비중 카운트
+		let deliCall = 0; // 배송지시 카운트
+		let deliDone = 0; // 배송완료 카운트
+		
+		for(st of deliSt){
+			let stat = st.children[0].innerHTML;
+			if (stat == "결제완료") {
+				payDone += 1;
+			} else if (stat == "상품준비중") {
+				goodsRd += 1;
+			} else if (stat == "배송지시") {
+				deliCall += 1;
+			} else if (stat == "배송완료") {
+				deliDone += 1;
+			} else {
+				alert("오류발생");
+			}
+		}
+		$('#pDone').html(payDone);
+		$('#gReady').html(goodsRd);
+		$('#dCall').html(deliCall);
+		$('#dDone').html(deliDone);
+</script>
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>
