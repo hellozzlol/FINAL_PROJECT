@@ -93,4 +93,5 @@ public class SellerServiceImpl implements SellerService {
 	public int qnaAnswer(QnaVO vo) {
 		return map.qnaAnswer(vo);
 	}
+
 }

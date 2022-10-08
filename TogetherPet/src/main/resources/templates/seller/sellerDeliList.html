@@ -151,6 +151,7 @@
 									<th>배송상태</th>
 									<th>주문일자</th>
 									<th></th>
+									<th id="goodsEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
 							</thead>
 							<tbody id="btnList" class="table-border-bottom-0">
@@ -253,7 +254,13 @@
 </style>
 
 <script>
-	//페이지 이동
+	// 내역 없을때
+	if($('#goodsEmpty').html()=='0'){
+		$("#btnList").html('');
+		$('#btnList').html("<td colspan=10 align=center><h3><br>주문내역이 없습니다.</h3></td>");
+	}
+	
+	// 페이지 이동
 	function gopage(p) {
 		location.href = '/sellerDeliList?pageNum=' + p;
 	}

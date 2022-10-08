@@ -23,7 +23,7 @@ public class AjaxCalendarController {
 	public List<CalendarVO> calendarSelectList(CalendarVO cvo, HttpSession session){
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		cvo.setUserNo(uvo.getUserNo());
-		return calendar.calendarSelectList();
+		return calendar.calendarSelectList(cvo);
 	}
 	
 	// 일정 등록
@@ -31,8 +31,8 @@ public class AjaxCalendarController {
 	public int calendarInsert(CalendarVO cvo, HttpSession session) {
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		cvo.setUserNo(uvo.getUserNo());
-		calendar.calendarInsert(cvo);
 		int calendarNo = cvo.getCalendarNo();
+		calendar.calendarInsert(cvo);
 		return calendarNo;
 	}
 	
@@ -41,8 +41,8 @@ public class AjaxCalendarController {
 	public int calendarDelete(CalendarVO cvo, HttpSession session) {
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		cvo.setUserNo(uvo.getUserNo());
-		System.out.println("==========");
-		System.out.println(cvo.getCalendarNo());
+//		System.out.println("==========");
+//		System.out.println(cvo.getCalendarNo());
 		int calendarNo = cvo.getCalendarNo();
 		calendar.calendarDelete(cvo);
 		return calendarNo;

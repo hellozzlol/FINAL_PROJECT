@@ -83,8 +83,10 @@
 					
 					<div class="mt-2" style="text-align: center;">
 						<!-- 답변이 없을때만 버튼 활성화 -->
-						<input th:if="${qna.answer == null}" type="button" value="답변등록" class="btn btn-primary me-2"
+						<input th:if="${qna.answer == null}" type="button" value="답변등록" class="btn btn-primary5 me-2"
 							th:onclick="|location.href='@{sellerQnaAnswer(qnaNo=${qna.qnaNo})}'|">
+						<input type="button" value="답변수정" class="btn btn-primary5 me-2"
+							th:onclick="|location.href='@{sellerQnaAnswerUp(qnaNo=${qna.qnaNo})}'|">
 						<a href="/sellerQnaSelectList" class="btn btn-primary2 me-2">뒤로가기</a>
 					</div>
 				</form>
@@ -106,6 +108,20 @@
 	th {
 		font-size: 15px;
 	}
+	.btn-primary5 {
+		color: #272727;
+		font-size: 16px;
+		line-height: 45px;
+		height: 45px;
+		padding: 0 20px;
+		background: #6a7964;
+		border-radius: 0;
+		position: relative;
+		z-index: 9;
+		color: #ffffff;
+		border: 0;
+		font-weight: 600;
+		}
 </style>
 <script>
 
