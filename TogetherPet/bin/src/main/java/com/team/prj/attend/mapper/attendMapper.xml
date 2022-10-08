@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.attend.mapper.attendMapper">
+
+
+<!-- 	<select id="attendSelect" 
+	parameterType="com.team.prj.attend.service.attendVO"
+	resultType="com.team.prj.attend.service.attendVO">
+		SELECT *
+		FROM ATTEND
+		WHERE ad_no = #{adNo}
+
+	</select> -->
+
+	<select id="attendSelectList" parameterType="int"
+	resultType="HashMap" >
+	    SELECT ad_no, nvl(end_dt, ' ') end_dt, state, start_dt
+		FROM ATTEND
+		WHERE ad_no = #{adNo}
+	</select>
+
+ 	<!-- 출근 시간 입력  -->
+	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
+		insert into attend
+		values (#{adNo}, startDt, endDt, 0)
+	</insert>
+	
+<!--	
+	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
+		<selectKey keyProperty="adNo" order="BEFORE" resultType="int">
+			select
+			case when max()
+		</selectKey>
+		insert into attend
+		values(#{adNo}, )
+	</insert>
+	
+	
+	<update id="workInCheck">
+		update attend 
+		set state = 
+		where ad_no = #{adNo}
+	</update>
+-->	
+
+	<insert id="insertWorkIn" parameterType="com.team.prj.attend.service.attendVO">
+		insert into attend
+		(AD_NO, STATE, START_DT, AT_NO)
+		values (#{adNo},#{state},#{startDt}, atd_seq.NEXTVAL)
+	</insert>
+	
+	<update id="updateWorkIn" parameterType="com.team.prj.attend.service.attendVO">
+		update attend
+		set end_dt = #{endDt}
+		where at_no = (select max(at_no) from attend)
+	</update>
+
+
+
+</mapper>

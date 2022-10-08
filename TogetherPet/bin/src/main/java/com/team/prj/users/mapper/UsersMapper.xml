@@ -1,49 +1,274 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
+
+	<!-- 0929 order by 추가 JH / 일반회원 리스트 -->
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
-		SELECT * FROM USERS 
+		SELECT * FROM USERS
+		ORDER BY user_no desc
 	</select>
 
+	<!-- 주문 내역 불러오기(배송상태 1,2,3,4,7 인것만 조회) -->
+	<select id="orderList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT o.order_no, g.thumb, g.name, o.total_price,
+				o.amount, o.pay, o.delivery_state, o.dt
+		FROM orders o, goods g
+		WHERE o.goods_no = g.goods_no
+		AND o.delivery_state IN ('1','2','3','4','7')
+        AND o.user_no = #{userNo}
+        ORDER BY order_no DESC
+	</select>
+
+	<!-- 장바구니 내역 조회 -->
+	<select id="cartList"
+		resultType="com.team.prj.cart.service.CartVO">
+		SELECT *
+		FROM goods g, cart c
+		WHERE g.goods_no = c.goods_no
+		AND c.user_no = #{userNo}
+	</select>
+
+	<!-- 수강 내역 조회 -->
+	<select id="classList"
+		parameterType="com.team.prj.tutor.service.TutorVO"
+		resultType="com.team.prj.classreserve.service.ClassReserveVO">
+		SELECT cr.class_name as className, t.name as name, cr.dt as dt,
+				c.address as address, cr.pay_yn as pay, u.user_no, c.class_no
+		FROM class_reserve cr, tutor t, users u, class c
+		WHERE cr.class_no = c.class_no
+		AND u.user_no = cr.user_no
+		AND cr.user_no = #{userNo}
+	</select>
+
+	<!-- 위시리스트 조회 -->
+	<select id="likeList"
+		parameterType="com.team.prj.scrap.service.ScrapVO"
+		resultType="com.team.prj.classes.service.ClassVO">
+		SELECT s.scrap_no, c.thumb as thumb, c.category, c.name, c.address, c.price, c.class_no
+		FROM scrap s, class c
+		WHERE s.category_id = c.category_id
+        AND s.board_no = c.class_no
+		AND s.user_no = #{userNo}
+	</select>
+	
+	<!-- 위시리스트 삭제 -->
+	<delete id="likeDelete">
+		DELETE
+		FROM scrap
+		WHERE scrap_no = #{scrapNo}
+	</delete>
+
+	<!-- 전체 스크랩 리스트 조회 -->
+	<select id="scrapList"
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT s.category_id, h.name, s.dt, s.scrap_no
+			FROM scrap s, hospital h
+			WHERE s.category_id = 'h'
+	        AND s.board_no = h.hospital_no
+			AND s.user_no = #{userNo}
+	UNION ALL 
+		SELECT s.category_id, a.name, s.dt, s.scrap_no
+			FROM scrap s, accomo a
+			WHERE s.category_id = 'a'
+	        AND s.board_no = a.accomo_no
+			AND s.user_no = #{userNo}
+	UNION ALL
+	    SELECT s.category_id, f.name, s.dt, s.scrap_no
+			FROM scrap s, funeral f
+			WHERE s.category_id = 'f'
+	        AND s.board_no = f.funeral_no
+			AND s.user_no = #{userNo}
+	UNION ALL
+	    SELECT s.category_id, b.title, s.dt, s.scrap_no
+			FROM scrap s, board b
+			WHERE s.category_id = 'b'
+	        AND s.board_no = b.board_no
+			AND s.user_no = #{userNo}
+	</select>
+	
+	<!-- 스크랩 삭제 -->
+	<delete id="usersScrapDelete">
+		DELETE
+		FROM scrap
+		WHERE scrap_no = #{scrapNo}
+		AND user_no = #{userNo}
+	</delete>
+	
+	<!-- 병원 스크랩 조회 -->
+	<select id="hospitalScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT s.category_id, h.name, s.dt, s.scrap_no
+		FROM scrap s, hospital h
+		WHERE s.category_id = 'h'
+        AND s.board_no = h.hospital_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
+	</select>
+	
+	<!-- 장례 스크랩 조회 -->
+	<select id="funeralScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT s.category_id, f.name, s.dt, s.scrap_no
+		FROM scrap s, funeral f
+		WHERE s.category_id = 'f'
+        AND s.board_no = f.funeral_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
+	</select>
+	
+	<!-- 숙박 스크랩 조회 -->
+	<select id="accomoScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT s.category_id, a.name, s.dt, s.scrap_no
+		FROM scrap s, accomo a
+		WHERE s.category_id = 'a'
+        AND s.board_no = a.accomo_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
+	</select>
+	
+	<!-- 커뮤니티 스크랩 조회 -->
+	<select id="communityScrap" 
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		SELECT s.category_id, b.title, s.dt, s.scrap_no
+		FROM scrap s, board b
+		WHERE s.category_id = 'b'
+        AND s.board_no = b.board_no
+		AND s.user_no = #{userNo}
+		ORDER BY s.board_no DESC
+	</select>
+
+	<!-- 작성 글 조회 -->
+	<select id="boardList"
+		resultType="com.team.prj.board.service.BoardVO">
+		SELECT category, title, dt,
+				likes, hit, board_no
+		FROM board
+		WHERE user_no = #{userNo}
+		ORDER BY
+		board_no DESC
+	</select>
+	
+	<!-- 작성 글 삭제 -->
+	<delete id="usersBoardDelete">
+		DELETE
+		FROM board
+		WHERE board_no = #{boardNo}
+		AND user_no = #{userNo}
+	</delete>
+
+	<!-- 작성 댓글 조회 -->
+	<select id="commentList"
+		resultType="com.team.prj.comment.service.CommentVO">
+		SELECT *
+		FROM comments
+		WHERE user_no = #{userNo}
+		ORDER BY comment_no DESC
+	</select>
+	
+	<!-- 작성 댓글 삭제 -->
+	<delete id="usersCommentDelete">
+		DELETE
+		FROM comments
+		WHERE comment_no = #{commentNo}
+		AND user_no = #{userNo}
+	</delete>
+
+	<!-- 사진 불러오기 -->
+	<select id="photoList"
+		parameterType="com.team.prj.goods.service.GoodsVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		SELECT *
+		FROM photo
+		WHERE group_no = #{groupNo}
+		AND name = '리스트'
+	</select>
+
+	<!-- 회원 조회 -->
 	<select id="usersSelect"
 		parameterType="com.team.prj.users.service.UsersVO"
 		resultType="com.team.prj.users.service.UsersVO">
-		SELECT * FROM USERS WHERE user_no = #{userNo}
+		SELECT *
+		FROM USERS
+		WHERE user_no = #{userNo}
 	</select>
 
+	<!-- 회원 등록 -->
 	<insert id="usersInsert"
 		parameterType="com.team.prj.users.service.UsersVO">
-		<selectKey keyProperty="userNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(user_no) IS NULL 
-			    THEN 1
-			    ELSE max(user_no) + 1 
-			    END AS no
+		<selectKey keyProperty="userNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(user_no) IS NULL
+			THEN 1
+			ELSE
+			max(user_no) + 1
+			END AS no
 			FROM users
 		</selectKey>
-		
+
 		INSERT INTO USERS
-		VALUES(#{userNo}, #{id}, #{password}, #{name},
-			   #{nickname}, #{email}, #{call}, #{address},
-			   'USER', 3000, 1, SYSDATE)
+		VALUES(#{userNo}
+		,#{id}
+		,#{password}
+		,#{name}
+		,#{nickname}
+		,#{email}
+		,#{call}
+		,#{address}
+		,'USER'
+		,3000
+		,1
+		,SYSDATE
+		,'1'
+		,#{postcode}
+		,#{da}
+		,#{attach}
+		,#{attachDir})
 	</insert>
 
+	<!-- 회원 수정 -->
 	<update id="usersUpdate"
 		parameterType="com.team.prj.users.service.UsersVO">
 		UPDATE USERS
-		set nickname = #{nickname, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR},
-			call = #{call, jdbcType=VARCHAR}, address = #{address, jdbcType=VARCHAR}
-		WHERE user_no = #{userNo}
-		<!-- <set>
+		<set>
 			<if test="nickname != null">nickname = #{nickname},</if>
+			<if test="password != null">password = #{password},</if>
 			<if test="email != null">email = #{email},</if>
 			<if test="call != null">call = #{call},</if>
-			<if test="address != null">address = #{address}</if>
-		</set> -->
+			<if test="address != null">address = #{address},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="da != null">da = #{da}</if>
+		</set>
+		WHERE user_no = #{userNo}
 	</update>
 
+	<!-- 회원 삭제 -->
 	<delete id="usersDelete">
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
+
+
+	<!-- 일반회원 상태 변경 / 0929 지혜 추가 
+	<update id="usersStateUpdate" parameterType="com.team.prj.users.service.UsersVO"> 
+		update users 
+		set state = case 
+		where user_no = #{userNo} = ) 
+	</update> -->
+		
+	<!-- 일반회원 검색 / 1005 지혜 추가 -->
+	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
+		SELECT *
+		FROM users
+		WHERE
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> nickname like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+		
 </mapper>

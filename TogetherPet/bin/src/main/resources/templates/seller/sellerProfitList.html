@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<title>Together Pet</title>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+<!-- datepicker 한국어로 -->
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>정산관리</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+				<!-- 검색 -->
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="search-box">
+							<input type="radio" id="byMinus" name="searchBy" value="M">
+							&nbsp;&nbsp;&nbsp;<label class="col-md-2 col-form-label"
+								for="byMinus">정산일자로 검색</label> <input type="date" id="start"
+								value="" class="form-control" style="width: 250px" />&nbsp;&nbsp;&nbsp;
+							<label>~</label>&nbsp;&nbsp;&nbsp; <input type="date" id="end"
+								value="" class="form-control" style="width: 250px" /><br>
+							<br> <input type="radio" id="byOrder" name="searchBy"
+								value="O">&nbsp;&nbsp;&nbsp; <label
+								class="col-md-2 col-form-label" for="byOrder">거래일자로 검색</label> <input
+								type="date" id="startByOrder" value="" class="form-control"
+								style="width: 250px" /> &nbsp;&nbsp;&nbsp;<label>~</label>&nbsp;&nbsp;&nbsp;
+							<input type="date" id="endByOrder" value="" class="form-control"
+								style="width: 250px" /> <br> <br>
+							<div id="orderby">
+								<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusAll">전체</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="radio" id="minusY" name="key" value="2">&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusY">정산 완료</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="radio" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusN">정산 대기</label>
+							</div>
+							<div class="mt-2" style="text-align: center;">
+								<a id="searchBtn" class="btn btn-primary me-2">검색하기</a>
+								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 매출액 -->
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="search-box">
+							<div class="section_title mb-60">
+								<h2>매출액 합계</h2>
+							</div>
+							<div class="slider_text" align=right>
+								<p>
+									기간 : <span id="period">전체</span>
+								</p>
+								<br>
+								<h1 id="minusPSum">[[${#numbers.formatInteger(sum,3,'COMMA')}]]
+									원</h1>
+								<br>
+								<p>매출액은 정산이 완료된 건에 한하여 집계되며, 정산은 구매자가 구매확정한 다음날 오전 11시에
+									이루어집니다.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!-- Hoverable Table rows -->
+				<div class="card">
+
+					<div class="table-responsive text-nowrap" style="padding: 20px">
+						<div id="subHtml"></div>
+						<div th:if="${pageNum}" id="pageNum" th:text="${pageNum}"
+							style="display: none"></div>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div>
+			<br>
+			<!-- / Content -->
+			<div class="content-backdrop fade"></div>
+		</div>
+		<!-- Content wrapper -->
+
+		<style>
+.search-box .form-control {
+	width: 48%;
+	display: inline;
+}
+
+#search {
+	font-weight: bold;
+	font-size: 17px;
+}
+</style>
+
+		<script>
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			let key = "1";
+			let url = "/profitTable?pageNum=" + Number($('#pageNum').html());
+			
+			// 디폴트
+			$("#subHtml").load(url);
+
+			// 필터링 들어갔을 때
+			$('#searchBtn').on('click', function() {
+				let key = $('input[name=key]:checked').val();
+				let start = $('#start').val();
+				let end = $('#end').val();
+				console.log(start, end);
+				let period = start + " ~ " + end
+				$('#period').html(period)
+				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key;
+				$("#subHtml").load(url);
+
+			})
+			
+			// 데이트박스 컨트롤
+			$('input[name=searchBy]').on('change', searchControl);
+			function searchControl() {
+				console.log('ctrl in')
+				let searchBy = $('input[name=searchBy]:checked').val();
+				if (searchBy == 'M') {
+					console.log('ctrl if in')
+					$('#startByOrder').attr('readonly', true)
+					$('#endByOrder').attr('readonly', true);
+					$('#start').attr('readonly', false)
+					$('#end').attr('readonly', false);
+				} else {
+					$('#startByOrder').attr('readonly', false)
+					$('#endByOrder').attr('readonly', false);
+					$('#start').attr('readonly', true)
+					$('#end').attr('readonly', true);
+				}
+			}
+
+			function getSum() {
+
+			}
+		</script>
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

@@ -51,30 +51,27 @@
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="search-box">
-							<input type="radio" id="byMinus" name="searchBy" value="M">
+							<input type="radio" id="byMinus" name="searchBy" value="1">
 							&nbsp;&nbsp;&nbsp;<label class="col-md-2 col-form-label"
 								for="byMinus">정산일자로 검색</label> <input type="date" id="start"
 								value="" class="form-control" style="width: 250px" />&nbsp;&nbsp;&nbsp;
 							<label>~</label>&nbsp;&nbsp;&nbsp; <input type="date" id="end"
 								value="" class="form-control" style="width: 250px" /><br>
 							<br> <input type="radio" id="byOrder" name="searchBy"
-								value="O">&nbsp;&nbsp;&nbsp; <label
+								value="2">&nbsp;&nbsp;&nbsp; <label
 								class="col-md-2 col-form-label" for="byOrder">거래일자로 검색</label> <input
 								type="date" id="startByOrder" value="" class="form-control"
 								style="width: 250px" /> &nbsp;&nbsp;&nbsp;<label>~</label>&nbsp;&nbsp;&nbsp;
 							<input type="date" id="endByOrder" value="" class="form-control"
 								style="width: 250px" /> <br> <br>
 							<div id="orderby">
-								<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;<label
-									for="minusAll">전체</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
-									type="radio" id="minusY" name="key" value="2">&nbsp;&nbsp;&nbsp;&nbsp;<label
-									for="minusY">정산 완료</label> &nbsp;&nbsp;&nbsp;&nbsp;<input
-									type="radio" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;<label
-									for="minusN">정산 대기</label>
+								<input type="checkbox" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;<label
+									for="minusN">정산 대기 건만 보기</label>
 							</div>
 							<div class="mt-2" style="text-align: center;">
 								<a id="searchBtn" class="btn btn-primary me-2">검색하기</a>
-								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								<button id="resetBtn" type="button"
+									class="btn btn-primary2 me-2">초기화</button>
 							</div>
 						</div>
 					</div>
@@ -85,17 +82,13 @@
 						<div class="search-box">
 							<div class="section_title mb-60">
 								<h2>매출액 합계</h2>
+								<p>정산은 구매자가 구매를 확정한 다음날 오전 11시에 이루어집니다.</p>
 							</div>
 							<div class="slider_text" align=right>
 								<p>
 									기간 : <span id="period">전체</span>
 								</p>
-								<br>
-								<h1 id="minusPSum">[[${#numbers.formatInteger(sum,3,'COMMA')}]]
-									원</h1>
-								<br>
-								<p>매출액은 정산이 완료된 건에 한하여 집계되며, 정산은 구매자가 구매확정한 다음날 오전 11시에
-									이루어집니다.</p>
+								<h1 id="minusPSum"></h1>
 							</div>
 						</div>
 					</div>
@@ -105,7 +98,8 @@
 
 				<!-- Hoverable Table rows -->
 				<div class="card">
-
+					<h4 class="card-header" style="font-weight: bold; font-size: 17px"
+						id="tableSize"></h4>
 					<div class="table-responsive text-nowrap" style="padding: 20px">
 						<div id="subHtml"></div>
 						<div th:if="${pageNum}" id="pageNum" th:text="${pageNum}"
@@ -136,32 +130,81 @@
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
 
-			let key = "1";
 			let url = "/profitTable?pageNum=" + Number($('#pageNum').html());
 			
 			// 디폴트
+			let key = "2";
+			let start = "";
+			let end = "";
+			let by = ""
 			$("#subHtml").load(url);
+			getSumSize(key, start, end, by);
 
-			// 필터링 들어갔을 때
+			// 검색 버튼 클릭했을 때
 			$('#searchBtn').on('click', function() {
-				let key = $('input[name=key]:checked').val();
-				let start = $('#start').val();
-				let end = $('#end').val();
-				console.log(start, end);
-				let period = start + " ~ " + end
-				$('#period').html(period)
-				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key;
+				let period = "전체"
+				by = $('input[name=searchBy]:checked').val();
+				if(by == '1'){
+					if($('#start').val() != "" && $('#end').val() != ""){
+						start = $('#start').val();
+						end = $('#end').val();
+						period = start + " ~ " + end
+					}else{
+						alert('날짜를 선택해 주세요');
+						return;
+					}
+				}else if(by == '2'){
+					if($('#startByOrder').val() != "" && $('#endByOrder').val() != ""){
+						start = $('#startByOrder').val();
+						end = $('#endByOrder').val();
+						period = start + " ~ " + end
+					}else{
+						alert('날짜를 선택해 주세요');
+						return;
+					}
+				}
+				
+				if($('input[name=key]:checked').val()=='3'){
+				key = "3"
+				}else{
+					key = "2";
+				}
+				
+				$('#period').html(period);
+				
+				console.log(key, start, end)
+				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key  + "&by=" + by;
 				$("#subHtml").load(url);
+				getSumSize(key, start, end, by);
 
 			})
 			
-			// 데이트박스 컨트롤
+			// 초기화
+			$('#resetBtn').on('click', function(){
+				$('input[name=key]').prop("checked", false);
+				let radios = $('input[type=radio]');
+				for(r of radios){
+					r.checked=false;
+				}
+				let datebox = $('input[type=date]');
+				for(db of datebox){
+					db.value='';
+				}
+				$('#startByOrder').attr('readonly', false)
+				$('#endByOrder').attr('readonly', false);
+				$('#start').attr('readonly', false)
+				$('#end').attr('readonly', false);
+			})
+			
+			// 서치박스 컨트롤 1 (라디오버튼)
 			$('input[name=searchBy]').on('change', searchControl);
 			function searchControl() {
 				console.log('ctrl in')
 				let searchBy = $('input[name=searchBy]:checked').val();
-				if (searchBy == 'M') {
-					console.log('ctrl if in')
+				if (searchBy == '1') {
+					$('input[name=key]').prop("checked", false);
+					$('#startByOrder').val("");
+					$('#endByOrder').val("");
 					$('#startByOrder').attr('readonly', true)
 					$('#endByOrder').attr('readonly', true);
 					$('#start').attr('readonly', false)
@@ -171,11 +214,69 @@
 					$('#endByOrder').attr('readonly', false);
 					$('#start').attr('readonly', true)
 					$('#end').attr('readonly', true);
+					$('#start').val("");
+					$('#end').val("");
 				}
 			}
+			
+			// 서치박스 컨트롤 2 (체크박스)
+			$('input[name=key]').on('change', function(){
+				if($('input[name=key]:checked').val()=='3'){
+					$('#startByOrder').attr('readonly', false)
+					$('#endByOrder').attr('readonly', false);
+					$('#start').val("");
+					$('#end').val("");
 
-			function getSum() {
+					$('#start').attr('readonly', true)
+					$('#end').attr('readonly', true);
+					var minus = document.getElementById('byMinus');
+					minus.checked= false;
+				}else{
+					$('#start').attr('readonly', false)
+					$('#end').attr('readonly', false);
+					$('#startByOrder').attr('readonly', false)
+					$('#endByOrder').attr('readonly', false);
+				}
+			});
+			
+			// 서치박스 컨트롤 3 (데이트박스)
+			$('input[type=date]').on('change', function(){
+				
+				console.log('ctrl if in')
+				let id = $(this).closest('input').attr('id')
+				if(id == 'start' || id == 'end'){
+					document.getElementById('byMinus').checked = true;
+					$('#startByOrder').val("");
+					$('#endByOrder').val("");
+				}else{
+					document.getElementById('byOrder').checked = true;
+					$('#start').val("");
+					$('#end').val("");
+				}
+			});
 
+			function getSumSize(key, start, end, by) {
+				console.log('sum size ctrl in')
+				$.ajax({
+					url: 'ajaxGetSumSize',
+					type: 'post',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+					data: {
+						key:key, start:start, end:end, by:by
+					}
+				})
+				.done(res => {
+					console.log('res', res[0]);
+					let sum = res[0].toLocaleString() + "원"
+					if(key=="3"){
+						sum = "<p>(정산 예정)</p>" + sum
+					}else{
+						sum = "<p>(정산 완료)</p>" + sum
+					}
+					$('#minusPSum').html(sum);
+					$('#tableSize').html("총 " + res[1].toLocaleString() + "건");
+				})
 			}
 		</script>
 

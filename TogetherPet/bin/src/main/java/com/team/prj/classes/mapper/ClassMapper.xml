@@ -2,58 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.classes.mapper.ClassMapper">
 
+	<!-- (메인)클래스 리스트 --> <!-- 관리자 - 전체글조회 -->
 	<select id="classSelectList" resultType="com.team.prj.classes.service.ClassVO">
 		SELECT * 
 		FROM CLASS
+		where upload_state=1  <!-- 1004 추가 / 지혜  -->
+		order by class_no desc     <!-- 1004 추가 / 지혜  -->
 	</select>
 	
+	
+	<!-- 이미지 그룹넘버 조회 -->
+	<select id="getGroupNo" resultType="int">
+		SELECT MAX(GROUP_NO)
+		FROM PHOTO
+	</select>
+	
+	
+	<!-- 클래스 단건조회 -->
 	<select id="classSelect" parameterType="com.team.prj.classes.service.ClassVO"
 			resultType="com.team.prj.classes.service.ClassVO">
-		SELECT CLASS_NO,
-				NAME,
-				CATEGORY,
-				INTRO,
-				START_DT,
-				END_DT,
-				DAY,
-				TIME_START,
-				TIME_END,
-				PRICE,
-				UPLOAD_STATE,
-				UPLOAD_DATE,
-				HIT,
-				MAX_HEADCOUNT,
-				TUTOR_NO,
-				GROUP_NO,
-				ADDRESS,
-				LATITUDE,
-				LONGITUDE,
-				CATEGORY_ID,
-				RETURN_MESSAGE
+		SELECT *
 		FROM CLASS
 		WHERE CLASS_NO = #{classNo}
 	</select>
 	
+	
+	
+	<!-- 그룹별 사진 불러오기 -->
+	<select id="classPhotoList"
+		parameterType="com.team.prj.classes.service.ClassVO"
+		resultType="com.team.prj.photo.service.PhotoVO">
+		SELECT * 
+		FROM PHOTO 
+		WHERE GROUP_NO =#{groupNo} 
+		AND NAME='클래스'
+	</select>
+	
+	
+	<!-- 클래스 등록 인서트 -->
 	<insert id="classInsert" parameterType="com.team.prj.classes.service.ClassVO">
 			<selectKey keyProperty="classNo" order="BEFORE" resultType="int">
-			SELECT
-				CASE WHEN MAX(CLASS_NO) IS NULL THEN 1 ELSE MAX(CLASS_NO) + 1 END AS NO
-			FROM CLASS
+				SELECT
+					CASE WHEN MAX(CLASS_NO) IS NULL THEN 1 ELSE MAX(CLASS_NO) + 1 END AS classNo
+				FROM CLASS
 			</selectKey>
 		INSERT INTO CLASS
-		VALUES(#{classNo},#{name},#{category},#{intro},#{startDt},#{endDt},#{day},#{timeStart},#{timeEnd},#{price},0,#{uploadDate},0,#{maxHeadcount},#{tutorNo},#{groupNo},#{address},#{latitude},#{longitude},#{categoryId},#{returnMessage})
+		VALUES(#{classNo},#{name},#{category},#{intro},#{price},0,sysdate,0,#{maxHeadcount},#{tutorNo},#{groupNo},
+		#{address},#{latitude},#{longitude},'c','',#{thumb},'',#{postcode},#{da})
 	</insert>
 	
+	
+	
+	<!-- 클래스 옵션등록 -->
+	<insert id="classOptionInsert" parameterType="java.util.Map">
+		INSERT INTO CLASS_OPTION
+		(CLASS_NO, START_DT, END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO)
+		SELECT A.*, OPTIONNO_SEQ.NEXTVAL
+		from (
+			<foreach collection="optionList" item="item" separator="UNION ALL ">
+				SELECT  #{item.classNo} AS CLASS_NO, to_date(#{item.startDt}, 'yyyy-MM-DD HH24:mi') AS START_DT, to_date(#{item.endDt}, 'yyyy-MM-DD HH24:mi') AS END_DT, 
+						#{item.allHeadcount} AS ALL_HEADCOUNT
+				FROM DUAL
+			</foreach>
+		) A
+	</insert>
+	
+	
+	<!-- 클래스 그룹이미지 등록 -->
+	<insert id="classPhotoInsert" parameterType="java.util.Map">
+		INSERT INTO PHOTO
+		(GROUP_NO, NAME, DIR)
+		SELECT A.*
+		from (
+			<foreach collection="photoList" item="item" separator="UNION ALL ">
+				SELECT  #{item.groupNo} AS GROUP_NO, #{item.name} AS NAME, #{item.dir} AS DIR
+				FROM DUAL
+			</foreach>
+		) A
+	</insert>
+
+
+	
+	
+	<!-- 그룹이미지 등록-->
+	<insert id="photoInsert" parameterType="java.util.List">
+		
+
+	</insert>
+	
+	
+	
+	<!-- 클래스 수정 -->
 	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
 		update class
 		<set>
 			<if test="category != null">CATEGORY = #{category},</if>
 			<if test="intro != null">INTRO = #{intro},</if>
-			<if test="startDt != null">START_DT = #{startDt},</if>
-			<if test="endDt != null">END_DT = #{endDt},</if>
-			<if test="day != null">DAY = #{day},</if>
-			<if test="timeStart != null">TIME_START = #{timeStart},</if>
-			<if test="timeEnd != null">TIME_END = #{timeEnd},</if>
 			<if test="price != null">PRICE = #{price},</if>
 			<if test="uploadDate != null">UPLOAD_DATE = #{uploadDate},</if>
 			<if test="maxHeadcount != null">MAX_HEADCOUNT = #{maxHeadcount},</if>
@@ -63,11 +107,66 @@
 		WHERE CLASS_NO = #{classNo}
 	</update>
 	
+	
+	
+	
+	<!-- 클래스 삭제 -->
 	<delete id="classDelete">
 		DELETE FROM CLASS
 		WHERE CLASS_NO = #{classNo}
 	</delete>
+	
+	
+	
+	
+	<!-- 클래스 검색 -->
+	<select id="classSearch" resultType="com.team.prj.classes.service.ClassVO">
+		select * from class
+		<where>
+			<if test="categories != null">
+				and category in <foreach item="category" collection="categories" open="(" close=")" separator=",">
+				#{category}
+				</foreach>
+			</if>
+			
+			<choose>
+				<when test="address != null and address=='address.equals(경남,경북)'">
+					AND ADDRESS LIKE '%'|| '경남' ||'%'
+						OR ADDRESS LIKE '%'|| '경북' ||'%'
+				</when>
+				<when test ="address != null and address=='address.equals(전남,전북)'">
+					AND ADDRESS LIKE '%'|| '전남' ||'%'
+						OR ADDRESS LIKE '%'|| '전북' ||'%'
+				</when>
+				<otherwise>
+					AND ADDRESS LIKE '%'|| #{address} ||'%'
+				</otherwise>
+			</choose>
+		</where>	
+	</select>
 
-
+	
+	
+	<!-- 단건조회에서 날짜셀렉트-->
+	<select id="classDateOption" resultType="com.team.prj.classes.service.ClassOptionVO">
+		SELECT to_char(START_DT, 'yyyy-MM-DD HH:MM') START_DT, to_char(END_DT, 'HH:MM') END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO
+		from class_option
+		where CLASS_NO = #{param2}
+		and to_char(START_DT, 'yyyy-MM-DD') = #{param1}
+	</select>
+	
+	
+	<!-- 1004 추가 / 지혜 --> <!-- 관리자 - 게시물 검토 -->
+	<select id="classList" resultType="com.team.prj.classes.service.ClassVO">
+		SELECT CLASS_NO, CATEGORY, NAME, UPLOAD_DATE,
+			   CASE WHEN UPLOAD_STATE = '0' THEN '승인대기'
+			   	    WHEN UPLOAD_STATE = '1' THEN '승인완료' 
+			   ELSE ' '
+			   END AS UPLOAD_STATE
+		FROM CLASS
+		where upload_state=0
+		ORDER BY CLASS_NO desc
+	</select>
+	
 
 </mapper>

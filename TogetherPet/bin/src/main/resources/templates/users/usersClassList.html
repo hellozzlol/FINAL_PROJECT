@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_mypage}">
+<head>
+<meta charset="UTF-8">
+<title>Together Pet</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>class</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>내 수강내역</h3>
+				</div>
+				<br>
+				
+				<div>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>전체 수강 목록([[${#lists.size(pageInfo.list)}]]개)</strong></button>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>수강 중</strong></button>
+					<button type="button" class="btn rounded-pill btn-secondary"><strong>수강 완료</strong></button>
+				</div><br>
+				
+				<p>* 클래스명 클릭시 상세 페이지로 이동합니다.</p>
+				<!-- Hoverable Table rows -->
+				<div class="card">
+					<div class="table-responsive text-nowrap" style="text-align: center;">
+						<table class="table table-hover">
+							<thead id="th">
+								<tr>
+									<th>클래스명</th>
+									<th>튜터명</th>
+									<th>수업시작일</th>
+									<th>수업장소</th>
+									<th style="text-align: center;">결제상태</th>
+									<th id="classEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
+								</tr>
+							</thead>
+							<tbody id="tb" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}">
+									<td>
+										<a style="font-weight: bold;" th:onClick="|location.href='@{classSelect(classNo=${list.classNo})}'|">[[${list.className}]]</a>
+									</td>
+									<td>[[${list.name}]]</td>
+									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>
+									<td>[[${list.address}]]</td>
+									<td style="text-align: center;">
+										<div th:switch="${list.pay}">
+											<p th:case="1">결제완료</p>
+											<p th:case="0">결제대기중</p>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			</div><br>
+			<!-- / Content -->
+
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 -->
+		</div>
+		<!-- Content wrapper -->
+
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/usersClassList?pageNum=' + p;
+	}
+	
+	// 수강 클래스 없을때
+    if($('#classEmpty').html()=='0'){
+    	$('#tb').html("<td colspan=5 align=center><h3> <br>수강중인 클래스가 없습니다.</h3><br><a class='btn btn-primary me-2 mb-2' href='/classList'>클래스 보러가기</a></td><br>");
+    }
+</script>
+
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

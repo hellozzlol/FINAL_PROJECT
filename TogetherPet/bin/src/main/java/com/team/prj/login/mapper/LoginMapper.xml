@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.login.mapper.LoginMapper">
+
+
+   <select id="login" resultType="com.team.prj.login.service.LoginVO">
+      select id, password, name, 'ROLE_' || author as author, no from login where id=#{id}
+   </select>
+
+
+
+</mapper>

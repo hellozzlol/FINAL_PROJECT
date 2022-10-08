@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>커뮤니티</title>
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+caption {
+	display: none;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.board_list_wrap {
+	padding: auto;
+}
+
+.board_list {
+	width: 100%;
+	border-top: 2px solid rgb(0, 0, 0);
+}
+
+.board_list tr {
+	border-bottom: 1px solid #ccc;
+}
+
+.board_list th, .board_list td {
+	padding: 10px;
+	font-size: 14px;
+}
+
+.board_list td {
+	text-align: center;
+}
+
+.board_list .tit {
+	text-align: left;
+}
+
+.board_list .tit:hover {
+	text-decoration: underline;
+}
+
+.board_list_wrap .paging {
+	margin-top: 20px;
+	text-align: center;
+	font-size: 0;
+}
+
+.board_list_wrap .paging a {
+	display: inline-block;
+	margin-left: 10px;
+	padding: 5px 10px;
+	border-radius: 100px;
+	font-size: 12px;
+}
+
+.board_list_wrap .paging a:first-child {
+	margin-left: 0;
+}
+
+.board_list_wrap .paging a.bt {
+	border: 1px solid #eee;
+	background: #eee;
+}
+
+.board_list_wrap .paging a.num {
+	border: 1px solid rgb(0, 0, 0);
+	font-weight: 600;
+	color: rgb(0, 0, 0);
+}
+
+.board_list_wrap .paging a.num.on {
+	background: rgb(0, 0, 0);
+	color: #fff;
+}
+
+.btn {
+	margin: auto;
+	display: block;
+}
+
+.col-auto {
+	text-align: center;
+}
+body {
+    
+    
+    line-height: 1.25;
+   
+}
+
+
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content" style="margin: 50px;">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>커뮤니티</li>
+								<li>게시판</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+						<br><br>
+						<!-- 검색기능 시작  -->
+						<form class="row gy-2 gx-3 align-items-center" id="btn">
+							<div class="col-auto">
+								<select id="key" name="key">
+									<option value="1">작성자</option>
+									<option value="2">제목</option>
+									<option value="3">카테고리</option>
+								</select>
+							</div>
+
+							<div class="col-auto">
+								<input class="form-control" type="text" id="val" name="val">
+							</div>
+							<div class="col-auto">
+								<button type="button" class="btn btn-dark" id="Serachbtn"
+									onclick="searchCall()">검색</button>
+							</div>
+						</form>
+						<!-- 검색기능 끝  -->
+						<br> <br>
+
+						<img class="primary_img" src="assets/img/likes/dogcat.png"
+								alt="consectetur" width="auto" height="auto" style = "float : right;">
+
+						<!-- 커뮤니티 게시판 반복문 스타트 -->
+						<div class="board_list_wrap">
+							<table class="board_list" id="list">
+								<thead>
+									<tr align="center">
+										<th>번호</th>
+										<th>카테고리</th>
+										<th>제목</th>
+										<th>작성일</th>
+										<th>작성자</th>
+										<th>조회수</th>
+
+									</tr>
+								</thead>
+
+								<tbody id="tb">
+									<tr th:each="b : ${pageInfo.list}">
+										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+											th:text="${b.boardNo}"></a></td>
+										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+											th:text="${b.category}"></a></td>
+										<td><a th:href="@{boardSel(boardNo=${b.boardNo})}"
+											th:text="${b.title}"></a></td>
+										<td th:text="${b.dt}"></td>
+										<td th:text="${b.nickname}"></td>
+										<td th:text="${b.hit}"></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 커뮤니티 게시판 반복문 끝 -->
+							
+					
+							<br> <br> <br>
+
+							<!-- 검색아작스 스크립트 시작  -->
+							<script>
+		
+							$("#Serachbtn").on('click', searchCall)
+		
+								var token = $("meta[name='_csrf']").attr("content");
+								var header = $("meta[name='_csrf_header']").attr("content");
+	
+										function searchCall() {
+											  let key = document.getElementById('key').value;
+		     								  let val = document.getElementById('val').value;
+		     
+		     
+		    									 $.ajax({
+		    										url : "boardajaxSearch",
+		   											type : 'post',//method
+		    										beforeSend : function(xhr){
+													xhr.setRequestHeader(header, token)},
+		    										data : {'key' : key, 'val' : val},
+		    										dataType : 'json',
+		    											success : function(response) {
+														console.log(response);
+														htmlView(response);
+													},
+														error : function () {
+														console.log('오류');   
+																			}
+		    															 });
+		     
+		     function htmlView(data) {
+		    	//html로 변환해서 원하는 위치에 출력하도록 구현
+					
+				 $("#tb").remove();
+		         var tbody = $("<tbody id='tb' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchCall("+ item.boardNo +")")
+                    .append(
+		                     $("<td />").text(item.boardNo),
+		                     $("<td />").text(item.category),
+		                     $("<td />").text(item.title),
+		                     $("<td />").text(item.dt),
+		                     $("<td />").text(item.nickname),
+		                     $("<td />").text(item.hit),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#list").append(tbody);
+			}
+			
+					     
+					};
+		</script>
+							
+
+							<div class="btnn">
+								<button type="button" value="등록" class="btn btn-primary"
+									onclick="location.href='boardFom'">글등록</button>
+							</div>
+
+
+						</div>
+
+
+
+						<br> <br> <br>
+
+						<!-- 페이지네이션 -->
+							<nav aria-label="Page navigation example">
+							<ul class="pagination pagination-info  justify-content-center">
+								<li class="page-item disabled"
+									th:if="${pageInfo.isIsFirstPage()}"><span
+									class="page-link">«</span></li>
+								<li class="page-item"
+									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+									rel="prev">«</a></li>
+								<li
+									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+									th:each="page:${pageInfo.navigatepageNums}"><span
+									class="page-link" th:if="${pageInfo.pageNum eq page}"
+									th:text="${page}"></span> <a class="page-link"
+									th:unless="${pageInfo.pageNum eq page}"
+									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+										}}</a></li>
+								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+									rel="next">»</a></li>
+								<li class="page-item disabled"
+									th:unless="${pageInfo.hasNextPage}"><span
+									class="page-link">»</span></li>
+							</ul>
+						</nav>
+
+
+						<!-- 페이지네이션 -->
+					</div>
+
+					<script>
+					function gopage(p) {
+						location.href = '/boardList?pageNum=' + p;}
+					</script>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

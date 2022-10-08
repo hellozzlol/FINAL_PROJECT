@@ -1,3 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team.prj.scrap.mapper.ScrapMapper"></mapper>
+<mapper namespace="com.team.prj.scrap.mapper.ScrapMapper">
+	<select id="scrapSelectList"
+		resultType="com.team.prj.scrap.service.ScrapVO">
+		select * from scrap
+	</select>
+
+	<select id="scrapSelect"
+		resultType="com.team.prj.scrap.service.ScrapVO"
+		parameterType="com.team.prj.scrap.service.ScrapVO">
+		select *
+		from scrap
+		where scrap_no = #{scrapNo}
+	</select>
+	
+	<delete id="scrapDelete">
+		delete from scrap
+		where scrap_no = #{scrapNo}
+	</delete>
+	
+	<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
+		INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
+		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
+	</insert>
+	
+	<!-- 게시글의 스크랩 수 -->
+	<select id="scrapCount" resultType="int">
+		SELECT COUNT(*)
+		FROM hospital h, scrap s
+		WHERE h.category_id = s.category_id
+		AND h.name = #{name};
+	</select>
+	
+
+	
+</mapper>

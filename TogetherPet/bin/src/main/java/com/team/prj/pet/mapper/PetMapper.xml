@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.pet.mapper.PetMapper">
+	<!-- 반려동물 전체 조회(로그인한 유저) -->
+	<select id="petSelectList"
+		resultType="com.team.prj.pet.service.PetVO">
+		SELECT pet_no, name, TO_char(birth, 'YYYY-MM-DD') as birth, gender, type, weight
+		FROM PET
+		where user_no = #{userNo}
+		order by pet_no
+	</select>
+
+	<!-- 반려동물 단건 조회 -->
+	<select id="petSelect"
+		parameterType="com.team.prj.pet.service.PetVO"
+		resultType="com.team.prj.pet.service.PetVO">
+		SELECT pet_no, name, TO_char(birth, 'YYYY-MM-DD') as birth, gender, weight, type, breed, neu
+		from pet
+		where pet_no = #{petNo}
+		and user_no = #{userNo}
+	</select>
+
+	<!-- 반려동물 등록 -->
+	<insert id="petInsert"
+		parameterType="com.team.prj.pet.service.PetVO">
+		INSERT INTO PET
+		VALUES(#{petNo},
+			#{type},
+			#{name},
+			#{breed},
+			#{weight},
+			#{gender},
+			TO_DATE(#{birth},'yy-mm-dd'),
+			#{neu},
+			1,
+			#{userNo},
+			#{attach},
+			#{attachDir})
+	</insert>
+
+	<!-- 반려동물 정보 수정 -->
+	<update id="petUpdate"
+		parameterType="com.team.prj.pet.service.PetVO">
+		UPDATE PET
+		<set>
+			<if test="type != null">type = #{type},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="breed != null">breed = #{breed},</if>
+			<if test="weight != null">weight = #{weight},</if>
+			<if test="gender != null">gender = #{gender},</if>
+			<if test="birth != null">birth = #{birth},</if>
+			<if test="neu != null">neu = #{neu}</if>
+		</set>
+		WHERE pet_no = #{petNo}
+		and user_no = #{userNo}
+	</update>
+
+	<delete id="petDelete">
+		DELETE FROM PET WHERE pet_no = #{petNo}
+	</delete>
+
+</mapper>
