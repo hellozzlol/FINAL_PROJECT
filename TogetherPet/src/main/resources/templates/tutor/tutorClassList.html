@@ -131,8 +131,9 @@
 										</div>
 									</td>
 									<td>
-										<br><br><input type="button" value="수정" class="btn-primary3"
-											th:onClick="|location.href='@{/sellerGoodsDetail(classNo=${list.classNo})}'|">
+										<br><br>
+										<input type="button" value="수정" class="btn-primary3"
+											th:onClick="|location.href='@{/classUpdateForm(classNo=${list.classNo})}'|">
 										<input type="button" id="deleteBtn" value="삭제" class="btn-primary3">
 									</td>
 								</tr>

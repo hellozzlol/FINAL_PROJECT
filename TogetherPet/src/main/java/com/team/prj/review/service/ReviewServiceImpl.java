@@ -3,9 +3,11 @@ package com.team.prj.review.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.team.prj.review.mapper.ReviewMapper;
 
+@Service
 public class ReviewServiceImpl implements ReviewService{
 
 	@Autowired

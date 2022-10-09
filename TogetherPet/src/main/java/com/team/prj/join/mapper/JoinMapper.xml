@@ -74,17 +74,15 @@
 			FROM tutor
 		</selectKey>
 		
-		INSERT INTO tutor (tutor_no, id, password, name, company, email, call, address, author, group_no, dt, state, postcode, da)
+		INSERT INTO tutor (tutor_no, id, password, name, email, call, address, author, dt, state, postcode, da)
 		VALUES(#{tutorNo}
 				,#{id}
 				,#{password}
 				,#{name}
-				,#{company}
 				,#{email}
 				,#{call}
 				,#{address}
 				,'TUTOR'
-				,10
 				,SYSDATE
 				,'활동중'
 				,#{postcode}
