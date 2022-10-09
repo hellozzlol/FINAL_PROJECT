@@ -1,8 +1,11 @@
 package com.team.prj.funeral.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,8 +46,13 @@ public class FuneralController {
 	
 
 	@RequestMapping("/funeral")
-	public String funeralSelect(FuneralVO vo, Model model) {
+	public String funeralSelect(FuneralVO vo, Model model,ReviewVO rvo) {
 		model.addAttribute("funeral", dao.funeralSelect(vo));
+		
+		//리뷰리스트
+		rvo.setReviewNo(vo.getFuneralNo());
+		model.addAttribute("reviewSelectList",dao.reviewSelectList(rvo));
+		
 		return "funeral/funeralSelect";
 	}
 	
@@ -60,6 +68,7 @@ public class FuneralController {
 			 
 		 }
 		 
+	
 		//리뷰전체조회
 			@RequestMapping("reviewSelectList")
 			public String reviewSelectList(ReviewVO vo, Model model) {
