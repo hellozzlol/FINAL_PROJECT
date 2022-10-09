@@ -40,6 +40,7 @@
 		var header = $("meta[name='_csrf_header']").attr("content");
 		let key = "1";
 			$('#orderby').on('change', function(){
+				//전체 / 정산완료 / 정산대기 중 어느 라디오를 선택했는지 추출
 				let key = $('input[name=key]:checked').val();
 				profitList(key);
 			})
@@ -75,7 +76,7 @@ $(function(){
 		/*-----------------------
 		//클래스 카드 선택시 삭제 후 테이블 생성	
 		-------------------------*/	
-		$(".col-md-3").on("click", function() {
+		$(".col-md-4").on("click", function() {
 				var classNo = $(this).children('input:eq(0)').val();
 				var className = $(this).children('input:eq(1)').val();
 				console.log(classNo);
@@ -86,9 +87,11 @@ $(function(){
 						data : {classNo : classNo},
 						success : htmlView
 				});
-				$("#wrap").empty();
-				$("#cdheader").empty();
-				$("#cdheader").append(`<a> 클래스 [ ${className} ] 의 수강자 현황</a>`)
+				//$("#wrap").empty();
+				$("#suminfo").remove();
+				$(".sumcard").remove(); //기존 정산액 카드 삭제				
+				$("#sumtitle").empty();
+				$("#sumtitle").append(`<h2> ❝ ${className} ❞의 수강자 및 정산 현황<h2>`)
 		})
 
 		
@@ -96,18 +99,50 @@ $(function(){
 		//콜백함수 클래스 옵션 조회
 		-------------------------*/	
 		function htmlView(list) {	
-				var radio = `<div id="orderby">
-								<input type="radio" id="minusAll" name="key" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;
-								<label for="minusAll">전체</label> &nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="radio" id="minusY" name="key" value="2">&nbsp;&nbsp;&nbsp;&nbsp;
-								<label for="minusY">정산 완료</label> &nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="radio" type="radio" id="minusN" name="key" value="3">&nbsp;&nbsp;&nbsp;&nbsp;
-								<label for="minusN">정산 대기</label>
-							</div>`	
-				$("#wrap").append(radio);
+			
+				var price = `${list[0].price}`; //수강료 
+				var minPrice = `${list[0].minusPrice}` //정산된 수강료
+				var minusN =0;
+				var minusY =0;
+				
+				for(var i=0; i<list.length; i++){
+					minusN += list[i].minusN;	
+				};
+				console.log(minusN)
+				
+				for(var i=0; i<list.length; i++){
+					minusY += list[i].minusY;	
+				};
+				console.log(minusY)
+				
+				var minusNsum = minusN * minPrice;
+				var minusYsum = minusY * minPrice;
+				
+
+				$("#wrap").append(`
+						<div class="col-md-4" id="sumcard">
+							<div class="card">
+								<p>정산완료</p>
+								<h2> ${minusYsum}원 </h2>
+							</div>
+						</div>
+						<div class="col-md-4" id="sumcard">
+							<div class="card">
+								<p>정산대기</p>
+								<h2> ${minusNsum}원 </h2>
+							</div>
+						</div>
+						<div class="col-md-4" id="sumcard">
+							<div class="card">
+								<p>수강료</p>
+								<h2> ${price}원 </h2>
+							</div>
+						</div>`)
+						
 			
 				for (c of list) {
 					var classOptionNo = `${c.classOptionNo}`
+	
 					
 					var result = `
 						<div class="col-md-6">
@@ -124,7 +159,7 @@ $(function(){
 								</table>
 							</div>
 						</div>`
-					$("#wrap").append(result);
+					$("#opwrap").append(result);
 				}
 		}
 
@@ -147,7 +182,6 @@ $(function(){
 					data : {classOptionNo : classOptionNo},
 					success : 
 							function reservView(list) {
-							//$($(option).append()).remove();
 							
 							var th=`
 								<div class="reserv">
@@ -157,7 +191,8 @@ $(function(){
 										<tr>
 										<th>수강자명</th>
 										<th>연락처</th>
-										<th>결제일</th>
+										<th>결제일자</th>
+										<th>정산현황</th>
 										</tr>
 									<thead>
 								</table>
@@ -171,6 +206,7 @@ $(function(){
 											<td>${c.name}</td>
 											<td>${c.call}</td>
 											<td>${c.orderDate}</td>
+											<td>${c.minusYn == 0 ? `<button class="minus0">정산대기</button>` : `<button class="minus1">정산완료</button>`}</td>
 										</tr>
 									</tbody>
 									</div>
@@ -240,6 +276,19 @@ $(function(){
 .reserv.display {
 	display: none;
 }
+.minus0 {
+	border-radius: 5px;
+	border: none;
+	background-color: #f0f0f0;
+	color: #666666;
+}
+
+.minus1 {
+	border-radius: 5px;
+	border: none;
+	background-color: #87cefa;
+
+}
 </style>
 
 </head>
@@ -255,7 +304,7 @@ $(function(){
 					<ul>
 						<li><a href="/">home</a></li>
 						<li>my page</li>
-						<li>수강자 및 정산관리</li>
+						<li>수강자 및 정산내역</li>
 					</ul>
 				</div>
 				<!--breadcrumbs area end-->
@@ -265,18 +314,38 @@ $(function(){
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="search-box">
-							<div class="section_title mb-60">
-								<h2>매출액 합계</h2>
+							<div class="section_title mb-60" id="sumtitle">
+								<h2>클래스 총 매출액</h2><p id="suminfo">*클래스 정산은 수강자가 예약확정한 다음날 오전 11시에 이루어집니다.</p>
 							</div>
-							<div class="slider_text" align=right>
-								<p>기간 : 전체</p>
+
+							<div class="card-body" id="topcardbody">
+								<div id="sumwrap">
+									<div class="row gy-6" id="wrap">
+											<div class="col-md-6 sumcard">
+												<div class="card">
+													<p>정산 완료</p>
+													<h2>[[${#numbers.formatInteger(sum,3,'COMMA')}]]원</h2>
+												</div>
+											</div>
+											<div class="col-md-6 sumcard">
+												<div class="card">
+													<p>정산 예정</p>
+													<h2>[[${#numbers.formatInteger(unsum,3,'COMMA')}]]원</h2>
+												</div>
+											</div>
+										
+										<br>
+									</div>
+								</div>
 								<br>
-								<h1 id="minusPSum">[[${#numbers.formatInteger(sum,3,'COMMA')}]]
-									원</h1>
-								<br>
-								<p>매출액은 정산이 완료된 건에 한하여 집계되며, <br> 
-								클래스 정산은 수강자가 예약확정한 다음날 오전 11시에 이루어집니다.</p>
+								<div id="optionwrap">
+									<div class="row gy-6" id="opwrap">
+									</div>
+								</div>
+								
+								
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -285,14 +354,35 @@ $(function(){
 				<!-- 클래스 카드리스트 반복문 -->
 				<div class="card mb-4"  id="border">
 					<div class="card-body">
-						<div class="section_title mb-60">
-							<h2>클래스 수강자 및 정산 상태 조회</h2>
+						<div class="section_title mb-60" id="cdheader">
+							<h2>클래스별 수강자 및 개별 정산내역 보기</h2>
+							<p>* 클래스 클릭시 수강자 내역 및 개별 정산내역을 확인하실 수 있습니다.</p>
 						</div>
 					</div>
+					
+					<!--<div class="card-body">
+						<div class="row gy-3" id="wrap">
+							<div class="col-md-4">
+								<div class="card">
+									전체 :
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="card">
+									정산완료 :
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="card">
+									정산대기 :
+								</div>
+							</div>
+						</div>
+					</div>-->
 
 					<div class="card-body">
-						<div class="row gy-3" id="wrap">
-							<div class="col-md-3" th:each="list : ${pageInfo.list}"
+						<div class="row gy-4" id="wrap">
+							<div class="col-md-4" th:each="list : ${pageInfo.list}"
 								th:id="${list.classNo}">
 								<input id="clno" type="hidden" th:value="${list.classNo}">
 								<input id="clna" type="hidden" th:value="${list.name}">
@@ -301,11 +391,9 @@ $(function(){
 										<li><img th:src="@{display(fileName=${list.thumb})}"
 											alt="consectetur"
 											class="card-img-top embed-responsive-item" id="thumb_img"
-											style="height: 10em; width: 50% em;"></li>
-										<li>개설일 [[${list.uploadDate}]]</li>
-										<li>
-											<h4>[[${list.name}]]</h4>
-										</li>
+											style="height: 12em; width: 50% em;"></li>
+										<li>[[${list.name}]]</li>
+										 <!-- [[${#numbers.formatInteger(list.price,3,'COMMA')}]]원 -->
 									</ul>
 								</div>
 							</div>
@@ -313,14 +401,8 @@ $(function(){
 						</div>
 					</div>
 				</div>
-
-
-
-
-
-						<!--/ Hoverable Table rows -->
-						<p>* 클래스 클릭시 수강자 내역이 표시됩니다.</p>
-					</div>
+						
+			</div>
 					<!-- / Content -->
 
 			<!-- 페이지네이션 -->

@@ -38,10 +38,11 @@ public class ClassServiceImpl implements ClassService {
 
 
 	@Override
-	public int classUpdate(ClassVO vo) {
+	public ClassVO classUpdate(ClassVO vo) {
 		//클래스 수정
-		return 0;
+		return map.classUpdate(vo);
 	}
+
 
 	@Override
 	public int classDelete(ClassVO vo) {
@@ -93,7 +94,6 @@ public class ClassServiceImpl implements ClassService {
 		//그룹넘버 조회
 		return map.getGroupNo();
 	}
-
 
 
 

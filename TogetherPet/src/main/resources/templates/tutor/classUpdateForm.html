@@ -7,7 +7,7 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
-<title>My page - 클래스 등록</title>
+<title>My page - 클래스 수정</title>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -1222,19 +1222,20 @@ input[type="radio"]:after {
 		<div class="shop_section shop_reverse">
 			<div class="container">
 				<div class="row">
-				
+					
 						<!--breadcrumbs area start-->
 						<div class="breadcrumb_content">
 							<ul>
 								<li><a href="index.html">home</a></li>
-								<li>classInsert</li>
+								<li>my page</li>
+								<li>클래스 수정</li>
 							</ul>
 						</div>
 						<!--breadcrumbs area end-->
 
 						<!-- <form method="post" action="classList" enctype="multipart/form-data"> -->
 							<!-- <%=request.getContextPath()%>/creator/makeClassOk -->
-								<h1>클래스개설</h1>
+								<h1>클래스 수정</h1>
 								<div class="followDiv">
 									<ul>
 										<li><div class="followButton" style="color: white">1</div>
@@ -1253,12 +1254,15 @@ input[type="radio"]:after {
 											<a href="#f7"> 수강료,인원</a></li>
 									</ul>
 								</div>
+
+								
 								<div class="classCommonDiv" id="f1">
 									<span><kimin>*</kimin> 1) 클래스명 입력 <kimin>(필수)</kimin></span>
 								</div>
 								<div>
 									<input type="text" name="name" class="inputCommonClass"
-										placeholder="클래스명을 입력하세요" id="class_name">
+										placeholder="클래스명을 입력하세요" id="class_name" 
+										th:value="${clas.name}" >
 									<!-- 튜터 번호로 나중에 바꾸기!!! -->
 									<input type="hidden" id="tutorNo" th:value="${session.tutor.tutorNo}">
 									<!-- 클래스번호 -->
@@ -1279,11 +1283,11 @@ input[type="radio"]:after {
 
 								<div class="classCategoryDiv" id="forEach">
 									<ul>
-										<li>펫 푸드<input id="category" type="radio" name="check" value="food"></li>
-										<li>펫 드로잉<input id="category" type="radio" name="check" value="drawing"></li>
-										<li>펫 핸드메이드<input id="category" type="radio" name="check" value="handmade"></li>
-										<li>펫 미용<input id="category" type="radio" name="check" value="beauty"></li>
-										<li>기타 <input id="category" type="radio" name="check" value="etc"></li>										
+										<li>펫 푸드<input id="category" type="radio" name="check" value="food" th:checked="${clas.category eq'food'}" ></li>
+										<li>펫 드로잉<input id="category" type="radio" name="check" value="drawing" th:checked="${clas.category eq 'drawing' }"></li>
+										<li>펫 핸드메이드<input id="category" type="radio" name="check" value="handmade" th:checked="${clas.category eq 'handmade'}"></li>
+										<li>펫 미용<input id="category" type="radio" name="check" value="beauty" th:checked="${clas.category eq 'beauty'}"></li>
+										<li>기타 <input id="category" type="radio" name="check" value="etc" th:checked="${clas.category eq 'etc'}"></li>										
 									</ul>
 								</div>					
 								
@@ -1349,7 +1353,7 @@ input[type="radio"]:after {
 								</div>
 								<div>
 									<div id="editorForm">
-										<textarea id="editor" name="intro" class="editor"></textarea>
+										<textarea id="editor" name="intro" class="editor">[[${clas.intro}]]</textarea>
 									</div>
 								</div>
 								<div>
@@ -1398,13 +1402,16 @@ input[type="radio"]:after {
 								<div class="classAddress">
 									<div id="classAddressInnerDiv">
 										<input type="button" onclick="execDaumPostcode()" value="주소검색" class="buttonClass"><br> 
-										<input type="text" id="postcode" placeholder="우편번호" name="class_post_no" readonly="readonly"><br> 
-										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"><br> 
+										<input type="text" id="postcode" placeholder="우편번호" name="class_post_no" readonly="readonly"
+										th:value="${clas.postcode}"><br> 
+										<input type="text" id="address" placeholder="도로명주소" name="address" readonly="readonly"
+										th:value="${clas.address}"><br> 
 										<span id="guide" style="color: #999; display: none"></span> 
-										<input type="text" id="da" placeholder="상세주소" name="address" />
+										<input type="text" id="da" placeholder="상세주소" name="address" 
+										th:value="${clas.da}"/>
 										<!-- 히든으로변경 -->
-										<input type="hidden" id="latitude" name="latitude" value=""/>
-										<input type="hidden" id="longitude" name="longitude" value=""/>
+										<input type="hidden" id="latitude" name="latitude"/>
+										<input type="hidden" id="longitude" name="longitude" th:value="${clas.longitude}"/>
 
 									</div>
 								</div>
@@ -1415,7 +1422,7 @@ input[type="radio"]:after {
 								<script>
 									var mapContainer = document.getElementById('kakaoMap'), // 지도를 표시할 div
 							        mapOption = {
-							            center: new daum.maps.LatLng(35.865792, 128.594077), // 지도의 중심좌표
+							            center: new daum.maps.LatLng(`[[${clas.longitude}]]`, `[[${clas.latitude}]]`), // 지도의 중심좌표
 							            level: 3 // 지도의 확대 레벨
 							        };
 								
@@ -1446,12 +1453,13 @@ input[type="radio"]:after {
 								</div>
 								<div id="classFee">
 									<span> 수강료 : </span>
-									<input type="text" name="price" class="inputCommonClass" placeholder="희망 수강료를 입력하세요" id="class_fee">
-									<kimin2>원</kimin2>
-									<span> 최대인원 : </span><input type="text" name="maxHeadcount"
-										class="inputCommonClass" placeholder="수강가능 최대인원을 입력하세요"
-										id="class_nop">
-									<kimin2>명</kimin2>
+									<input type="text" name="price" class="inputCommonClass" id="class_fee"
+									th:value="${clas.price}"><kimin2>원</kimin2>
+									
+									<span> 최대인원 : </span>
+									<input type="text" name="maxHeadcount"
+										class="inputCommonClass" 
+										id="class_nop" th:value="${clas.maxHeadcount}"><kimin2>명</kimin2>
 								</div>
 								<div>
 									<ul class="descriptionUl">
@@ -1466,7 +1474,7 @@ input[type="radio"]:after {
 								<div class="classApplyDiv">
 									<input id="class_submit" type="button" value="클래스 등록">
 								</div>
-						
+							
 					</div>
 				</div>
 			</div>
