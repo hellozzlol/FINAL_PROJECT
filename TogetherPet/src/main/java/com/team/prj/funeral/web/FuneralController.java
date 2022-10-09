@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team.prj.funeral.mapper.FuneralMapper;
 import com.team.prj.funeral.service.FuneralVO;
+import com.team.prj.review.service.ReviewService;
+import com.team.prj.review.service.ReviewVO;
 import com.team.prj.scrap.service.ScrapService;
 import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.users.service.UsersService;
@@ -25,6 +27,9 @@ public class FuneralController {
 	 
 	 @Autowired
 	 private UsersService Uservice;
+	 
+	 @Autowired
+	 private ReviewService service;
 	
 
 
@@ -54,5 +59,14 @@ public class FuneralController {
 			 return Service.scrapInsert(vo);
 			 
 		 }
+		 
+		//리뷰전체조회
+			@RequestMapping("reviewSelectList")
+			public String reviewSelectList(ReviewVO vo, Model model) {
+				model.addAttribute("reviewList",service.reviewSelectList(vo));
+				return "funeral/reviewSelectList";
+			
+			}
+		 
 
 }
