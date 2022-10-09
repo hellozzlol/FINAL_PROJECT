@@ -2,6 +2,7 @@ package com.team.prj.seller.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +60,8 @@ public class SellerServiceImpl implements SellerService {
 	}
   
 	@Override
-	public List<ProfitVO> sellerProfitList(SellerVO svo, String key, String start, String end) {
-		return map.sellerProfitList(svo, key, start, end);
+	public List<ProfitVO> sellerProfitList(SellerVO svo, String key, String start, String end,  String by) {
+		return map.sellerProfitList(svo, key, start, end, by);
 	}	
 
 	// 판매자 회원 검색 / 1005 지혜 추가
@@ -93,4 +94,5 @@ public class SellerServiceImpl implements SellerService {
 	public int qnaAnswer(QnaVO vo) {
 		return map.qnaAnswer(vo);
 	}
+
 }

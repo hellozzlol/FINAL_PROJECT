@@ -141,7 +141,7 @@
     
     
     /*instagram activation*/
- /*   $.instagramFeed({
+  /*  $.instagramFeed({
         'username': 'portfolio.devitems',
         'container': "#instagramFeed",
         'display_profile': false,

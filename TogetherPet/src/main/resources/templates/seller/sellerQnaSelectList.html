@@ -149,6 +149,12 @@
 	}
 </style>
 <script>
+	//내역 없을때
+	if($('#qnaEmpty').html()=='0'){
+		$("#btnList").html('');
+		$('#btnList').html("<td colspan=5 align=center><h3><br>문의내역이 없습니다.</h3></td>");
+	}
+
 	//페이지 이동
 	function gopage(p) {
 		location.href = '/sellerQnaSelectList?pageNum=' + p;

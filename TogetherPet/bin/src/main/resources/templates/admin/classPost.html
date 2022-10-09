@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_admin}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<title>전체 글 조회 - 클래스</title>
+<style>
+.uList {
+
+	margin-top: 100px;
+}
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+		<br><br>
+		<h5 class="fw-bold py-3 mb-4">
+			<span class="text-muted ">전체 게시글 조회 / </span> 
+			클래스
+			</h5>
+		<br><br>
+		
+		<!-- 테이블 -->
+		<div class="card">
+			<h5 class="card-header"></h5>
+			<div class="table-responsive text-nowrap">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>선택</th>
+							<th>클래스 번호</th>
+							<th>카테고리</th>
+							<th>클래스 명</th>
+							<th>등록일자</th>
+							
+						</tr>
+					</thead>
+					<tbody class="table-border-bottom-0">
+						<tr th:each="c:${pageInfo.list}">
+							<td><input type="checkbox" id="ckbox"></td>
+							<td th:text="${c.classNo}"></td>
+							<td th:text="${c.category}"></td>
+							<td><a th:href="@{/classSelect(classNo=${c.classNo})}"
+								th:text="${c.name}"></a></td>
+							<td th:text="${c.uploadDate}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- Table end-->
+		<br>
+		<button type="button" class="btn btn-sm btn-primary">삭제</button>
+		<br> <br>
+
+		<!-- 페이지네이션 -->
+		<nav aria-label="Page navigation example">
+			<ul class="pagination pagination-info  justify-content-center">
+				<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+					class="page-link">«</span></li>
+				<li class="page-item"
+					th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+					rel="prev">«</a></li>
+				<li
+					th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+					th:each="page:${pageInfo.navigatepageNums}"><span
+					class="page-link" th:if="${pageInfo.pageNum eq page}"
+					th:text="${page}"></span> <a class="page-link"
+					th:unless="${pageInfo.pageNum eq page}"
+					th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page}}</a></li>
+				<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+					class="page-link"
+					th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+					rel="next">»</a></li>
+				<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+					class="page-link">»</span></li>
+			</ul>
+		</nav>
+
+		<script>
+			function gopage(p) {
+				location.href = '/manager/classPost?pageNum=' + p;
+			}
+		</script>
+		<!-- 페이지네이션 -->
+		
+		</article>
+	</body>
+</html>

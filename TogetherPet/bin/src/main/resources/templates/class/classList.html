@@ -1,0 +1,623 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_classList}">
+
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+<!--script src="http://code.jquery.com/jquery-latest.min.js"></script>   -->
+
+<title>원데이 클래스 목록</title>
+</head>
+
+
+<body>
+
+	<article layout:fragment="content">
+
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>class</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+
+
+						<!--sidebar widget start-->
+						<aside class="sidebar_widget">
+							<div class="widget_inner">
+								<div class="widget_list widget_filter">
+									<h2>클래스 찾아보기</h2>
+
+									<form method="get" id="classSearchForm" name="classSearchForm">
+
+										
+										<!--<div class="sorting_by d-flex align-items-center" id="cl2">
+											<span>지역</span>
+												<select name="addressRegion" id="addressRegion1"></select> 
+												<select name="address" id="addressDo1"></select>
+										</div>  -->
+										
+										
+										<div class="filter__list widget_color" id="cl1" style="width: 50%;">
+											<h3>지역</h3>
+
+											<div id="addr">
+												<div id="img6">
+													<input type="radio" name="address" value="서울" id="chk6">
+													<label for="chk6">
+														<img src="https://mochaclass.com/static/media/location1_default.0894fd94.svg" alt="서울" id="i6">
+														<img src="https://mochaclass.com/static/media/location1_over.97f5af5d.svg"  alt="서울" id="i6-1">
+													</label>
+													<br><a id="a6">서울</a>
+												</div>
+											</div>
+
+											<div id="addr">
+												<div id="img7">
+													<input type="radio" name="address" value="경기" id="chk7">
+													<label for="chk7">
+														<img src="https://mochaclass.com/static/media/location2_default.2d21abc0.svg" alt="경기" id="i7">
+														<img src="https://mochaclass.com/static/media/location2_over.b610d402.svg" alt="경기" id="i7-1">
+													</label>
+													<br><a id="a7">경기</a>
+												</div>
+											</div>
+
+											<div id="addr">
+												<div id="img8">
+													<input type="radio" name="address" value="부산" id="chk8">
+													<label for="chk8">
+														<img src="https://mochaclass.com/static/media/location3_default.d80d2d02.svg" alt="부산" id="i8">
+														<img src="https://mochaclass.com/static/media/location3_over.e21b9673.svg" alt="부산" id="i8-1">
+													</label>
+													<br><a id="a8">부산</a>
+												</div>
+											</div>
+
+											<div id="addr">
+												<div id="img9">
+													<input type="radio" name="address" value="인천" id="chk9">
+													<label for="chk9">
+														<img src="	https://mochaclass.com/static/media/location4_default.57b7f746.svg" alt="인천" id="i9">
+														<img src="https://mochaclass.com/static/media/location4_over.f45f35fd.svg" alt="인천" id="i9-1">
+													</label>
+													<br><a id="a9">인천</a>
+												</div>
+											</div>
+
+											<div id="addr">
+												<div id="img10">
+													<input type="radio" name="address" value="대구" id="chk10">
+													<label for="chk10">
+														<img src="https://mochaclass.com/static/media/location5_default.388fe582.svg" alt="대구" id="i10">
+														<img src="https://mochaclass.com/static/media/location5_over.fb9bf27e.svg" alt="대구" id="i10-1">
+													</label>
+													<br><a id="a10">대구</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img11">
+													<input type="radio" name="address" value="울산" id="chk11">
+													<label for="chk11">
+														<img src="	https://mochaclass.com/static/media/location6_default.9babe2f2.svg" alt="울산" id="i11">
+														<img src="https://mochaclass.com/static/media/location6_over.3cd7c8a6.svg" alt="울산" id="i11-1">
+													</label>
+													<br><a id="a11">울산</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img12">
+													<input type="radio" name="address" value="광주" id="chk12">
+													<label for="chk12">
+														<img src="	https://mochaclass.com/static/media/location7_default.eb889b28.svg" alt="광주" id="i12">
+														<img src="https://mochaclass.com/static/media/location6_over.3cd7c8a6.svg" alt="광주" id="i12-1">
+													</label>
+													<br><a id="a12">광주</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img13">
+													<input type="radio" name="address" value="대전" id="chk13">
+													<label for="chk13">
+														<img src="	https://mochaclass.com/static/media/location8_default.4d3d4dfa.svg" alt="대전" id="i13">
+														<img src="https://mochaclass.com/static/media/location8_over.878e58e6.svg" alt="대전" id="i13-1">
+													</label>
+													<br><a id="a13">대전</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img14">
+													<input type="radio" name="address" value="전남,전북" id="chk14">
+													<label for="chk14">
+														<img src="	https://mochaclass.com/static/media/location9_default.92e5b652.svg" alt="경상남도" id="i14">
+														<img src="https://mochaclass.com/static/media/location9_over.a07f5aec.svg" alt="경상남도" id="i14-1">
+													</label>
+													<br><a id="a14">전남 전북</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img15">
+													<input type="radio" name="address" value="경남,경북" id="chk15">
+													<label for="chk15">
+														<img src="https://mochaclass.com/static/media/location10_default.ee80bfb5.svg" alt="경상북도" id="i15">
+														<img src="https://mochaclass.com/static/media/location10_over.76d3f6e2.svg" alt="경상북도" id="i15-1">
+													</label>
+													<br><a id="a15">경남 경북</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img16">
+													<input type="radio" name="address" value="제주" id="chk16">
+													<label for="chk16">
+														<img src="	https://mochaclass.com/static/media/location11_default.4c2666de.svg" alt="전라남도" id="i16">
+														<img src="https://mochaclass.com/static/media/location11_over.221d6521.svg" alt="전라남도" id="i16-1">
+													</label>
+													<br><a id="a16">제주</a>
+												</div>
+											</div>
+											
+											<div id="addr">
+												<div id="img17">
+													<input type="radio" name="address" value="강원" id="chk17">
+													<label for="chk17">
+														<img src="https://mochaclass.com/static/media/location12_default.52013261.svg" alt="전라북도" id="i17">
+														<img src="https://mochaclass.com/static/media/location12_over.c2a687ed.svg" alt="전라북도" id="i17-1">
+													</label>
+													<br><a id="a17">강원</a>
+												</div>
+											</div>
+											
+											
+										</div>
+										
+												
+										<div class="filter__list widget_color" id="cl1" style="width: 50%;">
+											<h3>카테고리</h3>
+
+											<div id="cate">
+												<div id="img1">
+													<input type="checkbox" name="categories" value="food" id="chk1" >
+													<label for="chk1"><img src="https://mochaclass.com/static/media/cook.c9477baa.svg" alt="펫 푸드" id="i1"></label>
+													<br><a id="a1">펫 푸드</a>
+												</div>
+											</div>
+
+											<div id="cate">
+												<div id="img2">
+													<input type="checkbox" name="categories" value="handmade" id="chk2">
+													<label for="chk2"><img src="https://mochaclass.com/static/media/craft.13dd03d8.svg" alt="펫 핸드메이드"></label>
+													<br><a id="a2">펫 핸드메이드</a>
+												</div>
+											</div>
+
+											<div id="cate">
+												<div id="img3">
+													<input type="checkbox" name="categories" value="beauty" id="chk3">
+													<label for="chk3"><img src="https://mochaclass.com/static/media/pet.6855bdf3.svg" alt="펫 미용"></label>
+													<br><a id="a3">펫 미용</a>
+												</div>
+											</div>
+
+											<div id="cate">
+												<div id="img4">
+													<input type="checkbox" name="categories" value="drawing" id="chk4">
+													<label for="chk4"><img src="https://mochaclass.com/static/media/drawing.04d157cf.svg" alt="펫 드로잉"></label>
+													<br><a id="a4">펫 드로잉</a>
+												</div>
+											</div>
+
+											<div id="cate">
+												<div id="img5">
+													<input type="checkbox" name="categories" value="etc" id="chk5">
+													<label for="chk5"><img src="https://mochaclass.com/static/media/flower.107080ef.svg" alt="기타"></label>
+													<br><a id="a5">기타</a>
+												</div>
+											</div>
+											
+										</div>
+
+										<div id="cl3">
+											<button type="button" id="classSearch" class="button btn btn-primary">클래스 검색하기</button>
+											<br><br><br>
+										</div>
+									</form>
+								</div>
+							</div>
+						</aside>
+						<!--sidebar widget end-->
+
+
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+						<!--shop toolbar start-->
+						<div
+							class="shop_toolbar_wrapper d-flex justify-content-between align-items-center">
+
+							<div class="page_amount">
+								<p class="clst">
+									<span class="classlist"> [[ ${#lists.size(pageInfo.list)} ]]개의
+										클래스가 회원님의 등록을 기다리고 있어요!</span>
+								</p>
+							</div>
+							<div class="sorting_by d-flex align-items-center">
+								<span>SORT BY :</span> <select name="orderby" id="short"
+									class="select_option border">
+									<option selected value="1">최신순</option>
+									<option value="2">인기순</option>
+									<option value="3">가격높은 순</option>
+									<option value="4">가격낮은 순</option>
+								</select>
+							</div>
+							<div class="toolbar_btn_wrapper d-flex align-items-center">
+								<div class="view_btn">
+									<a class="view" href="#">VIEW</a>
+								</div>
+								<div class="shop_toolbar_btn">
+									<ul class="d-flex align-items-center">
+										<li><a href="#" class="active btn-grid-3"
+											data-role="grid_3" data-tippy="3" data-tippy-inertia="true"
+											data-tippy-delay="50" data-tippy-arrow="true"
+											data-tippy-placement="top"><i class="ion-grid"></i></a></li>
+
+										<li><a href="#" class="btn-list" data-role="grid_list"
+											data-tippy="List" data-tippy-inertia="true"
+											data-tippy-delay="50" data-tippy-arrow="true"
+											data-tippy-placement="top"><i class="ion-navicon"></i></a></li>
+										<li class="header_search"><input type="text"
+											placeholder="검색어 입력" class="searchinput"> <a href="#">
+										</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<!--shop toolbar end-->
+
+						<div class="row shop_wrapper">
+							<!---------싱글 상품 리스트 반복문---------->
+							<div class="col-lg-4 col-md-4 col-sm-6 col-6" id="point"
+								th:each="c:${pageInfo.list}">
+
+								<div class="single_product">
+
+									<!----썸네일?---->
+									<div class="product_thumb" id="product_thumb">
+										<a th:href="@{classSelect(classNo=${c.classNo})}"> 
+											<img th:src="@{display(fileName=${c.thumb})}" alt="consectetur" 
+											class="card-img-top embed-responsive-item" id="thumb_img">
+										</a>
+
+										<div class="product_action">
+											<ul>
+												<li class="wishlist"><a href="#" data-tippy="Wishlist"
+													data-tippy-inertia="true" data-tippy-delay="50"
+													data-tippy-arrow="true" data-tippy-placement="left"><i
+														class="icon-heart icons"></i></a></li>
+											</ul>
+										</div>
+									</div>
+
+									<!-----센터설명------>
+									<div class="product_content grid_content text-center">
+								
+										<div class="clas1">
+											<button class="catebtn">[[${c.category}]]</button>
+											<br>
+											<h4 class="product_name">
+												<a class="clasname" th:href="@{classSelect(classNo=${c.classNo})}"
+													>[[${c.name}]]</a>
+											</h4>
+										</div>
+										<div class="clas2">
+											<h4 class="product_name" >
+												<a th:href="@{classSelect(classNo=${c.classNo})}"
+													>🗺 [[${c.address}]]</a>
+											</h4>
+											<div class="price_box">
+												<span class="current_price">KRW [[${#numbers.formatInteger(c.price,3,'COMMA')}]]</span>
+											</div>
+										</div>
+										<div class="add_to_cart">
+											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+												data-tippy-inertia="true" data-tippy-delay="50"
+												data-tippy-arrow="true" data-tippy-placement="top">클래스
+												찜하기</a>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+							<!---------싱글 상품 리스트 반복문---------->
+						</div>
+						
+												
+						 <!-- 페이지네이션 -->
+						 <nav aria-label="Page navigation example">
+							<ul class="pagination pagination-info  justify-content-center">
+								<li class="page-item disabled"
+									th:if="${pageInfo.isIsFirstPage()}"><span
+									class="page-link">«</span></li>
+								<li class="page-item"
+									th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+									rel="prev">«</a></li>
+								<li
+									th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+									th:each="page:${pageInfo.navigatepageNums}"><span
+									class="page-link" th:if="${pageInfo.pageNum eq page}"
+									th:text="${page}"></span> <a class="page-link"
+									th:unless="${pageInfo.pageNum eq page}"
+									th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+										}}</a></li>
+								<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+									class="page-link"
+									th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+									rel="next">»</a></li>
+								<li class="page-item disabled"
+									th:unless="${pageInfo.hasNextPage}"><span
+									class="page-link">»</span></li>
+							</ul>
+						</nav>
+						<!-- 페이지네이션 -->
+						<script>
+		               		function gopage(p) {
+		                  		location.href = '/classList?pageNum=' + p;
+		                  	}
+		               	</script>
+						
+						
+						
+						
+						<!--shop wrapper end-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--shop  area end-->
+
+
+	<script>
+
+	/*-----------------------
+	콤보박스로 날짜선택 안쓰는데 일단코드 놔둠
+	-------------------------*/	
+		$(function() {
+		 	$('#addressRegion1').niceSelect('destroy');
+		    $('#addressDo1').niceSelect('destroy');
+			areaSelectMaker("select[name=addressRegion]");
+		});
+
+		var areaSelectMaker = function(target) {
+			if (target == null || $(target).length == 0) {
+				console.warn("Unkwon Area Tag");
+				return;
+			}
+			
+			   var area = {
+				        "수도권" :{
+				            "서울특별시" : [ "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구" ],
+				            "경기도" : [ "수원시 장안구", "수원시 권선구", "수원시 팔달구", "수원시 영통구", "성남시 수정구", "성남시 중원구", "성남시 분당구", "의정부시", "안양시 만안구", "안양시 동안구", "부천시", "광명시", "평택시", "동두천시", "안산시 상록구", "안산시 단원구", "고양시 덕양구", "고양시 일산동구",
+				                "고양시 일산서구", "과천시", "구리시", "남양주시", "오산시", "시흥시", "군포시", "의왕시", "하남시", "용인시 처인구", "용인시 기흥구", "용인시 수지구", "파주시", "이천시", "안성시", "김포시", "화성시", "광주시", "양주시", "포천시", "여주시", "연천군", "가평군",
+				                "양평군" ],
+				            "인천광역시" : [ "계양구", "미추홀구", "남동구", "동구", "부평구", "서구", "연수구", "중구", "강화군", "옹진군" ]			
+				        },
+				        "강원권" :{
+				            "강원도" : [ "춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시", "삼척시", "홍천군", "횡성군", "영월군", "평창군", "정선군", "철원군", "화천군", "양구군", "인제군", "고성군", "양양군" ]			
+				        },
+				        "충청권" :{
+				            "충청북도" : [ "청주시 상당구", "청주시 서원구", "청주시 흥덕구", "청주시 청원구", "충주시", "제천시", "보은군", "옥천군", "영동군", "증평군", "진천군", "괴산군", "음성군", "단양군" ],
+				            "충청남도" : [ "천안시 동남구", "천안시 서북구", "공주시", "보령시", "아산시", "서산시", "논산시", "계룡시", "당진시", "금산군", "부여군", "서천군", "청양군", "홍성군", "예산군", "태안군" ],
+				            "대전광역시" : [ "대덕구", "동구", "서구", "유성구", "중구" ],
+				            "세종특별자치시" : [ "세종특별자치시" ]			
+				        },
+				        "전라권" :{
+				            "전라북도" : [ "전주시 완산구", "전주시 덕진구", "군산시", "익산시", "정읍시", "남원시", "김제시", "완주군", "진안군", "무주군", "장수군", "임실군", "순창군", "고창군", "부안군" ],
+				            "전라남도" : [ "목포시", "여수시", "순천시", "나주시", "광양시", "담양군", "곡성군", "구례군", "고흥군", "보성군", "화순군", "장흥군", "강진군", "해남군", "영암군", "무안군", "함평군", "영광군", "장성군", "완도군", "진도군", "신안군" ],
+				            "광주광역시" : [ "광산구", "남구", "동구", "북구", "서구" ]			
+				        },
+				        "경상권" : {
+				            "경상북도" : [ "포항시 남구", "포항시 북구", "경주시", "김천시", "안동시", "구미시", "영주시", "영천시", "상주시", "문경시", "경산시", "군위군", "의성군", "청송군", "영양군", "영덕군", "청도군", "고령군", "성주군", "칠곡군", "예천군", "봉화군", "울진군", "울릉군" ],
+				            "경상남도" : [ "창원시 의창구", "창원시 성산구", "창원시 마산합포구", "창원시 마산회원구", "창원시 진해구", "진주시", "통영시", "사천시", "김해시", "밀양시", "거제시", "양산시", "의령군", "함안군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함양군", "거창군", "합천군" ],
+				            "부산광역시" : [ "강서구", "금정구", "남구", "동구", "동래구", "부산진구", "북구", "사상구", "사하구", "서구", "수영구", "연제구", "영도구", "중구", "해운대구", "기장군" ],
+				            "대구광역시" : [ "남구", "달서구", "동구", "북구", "서구", "수성구", "중구", "달성군" ],
+				            "울산광역시" : [ "남구", "동구", "북구", "중구", "울주군" ]			
+				        },
+				        "제주권" : {
+				            "제주특별자치도" : [ "서귀포시", "제주시" ]			
+				        }
+				    };
+
+			   for (i = 0; i < $(target).length; i++) {
+					(function(z) {
+						var a1 = $(target).eq(z);
+						var a2 = a1.next();
+
+						//초기화
+						init(a1, true);
+
+				         //권역 기본 생성
+			            var areaKeys1 = Object.keys(area);
+			            areaKeys1.forEach(function(Region){
+			                a1.append("<option value="+Region+">"+Region+"</option>"); //권역
+			             
+			            });
+
+			            //변경 이벤트
+			            $(a1).on("change", function(){
+			                init($(this), false);
+			                var Region = $(this).val();
+			                var keys = Object.keys(area[Region]);
+			                keys.forEach(function(Do){
+			                    a2.append("<option value="+Do+">"+Do+"</option>");    //시도
+			                });
+			            });
+
+			            /* $(a2).on("change", function(){
+			                a3.empty().append("<option value=''>선택</option>");
+			                var Region = a1.val();
+			                var Do = $(this).val();
+			                var keys = Object.keys(area[Region][Do]);
+			                keys.forEach(function(SiGunGu){
+			                    a3.append("<option value="+area[Region][Do][SiGunGu]+">"+area[Region][Do][SiGunGu]+"</option>");    
+			                });
+			            }); */
+			        })(i);        
+	 
+
+					function init(t, first) {
+						first ? t.empty().append("<option value=''>선택</option>")
+								: "";
+						t.next().empty().append("<option value=''>선택</option>");
+					}
+				}
+		}
+	</script>
+
+
+	<script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	$("#classSearch").on('click', classSearch)
+	
+	
+	/*-----------------------
+	클래스 검색
+	-------------------------*/	
+	function classSearch(){
+		// 사용자 ID를 갖고 온다.    
+		//var userId = $("#userId").val();
+
+		// 1. 카테고리가 같은 체크박스의 값들을 배열에 담는다.
+		var categoryCkbox = [];
+		$("input[name='categories']:checked").each(function(i) {
+			categoryCkbox.push($(this).val());    
+		});
+		
+		// 2. 셀렉트 주소 값들을 배열에 담는다.
+		var addressCkbox = $("input[name='address']:checked").val();
+
+		// 3. 사용자 ID(문자열)와 체크박스 값들(배열)을 name/value 형태로 담는다.
+		var searchData = { 'categories' : categoryCkbox, 'address' : addressCkbox };
+
+				$.ajax({ 
+					 url :"classSearch",        
+					 type :'post', //method 
+					 beforeSend : function(xhr){
+						   xhr.setRequestHeader(header, token)},       
+					 data : searchData,//$('#classSearchForm').serialize(),        
+					 //dataType : 'json',
+					 success : function(response) {            
+						console.log(categoryCkbox);
+					 	console.log(addressCkbox);    
+					 	
+					 	htmlView(response);    
+						//window.opener.location.reload();            
+						//self.close();  
+					},        
+					 error:function(){      
+						 console.log('오류');            
+					 }
+				 
+				})
+		
+		function htmlView(datas) {
+			$(".shop_wrapper").empty(); 
+			$(".clst").empty();
+			
+			var length = datas.length;
+			var newlength = `<span class="classlist"> ${length} 개의
+				클래스가 회원님의 등록을 기다리고 있어요!</span>`
+			$(".clst").append(newlength);
+				
+			for (c of datas){
+			var result = `<div class="col-lg-4 col-md-4 col-sm-6 col-6" id="point">
+				
+							<div class="single_product">
+								<!----썸네일?---->
+								<div class="product_thumb"  id="product_thumb">
+									<a href="/classSelect?classNo=${c.classNo}"> 
+										<img class="primary_img"  id="thumb_img" src="display?fileName=${c.thumb}" alt="consectetur" class="card-img-top embed-responsive-item">
+									</a>
+									
+									<div class="product_action">
+										<ul>
+											<li class="wishlist"><a href="#" data-tippy="Wishlist"
+												data-tippy-inertia="true" data-tippy-delay="50"
+												data-tippy-arrow="true" data-tippy-placement="left"><i
+													class="icon-heart icons"></i></a></li>
+										</ul>
+									</div>
+								</div>				
+			
+								<!-----센터설명------>
+								<div class="product_content grid_content text-center">
+									<div class="clas1">
+										<button class="catebtn">${c.category}</button>
+										<br>
+										<h4 class="product_name">
+											<a class="clasname" href="/classSelect?classNo=${c.classNo}">${c.name}</a>
+										</h4>
+									</div>
+									
+									<div class="clas2">
+										<h4 class="product_name">
+											<a href="/classSelect?classNo=${c.classNo}">🗺 ${c.address}</a>
+										</h4>
+										<div class="price_box">
+											<span class="current_price">KRW ${c.price}</span>
+										</div>
+										
+									</div>
+									
+									<div class="add_to_cart">
+										<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+											data-tippy-inertia="true" data-tippy-delay="50"
+											data-tippy-arrow="true" data-tippy-placement="top">클래스 찜하기</a>
+									</div>
+								</div>
+			
+			
+							</div>
+						</div>`	
+				$(".shop_wrapper").append(result); 
+
+			}
+		}		
+	};
+
+	</script>
+	</article>
+</body>
+</html>

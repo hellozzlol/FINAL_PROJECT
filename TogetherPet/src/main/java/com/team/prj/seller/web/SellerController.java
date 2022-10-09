@@ -261,33 +261,36 @@ public class SellerController {
 	// 정산 테이블
 	@RequestMapping("/profitTable")
 	public String profitTableCall(Model model, SellerVO svo, HttpSession session, String key, String start, String end,
-			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			String by, @RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		if (key == null) {
-			key = "1";
+			key = "2";
 		}
-		
-		if (start == null) {
+
+		if (start == null || start == "") {
 			start = null;
 		}
-		
-		if (end == null) {
+
+		if (end == null || end == "") {
 			end = null;
 		}
 		
+		if (by == null || by == "") {
+			by = null;
+		}
+
 		svo = (SellerVO) session.getAttribute("seller");
 		svo.setSellerNo(svo.getSellerNo());
-		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end);
-		model.addAttribute("listSize", list.size());
+		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end, by);
 		model.addAttribute("pageInfo", PageInfo.of(list));
-		
+
 		// 매출 합계
 		System.out.println("===============매출합계================");
-		
+
 		list = seller.sellerProfitList(svo, "2", start, end);
 		int sum = 0;
-		for(int i = 0; i<list.size();i++) {
+		for (int i = 0; i < list.size(); i++) {
 			System.out.println("=============== FOR ================");
 			System.out.println(list.get(i).getMinusPrice());
 			sum += list.get(i).getMinusPrice();
@@ -327,6 +330,20 @@ public class SellerController {
 	// 문의 답변 처리
 	@PostMapping("/qnaAnswer")
 	public String qnaAnswer(QnaVO qvo) {
+		seller.qnaAnswer(qvo);
+		return "redirect:/sellerQnaSelectList";
+	}
+
+	// 문의 답변 수정 폼 호출
+	@RequestMapping("/sellerQnaAnswerUp")
+	public String sellerQnaAnswerUp(Model model, QnaVO qvo, HttpSession session) {
+		model.addAttribute("qna", seller.qnaSelect(qvo));
+		return "/seller/sellerQnaAnswerUp";
+	}
+
+	// 문의 답변 수정 처리
+	@PostMapping("/qnaAnswerUp")
+	public String qnaAnswerUp(QnaVO qvo) {
 		seller.qnaAnswer(qvo);
 		return "redirect:/sellerQnaSelectList";
 	}

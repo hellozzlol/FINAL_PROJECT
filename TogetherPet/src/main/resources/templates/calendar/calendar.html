@@ -92,7 +92,7 @@
 				},
 				eventClick : function(info) { // 일정 삭제
 					if (confirm(info.event.title + '일정을 삭제하시겠습니까?')) {
-						 console.log(info.event);
+						// console.log(info.event);
 						$.ajax({
 							url:'/calendarDelete',
 							type:'post',
@@ -103,7 +103,7 @@
 								'calendarNo':info.event.extendedProps.no
 							},
 							success : function(res) {
-								console.log('res', res);
+								// console.log('res', res);
 								window.location.reload();
 							}
 						})
@@ -112,14 +112,7 @@
 				select: function(arg) { // 일정 등록
 					var title = prompt("등록할 일정을 입력하세요.");
 					if (title) {
-						calendar.addEvent({
-							title:title,
-							start:arg.startDt,
-							end:arg.endDt
-						})
-						
-						console.log('ggggggggggg', item);
-						
+						// console.log('==', arg);
 						$.ajax({
 							url:'/calendarInsert',
 							type:'post',
@@ -127,12 +120,17 @@
 								xhr.setRequestHeader(header, token)
 							},
 							data: {
-								'start':arg.startDt,
-								'end':arg.endDt,
+								'startDt':arg.startStr,
+								'endDt':arg.endStr,
 								'title':title
 							},
 							success: function(response) {
 								alert("일정이 추가되었습니다.");
+								calendar.addEvent({
+									title:title,
+									start:arg.start,
+									end:arg.end
+								})
 							}
 						})
 						calendar.unselect();

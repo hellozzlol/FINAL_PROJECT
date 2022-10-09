@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.admin.mapper.ProfitMapper">
+	<!-- 일별 리스트 -->
+	<select id="profitList"
+		resultType="com.team.prj.admin.service.ProfitVO">
+		select  to_char(minus_dt, 'yyyy-mm-dd') as minus_dt,
+				to_char(order_dt, 'yyyy-mm-dd') as order_dt,
+				user_no,
+				user_name,
+				seller_no,
+				seller_name,
+				category_id,
+				name,
+				total_price,
+				minus_price,
+				profit,
+				minus_yn
+		from    profit
+		where   minus_yn='1'
+		<!-- 날짜 선택하여 조회할 경우 -->
+		<if test="start != null and end != null">
+				and minus_dt
+					between to_date(#{start}, 'yyyy-mm-dd')
+					and
+					to_char(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
+		</if>
+	</select>
+
+	<!-- 단건 조회 -->
+	<select id="profitSelect"
+		resultType="com.team.prj.admin.service.ProfitVO">
+		select * from profit where 1=1
+	</select>
+
+	<!-- 일별 -->
+	<select id="dailyList" resultType="Map">
+		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, sum(profit) as pf
+		from    profit
+		where   minus_yn=1 <!-- and category_id='S' -->
+		<if test="start != null">
+		and     to_date(minus_dt, 'yy/mm/dd') = to_date(#{start}, 'yy/mm/dd')
+		</if>
+		group by  minus_dt
+		order by  1 desc
+	</select>
+
+	<!-- 주별 조회 -->
+	<select id="weeklyList" resultType="Map">
+		select	 	 (select to_char(minus_dt, 'IW') FROM dual) as weekly, 
+			         (select TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd') from dual) as start_dt,
+			         (select TO_CHAR(TRUNC(minus_dt,'iw')+6,'yyyy-mm-dd') from dual) as end_dt,
+				     sum(profit) as pf
+		from		 profit
+		where 		 minus_yn=1
+		<if test="start != null">
+		and 		 to_date((select TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd') from dual), 'yyyy-mm-dd') = to_date(#{start}, 'yyyy-mm-dd')
+		</if>
+		group by 	 to_char(minus_dt, 'IW'),
+                     TO_CHAR(TRUNC(minus_dt,'iw'),'yyyy-mm-dd'),
+				     TO_CHAR(TRUNC(minus_dt,'iw')+6,'yyyy-mm-dd')
+		order by     1 desc
+	</select>
+
+	<!-- 월별 조회 -->
+	<select id="monthlyList" resultType="Map">
+		select substr(minus_dt,4,2) as monthly,
+			   sum(profit) as pf
+		from profit
+		where minus_yn=1
+		<if test="start != null">
+        and to_number(substr(minus_dt,4,2)) = #{start}
+        </if>
+		group by substr(minus_dt, 4, 2)
+		order by 1 desc
+	</select>
+
+
+</mapper>

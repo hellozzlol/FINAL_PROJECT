@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.admin.mapper.adminMapper">
+
+	<select id="adminSelect"
+		parameterType="com.team.prj.admin.service.adminVO"
+		resultType="com.team.prj.admin.service.adminVO">
+		SELECT *
+		FROM ADMIN
+		WHERE ad_no = #{adNo}
+	</select>
+
+
+	<update id="postUpdate">
+		UPDATE goods 
+		SET upload_state='1'   
+		WHERE goods_no = #{goodsNo}
+	</update>
+
+
+
+	<!-- ! -->
+	<update id="cpostUpdate">
+		UPDATE class 
+		SET upload_state='1'   
+		WHERE class_no = #{classNo}
+	</update>
+
+
+
+
+	<update id="goodsRefuse">
+		UPDATE goods
+		SET upload_state='2', return_message=#{returnMessage}   
+		WHERE goods_no = #{goodsNo}
+	</update>
+	
+	<update id="classRefuse">
+		UPDATE class
+		SET upload_state='2', return_message=#{returnMessage}   
+		WHERE class_no = #{classNo}
+	</update>
+
+
+</mapper>
