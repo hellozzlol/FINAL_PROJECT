@@ -1,5 +1,7 @@
 package com.team.prj.goods.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -106,5 +108,12 @@ public class AjaxGoodsController {
 	public int ajaxCartCount(CartVO vo) {
 		int cnt = cart.cartCount(vo);
 		return cnt;
+	}
+	
+	// 판매자 마이페이지 - 정산관리 메뉴에서 조회할 수 있는 주문 상세 페이지
+	@RequestMapping("/ajaxSelectOrder")
+	public List<OrderVO> ajaxSelectOrder(OrderVO vo){
+		System.out.println("=======================" + vo.getOrderNo());
+		return order.selectOrder(vo);
 	}
 }

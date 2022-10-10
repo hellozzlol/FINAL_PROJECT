@@ -33,6 +33,8 @@ public class OrderVO {
 	// 1004 선희 추가
 	private String state; // 반품,교환상태
 	
-	// List<String, String> searchGoods;
+	// 1010 희수 추가
+	private String nickname;
+	private int price;
 }
 

@@ -285,17 +285,6 @@ public class SellerController {
 		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end, by);
 		model.addAttribute("pageInfo", PageInfo.of(list));
 
-		// 매출 합계
-		System.out.println("===============매출합계================");
-
-		list = seller.sellerProfitList(svo, "2", start, end);
-		int sum = 0;
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println("=============== FOR ================");
-			System.out.println(list.get(i).getMinusPrice());
-			sum += list.get(i).getMinusPrice();
-		}
-		model.addAttribute("sum", sum);
 		return "seller/profitTable";
 	}
 
