@@ -22,11 +22,14 @@ import com.github.pagehelper.PageInfo;
 import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.notice.service.NoticeService;
+import com.team.prj.notice.service.NoticeVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.state.service.StateVO;
+import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class SellerController {
@@ -36,6 +39,9 @@ public class SellerController {
 	private SellerService seller;
 	@Autowired
 	private GoodsService goods;
+	// 1010 선희 추가(알림)
+	@Autowired
+	private NoticeService notice;
 
 	// 판매자 회원 전체 조회
 	@RequestMapping("/sellerSelectList")
@@ -225,8 +231,25 @@ public class SellerController {
 
 	// 배송 상태 업데이트(배송지시)
 	@PostMapping("/deliveryUpdate")
-	public String deliveryUpdate(OrderVO ovo) {
+	public String deliveryUpdate(OrderVO ovo, NoticeVO nvo) {
+		// 배송 지시
 		goods.deliveryUpdate(ovo);
+		
+		// 알림 테이블에 등록 1010 선희추가
+		int refNo = Integer.parseInt(ovo.getDeliveryState());
+		String name = ovo.getName();
+		String type = "3"; // 알림 상태 3번(배송상태)
+		String msg;
+		nvo.setUserNo(ovo.getUserNo());
+		nvo.setRefNo(refNo);
+		nvo.setContent(name);
+		nvo.setType(type);
+		int cnt = notice.noticeInsert(nvo);
+		if (cnt > 0) {
+			msg = "주문하신 상품의 배송이 시작되었습니다.";
+		} else {
+			msg = "error";
+		}
 		return "redirect:/sellerDeliList";
 	}
 
@@ -275,7 +298,7 @@ public class SellerController {
 		if (end == null || end == "") {
 			end = null;
 		}
-		
+
 		if (by == null || by == "") {
 			by = null;
 		}
@@ -284,18 +307,6 @@ public class SellerController {
 		svo.setSellerNo(svo.getSellerNo());
 		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end, by);
 		model.addAttribute("pageInfo", PageInfo.of(list));
-
-		// 매출 합계
-		System.out.println("===============매출합계================");
-
-		list = seller.sellerProfitList(svo, "2", start, end);
-		int sum = 0;
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println("=============== FOR ================");
-			System.out.println(list.get(i).getMinusPrice());
-			sum += list.get(i).getMinusPrice();
-		}
-		model.addAttribute("sum", sum);
 		return "seller/profitTable";
 	}
 
@@ -329,8 +340,27 @@ public class SellerController {
 
 	// 문의 답변 처리
 	@PostMapping("/qnaAnswer")
-	public String qnaAnswer(QnaVO qvo) {
+	public String qnaAnswer(QnaVO qvo, NoticeVO nvo) {
+		// 문의 답변(업데이트)
 		seller.qnaAnswer(qvo);
+
+		// 알림 테이블에 등록 1010 선희추가
+		int refNo = qvo.getQnaNo();
+		int userNo = qvo.getUserNo();
+		String answer = qvo.getAnswer();
+		String type = "2"; // 알림 상태 2번(qna)
+		String msg;
+		nvo.setUserNo(userNo);
+		System.out.println("===========" + userNo); // 0을 받아옴..
+		nvo.setRefNo(refNo);
+		nvo.setContent(answer);
+		nvo.setType(type);
+		int cnt = notice.noticeInsert(nvo);
+		if (cnt > 0) {
+			msg = "답변이 등록되었습니다.";
+		} else {
+			msg = "error";
+		}
 		return "redirect:/sellerQnaSelectList";
 	}
 

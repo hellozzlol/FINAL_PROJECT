@@ -8,6 +8,7 @@ import com.team.prj.cart.service.CartService;
 import com.team.prj.cart.service.CartVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.notice.service.NoticeService;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 
@@ -20,6 +21,8 @@ public class AjaxGoodsController {
 	private OrderService order;
 	@Autowired
 	private GoodsService goods;
+	@Autowired
+	private NoticeService notice;
 
 	@RequestMapping("/ajaxCartInsert")
 	public String insertCart(CartVO vo, int amount) {

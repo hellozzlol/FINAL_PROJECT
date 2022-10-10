@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.notice.mapper.NoticeMapper">
-	<!-- 알림 전체 조회 -->
+	<!-- 알림 조회 -->
 	<select id="noticeSelectList"
 		resultType="com.team.prj.notice.service.NoticeVO">
-		SELECT *
-		FROM notice
-		WHERE user_no = #{userNo}
-		ORDER BY
-		notice_no DESC
-	</select>
-
-	<!-- 알림 단건 조회 -->
-	<select id="noticeSelect"
-		resultType="com.team.prj.notice.service.NoticeVO"
-		parameterType="com.team.prj.notice.service.NoticeVO">
-		SELECT *
-		FROM notice
-		WHERE notice_no = #{noticeNo}
-		AND
-		user_no = #{userNo}
+		SELECT n.notice_no, n.content, n.gen_time, n.read_time, u.nickname, u.attach, u.user_no
+		FROM notice n, users u
+		WHERE n.user_no = u.user_no 
+        AND u.user_no = 2
+		ORDER BY n.notice_no DESC
 	</select>
 
 	<!-- 알림 등록 -->
@@ -46,24 +35,18 @@
 		#{refNo})
 	</insert>
 
-	<!-- 알림 수정 -->
+	<!-- 알림 상태 업데이트 -->
 	<update id="noticeUpdate"
 		parameterType="com.team.prj.notice.service.NoticeVO">
 		UPDATE NOTICE
-		<set>
-			<if test="content != null">content = #{content},</if>
-			<if test="readTime != null">read_time = #{readTime},</if>
-			<if test="url != null">url = #{url},</if>
-			<if test="type != null">type = #{type},</if>
-			<if test="content != null">content = #{content}</if>
-		</set>
+		SET read_time = sysdate
 		WHERE notice_no = #{noticeNo}
 	</update>
 	
-	<!-- 알림 삭제 -->
-	<delete id="noticeDelete">
-		DELETE
+	<!-- 알림 카운트 -->
+	<select id="noticeCount" resultType="int">
+		SELECT count(*)
 		FROM notice
-		WHERE notice_no = #{noticeNo}
-	</delete>
+		WHERE user_no = #{userNo}
+	</select>
 </mapper>
