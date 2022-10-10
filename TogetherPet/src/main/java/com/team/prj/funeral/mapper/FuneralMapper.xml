@@ -44,7 +44,8 @@
 		parameterType="com.team.prj.review.service.ReviewVO">
 		select *
 		from review
-		where category_id='f'
+		where board_no=#{reviewNo} and
+		category_id='f'
 	</select>
 
 

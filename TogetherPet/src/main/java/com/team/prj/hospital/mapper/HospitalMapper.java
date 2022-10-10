@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.team.prj.hospital.service.HospitalVO;
+import com.team.prj.review.service.ReviewVO;
 import com.team.prj.scrap.service.ScrapVO;
 
 public interface HospitalMapper {
@@ -28,4 +29,16 @@ public interface HospitalMapper {
 
 	//소현스크랩기능
 	int scrapInsert(ScrapVO vo);//20221005소현추가
+	
+	
+	//소현 리뷰기능 20221008
+	List<ReviewVO> reviewSelectList(ReviewVO vo);
+	
+	ReviewVO reviewSelect(ReviewVO vo);
+	
+	int reviewInsert(ReviewVO vo);
+	
+	int reviewUpdate(ReviewVO vo);
+	
+	int reviewDelete(ReviewVO vo);
 }
