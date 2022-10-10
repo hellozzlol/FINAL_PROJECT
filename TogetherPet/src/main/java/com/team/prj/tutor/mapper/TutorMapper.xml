@@ -46,7 +46,6 @@
 
 	<!-- 마이페이지에서 튜터정보 수정 -->
 	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
-
 		update tutor
 		<set>
 			<if test="id != null">id = #{id},</if>
@@ -88,7 +87,7 @@
 		</choose>
 	</select>
 
-	<!-- 튜터가 생성한 클래스 리스트 조회 -->
+	<!-- 튜터가 생성한 전체 클래스 리스트 조회 -->
 	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
 		select *
 		from class
@@ -96,7 +95,27 @@
 		order by upload_date
 	</select>
 	
-	<!-- 특정 클래스의 모든 날짜옵션 리스트-->
+	
+	<!-- 튜터가 생성한 클래스 중 승인 완료된 클래스 리스트 조회 -->
+	<select id="myExtiveClassList" resultType="com.team.prj.classes.service.ClassVO">
+		SELECT *
+		FROM CLASS
+		WHERE TUTOR_NO = #{tutorNo}
+		AND UPLOAD_STATE = 1
+		ORDER BY UPLOAD_DATE
+	</select>
+	
+	
+	<!-- 클래스 예약 건수 int로 조회 -->
+	<select id="getClassReserve" parameterType="int" resultType="int">
+		SELECT count(*)
+		FROM CLASS_RESERVE
+		WHERE CLASS_NO = ${classNo}
+	</select>
+	
+	
+	
+	<!-- (예약 건수가 있을 경우)특정 클래스의 모든 날짜옵션 리스트-->
 	<select id="classOptionList"	parameterType="int" 
 		resultType="com.team.prj.classes.service.ClassOptionVO">
 		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
@@ -112,6 +131,23 @@
 		c.price, r.minus_price
 		order by o.start_dt DESC
 	</select>
+	
+	
+	
+	
+	<!-- (예약 건수가 없을 경우)특정 클래스의 모든 날짜옵션 리스트-->
+	<select id="classOption"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount, c.price
+		from class_option o, class c
+		where o.class_no = ${classNo}
+		and o.class_no = c.class_no
+		group by o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount, c.price
+		order by o.start_dt DESC
+	</select>
+	
 	
 	<!-- 특정 클래스의 한 옵션을 예약한 예약자 리스트-->
 	<select id="optionReserv"	parameterType="int" 

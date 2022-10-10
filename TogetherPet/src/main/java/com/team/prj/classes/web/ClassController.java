@@ -20,18 +20,22 @@ import com.team.prj.classexreserve.service.ClassExreserveVO;
 import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.review.service.ReviewService;
+import com.team.prj.review.service.ReviewVO;
+import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class ClassController {
 	
 	@Autowired
-	private ClassService classes;
+	private ClassService clas;
 	@Autowired 
 	private ClassExreserveService exreserve;
 	@Autowired
 	private ClassReserveService reserve;
-	
+	@Autowired
+	private ReviewService review;
 	
 	
 	//소스코드 테스트용입니다
@@ -48,7 +52,7 @@ public class ClassController {
 		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
 		PageHelper.startPage(pageNum, pageSize); 
 		
-		model.addAttribute("pageInfo",PageInfo.of(classes.classSelectList()));
+		model.addAttribute("pageInfo",PageInfo.of(clas.classSelectList()));
 		return "class/classList";
 	}
 	
@@ -56,14 +60,20 @@ public class ClassController {
 	@RequestMapping("classSelect")
 	public String classSelect(Model model, ClassVO vo) {
 		//클래스 정보
-		vo = classes.classSelect(vo);
+		vo = clas.classSelect(vo);
 		model.addAttribute("clas", vo);
 		
-		// 리뷰리스트
+		//클래스 리뷰 리스트
+		List<ReviewVO> relist = clas.classReviewSelectList(vo);
+		model.addAttribute("reviewList", relist);
+		
+		//클래스 튜터 정보
+		TutorVO tutor = clas.tutorSelect(vo);
+		model.addAttribute("tutor", tutor);
 		
 		//클래스 그룹사진 슬라이드 리스트
-		List<PhotoVO> list = classes.classPhotoList(vo);
-		model.addAttribute("photoList", list);
+		List<PhotoVO> polist = clas.classPhotoList(vo);
+		model.addAttribute("photoList", polist);
 		
 		return "class/classSelect";
 	}
