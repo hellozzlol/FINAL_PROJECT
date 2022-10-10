@@ -46,12 +46,12 @@ public class FuneralController {
 	
 
 	@RequestMapping("/funeral")
-	public String funeralSelect(FuneralVO vo, Model model,ReviewVO rvo) {
+	public String funeralSelect(FuneralVO vo, Model model) {
 		model.addAttribute("funeral", dao.funeralSelect(vo));
 		
 		//리뷰리스트
-		rvo.setReviewNo(vo.getFuneralNo());
-		model.addAttribute("reviewSelectList",dao.reviewSelectList(rvo));
+		List<ReviewVO> relist = dao.funeralreviewSelectList(vo);
+		model.addAttribute("reviewSelectList",relist);
 		
 		return "funeral/funeralSelect";
 	}
@@ -76,6 +76,18 @@ public class FuneralController {
 				return "funeral/reviewSelectList";
 			
 			}
+			
+			//클래스 단건조회에서 리뷰 등록
+			@RequestMapping("funeralReviewInsert")
+			@ResponseBody
+			public ReviewVO funeralReviewInsert(ReviewVO rvo, Model model) {
+				//리뷰 정보 인서트
+				int insert =  service.reviewInsert(rvo);
+			
+				//닉네임 포함된 값으로 다시 조회
+				ReviewVO result = dao.funeralreviewSelect(rvo);
+				return result;
+			}	
 		 
 
 }

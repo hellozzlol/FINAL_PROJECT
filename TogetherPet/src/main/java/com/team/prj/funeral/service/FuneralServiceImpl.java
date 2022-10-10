@@ -52,37 +52,40 @@ public class FuneralServiceImpl implements FuneralService {
 		return map.scrapInsert(vo);
 	}
 
+	
 	//소현 별점리뷰 기능 추가 20221008
+	@Override
+	public List<ReviewVO> funeralreviewSelectList(FuneralVO vo) {
+		// 20221010 장례리뷰리스트
+		return map.funeralreviewSelectList(vo);
+	}
+
+	@Override
+	public ReviewVO funeralreviewSelect(ReviewVO vo) {
+		// 20221010 장례리뷰단건
+		return map.funeralreviewSelect(vo);
+	}
+
+	@Override
+	public int reviewInsert(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int reviewUpdate(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int reviewDelete(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	
 	
-		@Override
-		public List<ReviewVO> reviewSelectList(ReviewVO vo) {
-			// 장례리뷰리스트
-			return map.reviewSelectList(vo);
-		}
-
-		@Override
-		public ReviewVO reviewSelect(ReviewVO vo) {
-			// 리뷰상세보기
-			return map.reviewSelect(vo);
-		}
-
-		@Override
-		public int reviewInsert(ReviewVO vo) {
-			// 리뷰등록
-			return map.reviewInsert(vo);
-		}
-
-		@Override
-		public int reviewUpdate(ReviewVO vo) {
-			// 리뷰수정
-			return map.reviewUpdate(vo);
-		}
-
-		@Override
-		public int reviewDelete(ReviewVO vo) {
-			// 리뷰삭제
-			return map.reviewDelete(vo);
-		}
-
+	
+		
 }

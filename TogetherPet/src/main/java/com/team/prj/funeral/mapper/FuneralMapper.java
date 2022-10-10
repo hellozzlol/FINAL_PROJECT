@@ -21,9 +21,9 @@ public interface FuneralMapper {
 		int scrapInsert(ScrapVO vo);//20221007소현추가
 		
 		//소현 리뷰기능 20221008
-				List<ReviewVO> reviewSelectList(ReviewVO vo);
+				List<ReviewVO> funeralreviewSelectList(FuneralVO vo);
 				
-				ReviewVO reviewSelect(ReviewVO vo);
+				ReviewVO funeralreviewSelect(ReviewVO vo);
 				
 				int reviewInsert(ReviewVO vo);
 				

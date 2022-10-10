@@ -59,33 +59,37 @@ public class HospitalServiceImpl implements HospitalService {
 	}
 
 	@Override
-	public List<ReviewVO> reviewSelectList(ReviewVO vo) {
-		// 병원리뷰리스트
-		return map.reviewSelectList(vo);
+	public List<ReviewVO> hospitalreviewSelectList(HospitalVO vo) {
+		// TODO Auto-generated method stub
+		return map.hospitalreviewSelectList(vo);
 	}
 
 	@Override
-	public ReviewVO reviewSelect(ReviewVO vo) {
-		// 리뷰상세보기
-		return map.reviewSelect(vo);
+	public ReviewVO hospitalreviewSelect(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return map.hospitalreviewSelect(vo);
 	}
 
 	@Override
 	public int reviewInsert(ReviewVO vo) {
-		// 리뷰등록
+		// TODO Auto-generated method stub
 		return map.reviewInsert(vo);
 	}
 
 	@Override
 	public int reviewUpdate(ReviewVO vo) {
-		// 리뷰수정
-		return map.reviewUpdate(vo);
+		// TODO Auto-generated method stub
+		return map.hospitalUpdate(null);
 	}
 
 	@Override
 	public int reviewDelete(ReviewVO vo) {
-		// 리뷰삭제
+		// TODO Auto-generated method stub
 		return map.reviewDelete(vo);
 	}
+
+	
+
+	
 
 }

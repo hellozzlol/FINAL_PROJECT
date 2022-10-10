@@ -38,14 +38,29 @@
 		SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
 	</insert>
 
-
-	<select id="reviewSelectList"
+  <!-- 리뷰리스트 조회 -->
+	<select id="funeralreviewSelectList"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.funeral.service.FuneralVO">
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+			WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='f'
+		AND BOARD_NO = #{funeralNo}
+	</select>
+	
+	<!-- 단건리뷰리스트 조회 -->
+	<select id="funeralreviewSelect"
 		resultType="com.team.prj.review.service.ReviewVO"
 		parameterType="com.team.prj.review.service.ReviewVO">
-		select *
-		from review
-		where board_no=#{reviewNo} and
-		category_id='f'
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='f'
+		AND REVIEW_NO = #{reviewNo}
+		ORDER BY R.REVIEW_NO DESC   
 	</select>
 
 

@@ -102,14 +102,31 @@
 		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
 	</insert>
 	
-	<!-- 리뷰 -->
-	<select id="reviewSelectList"
+	
+	
+<!-- 리뷰리스트 조회 -->
+	<select id="hospitalreviewSelectList"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.hospital.service.HospitalVO">
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+			WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='h'
+		AND BOARD_NO = #{hospitalNo}
+	</select>
+	
+	<!-- 단건리뷰리스트 조회 -->
+	<select id="hospitalreviewSelect"
 		resultType="com.team.prj.review.service.ReviewVO"
 		parameterType="com.team.prj.review.service.ReviewVO">
-		select *
-		from review
-		where board_no=#{reviewNo} and
-		category_id='h'
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='h'
+		AND REVIEW_NO = #{reviewNo}
+		ORDER BY R.REVIEW_NO DESC   
 	</select>
 	
 	

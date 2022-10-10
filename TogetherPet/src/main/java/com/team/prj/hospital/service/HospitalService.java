@@ -29,9 +29,9 @@ public interface HospitalService {
 	
 	
 	//소현 리뷰기능 20221009
-	List<ReviewVO> reviewSelectList(ReviewVO vo);
+	List<ReviewVO> hospitalreviewSelectList(HospitalVO vo);
 	
-	ReviewVO reviewSelect(ReviewVO vo);
+	ReviewVO hospitalreviewSelect(ReviewVO vo);
 	
 	int reviewInsert(ReviewVO vo);
 	

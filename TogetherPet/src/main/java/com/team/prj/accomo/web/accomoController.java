@@ -2,11 +2,14 @@ package com.team.prj.accomo.web;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team.prj.accomo.service.accomoService;
 import com.team.prj.accomo.service.accomoVO;
@@ -39,11 +42,11 @@ public class accomoController {
 	}
 	//숙소상세보기
 	@RequestMapping("/accomo")
-	public String accomoSelect(accomoVO vo, Model model,ReviewVO rvo) {
+	public String accomoSelect(accomoVO vo, Model model) {
 		model.addAttribute("accomo",service.accomoSelect(vo));
 			//리뷰리스트
-				rvo.setReviewNo(vo.getAccomoNo());
-				model.addAttribute("rEviewSelectList",service.reviewSelectList(rvo));
+				List<ReviewVO> relist = service.accomoreviewSelectList(vo);
+				model.addAttribute("rEviewSelectList",relist);
 		service.accomoHitUpdate(vo);//조회수증가
 		return "accomo/accomoSelect";
 	}
@@ -63,5 +66,18 @@ public class accomoController {
 			return "accomo/rEviewSelectList";
 		
 		}
+		
+		//클래스 단건조회에서 리뷰 등록
+		@RequestMapping("accomoReviewInsert")
+		@ResponseBody
+		public ReviewVO accomoReviewInsert(ReviewVO rvo, Model model) {
+			//리뷰 정보 인서트
+			int insert =  Rservice.reviewInsert(rvo);
+		
+			//닉네임 포함된 값으로 다시 조회
+			ReviewVO result = service.accomoreviewSelect(rvo);
+			return result;
+		}
+		
 	
 }

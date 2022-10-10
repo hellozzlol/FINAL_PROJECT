@@ -72,7 +72,10 @@
 	font-weight: 700;
 
 }
-
+.reviewstar {
+	font-size: xx-large;
+	color: #ffd700;
+}
 
 </style>
 </head>
@@ -203,58 +206,85 @@
 															<li>영어가능</li>
 														</ul>
 													</div>
+													<input type="hidden" th:value="${h.hospitalNo}" name="boardNo" id="hospitalNo">
 												</div>
-												<!-- 리뷰 -->
-												<div class="tab-pane fade" id="reviews" role="tabpanel">
-													<div class="reviews_wrapper">
-														리뷰[[ ${#lists.size(ReviewSelectList)} ]]건
-														<div class="reviews_comment_box" id="rList">
-
-															<div class="comment_text" th:id="${r.reviewNo}"
-																th:each="r : ${ReviewSelectList}">
-
-																<span>[[${r.star}]]점</span>&nbsp; <br> <span
-																	th:text="${r.title}">제목</span>&nbsp; <br> <span
-																	th:text="${r.content}">리뷰내용</span>&nbsp;&nbsp; <br>
-																<span th:text="${r.dt}">작성일자</span>&nbsp;&nbsp;
-																<button type="button" id="replyD" class="btn btn-danger">삭제</button>
-															
-
+												
+								<!-- 리뷰 -->
+								<div class="tab-pane fade" id="reviews" role="tabpanel">
+									<div class="reviews_wrapper">
+										<h2>[[${#lists.size(ReviewSelectList)}]]개의 리뷰가 있습니다.</h2>
+										
+										<!-- 말풍선 모양 div -->
+										<div class="reviews_comment_box" th:each="re:${ReviewSelectList}">
+											<div class="comment_thmb">
+												<img src="assets/img/blog/comment2.jpg" alt="">
+											</div>
+											<div class="comment_text">
+												<div class="reviews_meta">
+													<p>
+														<strong th:switch="${re.star}">
+															<i class="reviewstar" th:case="5">★★★★★</i>
+															<i class="reviewstar" th:case="4">★★★★☆</i>
+															<i class="reviewstar" th:case="3">★★★☆☆</i>
+															<i class="reviewstar" th:case="2">★★☆☆☆</i>
+															<i class="reviewstar" th:case="1">★☆☆☆☆</i>
+															<i class="reviewstar" th:case="0">☆☆☆☆☆</i>
+														</strong><br>
+														
+														<strong>[[${re.nickname}]]</strong> 
+														<a>  [[${re.dt}]]</a>
+													</p>
+													<span>[[${re.content}]]</span>
+												</div>
+											</div>
+										</div>
+										<!-- 말풍선 모양 div -->
+										
+										<!-- ajax로 댓글 달리는 부분 -->
+										<div class="reviews_comment_box" id="ajaxReviewDiv"></div>
+										
+										
+										<div class="product_review_form">	
+												<div class="product_ratting mb-10">
+													<h2 class="star-txt">별점을 선택해주세요</h2>
+													<div class="star-point">
+														<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i>
+													</div>
+													
+													<!-- 별점 숫자 -->
+													<input type="hidden" id="star" name="star" value="0" />
+		
+												</div>
+											
+												<div class="row">
+													<div class="comment_title col-12">
+														<h2>병원후기를 작성해주세요</h2>
+														<!-- 말풍선 모양 div -->
+														<div class="reviews_comment_box">
+															<div class="comment_thmb">
+																<img src="assets/img/blog/comment2.jpg" alt="">
 															</div>
-
-														</div>
-
-
-														<div class="product_ratting mb-10">
-															<h2 class="star-txt">별점을 선택해주세요</h2>
-															<div class="star-point">
-																<i class="fa-star">★</i> <i class="fa-star">★</i> <i
-																	class="fa-star">★</i> <i class="fa-star">★</i> <i
-																	class="fa-star">★</i>
-															</div>
-															<input type="hidden" id="star" name="star" value="0" />
-
-														</div>
-														<div class="product_review_form">
-															<form action="#">
-																<div class="row">
-																	<div class="comment_title col-12">
-																		<h2>후기를 작성해주세요</h2>
-																		<div class="col-lg-6 col-md-6">
-																			<!-- 작성자명 -->
-																			<input id="author" type="text"
-																				th:value="${session.user.nickname}" readonly>
-																		</div>
-																		<br>
-																		<textarea name="comment" id="review_comment"></textarea>
-																	</div>
-
+															<div class="comment_text">
+																<div class="reviews_meta">
+																	<p>
+																		<strong th:value="${session.user.nickname}"></strong> 
+																	</p>
+																	<span>
+																		<textarea id="reviewcontent" name="content" rows="8" cols="8" style="border:none;"></textarea>
+																	</span>
 																</div>
-																<button type="submit">작성하기</button>
-															</form>
+															</div>
+															<button id="reviewbtn" type="button">작성하기</button>
 														</div>
+														<!-- 말풍선 모양 div -->
 													</div>
 												</div>
+										    </div>
+									    </div>
+								   </div>
+								   
 											</div>
 										</div>
 									</div>
@@ -272,7 +302,88 @@
 				</div>
 			</div>
 		</div>
+			<script>
+		
+		
+		/*-----------------------
+		//댓글 작성
+		-------------------------*/				
+		$('#reviewbtn').on("click", function() {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+			
+				var title = "병원 후기";
+				var content = $("#reviewcontent").val();
+				var star = $("#star").val();
+				var boardNo = $("#hospitalNo").val();
+				var categoryId = "h";
+				var groupNo = 1;
+				var userNo = $("#userNo").val();
+
+			 	$.ajax({
+						url : "hospitalReviewInsert",
+						type:'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						data : {
+								title:title,
+								content:content,
+								star:star,
+								boardNo: boardNo,
+								categoryId:categoryId,
+								groupNo:groupNo,
+								userNo:userNo
+								},
+						success : function(result){
+							$("#ajaxReviewDiv").append(
+								`<div class="comment_thmb">
+											<img src="assets/img/blog/comment2.jpg" alt="">
+								</div>
+								<div class="comment_text">
+											<div class="reviews_meta">
+												<p>
+													<strong id="starbox">
+													</strong><br>
+													
+													<strong>${result.nickname}</strong> 
+													<a> ${result.dt}</a>
+												</p>
+												<span>${result.content}</span>
+											</div>
+										</div>
+								</div>`
+							);
+							
+							var rank = `${result.star}`
+							console.log(rank)
+							
+							if(rank == 5) {
+								$("#starbox").append(`<i class="reviewstar">★★★★★</i>`);
+							} else if(rank ==4) {
+								$("#starbox").append(`<i class="reviewstar">★★★★☆</i>`);
+							} else if(rank ==3) {
+								$("#starbox").append(`<i class="reviewstar">★★★☆☆</i>`);
+							} else if(rank ==2) {
+								$("#starbox").append(`<i class="reviewstar">★★☆☆☆</i>`);
+							} else if(rank ==1) {
+								$("#starbox").append(`<i class="reviewstar">★☆☆☆☆</i>`);
+							} else if(rank ==0) {
+								$("#starbox").append(`<i class="reviewstar">☆☆☆☆☆</i>`);
+							}
+
+							alert("리뷰가 성공적으로 작성되었습니다.")
+						
+						},
+						error : function(result){
+							alert("리뷰를 작성하는데 실패했습니다.")
+						}
+				}); 
+			 	
+		})
+		</script>
 	</article>
+	
 
 </body>
 </html>
