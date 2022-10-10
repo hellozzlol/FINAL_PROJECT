@@ -129,9 +129,10 @@
 		<script>
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
-
-			let url = "/profitTable?pageNum=" + Number($('#pageNum').html());
 			
+			let pn = Number($('#pageNum').html());
+			let url = "/profitTable?pageNum=" + pn;
+
 			// 디폴트
 			let key = "2";
 			let start = "";
@@ -173,7 +174,7 @@
 				$('#period').html(period);
 				
 				console.log(key, start, end)
-				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key  + "&by=" + by;
+				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key  + "&by=" + by  + "&pageNum=" + pn;
 				$("#subHtml").load(url);
 				getSumSize(key, start, end, by);
 

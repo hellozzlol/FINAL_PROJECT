@@ -10,9 +10,16 @@ td {
 	overflow: hidden;
 	white-space: nowrap;
 }
+
+.modal-centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 </style>
 </head>
-<body>
+<body class="modal-open">
 	<div class="card">
 		<div class="table-responsive text-nowrap" style="padding: 20px">
 			<table class="table table-hover"
@@ -22,9 +29,8 @@ td {
 					<tr>
 						<th>정산일자</th>
 						<th>거래일자</th>
-						<th>거래품명</th>
-						<th>거래금액</th>
-						<th>정산금액</th>
+						<th>거래금액(원)</th>
+						<th>정산금액(원)</th>
 						<th>정산여부</th>
 					</tr>
 				</thead>
@@ -32,9 +38,10 @@ td {
 					<tr th:each="list : ${pageInfo.list}" th:id="${list.no}">
 						<td th:text="${list.minusDt !=null ? list.minusDt : '--'}">[[${list.minusDt}]]</td>
 						<td>[[${list.orderDt}]]</td>
-						<td style="width: 50%">[[${list.name}]]</td>
-						<td>[[${list.totalPrice}]]</td>
-						<td>[[${list.minusPrice}]]</td>
+						<td>[[${#numbers.formatInteger(list.totalPrice, 3,
+							'COMMA')}]]</td>
+						<td>[[${#numbers.formatInteger(list.minusPrice, 3,
+							'COMMA')}]]</td>
 						<th:block th:switch="${list.minusYn}">
 							<em th:case="1"><td style="color: green; font-weight: bold">정산완료</td></em>
 							<em th:case="0"><td style="color: red; font-weight: bold">정산대기</td></em>
@@ -76,6 +83,30 @@ td {
 		</nav>
 	</div>
 	<!-- 페이지네이션 -->
+	<!-- modal area start-->
+	<div class="modal fade" id="modal_box" tabindex="-1"
+		style="display: none" aria-hidden="true">
+		<div class="modal-centered" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" id="closeModal">
+					<span aria-hidden="true"><i class="ion-android-close"></i></span>
+				</button>
+				<div class="modal_body">
+					<div class="container">
+						<div class="row">
+							<div class="">
+								<table class="table table-hover" id="modalTb"
+									style="text-align: center; vertical-align: middle; table-layout: fixed;">
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal area end-->
 	<div class="content-backdrop fade"></div>
 	<!-- Content wrapper -->
 	<script>
@@ -89,6 +120,83 @@ td {
 
 		// tr 클릭 이벤트 : 오더 상세 정보 모달
 		$('#tbd').on('click', 'tr', function() {
+					let orderNo = $(this).attr('id')
+					
+					$('#modal_box').toggleClass(" show")
+							.css("display", "block").attr("role", "dialog");
+					$('.modal-content').css("width", "800px").css("height",
+							"auto");
+					$.ajax({
+						url: 'ajaxSelectOrder',
+						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
+						data: {
+							orderNo : orderNo
+						}
+					})
+					.done(res => {
+						$('#modalTb').html('');
+						let thd = $('<thead>');
+						let tbd = $('<tbody>');
+						let thead = `<tr>
+										<th colspan=2 style="width:200px;">주문번호</th>
+										<th>${res[0].orderNo}</th>
+									</tr>
+									<tr>
+										<th colspan=2>구매자</th>
+										<th>${res[0].nickname}</th>
+									</tr>`
+						thd.append(thead);
+						$('#modalTb').append(thd);
+						let cnt = 0;
+						res.forEach(obj => {
+							cnt++;
+							switch (obj.deliveryState) {
+							  case "0":
+								  	obj.deliveryState="주문"
+							    	break;
+							  case "1":
+								  	obj.deliveryState="결제완료"
+							    	break;
+							  case "2":
+								  	obj.deliveryState="상품준비중"
+							    	break;
+							  case "3":
+								  	obj.deliveryState="배송지시"
+							    	break;
+							  case "4":
+								  obj.deliveryState="배송완료"
+								    break;
+							  case "5":
+								  obj.deliveryState="주문취소"
+								    break;
+							  case "6":
+								  obj.deliveryState="주문교환"
+								    break;
+							  case "7":
+								  obj.deliveryState="구매확정"
+								    break;
+							}
+							let price = obj.price
+							price = price.toLocaleString();
+							let tr = $('<tr style="border-top: 2px solid #444444;">').append(`<td style="border-right: 1px solid #444444;" rowspan=5>${cnt}</td>`)
+							tbd.append(tr);
+							tr = $('<tr>').append(`<td style="border-right: 1px solid #444444;">거래품명</td><td>${obj.goodsName}</td>`)
+							tbd.append(tr);
+							tr = $('<tr>').append(`<td style="border-right: 1px solid #444444;">수량</td><td>${obj.amount}</td>`)
+							tbd.append(tr);
+							tr = $('<tr>').append(`<td style="border-right: 1px solid #444444;">단가(원)</td><td>${price}</td>`)
+							tbd.append(tr);
+							tr = $('<tr>').append(`<td style="border-right: 1px solid #444444;">주문상태</td><td>${obj.deliveryState}</td>`)
+							tbd.append(tr);
+						})
+						$('#modalTb').append(tbd);
+					})
+		})
+
+		$('#closeModal').on('click', function() {
+			$('#modal_box').toggleClass(" show").css("display", "none")
 		})
 	</script>
 

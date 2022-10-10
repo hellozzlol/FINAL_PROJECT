@@ -5,54 +5,58 @@
 		resultType="com.team.prj.users.service.UsersVO">
 		select * from users where user_no=#{userNo}
 	</select>
-
+	
+	<!-- 1010 희수 서브쿼리 추가 -->
 	<select id="selectOrder"
 		resultType="com.team.prj.orders.service.OrderVO">
-		select *
-		from orders
-		where order_no=#{orderNo}
+		select o.*, 
+       		   (select nickname || '('|| id || ')' from users where user_no = o.user_no) nickname, 
+       		   (select price from goods where goods_no=o.goods_no) price
+		from orders o
+		where o.order_no=#{orderNo}
 	</select>
 
 	<insert id="insertOrder">
 		<selectKey keyProperty="orderNo" resultType="int"
 			order="BEFORE">
 			select case when max(order_no) is null then 1
-			else
-			max(order_no)+1 end
-			as order_no
+				   else max(order_no)+1 end
+				   as order_no
 			from orders
 		</selectKey>
 		insert into orders
 		values (#{orderNo},
-		#{address},
-		#{message},
-		#{call},
-		#{name},
-		#{pay},
-		#{amount},
-		#{totalPrice},
-		round(#{totalPrice}*0.9),
-		1,
-		null,
-		1,
-		sysdate,
-		#{userNo},
-		#{goodsNo},
-		0,
-		null,
-		#{cartNo},
-		#{money},
-		(select seller_no from goods where goods_no=#{goodsNo}),
-		(select name from goods where goods_no=#{goodsNo}),
-		#{postcode},
-		#{da})
+				#{address},
+				#{message},
+				#{call},
+				#{name},
+				#{pay},
+				#{amount},
+				#{totalPrice},
+				round(#{totalPrice}*0.9),
+				1,
+				null,
+				1,
+				sysdate,
+				#{userNo},
+				#{goodsNo},
+				0,
+				null,
+				#{cartNo},
+				#{money},
+				(select seller_no from goods where goods_no=#{goodsNo}),
+				(select name from goods where goods_no=#{goodsNo}),
+				#{postcode},
+				#{da})
 
 	</insert>
 
 	<update id="updateMoney">
-		update users set money=(select money from users where
-		user_no=#{userNo})-#{money} where user_no =
-		#{userNo}
+		update users 
+		set money=(select money 
+				   from users 
+				   where user_no=#{userNo})-#{money} 
+		where user_no = #{userNo}
 	</update>
 
 	<!-- 주문 및 결제시 상품 재고 업데이트 -->

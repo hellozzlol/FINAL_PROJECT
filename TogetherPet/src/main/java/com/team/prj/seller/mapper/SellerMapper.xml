@@ -115,9 +115,10 @@
 		total_price,
 		minus_price,
 		minus_yn
-		from profit
+		from profit p
 		where UPPER(category_id)='S'
 		and seller_no=#{svo.sellerNo}
+		and (select delivery_state from orders where order_no=p.no and goods_name=p.name) not in ('5', '6')
 		<if test="start != null and end != null and by != null">
 			<if test="by == 1">
 				and minus_dt

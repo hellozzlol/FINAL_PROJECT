@@ -89,8 +89,7 @@ public class SellerAjaxController {
 		if (by == "") {
 			by = null;
 		}
-		System.out.println("======== by =========");
-		System.out.println(by);
+		
 		svo = (SellerVO) session.getAttribute("seller");
 		svo.setSellerNo(svo.getSellerNo());
 		
