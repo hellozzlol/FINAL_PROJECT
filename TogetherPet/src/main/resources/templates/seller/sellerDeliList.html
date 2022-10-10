@@ -159,7 +159,7 @@
 									th:data-category="${list.deliveryState}" th:id="${list.orderNo}" style="">
 									<td>[[${list.orderNo}]]</td>
 									<td>[[${list.goodsNo}]]</td>
-									<td>[[${list.deliveryNo}]]</td>
+									<td><a href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank" id="deliNo">운송장</a></td>
 									<td>[[${list.goodsName}]]</td>
 									<td>[[${list.amount}]]</td>
 									<td>[[${list.name}]]</td>
@@ -343,6 +343,7 @@
 		$("#btnList").on("click", "#goodsDelivery", function () {
 			if (confirm('배송처리 하시겠습니까?')) {
 				let orderNo = Number($(this).closest('tr').attr('id'));
+				
 				$('#deliverySubmit').val(orderNo);
 				$("#deliveryCall").submit();
 			}
@@ -382,6 +383,7 @@
 		$('#gReady').html(goodsRd);
 		$('#dCall').html(deliCall);
 		$('#dDone').html(deliDone);
+
 </script>
 
 		<!--shop wrapper end-->

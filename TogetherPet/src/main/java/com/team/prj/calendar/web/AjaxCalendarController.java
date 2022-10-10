@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.calendar.service.CalendarService;
 import com.team.prj.calendar.service.CalendarVO;
+import com.team.prj.notice.service.NoticeService;
+import com.team.prj.notice.service.NoticeVO;
 import com.team.prj.users.service.UsersVO;
 
 @RestController
 public class AjaxCalendarController {
 	@Autowired
 	private CalendarService calendar;
+	@Autowired
+	private NoticeService notice; // 1010 선희 추가
 	
 	// 일정 조회
 	@RequestMapping("/calendarSelectList")
@@ -28,11 +32,27 @@ public class AjaxCalendarController {
 	
 	// 일정 등록
 	@PostMapping("/calendarInsert")
-	public int calendarInsert(CalendarVO cvo, HttpSession session) {
+	public int calendarInsert(CalendarVO cvo, NoticeVO nvo, HttpSession session) {
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		cvo.setUserNo(uvo.getUserNo());
 		int calendarNo = cvo.getCalendarNo();
 		calendar.calendarInsert(cvo);
+		
+		// 알림 테이블에 등록 1010 선희추가
+		int refNo = cvo.getCalendarNo();
+		String title = cvo.getTitle();
+		String type = "1"; // 알림 상태 1번(일정)
+		String msg;
+		nvo.setUserNo(uvo.getUserNo());
+		nvo.setRefNo(refNo);
+		nvo.setContent(title);
+		nvo.setType(type);
+		int cnt = notice.noticeInsert(nvo);
+		if (cnt > 0) {
+			msg = title + "일정이 등록되었습니다.";
+		} else {
+			msg = "error";
+		}
 		return calendarNo;
 	}
 	
