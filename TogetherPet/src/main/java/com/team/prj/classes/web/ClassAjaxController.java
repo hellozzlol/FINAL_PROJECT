@@ -59,6 +59,8 @@ import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.review.service.ReviewService;
+import com.team.prj.review.service.ReviewVO;
 
 import ch.qos.logback.classic.Logger;
 
@@ -72,6 +74,8 @@ public class ClassAjaxController {
 	private ClassExreserveService exreserveDao;
 	@Autowired
 	private ClassReserveService reserveDao;
+	@Autowired
+	private ReviewService reviewDao;
 	@Value("${file.dir}")
 	private String fileDir;
 	
@@ -93,6 +97,20 @@ public class ClassAjaxController {
 		System.out.println("여기까지오긴하는거니..?");
 		return list;
 	}
+	
+	//클래스 단건조회에서 리뷰 등록
+	@RequestMapping("classReviewInsert")
+	@ResponseBody
+	public ReviewVO classReviewInsert(ReviewVO revo, Model model) {
+		//리뷰 정보 인서트
+		int insert =  reviewDao.reviewInsert(revo);
+	
+		//닉네임 포함된 값으로 다시 조회
+		ReviewVO result = classDao.classReviewSelect(revo);
+
+		return result;
+	}
+	
 	
 	// 주문 및 결제 하기 (등록)
 	@RequestMapping("classReserveInsert")
@@ -202,8 +220,9 @@ public class ClassAjaxController {
 		
 
 		//파일 경로를 저장하는 String 타입의 변수를 선언하고 초기화
-		String uploadFolder = "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp";
-
+		//String uploadFolder = "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp";
+		//테스트용 admin부분 지민노트북 이름으로 임시변경
+		String uploadFolder = "C:\\Users\\dhwla\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp";
 		
 		//File객체를 사용해 폴더 생성
 		File uploadPath = new File(uploadFolder); //물리적 저장할 위치		
@@ -259,7 +278,9 @@ public class ClassAjaxController {
 	
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName){
-		File file = new File("C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
+		//File file = new File("C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
+		//테스트용 admin부분 지민노트북 이름으로 임시변경
+		File file = new File("C:\\Users\\dhwla\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
 		ResponseEntity<byte[]> result = null;
 		
 		try {

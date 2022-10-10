@@ -19,4 +19,5 @@ public class ReviewVO {
 		private int userNo;
 		
 		int rvCnt; // 리뷰 개수 표시하는 거 때문에 희수가 추가
+		private String nickname; //리뷰에 닉네임 표시하는 거 때문에 지민 추가
 }

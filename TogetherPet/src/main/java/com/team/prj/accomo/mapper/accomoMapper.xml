@@ -3,78 +3,109 @@
 <mapper namespace="com.team.prj.accomo.mapper.accomoMapper">
 
 
-<select id="accomoSelectList" 
-resultType="com.team.prj.accomo.service.accomoVO">
+	<select id="accomoSelectList"
+		resultType="com.team.prj.accomo.service.accomoVO">
 
 
-select accomo_no,
-	   name,
-	   address,
-	   price,
-	   aphoto,
-	   hit,
-	   category,
-	   category_Id
-	
- from accomo
-order by accomo_no ASC
+		select accomo_no,
+		name,
+		address,
+		price,
+		aphoto,
+		hit,
+		category,
+		category_Id
+
+		from accomo
+		order by accomo_no ASC
 
 
 
-</select>
+	</select>
 
-<select id="accomoSelect" 
-resultType="com.team.prj.accomo.service.accomoVO" 
-parameterType="com.team.prj.accomo.service.accomoVO">
+	<select id="accomoSelect"
+		resultType="com.team.prj.accomo.service.accomoVO"
+		parameterType="com.team.prj.accomo.service.accomoVO">
 
-select  accomo_no,
+		select accomo_no,
 		name,
 		address,
 		info,
 		price,
 		aphoto,
 		hit
- from accomo
-where accomo_no = #{accomoNo}
-</select>
+		from accomo
+		where accomo_no = #{accomoNo}
+	</select>
 
 
 
-<delete id="accomoDelete">
-delete from accomo
-where accomo_no = #{accomoNo}
-</delete>
+	<delete id="accomoDelete">
+		delete from accomo
+		where accomo_no = #{accomoNo}
+	</delete>
 
 
 
-<select id="accomoSearch" resultType="com.team.prj.accomo.service.accomoVO">
+	<select id="accomoSearch"
+		resultType="com.team.prj.accomo.service.accomoVO">
 
-select * from accomo
-where
-<choose>
-<when test="key == 1"> address like '%' || #{val}||'%'</when>
-<when test="key == 2"> name like '%' || #{val}||'%'</when>
-</choose>
+		select * from accomo
+		where
+		<choose>
+			<when test="key == 1"> address like '%' || #{val}||'%'</when>
+			<when test="key == 2"> name like '%' || #{val}||'%'</when>
+		</choose>
 
-</select>
-
-
-
+	</select>
 
 
 
-<update id="accomoHitUpdate">
-	UPDATE accomo SET 
-	       HIT = HIT + 1 
-	 WHERE accomo_no = #{accomoNo}
-</update>
 
 
-	<!-- 소현 스크랩 용도  -->
-	<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
-		INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
-		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
+
+	<update id="accomoHitUpdate">
+		UPDATE accomo SET
+		HIT = HIT + 1
+		WHERE accomo_no = #{accomoNo}
+	</update>
+
+
+	<!-- 소현 스크랩 용도 -->
+	<insert id="scrapInsert"
+		parameterType="com.team.prj.scrap.service.ScrapVO">
+		INSERT INTO SCRAP
+		(SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
+		VALUES ((SELECT
+		NVL(MAX(SCRAP_NO), 0) + 1 FROM
+		SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
 	</insert>
+
+	<!-- 리뷰 -->
+	<select id="accomoreviewSelectList"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.accomo.service.accomoVO">
+		SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+			WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='a'
+		AND BOARD_NO = #{accomoNo}
+	</select>
+	
+	
+	<!-- 단건리뷰리스트 조회 -->
+	<select id="accomoreviewSelect"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.review.service.ReviewVO">
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='a'
+		AND REVIEW_NO = #{reviewNo}
+		ORDER BY R.REVIEW_NO DESC   
+	</select>
 
 
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.prj.funeral.mapper.FuneralMapper;
+import com.team.prj.review.service.ReviewVO;
 import com.team.prj.scrap.service.ScrapVO;
 
 
@@ -51,5 +52,40 @@ public class FuneralServiceImpl implements FuneralService {
 		return map.scrapInsert(vo);
 	}
 
+	
+	//소현 별점리뷰 기능 추가 20221008
+	@Override
+	public List<ReviewVO> funeralreviewSelectList(FuneralVO vo) {
+		// 20221010 장례리뷰리스트
+		return map.funeralreviewSelectList(vo);
+	}
 
+	@Override
+	public ReviewVO funeralreviewSelect(ReviewVO vo) {
+		// 20221010 장례리뷰단건
+		return map.funeralreviewSelect(vo);
+	}
+
+	@Override
+	public int reviewInsert(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int reviewUpdate(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int reviewDelete(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	
+	
+		
 }

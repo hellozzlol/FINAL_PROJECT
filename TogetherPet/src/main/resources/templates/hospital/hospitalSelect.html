@@ -4,12 +4,77 @@
 	layout:decorate="~{layout/layout2}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동물병원</title>
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+	/*-----------------------
+	//별점 클릭 시 별점 조정	
+	-------------------------*/
+	$(document).on('click', '.fa-star', function(evt) {
+		console.log('실행');
+		var idxS = $(this).index();
+		console.log(idxS);
+		for (var i = 0; i <= idxS; i++) { // 별점 채우기
+			$('.star-point').children().eq(i).css('color', '#FFB300');
+		}
+		for (var i = 4; i > idxS; i--) { // 별점 비우기
+			$('.star-point').children().eq(i).css('color', '#d3d3d3');
+		}
+		$('#star').val(idxS + 1);
+		$('.star-txt').html('<span>' + (idxS + 1) + '</span><span>점</span>');
+
+	});
+</script>
+
 
 <style>
-.btn{	
-margin:auto;
-display:block;
+.btn {
+	margin: auto;
+	display: block;
+}
+/*================ 별점 ===============*/
+.star-point:before {
+	display: none;
+}
+
+.star-point {
+	font-size: 54px;
+	text-align: center;
+	letter-spacing: -3px;
+}
+
+.star-point .fa-star {
+	cursor: pointer;
+	color: #d3d3d3;
+}
+
+.star-txt {
+	height: 41px;
+	padding-top: 8px;
+	text-align: center;
+	color: #999;
+	font-size: 16px;
+}
+
+.star-txt>span:first-child {
+	color: #ff385c;
+	font-size: 27px;
+	font-weight: 700;
+}
+
+.star-txt>span:nth-child(2) {
+	color: #ff385c;
+	font-size: 18px;
+	font-weight: 700;
+
+}
+.reviewstar {
+	font-size: xx-large;
+	color: #ffd700;
 }
 
 </style>
@@ -65,52 +130,52 @@ display:block;
 									</div>
 									<div class="col-lg-6 col-md-6">
 										<div class="product_d_right" th:each="h:${hospital}">
-											
-												<h1 th:text="${h.name}">병원</h1>
-												<div class="product_ratting_review d-flex align-items-center">
-													<div class=" product_ratting">
-														<ul class="d-flex">
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														</ul>
-													</div>
-													<div class="product_review">
-														<ul class="d-flex">
-															<li>4 reviews</li>
-															<li>리뷰쓰세요</li>
-														</ul>
-													</div>
-												</div>
 
-												<div class="product_desc">
-													<p>전화번호 : [[${h.call}]]</p>
+											<h1 th:text="${h.name}">병원</h1>
+											<div class="product_ratting_review d-flex align-items-center">
+												<div class=" product_ratting">
+													<ul class="d-flex">
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+													</ul>
 												</div>
+												<div class="product_review">
+													<ul class="d-flex">
+														<li>4 reviews</li>
+														<li>리뷰쓰세요</li>
+													</ul>
+												</div>
+											</div>
 
-												<div class="product_sku">
-													<p>
-														<span>전문과목: </span> [[${h.info}]]
-													</p>
-													<p>
-														<span>진료시간: </span> [[${h.workingHour}]]
-													</p>
-													<p>
-														<span>주   소: </span> [[${h.address}]]
-													</p>
-													<p>
-														<span>대표수의사: </span> [[${h.vet}]]
-													</p>
-												</div>
+											<div class="product_desc">
+												<p>전화번호 : [[${h.call}]]</p>
+											</div>
+
+											<div class="product_sku">
+												<p>
+													<span>전문과목: </span> [[${h.info}]]
+												</p>
+												<p>
+													<span>진료시간: </span> [[${h.workingHour}]]
+												</p>
+												<p>
+													<span>주 소: </span> [[${h.address}]]
+												</p>
+												<p>
+													<span>대표수의사: </span> [[${h.vet}]]
+												</p>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</section>
 						<!--product details end-->
-						
-						
+
+
 						<!--product info start-->
 						<div class="product_d_info mb-118">
 							<div class="container">
@@ -123,8 +188,7 @@ display:block;
 														role="tab" aria-controls="info" aria-selected="false">병원정보</a>
 													</li>
 													<li><a data-toggle="tab" href="#reviews" role="tab"
-														aria-controls="reviews" aria-selected="false">후기
-													</a></li>
+														aria-controls="reviews" aria-selected="false">후기 </a></li>
 
 
 												</ul>
@@ -142,169 +206,184 @@ display:block;
 															<li>영어가능</li>
 														</ul>
 													</div>
+													<input type="hidden" th:value="${h.hospitalNo}" name="boardNo" id="hospitalNo">
 												</div>
-												<div class="tab-pane fade" id="reviews" role="tabpanel">
-													<div class="reviews_wrapper">
-														<h2>1 review for Donec eu furniture</h2>
+												
+								<!-- 리뷰 -->
+								<div class="tab-pane fade" id="reviews" role="tabpanel">
+									<div class="reviews_wrapper">
+										<h2>[[${#lists.size(ReviewSelectList)}]]개의 리뷰가 있습니다.</h2>
+										
+										<!-- 말풍선 모양 div -->
+										<div class="reviews_comment_box" th:each="re:${ReviewSelectList}">
+											<div class="comment_thmb">
+												<img src="assets/img/blog/comment2.jpg" alt="">
+											</div>
+											<div class="comment_text">
+												<div class="reviews_meta">
+													<p>
+														<strong th:switch="${re.star}">
+															<i class="reviewstar" th:case="5">★★★★★</i>
+															<i class="reviewstar" th:case="4">★★★★☆</i>
+															<i class="reviewstar" th:case="3">★★★☆☆</i>
+															<i class="reviewstar" th:case="2">★★☆☆☆</i>
+															<i class="reviewstar" th:case="1">★☆☆☆☆</i>
+															<i class="reviewstar" th:case="0">☆☆☆☆☆</i>
+														</strong><br>
+														
+														<strong>[[${re.nickname}]]</strong> 
+														<a>  [[${re.dt}]]</a>
+													</p>
+													<span>[[${re.content}]]</span>
+												</div>
+											</div>
+										</div>
+										<!-- 말풍선 모양 div -->
+										
+										<!-- ajax로 댓글 달리는 부분 -->
+										<div class="reviews_comment_box" id="ajaxReviewDiv"></div>
+										
+										
+										<div class="product_review_form">	
+												<div class="product_ratting mb-10">
+													<h2 class="star-txt">별점을 선택해주세요</h2>
+													<div class="star-point">
+														<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i>
+													</div>
+													
+													<!-- 별점 숫자 -->
+													<input type="hidden" id="star" name="star" value="0" />
+		
+												</div>
+											
+												<div class="row">
+													<div class="comment_title col-12">
+														<h2>병원후기를 작성해주세요</h2>
+														<!-- 말풍선 모양 div -->
 														<div class="reviews_comment_box">
 															<div class="comment_thmb">
 																<img src="assets/img/blog/comment2.jpg" alt="">
 															</div>
 															<div class="comment_text">
 																<div class="reviews_meta">
-																	<div class="star_rating">
-																		<ul class="d-flex">
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																		</ul>
-																	</div>
 																	<p>
-																		<strong>admin </strong>- September 12, 2018
+																		<strong th:value="${session.user.nickname}"></strong> 
 																	</p>
-																	<span>roadthemes</span>
+																	<span>
+																		<textarea id="reviewcontent" name="content" rows="8" cols="8" style="border:none;"></textarea>
+																	</span>
 																</div>
 															</div>
-
+															<button id="reviewbtn" type="button">작성하기</button>
 														</div>
-														<div class="comment_title">
-															<h2>Add a review</h2>
-															<p>Your email address will not be published. Required
-																fields are marked</p>
-														</div>
-														<div class="product_ratting mb-10">
-															<h3>Your rating</h3>
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
-														</div>
-														<div class="product_review_form">
-															
-																<div class="row">
-																	<div class="col-12">
-																		<label for="review_comment">Your review </label>
-																		<textarea name="comment" id="review_comment"></textarea>
-																	</div>
-																	<div class="col-lg-6 col-md-6">
-																		<label for="author">Name</label> <input id="author"
-																			type="text" placeholder="여기아마 닉네임 들어가고 이부분 세션 걸듯?">
-
-																	</div>
-
-																</div>
-																<button type="submit">Submit</button>
-															
-														</div>
+														<!-- 말풍선 모양 div -->
 													</div>
 												</div>
-												<div class="tab-pane fade" id="tags" role="tabpanel">
-													<div class="product_info_content">
-														<ul>
-															<li>Length: 74cm</li>
-															<li>Regular fit</li>
-															<li>Notched lapels</li>
-															<li>Twin button front fastening</li>
-															<li>Front patch pockets; chest pocket</li>
-															<li>Internal pockets</li>
-														</ul>
-													</div>
-												</div>
-												<div class="tab-pane fade" id="additional" role="tabpanel">
-													<div class="product_d_table">
-														<form action="#">
-															<table>
-																<tbody>
-																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
-																	</tr>
-																</tbody>
-															</table>
-														</form>
-													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
-												</div>
-												<div class="tab-pane fade" id="tabinfo" role="tabpanel">
-													<div class="product_d_table">
-														<form action="#">
-															<table>
-																<tbody>
-																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
-																	</tr>
-																</tbody>
-															</table>
-														</form>
-													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
-												</div>
-												
-
+										    </div>
+									    </div>
+								   </div>
+								   
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<!--product info end-->
-
 					</div>
+
+
 				</div>
-				<br>
-				             <br>
-				             <br>
-							<div id="btn">
-							<button type="button" class="btn btn-dark" onclick="location.href='hospitalList'">목록가기</button>
-							</div>
+
+				<div id="btn">
+					<button type="button" class="btn btn-dark"
+						onclick="location.href='hospitalList'">목록가기</button>
+				</div>
 			</div>
 		</div>
+			<script>
+		
+		
+		/*-----------------------
+		//댓글 작성
+		-------------------------*/				
+		$('#reviewbtn').on("click", function() {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+			
+				var title = "병원 후기";
+				var content = $("#reviewcontent").val();
+				var star = $("#star").val();
+				var boardNo = $("#hospitalNo").val();
+				var categoryId = "h";
+				var groupNo = 1;
+				var userNo = $("#userNo").val();
 
+			 	$.ajax({
+						url : "hospitalReviewInsert",
+						type:'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						data : {
+								title:title,
+								content:content,
+								star:star,
+								boardNo: boardNo,
+								categoryId:categoryId,
+								groupNo:groupNo,
+								userNo:userNo
+								},
+						success : function(result){
+							$("#ajaxReviewDiv").append(
+								`<div class="comment_thmb">
+											<img src="assets/img/blog/comment2.jpg" alt="">
+								</div>
+								<div class="comment_text">
+											<div class="reviews_meta">
+												<p>
+													<strong id="starbox">
+													</strong><br>
+													
+													<strong>${result.nickname}</strong> 
+													<a> ${result.dt}</a>
+												</p>
+												<span>${result.content}</span>
+											</div>
+										</div>
+								</div>`
+							);
+							
+							var rank = `${result.star}`
+							console.log(rank)
+							
+							if(rank == 5) {
+								$("#starbox").append(`<i class="reviewstar">★★★★★</i>`);
+							} else if(rank ==4) {
+								$("#starbox").append(`<i class="reviewstar">★★★★☆</i>`);
+							} else if(rank ==3) {
+								$("#starbox").append(`<i class="reviewstar">★★★☆☆</i>`);
+							} else if(rank ==2) {
+								$("#starbox").append(`<i class="reviewstar">★★☆☆☆</i>`);
+							} else if(rank ==1) {
+								$("#starbox").append(`<i class="reviewstar">★☆☆☆☆</i>`);
+							} else if(rank ==0) {
+								$("#starbox").append(`<i class="reviewstar">☆☆☆☆☆</i>`);
+							}
+
+							alert("리뷰가 성공적으로 작성되었습니다.")
+						
+						},
+						error : function(result){
+							alert("리뷰를 작성하는데 실패했습니다.")
+						}
+				}); 
+			 	
+		})
+		</script>
 	</article>
+	
 
 </body>
 </html>
