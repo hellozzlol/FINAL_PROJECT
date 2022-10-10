@@ -25,7 +25,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
@@ -73,7 +75,7 @@ public class BoardController {
 		return "redirect:boardSelectList";
 	}
 
-	///////////////////// 이 밑으론 커뮤니티 //////////////////
+	///////// 이 밑으론 커뮤니티 //////////////////
 
 	// 커뮤니티게시판조회
 	@GetMapping("/boardList")
@@ -88,9 +90,7 @@ public class BoardController {
 	// 커뮤니티게시판상세조회
 	@GetMapping("/boardSel")
 	public String boardselect(BoardVO vo, CommentVO cvo, Model model) {
-		System.out.println("=====================" + vo.getBoardNo());
 		BoardVO b = service.boardSelect(vo);
-		System.out.println("============================" + b.getAttechDir());
 		model.addAttribute("boardSel", b);
 
 		// 조회수증가
@@ -109,8 +109,12 @@ public class BoardController {
 	}
 
 	// 커뮤니티 글 등록
-	@PostMapping("/boardIns")
+	/* @PostMapping("/boardIns") */
+	
+	
 
+	/* @PostMapping(value = "/boardIns") */
+	@RequestMapping(value="/boardIns", method = RequestMethod.POST) 
 	public String boardInsert(BoardVO vo, @RequestParam("file") MultipartFile file, HttpServletRequest request)
 			throws IllegalStateException, IOException {
 
@@ -120,7 +124,7 @@ public class BoardController {
 		vo.setNickname(uvo.getNickname());
 		// file UpLoad 처리해야함.
 		String saveFolder = "";
-		;// 저장할변수명
+		// 저장할변수명
 		System.out.println(saveFolder);
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		System.out.println(sfile);
@@ -130,8 +134,6 @@ public class BoardController {
 
 			// 파일명 충돌방지를 위한 별명 만듦
 			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것
-																												// //
-																												// //랜덤파일네임
 			String path = fileDir + "/" + sFileName;
 			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장한다.
 			vo.setAttech(oFileName);
@@ -193,7 +195,6 @@ public class BoardController {
 
 	public String boradDelete(BoardVO vo, Model model, int boardNo) {
 		System.out.println("=====================" + vo.getBoardNo());
-		// vo.setBoardNo(Integer.parseInt(("boardNo")));
 		service.boardDelete(vo);
 		return "redirect:boardList";
 
@@ -203,7 +204,7 @@ public class BoardController {
 
 	@GetMapping("/boardUpdateForm")
 
-	public String boardUpdate(BoardVO bvo, Model model, HttpSession session) {
+	public String boardUpdate(BoardVO bvo, Model model, HttpSession session ) {
 
 		UsersVO vo = new UsersVO();
 		String id = (String) session.getAttribute("id");
@@ -238,7 +239,7 @@ public class BoardController {
 			String path = fileDir + "C:\\Temp" + filename;
 			vo.setAttechDir(path);
 		}
-		// fileDir이 경로 니까 수정해^_^
+		// fileDir이 경로
 			service.boardUpdate(vo);
 				return "redirect:boardList";
 

@@ -42,6 +42,7 @@ public class BoardAjaxController {
 
 	@Autowired
 	private ScrapService Sservice;
+
 	@Value("${file.dir}")
 	private String fileDir;
 	

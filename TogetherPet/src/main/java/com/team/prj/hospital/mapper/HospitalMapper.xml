@@ -102,7 +102,15 @@
 		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
 	</insert>
 	
-	
+	<!-- 리뷰 -->
+	<select id="reviewSelectList"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.review.service.ReviewVO">
+		select *
+		from review
+		where board_no=#{reviewNo} and
+		category_id='h'
+	</select>
 	
 	
 	

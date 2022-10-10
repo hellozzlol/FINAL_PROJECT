@@ -30,11 +30,17 @@ public interface TutorMapper {
 	List<TutorVO> tutorSearch(@Param("key")String key, @Param("val") String val);
 
 
-	//튜터가 생성한 클래스 조회
+	//튜터가 생성한 클래스 전체 조회
 	List<ClassVO> myClassList(ClassVO vo);
 	
-	//특정 클래스 옵션 리스트
+	//튜터가 생성한 클래스 중 승인된 클래스 리스트 조회
+	List<ClassVO> myExtiveClassList(ClassVO vo);
+	
+	//특정 클래스 옵션 리스트 (예약 건수가 있을 경우)
 	List<ClassOptionVO> classOptionList(int classNo);
+	
+	//특정 클래스 옵션 리스트 (예약 건수가 없을 경우)
+	List<ClassOptionVO> classOption(int classNo);
 	
 	//특정 클래스 옵션의 예약자 조회
 	List<ClassOptionVO> optionReserv(int classOptionNo);
@@ -42,4 +48,6 @@ public interface TutorMapper {
 	//정산내역조회
 	List<ProfitVO> tutorProfitList(@Param("tvo") TutorVO tvo, @Param("key") String key);
 	
+	//선택한 클래스의 예약건수의 유뮤 확인
+	int getClassReserve(int classNo);
 }

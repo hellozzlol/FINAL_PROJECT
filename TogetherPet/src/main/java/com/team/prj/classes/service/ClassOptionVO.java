@@ -17,6 +17,7 @@ public class ClassOptionVO {
 	//endDt;
 	//allHeadcount; 
 	
+	//조인 쿼리에서 쓰이는 외부테이블 칼럼
 	int maxHeadcount; 
 	int reserveNo; 
 	String dt;
@@ -28,6 +29,14 @@ public class ClassOptionVO {
 	int totalPrice; 
 	String call;
 	String name;
+	int price;
 	String className;
+	
+	int minusYn; //정산상태 0과 1로 표시하기 위함 10.08추가
+	int minusN; //미정산 컬럼의 개수 카운트
+	int minusY; //정산완료 컬럼의 개수 카운트
+	
+	
+	
 
 }
