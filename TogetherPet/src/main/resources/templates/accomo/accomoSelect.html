@@ -6,10 +6,69 @@
 <meta charset="UTF-8">
 <title>반려동물동반숙소</title>
 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+	/*-----------------------
+	//별점 클릭 시 별점 조정	
+	-------------------------*/
+	$(document).on('click', '.fa-star', function(evt) {
+		console.log('실행');
+		var idxS = $(this).index();
+		console.log(idxS);
+		for (var i = 0; i <= idxS; i++) { // 별점 채우기
+			$('.star-point').children().eq(i).css('color', '#FFB300');
+		}
+		for (var i = 4; i > idxS; i--) { // 별점 비우기
+			$('.star-point').children().eq(i).css('color', '#d3d3d3');
+		}
+		$('#star').val(idxS + 1);
+		$('.star-txt').html('<span>' + (idxS + 1) + '</span><span>점</span>');
+
+	});
+</script>
+
 <style>
 .btn {
 	margin: auto;
 	display: block;
+}
+
+/*================ 별점 ===============*/
+.star-point:before {
+	display: none;
+}
+
+.star-point {
+	font-size: 54px;
+	text-align: center;
+	letter-spacing: -3px;
+}
+
+.star-point .fa-star {
+	cursor: pointer;
+	color: #d3d3d3;
+}
+
+.star-txt {
+	height: 41px;
+	padding-top: 8px;
+	text-align: center;
+	color: #999;
+	font-size: 16px;
+}
+
+.star-txt>span:first-child {
+	color: #ff385c;
+	font-size: 27px;
+	font-weight: 700;
+}
+
+.star-txt>span:nth-child(2) {
+	color: #ff385c;
+	font-size: 18px;
+	font-weight: 700;
 }
 </style>
 </head>
@@ -42,7 +101,7 @@
 								</p>
 							</div>
 						</div>
-						
+
 						<!--product details start-->
 						<section class="product_details mb-135">
 							<div class="container">
@@ -61,40 +120,40 @@
 									</div>
 									<div class="col-lg-6 col-md-6">
 										<div class="product_d_right" th:each="a:${accomo}">
-											
-												<h1 th:text="${a.name}">숙소이름</h1>
-												<div class="product_ratting_review d-flex align-items-center">
-													<div class=" product_ratting">
-														<ul class="d-flex">
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-															<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														</ul>
-													</div>
-													<div class="product_review">
-														<ul class="d-flex">
-															<li>4 reviews</li>
-															<li>리뷰쓰세요</li>
-														</ul>
-													</div>
-												</div>
 
-												<div class="product_desc">
-													<p>가격 : [[${a.price}]](1박)</p>
+											<h1 th:text="${a.name}">숙소이름</h1>
+											<div class="product_ratting_review d-flex align-items-center">
+												<div class=" product_ratting">
+													<ul class="d-flex">
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+														<li><a href="#"><i class="ion-ios-star"></i></a></li>
+													</ul>
 												</div>
+												<div class="product_review">
+													<ul class="d-flex">
+														<li>4 reviews</li>
+														<li>리뷰쓰세요</li>
+													</ul>
+												</div>
+											</div>
 
-												<div class="product_sku">
-													<p>
-														<span> 주소: </span> [[${a.address}]]
-													</p>
-													
-													<p>
-														<span> 정보: </span> [[${a.info}]] 
-													</p>
-												
-												</div>
+											<div class="product_desc">
+												<p>가격 : [[${a.price}]](1박)</p>
+											</div>
+
+											<div class="product_sku">
+												<p>
+													<span> 주소: </span> [[${a.address}]]
+												</p>
+
+												<p>
+													<span> 정보: </span> [[${a.info}]]
+												</p>
+
+											</div>
 										</div>
 									</div>
 								</div>
@@ -114,8 +173,7 @@
 														role="tab" aria-controls="info" aria-selected="false">숙소정보</a>
 													</li>
 													<li><a data-toggle="tab" href="#reviews" role="tab"
-														aria-controls="reviews" aria-selected="false">후기
-													</a></li>
+														aria-controls="reviews" aria-selected="false">후기 </a></li>
 
 
 												</ul>
@@ -124,12 +182,13 @@
 												<div class="tab-pane fade show active" id="info"
 													role="tabpanel">
 													<div class="product_info_content">
-														<p style="font-weight:bold">공지사항</p>
+														<p style="font-weight: bold">공지사항</p>
 														<ul>
-															<li style="font-weight:bold">프런트 내 손소독제 구비 완료 / 방역 실시</li>
+															<li style="font-weight: bold">프런트 내 손소독제 구비 완료 / 방역
+																실시</li>
 														</ul>
 														<br>
-														<p style="font-weight:bold">기본정보</p>
+														<p style="font-weight: bold">기본정보</p>
 														<ul>
 															<li>입실 : 15:00 | 퇴실 : 11:00</li>
 															<li>22시 이후 입실 시 사전문의 (필수)</li>
@@ -137,15 +196,16 @@
 															<li>주차가능</li>
 														</ul>
 														<br>
-														<p style="font-weight:bold">애견 입실 안내</p>
+														<p style="font-weight: bold">애견 입실 안내</p>
 														<ul>
-															<li style="font-weight:bold">애견동반을 원할 경우 사전 문의 및 상담 필수</li>
+															<li style="font-weight: bold">애견동반을 원할 경우 사전 문의 및 상담
+																필수</li>
 															<li>1마리 40,000원 (5kg 미만)</li>
 															<li>최대 2마리 동반입실 가능</li>
-															<li style="font-weight:bold">현장결제</li>
+															<li style="font-weight: bold">현장결제</li>
 														</ul>
 														<br>
-														<p style="font-weight:bold">취소 및 환불 규정 </p>
+														<p style="font-weight: bold">취소 및 환불 규정</p>
 														<ul>
 															<li>숙박일 기준 30일전 : 100% 환불</li>
 															<li>숙박일 기준 29~14일전 : 90% 환불</li>
@@ -157,155 +217,61 @@
 															<li>취소, 환불 시 수수료가 발생할 수 있습니다</li>
 														</ul>
 														<br>
-														<p style="font-weight:bold">코로나 사회적 거리두기 공지</p>
+														<p style="font-weight: bold">코로나 사회적 거리두기 공지</p>
 														<ul>
-															<li style="font-weight:bold">코로나로 인해 정부지침이 계속해서 변동될 수 있으며, 그로 인한 취소 및 환불 변경 등은 펜션 규정에 따라 처리될 수 있음을 알려드립니다.</li>
+															<li style="font-weight: bold">코로나로 인해 정부지침이 계속해서 변동될
+																수 있으며, 그로 인한 취소 및 환불 변경 등은 펜션 규정에 따라 처리될 수 있음을 알려드립니다.</li>
 														</ul>
-											
+
 													</div>
 												</div>
+												<!-- -----여기서 부터 리뷰다  -->
+
+												<!-- 리뷰 -->
 												<div class="tab-pane fade" id="reviews" role="tabpanel">
 													<div class="reviews_wrapper">
-														<h2>1 review for Donec eu furniture</h2>
-														<div class="reviews_comment_box">
-															<div class="comment_thmb">
-																<img src="assets/img/blog/comment2.jpg" alt="">
-															</div>
-															<div class="comment_text">
-																<div class="reviews_meta">
-																	<div class="star_rating">
-																		<ul class="d-flex">
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																			<li><a href="#"><i class="icon-star"></i></a></li>
-																		</ul>
-																	</div>
-																	<p>
-																		<strong>admin </strong>- September 12, 2018
-																	</p>
-																	<span>roadthemes</span>
-																</div>
-															</div>
+														리뷰[[ ${#lists.size(rEviewSelectList)} ]]건
+														<div class="reviews_comment_box" id="rList">
 
+															<div class="comment_text" th:id="${r.reviewNo}"
+																th:each="r : ${rEviewSelectList}">
+
+																<span>[[${r.star}]]점</span>&nbsp; <br> <span
+																	th:text="${r.title}">제목</span>&nbsp; <br> <span
+																	th:text="${r.content}">리뷰내용</span>&nbsp;&nbsp; <br>
+																<span th:text="${r.dt}">작성일자</span>&nbsp;&nbsp;
+																<button type="button" id="replyD" class="btn btn-danger">삭제</button>
+															</div>
 														</div>
-														<div class="comment_title">
-															<h2>Add a review</h2>
-															<p>Your email address will not be published. Required
-																fields are marked</p>
-														</div>
+														
 														<div class="product_ratting mb-10">
-															<h3>Your rating</h3>
-															<ul class="d-flex">
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-																<li><a href="#"><i class="icon-star"></i></a></li>
-															</ul>
+															<h2 class="star-txt">별점을 선택해주세요</h2>
+															<div class="star-point">
+																<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+																	class="fa-star">★</i> <i class="fa-star">★</i> <i
+																	class="fa-star">★</i>
+															</div>
+															<input type="hidden" id="star" name="star" value="0" />
 														</div>
 														<div class="product_review_form">
-															
+															<form action="#">
 																<div class="row">
-																	<div class="col-12">
-																		<label for="review_comment">Your review </label>
+																	<div class="comment_title col-12">
+																		<h2>후기를 작성해주세요</h2>
+																		<div class="col-lg-6 col-md-6">
+																			<!-- 작성자명 -->
+																			<input id="author" type="text"
+																				th:value="${session.user.nickname}" readonly>
+																		</div>
+																		<br>
 																		<textarea name="comment" id="review_comment"></textarea>
 																	</div>
-																	<div class="col-lg-6 col-md-6">
-																		<label for="author">Name</label> <input id="author"
-																			type="text" placeholder="여기아마 닉네임 들어가고 이부분 세션 걸듯?">
-
-																	</div>
-
 																</div>
-																<button type="submit">Submit</button>
-															
+																<button type="submit">작성하기</button>
+															</form>
 														</div>
 													</div>
 												</div>
-												<div class="tab-pane fade" id="tags" role="tabpanel">
-													<div class="product_info_content">
-														<ul>
-															<li>Length: 74cm</li>
-															<li>Regular fit</li>
-															<li>Notched lapels</li>
-															<li>Twin button front fastening</li>
-															<li>Front patch pockets; chest pocket</li>
-															<li>Internal pockets</li>
-														</ul>
-													</div>
-												</div>
-												<div class="tab-pane fade" id="additional" role="tabpanel">
-													<div class="product_d_table">
-														<form action="#">
-															<table>
-																<tbody>
-																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
-																	</tr>
-																</tbody>
-															</table>
-														</form>
-													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
-												</div>
-												<div class="tab-pane fade" id="tabinfo" role="tabpanel">
-													<div class="product_d_table">
-														<form action="#">
-															<table>
-																<tbody>
-																	<tr>
-																		<td class="first_child">Compositions</td>
-																		<td>Polyester</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Styles</td>
-																		<td>Girly</td>
-																	</tr>
-																	<tr>
-																		<td class="first_child">Properties</td>
-																		<td>Short Dress</td>
-																	</tr>
-																</tbody>
-															</table>
-														</form>
-													</div>
-													<div class="product_info_content">
-														<p>Fashion has been creating well-designed collections
-															since 2010. The brand offers feminine designs delivering
-															stylish separates and statement dresses which have since
-															evolved into a full ready-to-wear collection in which
-															every item is a vital part of a woman's wardrobe. The
-															result? Cool, easy, chic looks with youthful elegance and
-															unmistakable signature style. All the beautiful pieces
-															are made in Italy and manufactured with the greatest
-															attention. Now Fashion extends to a range of accessories
-															including shoes, hats, belts and more!</p>
-													</div>
-												</div>
-												
-
 											</div>
 										</div>
 									</div>
@@ -313,20 +279,18 @@
 							</div>
 						</div>
 						<!--product info end-->
-
 					</div>
 				</div>
-				<br>
-				             <br>
-				             <br>
-							<div id="btn">
-							<button type="button" class="btn btn-dark" onclick="location.href='accomoList'">목록가기</button>
-							</div>
+				<br> <br> <br>
+				<div id="btn">
+					<button type="button" class="btn btn-dark"
+						onclick="location.href='accomoList'">목록가기</button>
+				</div>
 			</div>
 		</div>
 
 	</article>
-						
-	
+
+
 </body>
 </html>

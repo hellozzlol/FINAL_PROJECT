@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 
 <style>
+
 .photo {
 	height: 1000px;
 }
@@ -155,6 +156,45 @@ span.user-review-info {
 	text-align: center;
 }
 
+/*================ 별점 ===============*/
+.star-point:before {
+	display: none;
+}
+
+.star-point {
+	font-size: 54px;
+	text-align: center;
+	letter-spacing: -3px;
+}
+
+.star-point .fa-star {
+	cursor: pointer;
+	color: #d3d3d3;
+}
+
+.star-txt {
+	height: 41px;
+	padding-top: 8px;
+	text-align: center;
+	color: #999;
+	font-size: 16px;
+}
+
+.star-txt>span:first-child {
+	color: #ff385c;
+	font-size: 27px;
+	font-weight: 700;
+}
+
+.star-txt>span:nth-child(2) {
+	color: #ff385c;
+	font-size: 18px;
+	font-weight: 700;
+
+}
+
+
+
 </style>
 
 
@@ -251,13 +291,10 @@ span.user-review-info {
 										<input type="hidden" th:value="${f.funeralNo}" name="boardNo">
 										<input type="hidden" th:value="${session.user.userNo}"
 										name="userNo"> <br> <br> <img
-										class="primary_img" src="assets/img/likes/138533.png"
-										alt="consectetur" width="20" height="20">
+										class="primary_img" src="assets/img/likes/scrap.png"
+										alt="consectetur" width="20" height="20">스크랩
 									</td>
-
-
 								</tr>
-
 							</tbody>
 						</table>
 						<br> <br>
@@ -344,15 +381,19 @@ span.user-review-info {
 												<div class="tab-pane fade show active" id="additional"
 													role="tabpanel" th:each="f:${funeral}">
 													<div class="product_info_content">
-														<p th:text="${f.name}">업체소개</p>
-														<ul>
-															<li>주차장보유</li>
-															<li>영어가능</li>
-														</ul>
+													
+														<p>
+															슬픔의 처음부터 끝까지<br>
+															함께 하겠습니다.<br>
+																우리의 이별이 끝없는 슬픔은 아닐 거예요.<br>
+															반드시, 다시 만나게 될 거니까요.<br>
+
+															누구에게나 서툴고 낯선 이별의 순간,<br>
+															[[${f.name}]]이 처음부터 끝까지 함께 하겠습니다.</p>
 													</div>
 												</div>
 
-													<!-- 리뷰 -->
+												<!-- 리뷰 -->
 												<div class="tab-pane fade" id="reviews" role="tabpanel">
 													<div class="reviews_wrapper">
 														리뷰[[ ${#lists.size(reviewSelectList)} ]]건
@@ -361,7 +402,8 @@ span.user-review-info {
 															<div class="comment_text" th:id="${r.reviewNo}"
 																th:each="r : ${reviewSelectList}">
 																
-																<span th:text="${r.star}">별</span>&nbsp;
+																<span>[[${r.star}]]점</span>&nbsp;
+																
 																<br> <span th:text="${r.title}">제목</span>&nbsp; <br>
 																<span th:text="${r.content}">리뷰내용</span>&nbsp;&nbsp; <br>
 																<span th:text="${r.dt}">작성일자</span>&nbsp;&nbsp;
@@ -391,7 +433,7 @@ span.user-review-info {
 																		<div class="col-lg-6 col-md-6">
 																			<!-- 작성자명 -->
 																			<input id="author" type="text"
-																				th:value="${session.user.name}" readonly>
+																				th:value="${session.user.nickname}" readonly>
 																		</div>
 																		<br>
 																		<textarea name="comment" id="review_comment"></textarea>
