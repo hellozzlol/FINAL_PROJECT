@@ -3,6 +3,8 @@ package com.team.prj.hospital.web;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,9 +50,9 @@ public class HospitalController {
 	@RequestMapping("/hospital")
 	public String hospitalSelect(HospitalVO vo, Model model,ReviewVO rvo) {
 		model.addAttribute("hospital", dao.hospitalSelect(vo));
-				//리뷰리스트
-				rvo.setReviewNo(vo.getHospitalNo());
-				model.addAttribute("ReviewSelectList",dao.reviewSelectList(rvo));
+		//리뷰리스트
+				List<ReviewVO> relist = dao.hospitalreviewSelectList(vo);
+				model.addAttribute("ReviewSelectList",relist);
 		dao.hospitalHitUpdate(vo);// 조회수 증가
 		return "hospital/hospitalSelect";
 	}
@@ -72,6 +74,16 @@ public class HospitalController {
 	
 	}
 	
+	//클래스 단건조회에서 리뷰 등록
+	@RequestMapping("hospitalReviewInsert")
+	@ResponseBody
+	public ReviewVO funeralReviewInsert(ReviewVO rvo, Model model) {
+		//리뷰 정보 인서트
+		int insert =  service.reviewInsert(rvo);
 	
+		//닉네임 포함된 값으로 다시 조회
+		ReviewVO result = dao.hospitalreviewSelect(rvo);
+		return result;
+	}
 
 }

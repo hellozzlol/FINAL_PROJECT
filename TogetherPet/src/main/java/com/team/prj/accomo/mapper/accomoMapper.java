@@ -33,9 +33,9 @@ public interface accomoMapper {
 	  int scrapInsert(ScrapVO vo);//20221005소현추가
 	  
 	//소현 리뷰기능 20221008
-		List<ReviewVO> reviewSelectList(ReviewVO vo);
+		List<ReviewVO> accomoreviewSelectList(accomoVO vo);
 		
-		ReviewVO reviewSelect(ReviewVO vo);
+		ReviewVO accomoreviewSelect(ReviewVO vo);
 		
 		int reviewInsert(ReviewVO vo);
 		

@@ -82,13 +82,29 @@
 	</insert>
 
 	<!-- 리뷰 -->
-	<select id="reviewSelectList"
+	<select id="accomoreviewSelectList"
+		resultType="com.team.prj.review.service.ReviewVO"
+		parameterType="com.team.prj.accomo.service.accomoVO">
+		SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+			WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='a'
+		AND BOARD_NO = #{accomoNo}
+	</select>
+	
+	
+	<!-- 단건리뷰리스트 조회 -->
+	<select id="accomoreviewSelect"
 		resultType="com.team.prj.review.service.ReviewVO"
 		parameterType="com.team.prj.review.service.ReviewVO">
-		select *
-		from review
-		where board_no=#{reviewNo} and
-		category_id='a'
+			SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='a'
+		AND REVIEW_NO = #{reviewNo}
+		ORDER BY R.REVIEW_NO DESC   
 	</select>
 
 

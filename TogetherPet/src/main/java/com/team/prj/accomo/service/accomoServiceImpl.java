@@ -66,15 +66,15 @@ public class accomoServiceImpl implements accomoService {
 	}
 
 	@Override
-	public List<ReviewVO> reviewSelectList(ReviewVO vo) {
+	public List<ReviewVO> accomoreviewSelectList(accomoVO vo) {
 		// 리스트 조회
-		return map.reviewSelectList(vo);
+		return map.accomoreviewSelectList(vo);
 	}
 
 	@Override
-	public ReviewVO reviewSelect(ReviewVO vo) {
+	public ReviewVO accomoreviewSelect(ReviewVO vo) {
 		// 리스트상세보기
-		return map.reviewSelect(vo);
+		return map.accomoreviewSelect(vo);
 	}
 
 	@Override

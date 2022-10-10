@@ -32,9 +32,9 @@ public interface HospitalMapper {
 	
 	
 	//소현 리뷰기능 20221008
-	List<ReviewVO> reviewSelectList(ReviewVO vo);
+	List<ReviewVO> hospitalreviewSelectList(HospitalVO vo);
 	
-	ReviewVO reviewSelect(ReviewVO vo);
+	ReviewVO hospitalreviewSelect(ReviewVO vo);
 	
 	int reviewInsert(ReviewVO vo);
 	
