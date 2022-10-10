@@ -656,7 +656,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-
 <style>
 #class_submit {
  	position: relative;
@@ -689,13 +688,13 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 
-.container h1 {
+.content-wrapper h1 {
 	color: gray;
 	margin-bottom: 20px;
 	font-weight: 600;
 }
 
-.container span {
+.content-wrapper span {
 	font-size: 1.2em;
 	font-weight: 600;
 }
@@ -723,7 +722,7 @@ kimin2 {
 
 .followDiv li {
 	font-size: 1.2em;
-	font-weight: 500;
+	font-weight: normal;
 	color: gray;
 }
 
@@ -761,15 +760,14 @@ kimin2 {
 	font-size: 1.2em;
 }
 
-.container {
-	width: 1200px;
+.content-wrapper {
+	width: 100%;
 	height: 100%;
 	margin: 0 auto;
 	padding: 0px;
 }
 
 .followDiv {
-	
 	width: 100%;
 	height: 35px;
 	border-bottom: 2px dotted lightgray;
@@ -779,9 +777,10 @@ kimin2 {
 
 .followDiv>ul>li {
 	float: left;
-	width: 11.1%;
+	width: 13%;
 	line-height: 32px;
 }
+
 
 .followDiv>ul {
 	padding-left: 40px;
@@ -952,11 +951,12 @@ input[type="radio"]:after {
 }
 
 #dateConfirmButton {
-	height: 300px;
+	height: 50px;
 	border-radius: 8px;
 	background-color: white;
 	border: 1px solid lightgray;
-	margin-left: -20px;
+	margin-top: 120px;
+	margin-left: -60px;
 }
 
 #dateConfirmButton:hover {
@@ -1059,7 +1059,7 @@ input[type="radio"]:after {
 }
 
 #kakaoMap {
-	width: 1160px;
+	width: 98%;
 	height: 460px;
 }
 
@@ -1083,7 +1083,7 @@ input[type="radio"]:after {
 
 #class_fee, #class_nop {
 	height: 50px;
-	width: 480px;
+	width: 300px;
 	text-align: right;
 	padding: 0px 50px 0px 0px;
 }
@@ -1217,24 +1217,24 @@ input[type="radio"]:after {
 
 </head>
 <body>
-	<div class="col-lg-10 col-md-12" layout:fragment="content">
+	<div class="col-lg-9 col-md-12" layout:fragment="content">
 		<!--shop  area start-->
-		<div class="shop_section shop_reverse">
-			<div class="container">
+			<div class="content-wrapper">
 				<div class="row">
 				
 						<!--breadcrumbs area start-->
 						<div class="breadcrumb_content">
 							<ul>
 								<li><a href="index.html">home</a></li>
-								<li>classInsert</li>
+								<li>my page</li>
+								<li>클래스 등록</li>
 							</ul>
 						</div>
 						<!--breadcrumbs area end-->
 
-						<!-- <form method="post" action="classList" enctype="multipart/form-data"> -->
-							<!-- <%=request.getContextPath()%>/creator/makeClassOk -->
-								<h1>클래스개설</h1>
+								<div class="shipping_text">
+									<h3>클래스 등록</h3>
+								</div>
 								<div class="followDiv">
 									<ul>
 										<li><div class="followButton" style="color: white">1</div>
@@ -1243,13 +1243,13 @@ input[type="radio"]:after {
 											<a href="#f2"> 카테고리</a></li>
 										<li><div class="followButton" style="color: white">3</div>
 											<a href="#f3"> 이미지</a></li>
-										<li><div class="followButton" style="color: white">4</div>
+										<li style="width:12%"><div class="followButton" style="color: white">4</div>
 											<a href="#f4"> 소개</a></li>
-										<li><div class="followButton" style="color: white">5</div>
+										<li style="width:12%"><div class="followButton" style="color: white">5</div>
 											<a href="#f5"> 일정</a></li>
-										<li><div class="followButton" style="color: white">6</div>
-											<a href="#f6"> 상세주소</a></li>
-										<li><div class="followButton" style="color: white">7</div>
+										<li style="width:12%"><div class="followButton" style="color: white">6</div>
+											<a href="#f6"> 주소</a></li>
+										<li style="width:16%"><div class="followButton" style="color: white">7</div>
 											<a href="#f7"> 수강료,인원</a></li>
 									</ul>
 								</div>
@@ -1469,7 +1469,6 @@ input[type="radio"]:after {
 						
 					</div>
 				</div>
-			</div>
 	</div>
 </body>
 </html>

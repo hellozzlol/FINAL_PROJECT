@@ -44,32 +44,50 @@ public class TutorServiceImpl implements TutorService {
 
 
 	public TutorVO tutorMyPage(TutorVO vo) {
-		// TODO Auto-generated method stub
+		//
 		return map.tutorMyPage(vo);
 	}
 
 	@Override
 	public List<ClassVO> myClassList(ClassVO vo) {
-		// TODO Auto-generated method stub
+		// 
 		return map.myClassList(vo);
 	}
 
 	@Override
 	public List<ClassOptionVO> classOptionList(int classNo) {
-		// TODO Auto-generated method stub
+		//
 		return map.classOptionList(classNo);
 	}
 
 	@Override
 	public List<ClassOptionVO> optionReserv(int classOptionNo) {
-		// TODO Auto-generated method stub
+		//
 		return map.optionReserv(classOptionNo);
 	}
 
 	@Override
 	public List<ProfitVO> tutorProfitList(TutorVO tvo, String key) {
-		// TODO Auto-generated method stub
+		//
 		return map.tutorProfitList(tvo, key);
+	}
+
+	@Override
+	public int getClassReserve(int classNo) {
+		//
+		return map.getClassReserve(classNo);
+	}
+
+	@Override
+	public List<ClassOptionVO> classOption(int classNo) {
+		//
+		return map.classOption(classNo);
+	}
+
+	@Override
+	public List<ClassVO> myExtiveClassList(ClassVO vo) {
+		// TODO Auto-generated method stub
+		return map.myExtiveClassList(vo);
 	}
 
 

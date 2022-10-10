@@ -109,7 +109,8 @@
 							</thead>
 							<tbody id="btnList" class="table-border-bottom-0">
 								<tr th:each="list : ${pageInfo.list}" class="category"
-									th:data-category="${list.uploadState}" style="" th:id="${list.classNo}">
+									th:data-category="${list.uploadState}" th:id="${list.classNo}" 
+									th:style="${list.uploadState} != '1' ? 'background-color:#f0f0f0;color:#656565' : ''">
 									<td>
 										<br><br><input type='checkbox' name='class' onclick='checkSelectAll()'/>
 									</td>
@@ -133,7 +134,10 @@
 									<td>
 										<br><br>
 										<input type="button" value="수정" class="btn-primary3"
-											th:onClick="|location.href='@{/classUpdateForm(classNo=${list.classNo})}'|">
+											th:onClick="|location.href='@{/classUpdateForm(classNo=${list.classNo})}'|"
+											th:style="${list.uploadState} == '1' ? 'display : none;' : ''"	
+											>
+											
 										<input type="button" id="deleteBtn" value="삭제" class="btn-primary3">
 									</td>
 								</tr>

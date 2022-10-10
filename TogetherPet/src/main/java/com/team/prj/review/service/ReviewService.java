@@ -6,7 +6,9 @@ public interface ReviewService {
 
 	List<ReviewVO> reviewSelectList(ReviewVO vo);
 
-	int reviewInsert(ReviewVO vo);
+	ReviewVO reviewSelect(ReviewVO vo);
+	
+	int reviewInsert(ReviewVO vo); 
 
 	int reviewUpdate(ReviewVO vo);
 

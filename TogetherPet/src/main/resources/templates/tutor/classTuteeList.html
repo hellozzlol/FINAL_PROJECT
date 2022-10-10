@@ -85,13 +85,16 @@ $(function(){
 						url : "classOptionList",
 						type:'get',
 						data : {classNo : classNo},
-						success : htmlView
+						success : htmlView,
+						error : console.log("오류")
 				});
 				//$("#wrap").empty();
-				$("#suminfo").remove();
+				$("#suminfo").remove(); //첫 화면 상단에 정산 시간 알려주는 info부분 삭제
 				$(".sumcard").remove(); //기존 정산액 카드 삭제				
-				$("#sumtitle").empty();
+				$("#sumtitle").empty(); // 클릭한 클래스의 이름으로 변경위해 비워줌
 				$("#sumtitle").append(`<h2> ❝ ${className} ❞의 수강자 및 정산 현황<h2>`)
+				$("#wrap").empty();
+				$("#opwrap").empty();
 		})
 
 		
@@ -99,24 +102,49 @@ $(function(){
 		//콜백함수 클래스 옵션 조회
 		-------------------------*/	
 		function htmlView(list) {	
+				
+				if( list[0] == null) {
+					$("#wrap").append(`
+							<div class="col-md-4" id="sumcard">
+								<div class="card">
+									<p>정산완료</p>
+									<h2> 0원 </h2>
+								</div>
+							</div>
+							<div class="col-md-4" id="sumcard">
+								<div class="card">
+									<p>정산대기</p>
+									<h2> 0원 </h2>
+								</div>
+							</div>
+							<div class="col-md-4" id="sumcard">
+								<div class="card">
+									<p>수강료</p>
+									<h2> ${price}원 </h2>
+								</div>
+							</div>`)
+
+				} else{
 			
 				var price = `${list[0].price}`; //수강료 
 				var minPrice = `${list[0].minusPrice}` //정산된 수강료
 				var minusN =0;
 				var minusY =0;
 				
+				//미정산된 건수 총합
 				for(var i=0; i<list.length; i++){
 					minusN += list[i].minusN;	
 				};
 				console.log(minusN)
 				
+				//정산완료된 건수 총합
 				for(var i=0; i<list.length; i++){
 					minusY += list[i].minusY;	
 				};
 				console.log(minusY)
 				
-				var minusNsum = minusN * minPrice;
-				var minusYsum = minusY * minPrice;
+				var minusNsum = minusN * minPrice; //미정산 건수* 수강료 = 미정산 비용
+				var minusYsum = minusY * minPrice; //정산완료 건수* 수강료 = 정산완료 비용
 				
 
 				$("#wrap").append(`
@@ -138,7 +166,7 @@ $(function(){
 								<h2> ${price}원 </h2>
 							</div>
 						</div>`)
-						
+				}		
 			
 				for (c of list) {
 					var classOptionNo = `${c.classOptionNo}`
@@ -159,8 +187,10 @@ $(function(){
 								</table>
 							</div>
 						</div>`
+					//$("#opwrap").empty();
 					$("#opwrap").append(result);
 				}
+			
 		}
 
 

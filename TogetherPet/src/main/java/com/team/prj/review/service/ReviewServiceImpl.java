@@ -38,4 +38,10 @@ public class ReviewServiceImpl implements ReviewService {
 		return map.reviewSelectList();
 	}
 
+	@Override
+	public ReviewVO reviewSelect(ReviewVO vo) {
+		// TODO Auto-generated method stub
+		return map.reviewSelect(vo);
+	}
+
 }
