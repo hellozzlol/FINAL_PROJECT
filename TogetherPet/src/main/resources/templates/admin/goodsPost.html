@@ -50,7 +50,7 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary">삭제</button>
+		<button type="button" class="btn btn-sm btn-primary" id="deleteButton">삭제</button>
 		<br> <br>
 
 		<!-- 페이지네이션 -->
@@ -136,25 +136,35 @@
 				v.checked = false;
 			});
 		}
-		
-		// 삭제
-		function goodsDelete(){
-			//체크박스 체크된 항목
-			const query = 'input[name="chk"]:checked'
-			const selectedElements = document.querySelectorAll(query)
-			
-			//체크박스 체크된 항목의 개수..
-			const selectedElementsCnt = selectedElements.length;
-			
-			if(selectedElementsCnt == 0){
-				alert("삭제할 항목을 선택해주세요.");
-				return false;
-			}else{
-				if 
-			}
-		}
+	</script>
+	
+		<!-- 삭제 -->
+		<script>
+		var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
+			$('#deleteButton').on('click', function(){
+			    let chkbox = document.querySelectorAll(".chk");
+			    chkbox.forEach(elem => {
+				    if(elem.checked==true){
+				    	let goodsNo = elem.closest('tr').getAttribute('id')
+				    	$.ajax({
+							url: '/ajaxboardDelete',
+							type: 'post',
+							beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token)},
+							data: {
+								goodsNo: goodsNo
+							}
+						})
+						.done(res => {
+							document.getElementById(goodsNo).remove();
+							
+						})
+				    }
+			    });
+			})
 		</script>
-		
 		
 		</article>
 	</body>

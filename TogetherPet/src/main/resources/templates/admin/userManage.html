@@ -62,7 +62,7 @@
 					<tbody class="table-border-bottom-0" id="body">
 						<tr th:each="u:${pageInfo.list}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
-							<td th:text="${u.userNo}"></td>
+							<td th:text="${u.userNo}" id="uNo"></td>
 							<td th:text="${u.id}"></td>
 							<td th:text="${u.name}"></td>
 							<td th:text="${u.nickname}"></td>
@@ -216,24 +216,25 @@
 		<script>
 		$('#uUpdate').on('click', function(){
 			let chkbox = document.querySelectorAll(".chk");
-				//console.log(chkbox)
+				console.log(chkbox)
 			chkbox.forEach(elem => {
+				if(elem.checked==true){
 				let no = elem.closest('tr').getAttribute('id')
 				  console.log(no);
 			$.ajax({
 				url: '/userUpdateAjax',
 				type: 'post',
 				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
+					xhr.setRequestHeader(header, token)},
 				data: {no: no
 					 }
 			})
 			.done(res=>{
 				location.href-'/manager/userManage';
-			})
-			})
-		})
+				})
+			}
+		});
+	})
 		
 		</script>
 		</article>

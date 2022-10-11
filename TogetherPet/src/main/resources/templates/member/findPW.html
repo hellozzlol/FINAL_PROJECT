@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout2}">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>TogetherPet - 비밀번호 찾기</title>
+<style>
+#pwForm {
+	display: inline-block;
+	margin-left: 20%;
+	margin-top: 20%;
+}
+
+.id_used {
+	color: #008000;
+	display: none;
+}
+
+.id_ok {
+	color: red;
+	display: none;
+}
+
+.btn-outline-primary {
+	color: #6a7964;
+	border-color: #6a7964;
+}
+</style>
+
+</head>
+<body>
+	<article layout:fragment="content">
+		<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+	
+	// 가입정보(아이디) 확인 
+		$('#idCheck').on('click', e => {
+			event.preventDefault();
+			let id = $("#id").val();
+			console.log(id);
+			$.ajax({
+					url: '/join/idCheck',
+					method: 'post',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {
+						id: id
+					},
+					dataType: 'text',
+					success: function (result) {
+						console.log(result)
+						if (result == 0) {
+							$(".id_ok").show();
+							$(".id_used").hide();
+						} else{
+							$(".id_ok").hide();
+							$(".id_used").show();
+						}
+					},
+					error: function () {
+						console.log(err)
+					}
+				})
+				.done(res =>
+					console.log(res)
+				);
+		})
+		
+		//이메일 인증번호 전송
+			$('#sendCode').on('click', function (e) {
+				//console.log('sendCode in');
+
+				$.ajax({
+					type: "POST",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					url: "/join/sendCode",
+					data: {
+						"email": $('#memail').val()
+					},
+					success: function (data) {
+						if(data !=""){
+							alert("해당 메일로 인증번호가 발송되었습니다.")
+							$(e.target).attr("disabled", true);
+							$("#mcode").val(data);
+						} else{
+							alert("발송이 실패했습니다.")
+						}
+					}
+				})
+			})
+
+			//// 이메일 인증번호 확인
+			$('#checkCode').on('click', e=>{
+				if($("#codeInput").val() == $("#mcode").val()){
+					alert("인증코드가 일치합니다. 비밀번호를 재 설정해주세요.");
+					$(e.target).attr("disabled", true);
+					$("#setPW").show();
+				}else{
+					alert("인증코드가 일치하지않습니다.");
+				}
+			})
+		
+			// 비밀번호 확인
+			$('#passwordChk').blur(function(){
+				if($("#passwordChk").val() == $("#password").val()){
+					$(".successChk").text("비밀번호가 일치합니다.");
+					$(".successChk").css("color", "#008000");
+					
+				}else{
+					$(".successChk").text("비밀번호가 일치하지 않습니다.");
+					$(".successChk").css("color", "red");
+					
+				}
+			});
+		
+		
+		
+	})	   
+		   
+</script>
+
+		<div class="container">
+			<div class="row">
+				<div id="pwForm">
+					<input type="hidden" id="mcode" value="">
+					<form action="pwUpdate" name="pwUpdate" method="post">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}">
+						<div class="col-md-6">
+							<div class="card mb-4">
+								<h5 class="card-header">비밀번호 찾기</h5>
+								<div class="card-body demo-vertical-spacing demo-only-element">
+									<label class="form-label" for="basic-default-password12">아이디</label>
+									&nbsp;&nbsp;&nbsp; <span class="point">※ 사용중인 아이디를
+										입력하세요.</span>
+									<div class="input-group">
+										<input type="text" class="form-control" id="id" name="id"
+											aria-label="Recipient's username"
+											aria-describedby="button-addon2" required />
+
+										<button class="btn btn-outline-primary" type="button"
+											id="idCheck" value="N">확인</button>
+									</div>
+									<span class="id_ok" style="display: none">일치하는 정보가
+										없습니다.</span> <span class="id_used" style="display: none">가입한
+										계정입니다. 이메일을 입력해주세요.</span> <br> <label class="form-label"
+										for="basic-default-password12">이메일</label> &nbsp;&nbsp;&nbsp;
+									<span class="point">※ 가입시 입력했던 이메일을 입력해주세요.</span>
+									<div class="input-group">
+										<input type="email" class="form-control" placeholder=""
+											id="memail" name="email" aria-label="Recipient's username"
+											aria-describedby="button-addon2" required
+											pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+										<button class="btn btn-outline-primary" type="button"
+											id="sendCode">인증코드전송</button>
+									</div>
+									<br>
+									<div class="input-group">
+										<input type="text" class="form-control"
+											placeholder="인증번호를 입력해주세요." required
+											aria-label="Recipient's username"
+											aria-describedby="button-addon2" id="codeInput" />
+										<button class="btn btn-outline-primary" type="button"
+											id="checkCode">인증코드확인</button>
+									</div>
+									<br>
+								</div>
+							</div>
+						</div>
+						<div style="display: none" id="setPW">
+						<div class="col-md-6">
+							<div class="card mb-4">
+								<h5 class="card-header">비밀번호 재설정</h5>
+									<div class="form-password-toggle">
+										<label class="form-label" for="basic-default-password12">비밀번호</label>
+										&nbsp;&nbsp;&nbsp; <span class="point">※ 숫자+영문+특수문자 6~10자리</span>
+										<div class="input-group">
+											<input type="password" class="form-control" id="password"
+												name="password" required
+												aria-describedby="basic-default-password2"
+												autocomplete="off"
+												pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,10}$" />
+										</div>
+									</div>
+									<br>
+
+									<div class="form-password-toggle">
+										<label class="form-label" for="basic-default-password12">비밀번호
+											확인</label>
+										<div class="input-group">
+											<input type="password" class="form-control" id="passwordChk"
+												placeholder="동일하게 입력해주세요."
+												aria-describedby="basic-default-password2"
+												autocomplete="off" required />
+										</div>
+										<span class="point successChk"></span> 
+										<input type="hidden" id="pwDoubleChk" />
+									</div>
+									<br>
+									<button type="submit" class="btn btn-outline-primary">변경</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

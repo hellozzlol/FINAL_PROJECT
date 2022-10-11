@@ -79,8 +79,14 @@ public class AjaxadminController {
 	public int boradDelete(BoardVO vo, Model model, int boardNo) {
 		System.out.println("=====================" + vo.getBoardNo());
 		return board.boardDelete(vo);
-
 	}
+	
+	// (관리자 페이지) 상품 삭제 
+//	@PostMapping("/ajaxboardDelete")
+//	public int boradDelete(BoardVO vo, Model model, int goodsNo) {
+//		System.out.println("=====================" + vo.getBoardNo());
+//		return board.boardDelete(vo);
+//	}
 	
 	
 	// 상품, 클래스 상태 업데이트 - 승인
@@ -120,12 +126,13 @@ public class AjaxadminController {
 		return cnt;
 	}
 	
-	// 일반회원 상태 업데이트 - 활동정지
-//	@RequestMapping("userUpdateAjax")
-//	public String usersStateUpdate(UsersVO vo) {
-//		
-//		return null;
-//	}
+	// 일반회원 상태 업데이트 - 활동정지 // 다시 확인하기
+	@RequestMapping("userUpdateAjax")
+	public int uStateUpdate(UsersVO vo) {
+		int cnt = 0;
+		cnt = admin.uStateUpdate(vo);
+		return cnt;
+	}
 	
 	
 	// 출퇴근 등록

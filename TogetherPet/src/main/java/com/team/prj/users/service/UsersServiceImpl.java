@@ -108,12 +108,6 @@ public class UsersServiceImpl implements UsersService {
 		return map.scrapList(vo);
 	}
 
-	// 일반회원 상태 변경 / 0929 지혜 추가
-	@Override
-	public String usersStateUpdate(UsersVO vo) {
-		return map.usersStateUpdate(vo);
-	}
-
 	// 병원 스크랩 조회
 	@Override
 	public List<ScrapVO> hospitalScrap(ScrapVO vo) {
@@ -162,5 +156,5 @@ public class UsersServiceImpl implements UsersService {
 		return map.usersScrapDelete(vo);
 	}
 
-
+	
 }

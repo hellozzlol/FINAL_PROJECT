@@ -76,6 +76,14 @@ public class adminController {
 		return "admin/mypage";
 	}
 
+	// 회원 가입 통계
+	@GetMapping("/manager/userJoinCount")
+	public String uJoinCount(Model model) {
+		return "admin/userJoinCount";
+	}
+	
+	
+	
 	// 방문자 수
 	@GetMapping("/manager/visitCount")
 	public String visitCount(Model model) {

@@ -75,9 +75,6 @@ public interface UsersMapper {
 	// 작성 댓글조회
 	List<CommentVO> commentList(CommentVO vo);
 
-	// 일반회원 상태 변경 / 0929 지혜 추가
-	String usersStateUpdate(UsersVO vo);
-
 	// 일반회원 검색 / 1005 지혜 추가
 	List<UsersVO> userSearch(@Param("key") String key, @Param("val") String val);
 
@@ -89,5 +86,6 @@ public interface UsersMapper {
 
 	// 스크랩 삭제
 	int usersScrapDelete(ScrapVO vo);
+	
 
 }

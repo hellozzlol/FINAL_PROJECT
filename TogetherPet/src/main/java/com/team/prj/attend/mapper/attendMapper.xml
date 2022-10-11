@@ -25,28 +25,11 @@
 		values (#{adNo}, startDt, endDt, 0)
 	</insert>
 	
-<!--	
-	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
-		<selectKey keyProperty="adNo" order="BEFORE" resultType="int">
-			select
-			case when max()
-		</selectKey>
-		insert into attend
-		values(#{adNo}, )
-	</insert>
-	
-	
-	<update id="workInCheck">
-		update attend 
-		set state = 
-		where ad_no = #{adNo}
-	</update>
--->	
 
 	<insert id="insertWorkIn" parameterType="com.team.prj.attend.service.attendVO">
 		insert into attend
 		(AD_NO, STATE, START_DT, AT_NO)
-		values (#{adNo},#{state},#{startDt}, atd_seq.NEXTVAL)
+		values (#{adNo}, #{state}, #{startDt}, atd_seq.NEXTVAL)
 	</insert>
 	
 	<update id="updateWorkIn" parameterType="com.team.prj.attend.service.attendVO">

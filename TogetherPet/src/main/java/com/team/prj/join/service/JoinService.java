@@ -27,5 +27,7 @@ public interface JoinService {
 	int sCheck(String id); // 판매자회원 id 중복체크
 	
 	int nickCheck(String nickname); // 닉네임 중복체크
+	
+	
 
 }

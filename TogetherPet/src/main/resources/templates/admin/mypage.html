@@ -93,7 +93,12 @@ margin-right:20px;
 						<tr th:each="att : ${attendList}" >
 							<td th:text="${att.START_DT}"></td>
 							<td th:text="${#strings.isEmpty(att.END_DT)? ' ' : att.END_DT}"></td>
-							<td th:text="${att.STATE}"></td>
+							<td>
+								<div th:switch = "${att.STATE}">
+									<p th:case="0">정상</p>
+									<p th:case="1">지각</p>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>

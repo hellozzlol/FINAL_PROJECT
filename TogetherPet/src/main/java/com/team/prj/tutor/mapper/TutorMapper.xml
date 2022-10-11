@@ -2,10 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.tutor.mapper.TutorMapper">
 	
-	<!-- 0930 order by 추가 / 지혜 -->
+	<!-- 1010 수정 / 지혜 --> <!-- 관리자 - 판매자회원 관리 -->
 	<select id="tutorSelectList"
 		resultType="com.team.prj.tutor.service.TutorVO">
-		select * 
+		SELECT tutor_no, id, name, 
+		       case when state = '0' then '활동중'
+		            when state = '1' then '활동정지'
+		       else ' '
+		       end as state
 		from tutor
 		order by tutor_no desc
 	</select>

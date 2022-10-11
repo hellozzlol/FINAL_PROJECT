@@ -26,7 +26,7 @@
 		,3000
 		,1
 		,SYSDATE
-		,'활동중'
+		,'0'
 		,#{postcode}
 		,#{da}
 		)
@@ -57,7 +57,7 @@
 				,'SELLER'
 				,10
 				,SYSDATE
-				,'활동중'
+				,'0'
 				,#{postcode}
 				,#{da}
 				)
@@ -84,7 +84,7 @@
 				,#{address}
 				,'TUTOR'
 				,SYSDATE
-				,'활동중'
+				,'0'
 				,#{postcode}
 				,#{da})
 	</insert>
@@ -120,5 +120,11 @@
 		where id = #{id}
 	</select>
 
+	<!-- 아이디 찾기 -->
+	<select id="find_id" parameterType="String" resultType="String">
+		select id
+		from users
+		where email = #{email}
+	</select>
 
 </mapper>
