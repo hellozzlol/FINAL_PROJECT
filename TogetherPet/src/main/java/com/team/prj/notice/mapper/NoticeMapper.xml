@@ -7,7 +7,7 @@
 		SELECT n.notice_no, n.content, n.gen_time, n.read_time, u.nickname, u.attach, u.user_no
 		FROM notice n, users u
 		WHERE n.user_no = u.user_no 
-        AND u.user_no = 2
+        AND u.user_no = #{userNo}
 		ORDER BY n.notice_no DESC
 	</select>
 
