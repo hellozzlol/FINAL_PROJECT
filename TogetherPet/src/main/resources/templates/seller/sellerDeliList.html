@@ -159,7 +159,8 @@
 									th:data-category="${list.deliveryState}" th:id="${list.orderNo}" style="">
 									<td>[[${list.orderNo}]]</td>
 									<td>[[${list.goodsNo}]]</td>
-									<td><a href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank" id="deliNo">운송장</a></td>
+									<td th:if="${list.deliveryState == '1'} or ${list.deliveryState == '2'}"><a href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank"></a></td>
+									<td th:if="${list.deliveryState == '3'} or ${list.deliveryState == '4'}"><a href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank" id="deliNo"></a></td>
 									<td>[[${list.goodsName}]]</td>
 									<td>[[${list.amount}]]</td>
 									<td>[[${list.name}]]</td>
@@ -343,7 +344,6 @@
 		$("#btnList").on("click", "#goodsDelivery", function () {
 			if (confirm('배송처리 하시겠습니까?')) {
 				let orderNo = Number($(this).closest('tr').attr('id'));
-				
 				$('#deliverySubmit').val(orderNo);
 				$("#deliveryCall").submit();
 			}
@@ -383,7 +383,10 @@
 		$('#gReady').html(goodsRd);
 		$('#dCall').html(deliCall);
 		$('#dDone').html(deliDone);
-
+		
+		
+		let deliNo = Math.floor(Math.random()*10000000000000);
+		$('#deliNo').html(deliNo);
 </script>
 
 		<!--shop wrapper end-->

@@ -64,6 +64,11 @@
         "url": "Replace_with_your_site_URL"
         }
 </script>
+<style>
+	#top {
+	    overflow:scroll;
+	}
+</style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {	
 		var token = $("meta[name='_csrf']").attr("content");
@@ -292,20 +297,20 @@
 										</ul></li>
 
 									<!-- 1008 선희 추가 -->
-                  <li sec:authorize="isAuthenticated()" class="account_link">
-											<a href="#"><i class="icon-bell icons"></i></a>
-											<span sec:authorize="hasRole('USER')" id="noticeCount" class="noticeCount"
-											style="font-size: 15px;"></span>
-										<ul sec:authorize="hasRole('USER')" class="dropdown_account_link"
-											style="width: 500px; left: auto; right: 0;" role="menu">
+									<li sec:authorize="isAuthenticated()" class="account_link">
+										<a href="#"><i class="icon-bell icons"></i></a>
+										<span sec:authorize="hasRole('USER')" id="noticeCount"
+										class="noticeCount" style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')"
+											class="dropdown_account_link"
+											style="width: 500px; left: auto; right: 0;" role="menu" id="top">
 											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
 											<li id="noticeList"></li>
 										</ul>
 									</li>
 									<li sec:authorize="isAnonymous()" class="account_link">
-										<a href="loginForm"> <i class="icon-bell icons"></i>
-									</a>
-									</li>
+									<a href="loginForm"> <i class="icon-bell icons"></i>
+									</a></li>
 									<!-- 1008 선희 추가 -->
 
 									<!-- 0926 희수가 추가 -->
