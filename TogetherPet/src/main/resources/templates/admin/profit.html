@@ -210,8 +210,8 @@
 												</div>
 												<div>
 													<h5 class="card-header">
-														<a href="#" id="prevDBtn"> << </a>&nbsp;&nbsp;&nbsp; <span
-															id="stDay"></span> &nbsp;&nbsp;&nbsp;<a href="#"
+														<a id="prevDBtn"> << </a>&nbsp;&nbsp;&nbsp; <span
+															id="stDay"></span> &nbsp;&nbsp;&nbsp;<a
 															id="nextDBtn"> >> </a>
 													</h5>
 												</div>
@@ -262,9 +262,9 @@
 
 												<div>
 													<h5 class="card-header">
-														<a href="#" id="prevWBtn"> << </a>&nbsp;&nbsp;&nbsp;<span
+														<a id="prevWBtn"> << </a>&nbsp;&nbsp;&nbsp;<span
 															id="stWeek"></span> (<span id="stWeekStart"></span>~)
-														&nbsp;&nbsp;&nbsp;<a href="#" id="nextWBtn"> >> </a>
+														&nbsp;&nbsp;&nbsp;<a id="nextWBtn"> >> </a>
 													</h5>
 												</div>
 											</div>
@@ -314,9 +314,9 @@
 												</div>
 												<div>
 													<h5 class="card-header">
-														<a href="#" id="prevMBtn"> << </a>&nbsp;&nbsp;&nbsp;<span>2022년&nbsp;</span><span
+														<a id="prevMBtn"> << </a>&nbsp;&nbsp;&nbsp;<span>2022년&nbsp;</span><span
 															id="stMonth"></span><span>월</span> &nbsp;&nbsp;&nbsp;<a
-															href="#" id="nextMBtn"> >> </a>
+															id="nextMBtn"> >> </a>
 													</h5>
 												</div>
 											</div>
@@ -337,7 +337,7 @@
 													</thead>
 													<tbody>
 														<tr class="mnths" th:each="m:${monthlyList}">
-															<td>[[${m.MONTHLY}]]</td>
+															<td>[[${#numbers.formatInteger(m.MONTHLY, 0)}]]월</td>
 															<td>[[${#numbers.formatInteger(m.PF, 3, 'COMMA')}]]</td>
 														</tr>
 													</tbody>
