@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>반려동물숙박업체</title>
+<style>
+#row gy-2 gx-3 align-items-center {
+	position: absolute;
+}
+</style>
+</head>
+<body>
+	<article layout:fragment="content">
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content" style="margin: 50px;">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>Petinfo</li>
+								<li>AccomoList</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+
+			<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		// 필터링
+		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+		$('#category').on('click', 'button', function() {
+			let filter = $(this).data('filter');
+			let categories = $('.category') // <div> 태그 배열
+			
+			for(category of categories){ 
+				category.style='';
+				if(filter == 'ALL'){
+					category.style='';
+				}else if(category.getAttribute('data-category') != filter){
+					category.style.display='none';
+				}
+			}
+		})
+		
+	})
+</script>					
+
+
+					<!-- 카테고리 시작  -->
+			
+							<div id="category"
+							class="blog_messonry_button d-flex justify-content-center"
+							style="margin-top: 100px;">
+							
+							<button class="active" data-filter="ALL">
+								<img
+									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
+							</button>
+							
+							<button data-filter="Gyeongbuk">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514290/79156597-%EB%B6%88%EA%B5%AD%EC%82%AC.jpg" width="100" height="100"/><br>경북
+							</button>
+							
+							<button data-filter="gyeonggido">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514002/79156016-%ED%95%9C%EA%B5%AD-%EB%AF%BC%EC%86%8D%EC%B4%8C.jpg" width="100" height="100"/><br>경기도
+							</button>
+							
+							<button data-filter="Chungnam">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514599/79156947-%EC%84%B8%EC%A2%85-%EB%AC%B8%ED%99%94-%ED%9A%8C%EA%B4%80.jpg" width="100" height="100"/><br>충청남도
+							</button>
+							
+							
+							<button data-filter="Gyeongnam">
+								<img
+									src="https://images.cdn3.stockunlimited.net/preview1300/national-palace-museum_2013629.jpg" width="100" height="100"/><br>경상남도
+							</button>
+			
+							<br>
+							
+							<button data-filter="Jeju">
+								<img
+									src="https://st4.depositphotos.com/18288972/20331/v/450/depositphotos_203318712-stock-illustration-beautiful-attraction-jeju-island-south.jpg" width="100" height="100"/><br>제주도
+							</button>
+			
+							
+							<button data-filter="Gangwondo">
+								<img
+									src="https://images.cdn2.stockunlimited.net/preview1300/national-folk-museum_2013016.jpg" width="100" height="100"/><br>강원도
+							</button>
+			
+							
+							<button data-filter="Incheon">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170513760/79155634-%EA%B5%AD%EB%A6%BD-%EB%B0%95%EB%AC%BC%EA%B4%80.jpg" width="100" height="100"/><br>인천
+							</button>
+			
+							<button data-filter="Busan">
+								<img
+									src="https://previews.123rf.com/images/captainvector/captainvector1705/captainvector170514571/79156889-%EB%B2%A1-%EC%8B%9C%EC%8A%A4%EC%BD%94.jpg" width="100" height="100"/><br>부산
+							</button>
+							
+						
+							</div>
+							
+						
+							<!-- 카테고리 끝  -->
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+
+
+
+						<!--shop  area start-->
+						<div class="shop_section shop_reverse">
+
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+
+										<h1>반려동물 동반가능 숙소</h1>
+										<h2>혼자 두지 마세요 , 이제 함께 떠나요🐾</h2>
+										<br>
+										<h4>투게더 펫 은 중계업체입니다 결제/예약관련은 해당 홈페이지 문의 바랍니다.</h4>
+
+										<br> <br> <br>
+
+										<!-- 검색기능 시작  -->
+										<form class="row gy-2 gx-3 align-items-center" id="btn">
+											<div class="col-auto">
+												<select id="key" name="key">
+													<option value="1">지역</option>
+													<option value="2">숙소명</option>
+												</select>
+											</div>
+
+											<div class="col-auto">
+												<input class="form-control" type="text" id="val" name="val">
+											</div>
+											<div class="col-auto">
+												<button type="button" class="btn btn-dark" id="Searchbtn"
+													onclick="searchCall()">검색</button>
+											</div>
+										</form>
+										<!-- 검색기능 끝  -->
+
+										<br> <br> <br>
+
+											<!--숙소 반복문 스타트! -->
+												<div class="row shop_wrapper" id="all">
+		
+													<div class="col-lg-4 col-md-4 col-sm-6 col-6 category" 
+														th:each="a:${accomo}" th:data-category="${a.category}" >
+														<div class="single_product">
+															<div class="product_thumb">
+																<a th:href="@{accomo(accomoNo=${a.accomoNo})}"> <img
+																	class="primary_img" th:src="${a.aphoto}" alt="tree">
+																</a>
+
+
+														<!--스크랩기능 시작  -->
+														<div class="product_action">
+															<ul>
+																<li class="wishlist">
+																<a href="#" data-tippy="Wishlist"
+																	data-tippy-inertia="true" data-tippy-delay="50"
+																	data-tippy-arrow="true" data-tippy-placement="left"> 
+											
+																	<input type="hidden" th:value="${a.categoryId}" name="categoryId"> 
+																	<input type="hidden" th:value="${a.accomoNo}" name="boardNo">
+																	<input type="hidden" th:value="${session.user.userNo}" name="userNo">
+																		<i class="icon-heart scrapBtn"></i>
+					
+																</a></li>
+															</ul>
+														</div>
+
+														<!--스크랩기능 끝  -->
+
+
+														<div class="product_content grid_content text-center">
+															<h4 class="product_name">🐶[[${a.name}]]</h4>
+															<div class="price_box">
+																<span class="current_price">📢[[${a.address}]]</span>
+															</div>
+															<div class="price_box">
+																<span class="current_price">💸[[${a.price}]]원</span>
+															</div>
+															<div class="product_name">
+																<span class="current_price">👀[[${a.hit}]]</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!--숙소 반복문 끝! -->
+											
+											
+											<!-- 스크랩 스크립트 시작 20221005 소현 추가  -->
+											<script>
+											var token = $("meta[name='_csrf']").attr("content");
+											var header = $("meta[name='_csrf_header']").attr("content");
+																	    
+											//스크랩 하트버튼 클릭시
+																	    
+											
+											
+											$("#all").on('click','.icon-heart', function() {
+											
+												alert('스크랩 하시겠습니까?')
+														
+												let categoryId = $(this).prev().prev().prev().val();//숙소카테고리 h
+												console.log('카테고리->',$(this).prev().prev().prev().val());
+												
+												let boardNo =$(this).prev().prev().val();//boardNo 숙소번호
+												console.log('병원번호->',$(this).prev().prev().val());
+												
+												
+												let userNo = $(this).prev().val();// userNo 유저번호
+												console.log('유저번호->',$(this).prev().val());
+												
+												
+												
+												
+												
+												
+												//스크랩 등록 처리
+												$.ajax({
+											         url:'/ScrapInsert.do',
+											         type:'post',
+											         beforeSend : function(xhr){
+															xhr.setRequestHeader(header, token)},
+											     	 dataType:'json',
+											         data:{categoryId:categoryId, userNo:userNo, boardNo:boardNo},
+											         success:function(data,idx,arr){
+													console.log(arr); 
+								
+														alert("스크랩이 성공 적 으로 등록 되었습니다.")
+												
+											       }
+											    })
+													
+											})
+											
+											
+											
+											
+											
+											</script>
+											
+											
+											
+											
+											
+											
+		
+										   <script>
+											
+											$("#Searchbtn").on('click', searchCall)
+											
+											var token = $("meta[name='_csrf']").attr("content");
+											var header = $("meta[name='_csrf_header']").attr("content");
+										
+											function searchCall() {
+												  let key = document.getElementById('key').value;
+											      let val = document.getElementById('val').value;
+											      console.log(key,",",val)
+											     
+											     
+											     $.ajax({
+											    	url : "accomoajaxSearch",
+											    	method : 'get',//method
+											    	data : {'key' : key, 'val' : val},
+											    	dataType : 'json',
+											    	success : function(response) {
+														console.log('2',response);
+														htmlView(response);
+													},
+													error : function () {
+														console.log('오류');   
+													}
+											     });
+											     
+											     function htmlView(data) {
+														//html로 변환해서 원하는 위치에 출력하도록 구현
+														
+														 $(".shop_wrapper>div").remove(); 
+														 //$(".host").remove(); 
+														 
+													
+														 for(a of data) {
+														/* 	 if(date.length==0){
+																 var result = `
+																	 <!--숙소 반복문 스타트! -->
+																	 <div class="col-lg-4 col-md-4 col-sm-6 col-6 ">
+																			<div class="single_product" id="point">
+																				<div class="product_thumb">
+																						<h1>나중에 준비 ㅇㅋ?</h1>
+																				</div>
+																			</div>
+																		</div>
+																		`
+															 }else{ */
+														
+															 var result = `
+																 <!--숙소 반복문 스타트! -->
+																 <div class="col-lg-4 col-md-4 col-sm-6 col-6 ">
+																		<div class="single_product" id="point">
+																			<div class="product_thumb">
+																				<a href="accomo?accomoNo=${a.accomoNo}">
+																					<img class="primary_img" src="${a.aphoto}" alt="tree">
+																				</a>
+																				<!--스크랩기능 시작  -->
+																				<div class="product_action">
+																					<ul>
+																						<li class="wishlist">
+																						<a href="#"
+																							data-tippy="Wishlist" data-tippy-inertia="true"
+																							data-tippy-delay="50" data-tippy-arrow="true"
+																							data-tippy-placement="left"><i
+																								class="icon-heart icons"></i></a></li>
+																					</ul>
+																				</div>
+																				<!--스크랩기능 끝  -->
+																				<div class="product_content grid_content text-center">
+																					<h4 class="product_name">🐶${a.name}</h4>
+																					<div class="price_box">
+																						<span class="current_price">🐶${a.address}</span>
+																					</div>
+																					<div class="price_box">
+																						<span class="current_price">🐶${a.price}원</span>
+																					</div>
+																					<div class="product_name">
+																						<span class="current_price">👀${a.hit}</span>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	`
+																	
+																	
+																	<!--숙소 반복문 끝! -->
+																 $(".shop_wrapper").append(result); 	
+																//$(".host").append(".card-body");
+														 
+														 		};	
+														 			/* } */
+														 	};
+														     
+														};
+											</script>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

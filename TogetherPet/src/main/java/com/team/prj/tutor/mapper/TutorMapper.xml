@@ -50,7 +50,6 @@
 
 	<!-- 마이페이지에서 튜터정보 수정 -->
 	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
-
 		update tutor
 		<set>
 			<if test="id != null">id = #{id},</if>
@@ -92,23 +91,65 @@
 		</choose>
 	</select>
 
-	<!-- 튜터가 생성한 클래스 리스트 조회 -->
+	<!-- 튜터가 생성한 전체 클래스 리스트 조회 -->
 	<select id="myClassList" resultType="com.team.prj.classes.service.ClassVO">
 		select *
 		from class
 		where tutor_no = #{tutorNo}
-		order by class_no
+		order by upload_date
 	</select>
 	
-	<!-- 특정 클래스의 모든 날짜옵션 리스트-->
+	
+	<!-- 튜터가 생성한 클래스 중 승인 완료된 클래스 리스트 조회 -->
+	<select id="myExtiveClassList" resultType="com.team.prj.classes.service.ClassVO">
+		SELECT *
+		FROM CLASS
+		WHERE TUTOR_NO = #{tutorNo}
+		AND UPLOAD_STATE = 1
+		ORDER BY UPLOAD_DATE
+	</select>
+	
+	
+	<!-- 클래스 예약 건수 int로 조회 -->
+	<select id="getClassReserve" parameterType="int" resultType="int">
+		SELECT count(*)
+		FROM CLASS_RESERVE
+		WHERE CLASS_NO = ${classNo}
+	</select>
+	
+	
+	
+	<!-- (예약 건수가 있을 경우)특정 클래스의 모든 날짜옵션 리스트-->
 	<select id="classOptionList"	parameterType="int" 
 		resultType="com.team.prj.classes.service.ClassOptionVO">
 		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
-		c.max_headcount
+		c.max_headcount,
+		c.price, r.minus_price, count(case when r.minus_yn = 0 then 1 end) as minus_n,
+		count(case when r.minus_yn = 1 then 1 end) as minus_y
+		from class_option o, class c, class_reserve r
+		where o.class_no = ${classNo}
+		and o.class_no = c.class_no
+		and r.class_option_no = o.class_option_no
+		group by o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount,
+		c.price, r.minus_price
+		order by o.start_dt DESC
+	</select>
+	
+	
+	
+	
+	<!-- (예약 건수가 없을 경우)특정 클래스의 모든 날짜옵션 리스트-->
+	<select id="classOption"	parameterType="int" 
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		select o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount, c.price
 		from class_option o, class c
 		where o.class_no = ${classNo}
 		and o.class_no = c.class_no
-		order by o.start_dt
+		group by o.class_option_no, o.start_dt, o.end_dt, o.all_headcount,
+		c.max_headcount, c.price
+		order by o.start_dt DESC
 	</select>
 	
 	
@@ -117,11 +158,11 @@
 		resultType="com.team.prj.classes.service.ClassOptionVO">
 		SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
 				R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
-				R.CLASS_NAME 
+				R.CLASS_NAME, R.MINUS_YN
 		FROM CLASS_OPTION O, CLASS_RESERVE R 
 		WHERE R.CLASS_OPTION_NO = ${classOptionNo} 
 		AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO 
-		ORDER BY RESERVE_NO
+		ORDER BY RESERVE_NO 
 	</select>
 
 	

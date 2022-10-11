@@ -64,7 +64,21 @@ public class TutorController {
 	}
 		
 	
-	//튜터 마이페이지 - 튜터정보 수정폼
+
+	//튜터 마이페이지 - 개인정보 수정폼 호출
+	@RequestMapping("/tutorMyPageUpdForm")
+	public String tutorMyPageUpdForm(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		TutorVO vo = new TutorVO();
+		String id = (String) session.getAttribute("id");
+		vo.setId(id);
+		vo = tutor.tutorMyPage(vo);
+		model.addAttribute("tutorList", vo);
+		return "tutor/tutorMyPageUpdForm";
+	}
+	
+	
+	//튜터 마이페이지 - 튜터정보 수정폼 호출
 	@RequestMapping("tutorComUpForm")
 	public String tutorComUpForm(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
@@ -75,8 +89,33 @@ public class TutorController {
 		request.setAttribute("tutorList", vo);
 		return "tutor/tutorComUpForm";
 	}
+	
+	
+	//튜터 마이페이지 - 클래스 정보 수정폼 호출
+	@RequestMapping("classUpdateForm")
+	public String classUpdateForm(HttpServletRequest request, Model model, @RequestParam(value="classNo") int classNo) {
+		HttpSession session = request.getSession();
+		ClassVO vo = new ClassVO();
+		//int classNo = (int)session.getAttribute("classNo");
+		vo.setClassNo(classNo);
+		vo = clas.classSelect(vo);
+		//vo = clas.classUpdate(vo);
+		request.setAttribute("clas", vo);
+		return "tutor/classUpdateForm";
+	}
 		
 
+	//튜터 마이페이지 - 개인정보 수정처리
+	@PostMapping("tutorMyPageUpd")
+	public String tutorMyPageUpd(TutorVO vo, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		tutor.tutorUpdate(vo);
+		vo = tutor.tutorMyPage(vo);
+		session.setAttribute("tutor", vo);
+		return "redirect:/tutorMyPage";
+	}
+	
+	
 	//튜터 마이페이지 - 튜터정보 수정처리
 	@PostMapping("tutorComUpdate")
 	public String tutorComUpdate(TutorVO vo, HttpServletRequest request) {
@@ -86,6 +125,10 @@ public class TutorController {
 		session.setAttribute("tutor", vo);
 		return "redirect:/tutorComList";
 	}
+	
+	//튜터 마이페이지 - 클래스 정보 수정처리
+	
+	
 	
 	//튜터가 등록신청한 클래스 리스트
 	@RequestMapping("/tutorClassList")
@@ -117,10 +160,10 @@ public class TutorController {
 		HttpSession session = request.getSession();
 		tvo = (TutorVO) session.getAttribute("tutor");
 		clvo.setTutorNo(tvo.getTutorNo());
-		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
+		model.addAttribute("pageInfo",PageInfo.of(tutor.myExtiveClassList(clvo)));
 		
 		
-		//합계 정산 처리
+		//총 정산완료액 처리
 		List<ProfitVO> list = tutor.tutorProfitList(tvo, key);
 		int sum = 0;
 		for(int i = 0; i<list.size();i++) {
@@ -129,21 +172,45 @@ public class TutorController {
 			}
 		}
 		model.addAttribute("sum", sum);
+		
+		//총 정산대기액 처리
+		List<ProfitVO> unlist = tutor.tutorProfitList(tvo, key);
+		int unsum = 0;
+		for(int i = 0; i<unlist.size();i++) {
+			if(unlist.get(i).getMinusYn().equals("0")) {
+				unsum += unlist.get(i).getMinusPrice();
+			}
+		}
+		model.addAttribute("unsum", unsum);
+
 
 		return "tutor/classTuteeList";
 	}
 	
 	
-	//////////////////////////ajax/////////////////////////////////
+//////////////////////////ajax/////////////////////////////////
+	
+	
 	//클래스 수강자 및 정산 리스트에서 해당 클래스 클릭시 옵션리스트 자세히보기
 	@RequestMapping("classOptionList")
 	@ResponseBody
 	public List<ClassOptionVO> classOptionList(Model model, @RequestParam(value="classNo") int classNo){
-		List<ClassOptionVO> list = tutor.classOptionList(classNo);
-		model.addAttribute("option", list);
-		return list;
+		//먼저 클래스의 예약 건수를 확인
+		int reserv = tutor.getClassReserve(classNo);
+		
+		if (reserv == 0) { //예약 건수가 0이면
+			List<ClassOptionVO> list = tutor.classOption(classNo);
+			model.addAttribute("option", list);	
+			return list;
+			
+		} else { //예약 건수가 1이상 존재하면
+			List<ClassOptionVO> list = tutor.classOptionList(classNo);
+			model.addAttribute("option", list);	
+			return list;
+		}
+		
 	}
-	
+
 	
 	//클래스 정산 리스트에서 특정 클래스의 옵션 클릭시 수강자명단 자세히보기
 	@RequestMapping("optionReserv")

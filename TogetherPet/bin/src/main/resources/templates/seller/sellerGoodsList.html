@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
+<title>Together Pet</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+	rel="stylesheet" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+<!-- Helpers -->
+<script src="/admin/assets/vendor/js/helpers.js"></script>
+
+<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+<script src="/admin/assets/js/config.js"></script>
+
+<!-- datepicker 한국어로 -->
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+						<li>상품 조회/수정</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="col-lg-12 mb-4 order-0" id="categorySel">
+					<div class="row">
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="all"> <img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAtVJREFUaEPtmI2RDVEQhc9GgAjYCBABImAjIANEgAiQARFYESACRIAIEAH1Vc2t6u3XPdN352frVc2t2qqdeX379uk+/XPnREe+To7cfu0ArjqCPRG4Lum1pEeS+H+N9VPSZ0nPJf2pHFAFgMFfJd2qKF1A5pukBxUQVQDvJD1ewLAeFe8lPZnaUAFwX9KnKUUr/U4UoFS6KgCgzh2j4bt75qeXkl4YmVfDO3twRQbq3DabeL47B8CzIXGtjsgreOmeETqTdO4OJvk/mHdfJBFdu6Jok9BvMhBjESBxf7iKk/Hyt5M7lURFsYsCgL62qDI3AsN8viGHvrAqjQHwiv4OVcgr8oYhl5VZ9l4zRkdA2Qt4K5cmdAagJ5QVajSbK1RDtkrddJSoJG4zqpKcl5EtJXQUgTL6waqqVxHviVaJBREAn5BTDaWSwC0C1URu8lFCX0j8CEAl0TKDeM8B2RzjAfTKHxSICMAcSmBQ1AMaYE+hXvmD3hEB8EmZdcNswKME0j19FKK+AoBMnt98MTno8BEAwozRtg4TFbrhx6EX0O55zqZTjKIY4DEMp0vjmCl5xhT2Phz2204NfRhpLjTIrA/4KGSdfMv34Ugx1on/dVhHZJqnK9uIDBTD09UV2roEAOsZaPV0wqK3Az2yjpttnw0AfsL9X0OOkCfU6Whog//wt43G7G15FMlzcYHf/N2U1M6yYGYDqNwdqnSoyHkK7wD2CFR4Y2Q2pRANim9GJOHUpxeSmAJA9fIJbTFuBgCDafm9H7voA4wcGYjNAHB572lI1ss0QAa8aG0GwN8HeqiO97kXXymAkqd6k1NSSW/PKJHJlg7aASj+ALFHoMrVnUKXoJD/OtFTHpeWZYQPO/xYDsxpUEsDSBveGIDocr+0YRV94WW+bZwakQHBNbHdlCoHLiXTbn7c7tKhbwrAUsaspmcHsJpri4r3CBQdtZrY0UfgP7dAyTHr+aY9AAAAAElFTkSuQmCC" />
+										</a>
+										<h4 class="card-title">전체</h4>
+										<p class="text-success fw-semibold">
+											[[${#lists.size(pageInfo.list)}]]</p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="0"> <img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA3xJREFUaEPtmY+RjVEMxc9WgApQATqgAlSAClABKkAFqGCpABWgAlSACpjfzL07ednc/xezM5uZNzs77/uSnOQkNzfvSGdcjs64/zoH8L8zuDMD1yXdlsTfK+mvxfdZ0jdJHyR9lMT/y7IKAEcfSrqTnB5xCDBvJb1MwEbePXl2FsBFSU8kPZqyevqlF5KeSfo5qm8GANF+JQkQOwXnH6SsdOsdBfC8EfV3yQHogUOZ59QFgKEcAaBWSkI2Hvci6AWAcaKOcS+/Eij43EsB9KELZy8EOl8nEE19vQCOC87DW5xoGipEFCDUEfXkBRBQqio9AHCQTmOFqN/c1QpTy6W9+mzQoaqNogWANBN9K1+S87NRL0WU+oCG19wDd2uFXQNAer+6bkPkMbTb+ewzuil8mwlsXS3ZrAGAg/dcNG4M0Oa3e7eV7fw4HeuTe7dIpZJSIkH0rVCwT1tFZb6fBYAK7PjCJgu05wMpAfCFO0OdFQDQF2ctlcIAlgAQfbKQhXYGpUZkBQB27qezJ9sEEFloZiDi4KWJwl0FQBZ+tGowyoDnH+NBdAK3srEKAP20VTt2MGJA7xOJAPiXZuiDgR0AOMSYv7KcCmYEgBYGjbLcSpeQVsT99zsAcNq/N4o5I2jl1Qx4wyO93+reASCqx4OgRxnYYTii0F+h4r8EAKgZENWA9gCYpZDv45leIyCmKESh2IlwtohxeBWEL2ImYdtgwsXWrjaaI74CYqqN7jrIbEcqgQgHNPPi1EG2a5Tw54IH0aqF6VECwwxOl40HLWO9h1wG0aPPA/4eLc96x+nqrajX+/QcU+6pud7piG6DQ+P0jgvNIK6Dx5cvNGhbvVLOAthypcR4dCvaSaUIIJlnmLRry+ptsHXRjtYqHHSsOlo8Hs0AzrPCOTioki3aaSgtALwULbbIBCf0lh1/cpqx2S+MlxdbGXVUD3xHsWFkdk+Ew2z9om3HmzSKVDPZk4FcD2TC74n4Duc58rkt9QLBca6K6IzW9DiPzqa+XgA5ChGdbITgKh/qg+Kz63VWJPCbAa12x27SxhocBcC7GIdS0Vp8tHDt8wDm9C0WbKR8BkCmFLz1W+tZAEQdfU3KeAOzALIeWh9cJSt2duoBwmxDJvlMt+RVANbRzG84DjC/Jucykn9m5beALS14J4CeqG9/5hzA9pAOKjzzGfgDGdjKMTxl4A4AAAAASUVORK5CYII=" />
+										</a>
+										<h4 class="card-title">판매대기</h4>
+										<p class="text-success fw-semibold" id="wait"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="1"> <img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAmNJREFUaEPtWe0xBEEQfRcBIkAEiAARIAIyQASIABkQASJABIiADBAB9cqMmuvrnunZ21uuaubX3W53T79+/TG7O8Kcr9Gc+48G4K8ZrGFgEcA5gF0A/D2L9QbgAcAxgA/PBl4AdPgJwIrHaA8yzwC2PSC8AK4A7PfgWI2JawAHJQUPgC0A9yVDM7pPFphS5vIAYOqsJxZexH/eOgVwksichWvpxh4Zps5aosT/G9MAOAqFm9rQosIobSZCewBuxcYs/pvk2iMAspsujW0W9IUFIscAC/dVdBwrL9+F3CoAdpR0sQHQXlzsMkuKY7LeKEd7alfKAZCGPkMXkoakY5Sz2ix1FxKnNaDUJfhUzixoC0ANlZ7UiD57Uo2y3tQ1jxKewo1OeYqzi6yroDUG3OiDV96oUryGLVcWaABkQZYGiqeAIwPeQo7yWkGPFb4G4Et0Bq3QLId4nRtY5xgJoIv8mM8aAHaA5UJPj7dlSvC6NgP6kp8YohoADo3DBIA1DbU5QTUGgNNTslArT1uymVyGDvXrngZAo5mFSmB3YRZw3DM/rX5PEGwGnLaU4ZRmt7JOs1GeEebvnaAvJ/VEOltzQLJgTfIhr2vnq+wjpSzmIZ3V9lKDnTtKNAA9U9YY6Dmg1eZ6Y6D0FDer2mkAIueNgers/1H48xSalrkGoCPz2YNjarPUvXpjoCuQf5NCDYARgZZCMjCliNSmUqsB91NOEJx7BuTrldqUSeW1bwrSXm4/Uz+Xl/y8wzcJ6TuiLiC4Od9QZL+0hM9J2n5Z/VJhdXF4UJ0GYNBwK5s1BhoDU0bgG2zFoTEMnelOAAAAAElFTkSuQmCC" />
+										</a>
+										<h4 class="card-title">판매중</h4>
+										<p class="text-success fw-semibold" id="ing"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-8">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title d-flex justify-content-between">
+										<a data-filter="2"> <img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA1RJREFUaEPtmI2RTUEQhc9GgAjYCBABIkAEiAARIAJEgAgQwRIBIkAEiID61LSa12/uTPe99731qt5UbW3t3vnp0326+8yc6MDHyYHbryOA847gWhG4JumtpIuSXkh6KemnA8e3h5IelW93JX1e6oC1AHySBAgb3yQ9lfSm/ONe+ftKNQfjr/8PAPDo8wlDPpT/35z4/kDS6yUglkYAWnwt1JljBzQ7bdAtvFcGAMZedTvfl8TPkkEEfBS+REFFAZCYJOA+B4UAenZHBACe/zHaaEffL40iEQFAAp7tyMDRtrckWSFozt0lAL/375G1je9HADglQ6FfpaIQ9ncTFetGIhKLI0AC06QipfJZkRFeQnh7e43Pz6W8Pu4lci8HKJvIAUCMRrajZkDgEOabLNmwpQUAvYIwq7VND8DHQrMRSP8dvXQ5sQjthABk3b/RAuCF2egMz1Mi9qSAwgl4kJwgSjW9MlEwG7YEYAtA1jN+D3pGS7y9l3Sn8kamONgyJMYGM1oA4D0ejA6/B16+EF2cnEehwL4uhaAAoYryE01fX0zwLPTg95pAvhfvb1S5qSpE2XwV9M6WVxrrcAqh5wcaZXqBbdesdL0ySuJFDsIjJHLmekh0aHTRCE1Wuh6AqWRsBQYQlLiu8HILiQYVLzLYFydtjTUoVG9qEoJoRC4lmXtGmEJLr4lTEQIc+VJTLRMFyjsFY5jE2TIaoYDN4XAuKfXIyOxQGeX2FdE/ZoSnIR72d2eb20rGDICddGKSt5bO9rhFpbFeguFQCM7XFKCkoruiI9SJ4SUydsqL/jCMB8Sckal0GA/goZgzQ2hmeCxSq7NymjOizZJLEp29+QA2uhMbHXgaHA2SnyQbDVOrwyeTcgewt9TmviMALMqoRviNp6AVvK/H7bIXno8WicVXyiyA2uDjq0SRD+f2LjTKhcj3VSh08E+LeCojuiKejcxZ7XHXDrNLSX04FSVSYnsG81ziazySYfS+9HfPSBntHQ4oOmOk2bX2oUnxjBMytrXBUgCjjmq9YOpmN6eDb+BYAwAbegXKBZzObNSAavxdPxRsCbNIYvg5awEwAQgdSHivOjkXuiELTBogzDL36NlSYo5j9rZmrQjszeBdUegIYK4H/gCvh68xe1Nn+AAAAABJRU5ErkJggg==" />
+										</a>
+										<h4 class="card-title">판매완료</h4>
+										<p class="text-success fw-semibold" id="done"></p>개
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 검색 시작 -->
+				<form id="btn">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
+								<div class="col-md-10">
+									<input type="hidden" id="key" name="key" value="1">
+									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
+								</div>
+							</div>
+							<div class="search-box">
+								<div class="mt-2" style="text-align: center;">
+									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
+									검색하기
+									</button>
+									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- 검색 끝 -->
+
+
+				<div class="goodsSelect" id="deleteAll">
+					<button id="deleteButton" type="button" class="btn-primary3">선택삭제</button>
+				<!-- Hoverable Table rows -->
+				<div class="card" style="margin-top: 10px;">
+					<h4 class="card-header" style="font-weight: bold; font-size: 17px">
+						등록된 상품 목록 (총 [[${#lists.size(pageInfo.list)}]]개)
+					</h4>
+
+					<div class="table-responsive text-nowrap" style="vertical-align: middle; text-align: center;">
+						<table class="table table-hover" id="all">
+							<thead>
+								<tr>
+									<th>
+										<input type="checkbox" id="allCheckBox" onclick="allChecked()" />
+									</th>
+									<th>상품번호</th>
+									<th>상품명</th>
+									<th>승인상태</th>
+									<th>판매상태</th>
+									<th>재고수량</th>
+									<th>등록일자</th>
+									<th>상세보기/삭제</th>
+								</tr>
+							</thead>
+							<tbody id="btnList" class="table-border-bottom-0">
+								<tr th:each="list : ${pageInfo.list}" class="category"
+									th:data-category="${list.sellState}" style="" th:id="${list.goodsNo}">
+									<td>
+										<input type="checkbox" name="chk" class="chk" onclick="chkClicked()" />
+									</td>
+									<td>[[${list.goodsNo}]]</td>
+									<td>
+									<a th:onClick="|location.href='@{/goods(goodsNo=${list.goodsNo})}'|">[[${list.name}]]</a>
+									</td>
+									<td>
+										<div th:switch="${list.uploadState}">
+											<p th:case="0">검토중</p>
+											<p th:case="1">승인완료</p>
+											<p th:case="2">반려</p> <!-- 1007 지혜 추가 -->
+										</div>
+									</td>
+									<td>
+										<div th:switch="${list.sellState}" class="sellSt">
+											<p th:case="0">판매대기</p>
+											<p th:case="1">판매중</p>
+											<p th:case="2">판매완료</p>
+										</div>
+									</td>
+									<td>[[${list.amount}]]개</td>
+									<td>[[${#dates.format(list.uploadDate, 'yyyy-MM-dd')}]]</td>
+									<td>
+										<input type="button" value="상세" class="btn-primary3"
+											th:onClick="|location.href='@{/sellerGoodsDetail(goodsNo=${list.goodsNo})}'|">
+										<input type="button" id="deleteBtn" value="삭제" class="btn-primary3">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				</div>
+				<!--/ Hoverable Table rows -->
+			<p>* 상품명 클릭시 상세 페이지로 이동합니다.</p>
+			</div>
+			<!-- / Content -->
+
+			<!-- 페이지네이션 -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-info  justify-content-center">
+					<li class="page-item disabled" th:if="${pageInfo.isIsFirstPage()}"><span
+						class="page-link">«</span></li>
+					<li class="page-item"
+						th:if="${!pageInfo.isIsFirstPage() && pageInfo.getList().size() > 0}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getPrePage()}]])|"
+						rel="prev">«</a></li>
+					<li
+						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
+						th:each="page:${pageInfo.navigatepageNums}"><span
+						class="page-link" th:if="${pageInfo.pageNum eq page}"
+						th:text="${page}"></span> <a class="page-link"
+						th:unless="${pageInfo.pageNum eq page}"
+						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
+							}}</a></li>
+					<li class="page-item" th:if="${pageInfo.hasNextPage}"><a
+						class="page-link"
+						th:href="|javascript:gopage([[${pageInfo.getNextPage()}]])|"
+						rel="next">»</a></li>
+					<li class="page-item disabled" th:unless="${pageInfo.hasNextPage}"><span
+						class="page-link">»</span></li>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 -->
+			
+			<!-- 상품 삭제 -->
+			<form name="goodsDelete" id="goodsDelete" action="deleteGoods">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+				<input type="hidden"
+					id="deleteSubmit" name="goodsNo">
+			</form>
+			<!-- 상품 삭제 -->
+			
+			<!-- 선택 일괄 삭제 -->
+			<form name="deleteForm" id="deleteForm" action="deleteGoods">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+				<input type="hidden"
+					id="deleteSelSubmit" name="idList">
+			</form>
+			<!-- 선택 일괄 삭제 -->
+
+		</div>
+		<!-- Content wrapper -->
+
+<style>
+	.search-box .form-control {
+		width: 48%;
+		display: inline;
+	}
+	#search {
+		font-weight: bold;
+		font-size: 17px;
+	}
+</style>
+<script>
+	//페이지 이동
+	function gopage(p) {
+		location.href = '/sellerGoodsList?pageNum=' + p;
+	}
+	
+	// 필터링
+	// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+	$("#categorySel").on("click", "a", function() {
+		let filter = $(this).data("filter");
+		let categories = $(".category")
+		
+		for(category of categories){ 
+			category.style="";
+			if (filter == "all"){
+				category.style="";
+			} else if (category.getAttribute("data-category") != filter){
+				category.style.display="none";
+			}
+		}
+	})
+	
+	// 상품 삭제 처리
+	$("#btnList").on("click", "#deleteBtn", function () {
+		if (confirm('상품을 삭제하시겠습니까?')) {
+			let goodsNo = Number($(this).closest('tr').attr('id'));
+			$('#deleteSubmit').val(goodsNo);
+			$("#goodsDelete").submit();
+		}
+	})
+	
+	// 검색
+	$("#searchBtn").on("click", searchCall) 
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
+			
+			$.ajax({
+				url: "goodsAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val},
+				dataType: "json",
+						success:function(response) {
+						console.log(response);
+						htmlView(response);
+					},
+					error:function() {
+						alert("오류발생");
+					}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.goodsNo + ")")
+						.append($("<td />").append($("<input>").attr("type", "checkbox")),
+								$("<td />").text(item.goodsNo),
+								$("<td />").text(item.name),
+								$("<td />").text(item.uploadState),
+								$("<td />").text(item.sellState),
+								$("<td />").text(item.amount),
+								$("<td />").text(item.uploadDate),
+								$("<td />").append($("<button>").addClass("btn-primary3").html("상세"))
+										   .append($("<button>").addClass("btn-primary3").html("삭제")));
+						tbody.append(row);
+					});
+				$("#all").append(tbody);
+			}	
+		}
+		
+		// 체크박스 전체 선택
+		function allChecked(target) {
+			// 전체 체크박스 버튼
+			const checkbox = document.getElementById('allCheckBox');
+			
+			// 전체 체크박스 체크 여부
+			const is_checked = checkbox.checked;
+			
+			// 전체 체크박스 제외한 모든 체크박스
+			if (is_checked) {
+				// 체크박스 전체 체크
+				chkAllChecked()
+			} else {
+				//체크박스 전체 해재
+				chkAllUnChecked()
+			}
+		}
+		
+		// 자식 체크박스 클릭이벤트
+		function chkClicked() {
+			// 체크박스 전체 개수
+			const allCount = document.querySelectorAll(".chk").length;
+			
+			// 체크된 체크박스 전체 개수
+			const query = 'input[name="chk"]:checked'
+			const selectedElements = document.querySelectorAll(query)
+			const selectedElementsCnt = selectedElements.length;
+			
+			// 체크박스 전체 개수 = 체크된 체크박스 개수 => 전체 체크박스 체크
+			if (allCount == selectedElementsCnt){
+				document.getElementById('allCheckBox').checked = true;
+			
+			//같지 않으면 전체 체크박스 해제
+			} else {
+				document.getElementById('allCheckBox').checked = false;
+			}
+		}
+		// 체크박스 전체 체크
+		function chkAllChecked() {
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = true;
+			});
+		}
+		// 체크박스 전체 해제
+		function chkAllUnChecked(){
+			document.querySelectorAll(".chk").forEach(function(v,i){
+				v.checked = false;
+			});
+		}
+		
+		
+		// 일괄 삭제
+		$('#deleteButton').on('click', function(){
+		    let chkbox = document.querySelectorAll(".chk");
+		    chkbox.forEach(elem => {
+			    if(elem.checked==true){
+			    	let goodsNo = elem.closest('tr').getAttribute('id')
+			    	$.ajax({
+						url: '/ajaxGoodsDelete',
+						type: 'post',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token)},
+						data: {
+							goodsNo: goodsNo
+						}
+					})
+					.done(res => {
+						if (confirm('상품을 삭제하시겠습니까?')) {
+							document.getElementById(goodsNo).remove();
+						}
+					})
+			    }
+		    });
+		})
+		
+		// 판매상태
+		let sellSt = $('.sellSt');
+		let stWait = 0; // 판매대기 카운트
+		let stIng = 0; // 판매중 카운트
+		let stDone = 0; // 판매완료 카운트
+		
+		for(st of sellSt){
+			let stat = st.children[0].innerHTML;
+			if (stat == "판매대기") {
+				stWait += 1;
+			} else if (stat == "판매중") {
+				stIng += 1;
+			} else if (stat == "판매완료") {
+				stDone += 1;
+			} else {
+				alert("오류발생");
+			}
+		}
+		$('#wait').html(stWait);
+		$('#ing').html(stIng);
+		$('#done').html(stDone);
+		
+</script>
+	
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

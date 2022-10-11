@@ -67,25 +67,42 @@ public class SellerAjaxController {
 		return seller.qnaSearch(key, val);
 	}
 
-	// 정산 페이지 // 1005 희수 추가
-	@RequestMapping("/ajaxProfitOrderBy")
-	public List<ProfitVO> ajaxProfitOrderBy(SellerVO svo, HttpSession session,  String key){
-		System.out.println(key);
-		System.out.println("===============================================");
-		if (key == null) {
-			key = "1";
-		}
-		svo = (SellerVO) session.getAttribute("seller");
+	// 매출 합계와 건수 // 1008 희수 추가
+	@RequestMapping("/ajaxGetSumSize")
+	public int[] ajaxGetSumSize(SellerVO svo, String key, HttpSession session, String start, String end, String by) {
 		
-		svo.setSellerNo(svo.getSellerNo());
-		List<ProfitVO> list=null;
-		//= seller.sellerProfitList(svo, key);
+		int[] arr = new int[2];
+		int sum = 0;
 
-		return list;
+		if (key == null) {
+			key = "2";
+		}
+
+		if (start == "") {
+			start = null;
+		}
+
+		if (end == "") {
+			end = null;
+		}
+		
+		if (by == "") {
+			by = null;
+		}
+		
+		svo = (SellerVO) session.getAttribute("seller");
+		svo.setSellerNo(svo.getSellerNo());
+		
+		List<ProfitVO> list = seller.sellerProfitList(svo, key, start, end, by);
+		
+		for (int i = 0; i < list.size(); i++) {
+			sum += list.get(i).getMinusPrice();
+		}
+
+		arr[0] = sum;
+		arr[1] = list.size();
+		return arr;
 	}
-	
-	// 매출 합계 // 1007 희수 추가
-	
 
 	// 상품 일괄 삭제
 	@RequestMapping("/ajaxGoodsDelete")

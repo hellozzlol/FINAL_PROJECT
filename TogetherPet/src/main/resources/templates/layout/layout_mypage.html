@@ -56,27 +56,6 @@
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="/assets/css/style.css">
 
-<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
-<script src="/assets/js/vendor/popper.js"></script>
-<script src="/assets/js/vendor/bootstrap.min.js"></script>
-<script src="/assets/js/slick.min.js"></script>
-<script src="/assets/js/wow.min.js"></script>
-<script src="/assets/js/jquery.scrollup.min.js"></script>
-<script src="/assets/js/images-loaded.min.js"></script>
-<script src="/assets/js/isotope.pkgd.min.js"></script>
-<script src="/assets/js/jquery.nice-select.js"></script>
-<script src="/assets/js/tippy-bundle.umd.js"></script>
-<script src="/assets/js/jquery-ui.min.js"></script>
-<script src="/assets/js/jquery.instagramFeed.min.js"></script>
-<script src="/assets/js/jquery.magnific-popup.min.js"></script>
-<script src="/assets/js/mailchimp-ajax.js"></script>
-
-<!-- Main JS -->
-<script src="/assets/js/main.js"></script>
-
-<!--modernizr min js here-->
-<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
-
 <!-- Structured Data  -->
 <script type="application/ld+json">
         {
@@ -111,6 +90,73 @@
 		})
 		.done(res => {
 			$('#item_count').html(res);
+		})
+		
+		// 1008 선희 추가
+		noticeCount(); // 알림 카운트
+		noticeList(); // 알림 목록
+		
+		// 알림 목록
+		function noticeList() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$.ajax({
+				url:'/noticeList',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {userNo:userNo},
+				success: function(res) {
+					console.log(res);
+					let notice = '';
+					for(r of res) {
+						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
+								   <div class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
+								   </div></li><hr>`;
+						$('#noticeList').html(notice);	
+					}
+				}
+			})
+		}
+		
+		// 알림 카운트
+		function noticeCount() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$.ajax({
+				url:'/ajaxNoticeCount',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {userNo:userNo},
+				success: function(res){
+					$('#noticeCount').html(res);
+				}
+			})
+		}
+		
+		// 알림 상태 업데이트
+		$("#noticeList").on("click", function(e) {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			if($(e.target).prop("tagName") == 'SPAN') {
+				let userNo = $(e.target).closest("div").prev().html();
+				$.ajax({
+					url:"/ajaxNoticeUpdate",
+					type:"post",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token)
+					},
+					data: {userNo:userNo},
+					success: function(res) {
+						noticeCount();
+						noticeList();
+					}
+				})
+			}
 		})
 	})
 </script>
@@ -328,19 +374,38 @@
 											</div>
 											<!-- 0926 희수가 추가 -->
 										</ul></li>
-									<li><a href="#"><i class="icon-bell icons"></i></a> <span
-										class="item_count">2</span></li>
+										
+									<!-- 1008 선희 추가 -->
+									<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+									   <a data-toggle="dropdown">
+										   <i class="icon-bell icons"></i>
+										   <span id="noticeCount" class="noticeCount" style="font-size: 20px;"></span>
+									   </a>
+									   <div class="dropdown-menu" style="width:600px; left: auto; right: 0;" role="menu">
+										   <h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>								
+										   <ul id="noticeList"><ul>
+									   </div>
+									</li>
+									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
+									   <a href="loginForm">
+									   <i class="icon-bell icons"></i>
+									   </a>
+									</li>
+									<!-- 1008 선희 추가 -->
+									
+									<!-- 0926 희수가 추가 -->
 									<div sec:authorize="isAuthenticated()">
-										<li class="shopping_cart"><a id="layoutcartCall"><img
-												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
-												<span id="item_count" class="item_count"></span></a></li>
-									</div>
-									<div sec:authorize="isAnonymous()">
-										<li class="shopping_cart"><a href="loginForm"><img
-												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
+										<li class="shopping_cart"><a id="layoutcartCall">
+											<img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
+											<span id="item_count" class="item_count"></span></a>
 										</li>
 									</div>
-									<!-- / 0926 희수가 추가 -->
+									<div sec:authorize="isAnonymous()">
+										<li class="shopping_cart"><a href="loginForm">
+											<img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
+										</li>
+									</div>
+									<!-- 0926 희수가 추가 -->
 								</ul>
 							</div>
 						</div>
@@ -444,12 +509,14 @@
 				<!-- body end -->
 				<!-- 0926 희수가 추가 -->
 				<div sec:authorize="isAuthenticated()">
-					<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
-						method="post">
-						<input type="hidden" th:name="${_csrf.parameterName}"
-							th:value="${_csrf.token}"> <input type="hidden"
-							name="userNo" id="userNo" th:value="${session.user.userNo}">
-					</form>
+					<div th:if=${session.user}>
+						<form id="layoutcartFrm" name="layoutcartFrm" action="cart"
+							method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}"> <input type="hidden"
+								name="userNo" id="userNo" th:value="${session.user.userNo}">
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -521,6 +588,8 @@
 	</footer>
 	<!--footer area end-->
 	
+	<!--modernizr min js here-->
+	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 	
 	<!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -538,6 +607,24 @@
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 	
+	<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
+	<script src="/assets/js/vendor/popper.js"></script>
+	<script src="/assets/js/vendor/bootstrap.min.js"></script>
+	<script src="/assets/js/slick.min.js"></script>
+	<script src="/assets/js/wow.min.js"></script>
+	<script src="/assets/js/jquery.scrollup.min.js"></script>
+	<script src="/assets/js/images-loaded.min.js"></script>
+	<script src="/assets/js/isotope.pkgd.min.js"></script>
+	<script src="/assets/js/jquery.nice-select.js"></script>
+	<script src="/assets/js/tippy-bundle.umd.js"></script>
+	<script src="/assets/js/jquery-ui.min.js"></script>
+	<script src="/assets/js/jquery.instagramFeed.min.js"></script>
+	<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="/assets/js/mailchimp-ajax.js"></script>
+	
+	
+	<!-- Main JS -->
+	<script src="/assets/js/main.js"></script>
 </body>
 
 </html>

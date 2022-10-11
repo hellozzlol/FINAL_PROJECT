@@ -127,6 +127,85 @@ $(document).ready(function(){
 			$('.star-txt').html('<span>'+ (idxS+1) +'</span><span>점</span>');
 			
 		});
+
+		
+		/*-----------------------
+		//댓글 작성
+		-------------------------*/				
+		$('#reviewbtn').on("click", function() {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+			
+				var title = "클래스 후기";
+				var content = $("#reviewcontent").val();
+				var star = $("#star").val();
+				var boardNo = $("#classNo").val();
+				var categoryId = "c";
+				var groupNo = 1;
+				var userNo = $("#userNo").val();
+
+			 	$.ajax({
+						url : "classReviewInsert",
+						type:'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						data : {
+								title:title,
+								content:content,
+								star:star,
+								boardNo: boardNo,
+								categoryId:categoryId,
+								groupNo:groupNo,
+								userNo:userNo
+								},
+						success : function(result){
+							$("#ajaxReviewDiv").append(
+								`<div class="comment_thmb">
+											<img src="assets/img/blog/comment2.jpg" alt="">
+								</div>
+								<div class="comment_text">
+											<div class="reviews_meta">
+												<p>
+													<strong id="starbox">
+													</strong><br>
+													
+													<strong>${result.nickname}</strong> 
+													<a> ${result.dt}</a>
+												</p>
+												<span>${result.content}</span>
+											</div>
+										</div>
+								</div>`
+							);
+							
+							var rank = `${result.star}`
+							console.log(rank)
+							
+							if(rank == 5) {
+								$("#starbox").append(`<i class="reviewstar">★★★★★</i>`);
+							} else if(rank ==4) {
+								$("#starbox").append(`<i class="reviewstar">★★★★☆</i>`);
+							} else if(rank ==3) {
+								$("#starbox").append(`<i class="reviewstar">★★★☆☆</i>`);
+							} else if(rank ==2) {
+								$("#starbox").append(`<i class="reviewstar">★★☆☆☆</i>`);
+							} else if(rank ==1) {
+								$("#starbox").append(`<i class="reviewstar">★☆☆☆☆</i>`);
+							} else if(rank ==0) {
+								$("#starbox").append(`<i class="reviewstar">☆☆☆☆☆</i>`);
+							}
+
+							alert("리뷰가 성공적으로 작성되었습니다.")
+						
+						},
+						error : function(result){
+							alert("리뷰를 작성하는데 실패했습니다.")
+						}
+				}); 
+			 	
+		});
+		
 												
 });
 </script>
@@ -136,6 +215,28 @@ $(document).ready(function(){
 
 
 <style>
+/*=============== 별점 표시 ================*/
+.reviewstar {
+	font-size: xx-large;
+	color: #ffd700;
+}
+
+
+
+
+/*=============== 프로필 사진 div ================*/
+.box {
+    width: 150px;
+    height: 150px; 
+    border-radius: 30%;
+    overflow: hidden;
+}
+.profile {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /*==================#rightDiv==================*/
 /*rightDiv*/
 #rightConBox {
@@ -397,7 +498,7 @@ $(document).ready(function(){
 }
 
 .ui-datepicker-current-day .ui-state-default {
-	background: #f7c9d3; ! important;
+	background: #f7c9d3 ! important;
 	color: #fff;
 	font-weight: bold;
 }
@@ -647,10 +748,7 @@ $(document).ready(function(){
 													</div>
 													<div id="result999"></div>
 												</div>
-												<!--  장바구니,결제하기 -> 옵션클래스번호가지고이동  -->
-												<!--<div id="buttonhomec"><input type="button" value="장바구니" id="gobasketB" style="border-radius:5px;"/><input type="button" value="클래스 신청하기" id="gopayB" style="border-radius:5px;"/></div -->
-												<!--  </form>-->
-																							
+								
 											
 												<form id="exreserveCall" name="exreserveCall" action="classExreserve" method="post">
 												<input type="hidden" th:name="${_csrf.parameterName}"
@@ -764,64 +862,107 @@ $(document).ready(function(){
 								<!-- 튜터 소개글 -->
 								<div class="tab-pane fade" id="additional" role="tabpanel">
 									<div class="product_info_content">
-										<p>튜터소개</p>
-										<ul>
-											<li>Length: 74cm</li>
-											<li>Regular fit</li>
-											<li>Notched lapels</li>
-											<li>Twin button front fastening</li>
-											<li>Front patch pockets; chest pocket</li>
-											<li>Internal pockets</li>
-										</ul>
+										<div class="card-body" style="font-size: large;">
+											<div class="mb-3 col-md-8">
+													
+													<div class="box" style="background: #BDBDBD;">		
+														<img th:src="@{display(fileName=${tutor.attechDir})}">
+													</div><br>
+													
+													<h3>[[${tutor.name}]]</h3><br>
+												
+													<a>[[${tutor.introduce}]]</a><br><br>
+													
+													
+													<a><i class="ion-social-instagram-outline"></i> 
+														[[${tutor.snsInsta}]]></a><br>
+													
+													
+													<a><i class="ion-chatbox"></i> 
+														 [[${tutor.snsBlog}]]</a><br>
+													 
+													
+													<a><i class="ion-social-youtube-outline"></i> 
+														[[${tutor.snsYoutube}]]</a>
+											</div>
+										</div>
+										
 									</div>
 								</div>
 
 								<!-- 리뷰 -->
 								<div class="tab-pane fade" id="reviews" role="tabpanel">
 									<div class="reviews_wrapper">
-										<h2>1개의 리뷰가 있습니다.</h2>
-										<div class="reviews_comment_box">
+										<h2>[[${#lists.size(reviewList)}]]개의 리뷰가 있습니다.</h2>
+										
+										<!-- 말풍선 모양 div -->
+										<div class="reviews_comment_box" th:each="re:${reviewList}">
 											<div class="comment_thmb">
 												<img src="assets/img/blog/comment2.jpg" alt="">
 											</div>
 											<div class="comment_text">
 												<div class="reviews_meta">
-
 													<p>
-														<strong>admin </strong>- September 12, 2018
+														<strong th:switch="${re.star}">
+															<i class="reviewstar" th:case="5">★★★★★</i>
+															<i class="reviewstar" th:case="4">★★★★☆</i>
+															<i class="reviewstar" th:case="3">★★★☆☆</i>
+															<i class="reviewstar" th:case="2">★★☆☆☆</i>
+															<i class="reviewstar" th:case="1">★☆☆☆☆</i>
+															<i class="reviewstar" th:case="0">☆☆☆☆☆</i>
+														</strong><br>
+														
+														<strong>[[${re.nickname}]]</strong> 
+														<a>  [[${re.dt}]]</a>
 													</p>
-													<span>roadthemes</span>
+													<span>[[${re.content}]]</span>
 												</div>
 											</div>
-
 										</div>
-										<div class="product_ratting mb-10">
-											<h2 class="star-txt">별점을 선택해주세요</h2>
-											<div class="star-point">
-												<i class="fa-star">★</i> <i class="fa-star">★</i> <i
-													class="fa-star">★</i> <i class="fa-star">★</i> <i
-													class="fa-star">★</i>
-											</div>
-											<input type="hidden" id="star" name="star" value="0" />
-
-										</div>
-										<div class="product_review_form">
-											<form action="#">
+										<!-- 말풍선 모양 div -->
+										
+										<!-- ajax로 댓글 달리는 부분 -->
+										<div class="reviews_comment_box" id="ajaxReviewDiv"></div>
+										
+										
+										<div class="product_review_form">	
+												<div class="product_ratting mb-10">
+													<h2 class="star-txt">별점을 선택해주세요</h2>
+													<div class="star-point">
+														<i class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i> <i class="fa-star">★</i> <i
+															class="fa-star">★</i>
+													</div>
+													
+													<!-- 별점 숫자 -->
+													<input type="hidden" id="star" name="star" value="0" />
+		
+												</div>
+											
 												<div class="row">
 													<div class="comment_title col-12">
 														<h2>수강 후기를 작성해주세요</h2>
-														<div class="col-lg-6 col-md-6">
-															<!-- 수강자명 -->
-															<input id="author" type="text"
-																th:value="${#authentication.principal.login.no}" readonly> <!-- 1005 지혜 수정 -->
+														<!-- 말풍선 모양 div -->
+														<div class="reviews_comment_box">
+															<div class="comment_thmb">
+																<img src="assets/img/blog/comment2.jpg" alt="">
+															</div>
+															<div class="comment_text">
+																<div class="reviews_meta">
+																	<p>
+																		<strong th:value="${session.user.nickname}"></strong> 
+																	</p>
+																	<span>
+																		<textarea id="reviewcontent" name="content" rows="8" cols="8" style="border:none;"></textarea>
+																	</span>
+																</div>
+															</div>
+															<button id="reviewbtn" type="button">작성하기</button>
 														</div>
-														<br>
-														<textarea name="comment" id="review_comment"></textarea>
+														<!-- 말풍선 모양 div -->
 													</div>
 
 												</div>
-												<button type="submit">작성하기</button>
-											</form>
 										</div>
 									</div>
 								</div>

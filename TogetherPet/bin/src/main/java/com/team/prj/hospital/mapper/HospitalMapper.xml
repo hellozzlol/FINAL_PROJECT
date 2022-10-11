@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.hospital.mapper.HospitalMapper">
+	<select id="hospitalSelectList" resultType="com.team.prj.hospital.service.HospitalVO">
+		select hospital_no,
+			   name,
+			   call,
+			   address,
+			   working_Hour,
+			   hphoto,
+			   hit,
+			   category,
+			   category_id
+		 from hospital
+		 order by hospital_no ASC
+	</select>
+
+	<select id="hospitalSelect"
+		resultType="com.team.prj.hospital.service.HospitalVO"
+		parameterType="com.team.prj.hospital.service.HospitalVO">
+		select hospital_no,
+		name,
+		address,
+		call,
+		vet,
+		working_Hour,
+		info,
+		hphoto,
+		hit
+		from hospital
+		where hospital_no = #{hospitalNo}
+	</select>
+
+	<insert id="hospitalInsert"
+		parameterType="com.team.prj.hospital.service.HospitalVO">
+		<selectKey keyProperty="hospitalNo" order="BEFORE"
+			resultType="int">
+			SELECT
+			CASE WHEN max(hospital_no) IS NULL
+			THEN 1
+			ELSE max(hospital_no) + 1
+			END AS no
+			FROM hospital
+		</selectKey>
+
+		INSERT INTO hospital
+		VALUES(#{hospitalNo}
+				,#{name}
+				,#{address}
+				,${call}
+				,${vet}
+				,#{working_Hour}
+				,#{info}
+				,#{latitude}
+				,#{longitude}
+				,#{categoryId})
+				,#{hphoto}
+	</insert>
+	
+	<update id="hospitalUpdate" parameterType="com.team.prj.hospital.service.HospitalVO">
+		update hospital
+		set name = #{name}
+		,address = #{address}
+		,call = #{call}
+		,vet = #{vet}
+		,working_hour = #{working_Hour}
+		,info = #{info}
+		,latitude = #{latitude}
+		,longitude = #{longitude}
+		,hphoto = #{hphoto}
+		where hospital_no = #{hospitalNo}
+	</update>
+	
+	<delete id="hospitalDelete">
+		delete from hospital
+		where hospital_no = #{hospitalNo}
+	</delete>
+	
+	
+	<select id="hospitalSearch" resultType="com.team.prj.hospital.service.HospitalVO">
+		select * from hospital
+		where
+		<choose>
+		<when test="key == 1"> address like '%' || #{val}||'%'</when>
+		<when test="key == 2"> name like '%' || #{val}||'%'</when>
+		</choose>
+	
+	</select>
+	
+	
+	
+	
+	
+	<update id="hospitalHitUpdate">
+	UPDATE hospital SET HIT = HIT + 1 WHERE hospital_no = #{hospitalNo}
+</update>
+	
+	
+	<!-- 소현 스크랩 용도  -->
+	<insert id="scrapInsert" parameterType="com.team.prj.scrap.service.ScrapVO">
+		INSERT INTO SCRAP (SCRAP_NO,USER_NO,BOARD_NO,DT,CATEGORY_ID)
+		VALUES ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM SCRAP),#{userNo},#{boardNo},sysdate,#{categoryId})
+	</insert>
+	
+	
+	
+	
+	
+</mapper>

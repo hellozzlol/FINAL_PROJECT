@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout_seller}">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+   th:content="${_csrf.headerName}" />
+<title>Together Pet</title>
+<style>
+.shipping_text h3 {
+	margin-bottom: 7px;
+	font-size: 23px;
+	line-height: 18px;
+}
+</style>
+
+<script type="text/javascript">
+	
+</script>
+</head>
+<body>
+	<div class="col-lg-10 col-md-12" layout:fragment="content">
+		<!--shop wrapper start-->
+		<!-- Content wrapper -->
+		<div class="content-wrapper">
+			<!-- Content -->
+			<div class="container-xxl flex-grow-1 container-p-y">
+				<!--breadcrumbs area start-->
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">home</a></li>
+						<li>my page</li>
+					</ul>
+				</div>
+				<!--breadcrumbs area end-->
+
+				<div class="shipping_text">
+					<h3>판매자 정보</h3>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card mb-4">
+							<h5 class="card-header">Profile Details</h5>
+							<!-- Account -->
+							<div class="card-body">
+								<div
+									class="d-flex align-items-start align-items-sm-center gap-4">
+									<img src="/admin/assets/img/elements/2408133.png" alt="user-avatar"
+										class="d-block rounded" height="100" width="100"
+										id="uploadedAvatar" />
+								</div>
+							</div>
+							<hr class="my-0" />
+							
+							<div class="card-body">
+								<form id="formAccountSettings" onsubmit="return false">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+									<div class="row">
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-3 col-form-label" for="companyNo">사업자번호</label>
+											<input class="form-control" type="text" id="companyNo"
+												name="companyNo" placeholder="companyNo"
+												th:value="${session.seller.companyNo}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="company">상호</label>
+											<input class="form-control" type="text" id="company"
+												name="company" th:value="${session.seller.company}"
+												disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="name">이름</label>
+											<input class="form-control" type="text" id="name" name="name"
+												th:value="${session.seller.name}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="name">아이디</label>
+											<input class="form-control" type="text" id="id" name="id"
+												th:value="${session.seller.id}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="name">전화번호</label>
+											<input class="form-control" type="text" id="call" name="call"
+												th:value="${session.seller.call}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="name">주소</label>
+											<input type="text" class="form-control" id="address"
+												name="address" placeholder="Address"
+												th:value="${session.seller.address}" disabled="disabled" />
+										</div>
+										<div class="mb-3 col-md-6">
+											<label class="col-sm-2 col-form-label" for="name">이메일</label>
+											<input class="form-control" type="text" id="email"
+												name="email" th:value="${session.seller.email}" disabled="disabled" />
+										</div>
+									</div>
+									<div class="mt-2" style="text-align: center;">
+										<a href="/sellerComUpForm" class="btn btn-primary me-2">프로필 수정</a>
+									</div>
+								</form>
+							</div>
+							<!-- /Account -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- / Content -->
+
+			<div class="content-backdrop fade"></div>
+		</div>
+		<!-- Content wrapper -->
+
+
+		<!--shop wrapper end-->
+	</div>
+	<!--shop  area end-->
+</body>
+</html>

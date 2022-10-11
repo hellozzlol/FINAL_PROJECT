@@ -26,6 +26,38 @@
 		WHERE CLASS_NO = #{classNo}
 	</select>
 	
+	<!-- 선택 클래스에서 리뷰 리스트 조회 -->
+	<select id="classReviewSelectList" parameterType="com.team.prj.classes.service.ClassVO"
+			resultType="com.team.prj.review.service.ReviewVO">
+		SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='c'
+		AND BOARD_NO = #{classNo}
+	</select>
+	
+	
+	<!-- 선택 클래스에서 리뷰 리스트 조회 -->
+	<select id="classReviewSelect" parameterType="com.team.prj.review.service.ReviewVO"
+			resultType="com.team.prj.review.service.ReviewVO">
+		SELECT R.REVIEW_NO, R.TITLE, R.CONTENT, R.STAR, R.DT, R.BOARD_NO,
+		R.CATEGORY_ID, R.GROUP_NO, R.USER_NO, U.NICKNAME
+		FROM REVIEW R, USERS U
+		WHERE R.USER_NO = U.USER_NO
+		AND CATEGORY_ID ='c'
+		AND REVIEW_NO = #{reviewNo}
+		ORDER BY R.REVIEW_NO DESC   
+	</select>
+	
+	
+	<!-- 선택 클래스에서 튜터 정보 단건조회 -->
+	<select id="tutorSelect" parameterType="com.team.prj.classes.service.ClassVO"
+			resultType="com.team.prj.tutor.service.TutorVO">
+		SELECT *
+		FROM TUTOR
+		WHERE TUTOR_NO = #{tutorNo}
+	</select>
 	
 	
 	<!-- 그룹별 사진 불러오기 -->

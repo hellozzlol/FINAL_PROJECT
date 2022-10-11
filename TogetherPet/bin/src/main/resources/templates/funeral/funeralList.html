@@ -4,146 +4,497 @@
 	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css"
+href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 
-
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-
-<title>장례업체</title>
-</head>
+<title>장례업체목록</title>
 <style>
 .map {
 	margin: auto !important;
 }
 
+:root { -
+	-theadColor: #000; -
+	-theadTextColor: #fff; -
+	-darkColor: #000; -
+	-lightColor: #fff; -
+	-darkRowColor: #1b1d1b;
+}
+
+body {
+	font-family: "Open Sans", sans-serif;
+}
+
+table.dataTable {
+	border: 1px solid #000;
+	background-color: #000;
+}
+
+th, tr, td {
+	border-color: #000 !important;
+}
+
+thead {
+	background-color: var(- -theadColor);
+}
+
+thead>tr, thead>tr>th {
+	background-color: transparent;
+	color: var(- -theadTextColor) !important;
+	font-weight: normal;
+	text-align: start;
+}
+
+table.dataTable thead th, table.dataTable thead td {
+	border-bottom: 0px solid #111 !important;
+}
+
+.dataTables_wrapper>div {
+	margin: 5px;
+}
+
+table.dataTable.display tbody tr.even>.sorting_1, table.dataTable.order-column.stripe tbody tr.even>.sorting_1,
+	table.dataTable.display   tbody tr.even, table.dataTable.display tbody tr.odd>.sorting_1,
+	table.dataTable.order-column.stripe tbody tr.odd>.sorting_1, table.dataTable.display tbody tr.odd
+	{
+	background-color: var(- -darkRowColor);
+	color: var(- -lightColor);
+}
+
+table.dataTable thead th {
+	position: relative;
+	background-image: none !important;
+}
+
+table.dataTable thead th.sorting:after, table.dataTable thead th.sorting_asc:after,
+	table.dataTable thead th.sorting_desc:after {
+	position: absolute;
+	top: 12px;
+	right: 8px;
+	display: block;
+	font-family: "Font Awesome\ 5 Free";
+}
+
+table.dataTable thead th.sorting:after {
+	content: "\f0dc";
+	color: #ddd;
+	font-size: 0.8em;
+	padding-top: 0.12em;
+}
+
+table.dataTable thead th.sorting_asc:after {
+	content: "\f0de";
+}
+
+table.dataTable thead th.sorting_desc:after {
+	content: "\f0dd";
+}
+
+table.dataTable.display tbody tr:hover>.sorting_1, table.dataTable.order-column.hover tbody tr:hover>.sorting_1,
+	.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+	.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover
+	{
+	background: none !important;
+	border-radius: 50px;
+	background-color: var(- -theadColor) !important;
+	color: var(- -lightColor) !important
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	background: none !important;
+	color: var(- -darkColor) !important
+}
+
+.paginate_button.current:hover {
+	background: none !important;
+	border-radius: 50px;
+	background-color: var(- -theadColor) !important;
+	color: #fff !important
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+	.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	border: 1px solid #979797;
+	background: none !important;
+	border-radius: 50px !important;
+	background-color: #000 !important;
+	color: #fff !important;
+
+}
+
 
 </style>
+</head>
 <body>
 	<article layout:fragment="content">
-		<br> <br> <br> <br> <br> <br>
-		
-				<!--breadcrumbs area start-->
-                  <div class="breadcrumb_content" style="margin: auto;">
-                     <ul>
-                        <li><a href="index.html">home</a></li>
-                        <li>funeral</li>
-                     </ul>
-                  </div>
-                  <!--breadcrumbs area end-->
+		<!--shop  area start-->
 
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
-			style="width: 1000px; height: auto; margin: auto;">
-			<div class="container-fluid">
 
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link active"
-						onclick="setBounds()">전국</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">수도권</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">충청권</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">호남권</a></li>
-					<li class="nav-item"><a class="nav-link disabled" href="#">영남권</a>
-					</li>
-				</ul>
+		<!--shop  area start-->
+		<div class="shop_section shop_reverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+
+						<!--breadcrumbs area start-->
+						<div class="breadcrumb_content" style="margin: 50px;">
+							<ul>
+								<li><a href="index.html">home</a></li>
+								<li>funeral</li>
+							</ul>
+						</div>
+						<!--breadcrumbs area end-->
+
+						<div class="shop_banner d-flex align-items-center"
+							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
+							<div class="shop_banner_text">
+								<h2>
+									essential <br> for my pets
+								</h2>
+								<p>
+									The collections basic items <br> essential for all pets
+								</p>
+							</div>
+						</div>
+						
+							<h1>반려동물 장례업체 조회</h1>
+										<br>
+										<h3>투게더 펫 에서  ,전국에있는 장례업체를 조회해보아요🐾</h3>
+										<br>
+										<h4>투게더 펫 은 합법인 업체만 고지합니다.</h4>
+										<br>
+						
+						<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
+							style="width: auto; height: auto; margin: auto;">
+							<div class="container-fluid">
+								<ul class="navbar-nav">
+									<li class="nav-item">
+									<button class="btn btn-dark" type="button" onclick="setCenter(36.08952940184829, 128.5301842260875,13)">전국</button></li>
+									<li class="nav-item">
+									<button class="btn btn-dark" type="button" onclick="setCenter(37.42444047444145, 127.45445551708035,10)">수도권</button></li>
+									<li class="nav-item">
+									<button class="btn btn-dark" type="button" onclick="setCenter(36.56512762465717, 128.2790137747256,11)">충청권</button></li>
+									<li class="nav-item">
+									<button class="btn btn-dark" type="button" onclick="setCenter(35.35371727592137, 127.54708751819746,11)">호남권</button></li>
+									<li class="nav-item">
+									<button class="btn btn-dark" type="button" onclick="setCenter(35.72843379262872, 129.3716931833299,11)">영남권</button>
+									</li>
+								</ul>
+							</div>
+						</nav>
+
+
+
+						<div id="map" style="width: auto; height: 400px; margin: auto;"></div>
+						<script type="text/javascript"
+							src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0&libraries=services,clusterer,drawing"></script>
+
+
+
+						<script>
+							var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+							mapOption = {
+								center : new kakao.maps.LatLng(
+										36.027633329476224, 128.8184864680428), // 지도의 중심좌표
+								// 지도의 확대 레벨
+								level : 11,
+								mapTypeId : kakao.maps.MapTypeId.ROADMAP
+							};
+
+							
+							// 지도를 생성합니다
+							var map = new kakao.maps.Map(mapContainer,
+									mapOption); 
+							
+							function setCenter(lat,lng,lev){
+							// 이동할 위도 경도 위치를 생성합니다	
+								var moveLatLon = new kakao.maps.LatLng(lat,lng);
+							    // 지도를 1레벨 내립니다 (지도가 확대됩니다)
+							    map.setLevel(lev);
+							  
+							    
+							    // 지도 중심을 이동 시킵니다
+							    map.setCenter(moveLatLon);		
+							}
+							
+						
+						
+							//버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정합니다 (이건 전체 지역 다 보임 )
+							var points = [
+									new kakao.maps.LatLng(35.838312,
+											128.5204534),
+									new kakao.maps.LatLng(36.447016,
+											127.0342069),
+									new kakao.maps.LatLng(37.0869782,
+											127.1656623),
+									new kakao.maps.LatLng(35.301235, 
+											128.910958),
+									new kakao.maps.LatLng(35.5190112,
+											127.4181282),
+									new kakao.maps.LatLng(37.2794036,
+											127.3904041),
+									new kakao.maps.LatLng(37.8160839,
+											126.9644914),
+									new kakao.maps.LatLng(35.3345623,
+											128.3603837),
+									new kakao.maps.LatLng(35.4230821,
+											129.0422654),
+									new kakao.maps.LatLng(35.7181875,
+											128.7258888),
+									new kakao.maps.LatLng(37.8155881,
+											127.2124777),
+									new kakao.maps.LatLng(37.1419402,
+											128.1544863),
+									new kakao.maps.LatLng(35.838312,
+											128.5204534),
+									new kakao.maps.LatLng(36.7673518,
+											127.1438557),
+									new kakao.maps.LatLng(37.1419402,
+											128.1544863),
+									new kakao.maps.LatLng(35.838312,
+											128.5204534),
+									new kakao.maps.LatLng(36.7673518,
+											127.1438557),
+									new kakao.maps.LatLng(36.447016,
+											127.0342069),
+									new kakao.maps.LatLng(37.0869782,
+											127.1656623),
+									new kakao.maps.LatLng(35.301235, 128.910958),
+									new kakao.maps.LatLng(35.5190112,
+											127.4181282),
+									new kakao.maps.LatLng(37.2794036,
+											127.3904041),
+									new kakao.maps.LatLng(37.8160839,
+											126.9644914),
+									new kakao.maps.LatLng(35.3345623,
+											128.3603837),
+									new kakao.maps.LatLng(35.4230821,
+											129.0422654),
+									new kakao.maps.LatLng(35.7181875,
+											128.7258888),
+									new kakao.maps.LatLng(37.8155881,
+											127.2124777),
+									new kakao.maps.LatLng(37.6806527,
+											127.369597),
+									new kakao.maps.LatLng(35.9524655,
+											128.7859938),
+									new kakao.maps.LatLng(35.3297656,
+											129.2434418),
+									new kakao.maps.LatLng(37.5871115,
+											126.6280538),
+									new kakao.maps.LatLng(37.1582633,
+											127.3746327),
+									new kakao.maps.LatLng(35.856022,
+											127.3230532),
+									new kakao.maps.LatLng(37.5669379,
+											126.9707912),
+									new kakao.maps.LatLng(35.9120092,
+											128.3582801),
+									new kakao.maps.LatLng(36.0391832,
+											128.5213158),
+									new kakao.maps.LatLng(35.1403972,
+											126.7651247),
+									new kakao.maps.LatLng(35.4542108,
+											129.0350467),
+									new kakao.maps.LatLng(35.3407333,
+											128.847624),
+									new kakao.maps.LatLng(36.2084064,
+											127.2136293),
+									new kakao.maps.LatLng(37.5231843,
+											127.9293395),
+									new kakao.maps.LatLng(36.2144945,
+											127.998893),
+									new kakao.maps.LatLng(37.3440935, 127.39445),
+									new kakao.maps.LatLng(35.5390363,
+											127.3488136),
+									new kakao.maps.LatLng(34.8691649,
+											127.589983),
+									new kakao.maps.LatLng(37.7364563,
+											126.6297483),
+									new kakao.maps.LatLng(37.7247676,
+											126.601042),
+									new kakao.maps.LatLng(37.1523699,
+											126.9535307),
+									new kakao.maps.LatLng(35.0759709,
+											128.4027041),
+									new kakao.maps.LatLng(37.2206081,
+											126.8649299),
+									new kakao.maps.LatLng(37.154761,
+											126.7414818),
+									new kakao.maps.LatLng(37.1787371,
+											126.8923261),
+									new kakao.maps.LatLng(36.2084064,
+											127.2136293),
+									new kakao.maps.LatLng(36.1829136,
+											127.628544),
+									new kakao.maps.LatLng(35.0426798,
+											126.5467022),
+									new kakao.maps.LatLng(35.2935846,
+											129.2444592),
+									new kakao.maps.LatLng(36.5677026,
+											127.3821329),
+									new kakao.maps.LatLng(36.5703618,
+											127.4861917),
+									new kakao.maps.LatLng(36.5073145,
+											127.3871157),
+									new kakao.maps.LatLng(37.3590096,
+											127.2086916),
+									new kakao.maps.LatLng(37.4091829,
+											127.2987291),
+									new kakao.maps.LatLng(37.3480498,
+											127.2644871),
+									new kakao.maps.LatLng(37.4167717,
+											127.2844635),
+									new kakao.maps.LatLng(37.7137329,
+											126.805726),
+									new kakao.maps.LatLng(37.7301734,
+											126.575608),
+									new kakao.maps.LatLng(37.7260746,
+											126.6133703),
+									new kakao.maps.LatLng(37.730802,
+											126.6276835),
+									new kakao.maps.LatLng(35.8175881,
+											127.0977564),
+									new kakao.maps.LatLng(36.317281,
+											128.2750715),
+									new kakao.maps.LatLng(35.3092363,
+											128.8272817),
+									new kakao.maps.LatLng(37.8323983,
+											128.8122005),
+									new kakao.maps.LatLng(35.3552659,
+											129.2531966),
+									new kakao.maps.LatLng(37.6328267,
+											126.6575261),
+									new kakao.maps.LatLng(37.3119085,
+											126.8277984),
+									new kakao.maps.LatLng(37.2794036,
+											127.3904041),
+									new kakao.maps.LatLng(37.7734297,
+											126.9185669),
+									new kakao.maps.LatLng(36.317281,
+											128.2750715),
+									new kakao.maps.LatLng(37.5868521,
+											127.1577297) ]
+
+							//지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+							let bounds = new kakao.maps.LatLngBounds();
+
+							var i, marker;
+							for (i = 0; i < points.length; i++) {
+								// 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+								marker = new kakao.maps.Marker({
+									position : points[i]
+								});
+								marker.setMap(map);
+
+								// LatLngBounds 객체에 좌표를 추가합니다
+								bounds.extend(points[i]);
+							}
+
+							
+							
+							//전국 클릭하면 전국 보이게 하는 맵 좌표 
+							
+							function setBounds() {
+								// LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+								// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다.
+								map.setBounds(bounds);
+							}
+
+							var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+							mapOption = {
+								center : new kakao.maps.LatLng(
+										37.31184690720705, 127.41842339288375), // 지도의 중심좌표
+										
+								// 지도의 확대 레벨
+								level : 13,
+								mapTypeId : kakao.maps.MapTypeId.ROADMAP
+							};
+
+						
+							// 클러스터러에 마커들을 추가합니다
+							clusterer.addMarkers(markers);
+						</script>
+
+<br><br><br>
+						<script>
+							$(document).ready(function() {
+								$('#myTable').DataTable({
+									lengthChange : true,
+									pageLength: 9,
+									lengthMenu: [ 10, 20, 30, 40, 50 ],
+									info : true,
+									ordering : false,
+									"language" : {
+									info: "현재 _START_ - _END_ / _TOTAL_건",
+								    "search" : "검색",
+								    "paginate" : {
+									"next" : "다음",
+								    "previous" : "이전"
+										}
+									},
+								dom:'Bfrtip',
+								buttons:[{
+								extend:'print',
+								title:'인쇄',
+								text:'인쇄',
+								className:'btn btn-dark execBtn'
+								
+								
+								}]
+								});
+							});
+						</script>
+
+
+
+
+						<table border="1" id="myTable" Class="table">
+							<thead class="table-dark">
+								<tr>
+									<th>번호</th>
+									<th>업체명</th>
+									<th>주소</th>
+									<th>전화번호</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								<!-- <tr th:each="f : ${funeral}">
+									<td><a href="funeralSelect.html"
+										th:href="@{/funeralSelect/{funeralNo}(funeralNo=${f.funeralNo})}"
+										th:text="${f.funeralNo}"></a></td>
+									<td><a href="funeralSelect.html"
+										th:href="@{/funeralSelect/{funeralNo}(funeralNo=${f.funeralNo})}"
+										th:text="${f.name}"></a></td>
+									<td th:text="${f.address}"></td>
+									<td th:text="${f.call}"></td>
+								</tr> -->
+
+								<tr th:each="f : ${funeral}">
+									<td><a th:href="@{funeral(funeralNo=${f.funeralNo})}"
+										th:text="${f.funeralNo}"></a></td>
+									<td><a th:href="@{funeral(funeralNo=${f.funeralNo})}"
+										th:text="${f.name}"></a></td>
+									<td th:text="${f.address}"></td>
+									<td th:text="${f.call}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-		</nav>
-
-
-		<div id="map" style="width: 1000px; height: 400px; margin: auto;"></div>
-		<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a32d865cd3140bd47b21a6e22a6e05b0"></script>
-
-
-
-		<script>
-			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-			mapOption = {
-				center : new kakao.maps.LatLng(36.027633329476224,
-						128.8184864680428), // 지도의 중심좌표
-				// 지도의 확대 레벨
-				level : 13,
-				mapTypeId : kakao.maps.MapTypeId.ROADMAP
-			};
-
-			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-			//버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정합니다 
-			var points = [ new kakao.maps.LatLng(35.838312, 128.5204534),
-					new kakao.maps.LatLng(36.447016, 127.0342069),
-					new kakao.maps.LatLng(37.0869782, 127.1656623),
-					new kakao.maps.LatLng(35.301235, 128.910958),
-					new kakao.maps.LatLng(35.5190112, 127.4181282),
-					new kakao.maps.LatLng(37.2794036, 127.3904041),
-					new kakao.maps.LatLng(37.8160839, 126.9644914),
-					new kakao.maps.LatLng(35.3345623, 128.3603837),
-
-			]
-
-			//지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-			var bounds = new kakao.maps.LatLngBounds();
-
-			var i, marker;
-			for (i = 0; i < points.length; i++) {
-				// 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
-				marker = new kakao.maps.Marker({
-					position : points[i]
-				});
-				marker.setMap(map);
-
-				// LatLngBounds 객체에 좌표를 추가합니다
-				bounds.extend(points[i]);
-			}
-
-			function setBounds() {
-				// LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-				// 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
-
-				map.setBounds(bounds);
-			}
-		</script>
-
-		<script>
-	
-			$(document).ready(function() {
-				$('#myTable').DataTable({
-					lengthChange : false,
-					info : false,
-					ordering : false
-				});
-			});
-		</script>  
-		
-		
-		
-	
-					<table border="1" id="myTable" class="customers"
-						>
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>업체명</th>
-								<th>주소</th>
-								<th>전화번호</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="funi : ${funeral}">
-								<td th:text="${funi.funeralNo}"></td>
-								<td th:text="${funi.name}"></td>
-								<td th:text="${funi.address}"></td>
-								<td th:text="${funi.call}"></td>
-							</tr>
-						</tbody>
-					</table>
-					
-				
+		</div>
 
 	</article>
 

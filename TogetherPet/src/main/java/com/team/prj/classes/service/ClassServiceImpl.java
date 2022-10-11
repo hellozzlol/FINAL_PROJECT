@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.team.prj.classes.mapper.ClassMapper;
 import com.team.prj.photo.service.PhotoVO;
+import com.team.prj.review.service.ReviewVO;
+import com.team.prj.tutor.service.TutorVO;
 
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -38,10 +40,11 @@ public class ClassServiceImpl implements ClassService {
 
 
 	@Override
-	public int classUpdate(ClassVO vo) {
+	public ClassVO classUpdate(ClassVO vo) {
 		//클래스 수정
-		return 0;
+		return map.classUpdate(vo);
 	}
+
 
 	@Override
 	public int classDelete(ClassVO vo) {
@@ -94,6 +97,23 @@ public class ClassServiceImpl implements ClassService {
 		return map.getGroupNo();
 	}
 
+	@Override
+	public TutorVO tutorSelect(ClassVO vo) {
+		//클래스 단건조회에서 튜터 단건조회
+		return map.tutorSelect(vo);
+	}
+
+	@Override
+	public List<ReviewVO> classReviewSelectList(ClassVO vo) {
+		//클래스 단건조회에서 리뷰 리스트
+		return map.classReviewSelectList(vo);
+	}
+
+	@Override
+	public ReviewVO classReviewSelect(ReviewVO vo) {
+		//클래스 단건조회에서 리뷰 입력 후 닉네임 포함된 단건 재조회 
+		return map.classReviewSelect(vo);
+	}
 
 
 

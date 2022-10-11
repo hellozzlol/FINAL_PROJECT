@@ -91,6 +91,7 @@
 									<th>수취인</th>
 									<th>연락처</th>
 									<th>배송지</th>
+									<th id="goodsEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
 							</thead>
 							<tbody id="btnList" class="table-border-bottom-0">
@@ -154,6 +155,12 @@
 	}
 </style>
 <script>
+	//내역 없을때
+	if($('#goodsEmpty').html()=='0'){
+		$("#btnList").html('');
+		$('#btnList').html("<td colspan=8 align=center><h3><br>판매완료 내역이 없습니다.</h3></td>");
+	}
+
 	//페이지 이동
 	function gopage(p) {
 		location.href = '/sellerDoneList?pageNum=' + p;
