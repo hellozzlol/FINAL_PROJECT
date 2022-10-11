@@ -24,8 +24,9 @@ public class AjaxNoticeController {
 	// 알림 페이지
 	@RequestMapping("/noticeList")
 	public List<NoticeVO> noticeList(NoticeVO vo, Model model, HttpSession session) {
-		UsersVO u = (UsersVO) session.getAttribute("user");
-		vo.setUserNo(u.getUserNo());
+		//UsersVO u = (UsersVO) session.getAttribute("user");
+		//vo.setUserNo(u.getUserNo());
+		System.out.println("==========" + vo.toString());
 		return notice.noticeSelectList(vo);
 	}
 	
