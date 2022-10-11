@@ -116,7 +116,7 @@
 					let notice = '';
 					for(r of res) {
 						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
-								   <div class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
+								   <div style="font-size:13px;" class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
 								   </div></li><hr>`;
 						$('#noticeList').html(notice);	
 					}
@@ -291,7 +291,6 @@
 											</div>
 											<div sec:authorize="isAuthenticated()">
 												<li><a id="logout">Logout</a></li>
-
 												<form action="logout" method="post" id="logoutFrm">
 													<input type="hidden" th:name="${_csrf.parameterName}"
 														th:value="${_csrf.token}">
@@ -300,20 +299,17 @@
 										</ul></li>
 
 									<!-- 1008 선희 추가 -->
-									<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-										<a data-toggle="dropdown"> <i class="icon-bell icons"></i>
-											<span id="noticeCount" class="noticeCount"
-											style="font-size: 20px;"></span>
-									</a>
-										<div class="dropdown-menu"
-											style="width: 600px; left: auto; right: 0;" role="menu">
-											<h4
-												style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
-											<ul id="noticeList">
-												</ul>
-										</div>
+									<li sec:authorize="isAuthenticated()" class="account_link">
+											<a href="#"><i class="icon-bell icons"></i></a>
+											<span sec:authorize="hasRole('USER')" id="noticeCount" class="noticeCount"
+											style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')" class="dropdown_account_link"
+											style="width: 500px; left: auto; right: 0;" role="menu">
+											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
+											<li id="noticeList"></li>
+										</ul>
 									</li>
-									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
+									<li sec:authorize="isAnonymous()" class="account_link">
 										<a href="loginForm"> <i class="icon-bell icons"></i>
 									</a>
 									</li>
