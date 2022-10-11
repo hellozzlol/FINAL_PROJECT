@@ -65,7 +65,7 @@
         }
 </script>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('DOMContentLoaded', function() {	
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -250,14 +250,7 @@
 								<nav>
 									<ul class="d-flex">
 										<li><a href="shop">shop</a></li>
-										<li><a href="classList">class</a>
-											<ul class="sub_menu">
-												<li><a href="#">펫 푸드</a></li>
-												<li><a href="#">펫 핸드메이드</a></li>
-												<li><a href="#">펫 미용</a></li>
-												<li><a href="#">펫 드로잉</a></li>
-												<li><a href="#">기타 펫 클래스</a></li>
-											</ul></li>
+										<li><a href="classList">class</a></li>
 										<li><a href="#">pet info</a>
 											<ul class="sub_menu">
 												<li><a href="hospitalList">병원/약국</a></li>
@@ -310,7 +303,7 @@
 											<h4
 												style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
 											<ul id="noticeList">
-												</ul>
+											</ul>
 										</div>
 									</li>
 									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
@@ -443,7 +436,7 @@
 		</div>
 	</footer>
 	<!--footer area end-->
-	
+
 	<!--modernizr min js here-->
 	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 
@@ -464,7 +457,7 @@
 
 	<!-- Main JS -->
 	<script src="/assets/js/main.js"></script>
-	
+
 </body>
 
 </html>
