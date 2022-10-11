@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout2}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 <title>반려동물숙박업체</title>
@@ -239,11 +239,7 @@
 												let userNo = $(this).prev().val();// userNo 유저번호
 												console.log('유저번호->',$(this).prev().val());
 												
-												
-												
-												
-												
-												
+											
 												//스크랩 등록 처리
 												$.ajax({
 											         url:'/ScrapInsert.do',
