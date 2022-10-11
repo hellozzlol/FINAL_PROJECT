@@ -59,7 +59,7 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-					<tbody class="table-border-bottom-0" id="body">
+					<tbody class="table-border-bottom-0" >
 						<tr th:each="u:${pageInfo.list}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${u.userNo}" id="uNo"></td>
@@ -212,7 +212,7 @@
 		}	
 		</script>		
 		
-		<!-- 변경 클릭 시 -->
+		<!-- 선택 후 변경 클릭 시 -->
 		<script>
 		$('#uUpdate').on('click', function(){
 			let chkbox = document.querySelectorAll(".chk");
