@@ -2,27 +2,12 @@ package com.team.prj.classes.web;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Parameter;
-import java.net.http.HttpHeaders;
 import java.nio.file.Files;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-
-import org.apache.ibatis.binding.BindingException;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,34 +20,24 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
-import com.team.prj.cart.service.CartVO;
 import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
-import com.team.prj.classexreserve.mapper.ClassExreserveMapper;
 import com.team.prj.classexreserve.service.ClassExreserveService;
 import com.team.prj.classexreserve.service.ClassExreserveVO;
 import com.team.prj.classreserve.service.ClassReserveService;
 import com.team.prj.classreserve.service.ClassReserveVO;
-import com.team.prj.orders.service.OrderVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewService;
 import com.team.prj.review.service.ReviewVO;
 
-import ch.qos.logback.classic.Logger;
 
 @ControllerAdvice
 @Controller
@@ -103,7 +78,7 @@ public class ClassAjaxController {
 	@ResponseBody
 	public ReviewVO classReviewInsert(ReviewVO revo, Model model) {
 		//리뷰 정보 인서트
-		int insert =  reviewDao.reviewInsert(revo);
+		reviewDao.reviewInsert(revo);
 	
 		//닉네임 포함된 값으로 다시 조회
 		ReviewVO result = classDao.classReviewSelect(revo);
@@ -156,7 +131,7 @@ public class ClassAjaxController {
 	}
 	
 	
-	
+	//클래스 등록에서 옵션 등록
 	@RequestMapping("classOptionInsert")
 	@ResponseBody
 	public void classOptionInsert(@RequestBody List<Map<String,Object>> opparams) {
@@ -174,6 +149,7 @@ public class ClassAjaxController {
 
 	}
 	
+	//클래스 등록에서 이미지리스트 등록
 	@RequestMapping("classPhotoInsert")
 	@ResponseBody
 	public void classPhotoInsert(@RequestBody List<Map<String,Object>> ptparams) {
@@ -194,10 +170,6 @@ public class ClassAjaxController {
 	//이미지리스트 정보를 서버에 담아줌
 	@PostMapping(value="classPhoto", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-
-
-
-
 	 public ResponseEntity<List<PhotoVO>> classPhoto(MultipartFile[] uploadFile){
 		
 		///// 이미지 파일 맞는지 체크 /////

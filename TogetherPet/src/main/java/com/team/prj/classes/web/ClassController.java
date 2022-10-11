@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.prj.classes.service.ClassOptionVO;
 import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.classexreserve.service.ClassExreserveService;
@@ -62,6 +63,10 @@ public class ClassController {
 		//클래스 정보
 		vo = clas.classSelect(vo);
 		model.addAttribute("clas", vo);
+		
+		//클래스 옵션 리스트
+		List<ClassOptionVO> oplist = clas.classOptionList(vo);
+		model.addAttribute("optionList", oplist);
 		
 		//클래스 리뷰 리스트
 		List<ReviewVO> relist = clas.classReviewSelectList(vo);

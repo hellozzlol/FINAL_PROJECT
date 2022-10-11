@@ -23,6 +23,9 @@ public interface ClassService {
 	
 	//클래스 단건조회에서 리뷰 입력 후 닉네임 포함된 단건 재조회 
 	ReviewVO classReviewSelect(ReviewVO vo);
+	
+	//클래스 단건조회에서 옵션 리스트
+	List<ClassOptionVO> classOptionList(ClassVO vo);
 
 	//클래스 단건조회에서 튜터 단건조회
 	TutorVO tutorSelect(ClassVO vo);

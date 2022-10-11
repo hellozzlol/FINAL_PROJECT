@@ -177,9 +177,17 @@
 		</where>	
 	</select>
 
+
+	<!-- 클래스 단건조회에서 날짜리스트-->
+	<select id="classOptionList" parameterType="com.team.prj.classes.service.ClassVO"
+		resultType="com.team.prj.classes.service.ClassOptionVO">
+		SELECT TO_CHAR(START_DT, 'yyyy-MM-dd') START_DT
+		FROM CLASS_OPTION
+		WHERE CLASS_NO = ${classNo}
+	</select>
 	
 	
-	<!-- 단건조회에서 날짜셀렉트-->
+	<!-- 클래스 단건조회에서 날짜셀렉트-->
 	<select id="classDateOption" resultType="com.team.prj.classes.service.ClassOptionVO">
 		SELECT to_char(START_DT, 'yyyy-MM-DD HH:MM') START_DT, to_char(END_DT, 'HH:MM') END_DT, ALL_HEADCOUNT, CLASS_OPTION_NO
 		from class_option
