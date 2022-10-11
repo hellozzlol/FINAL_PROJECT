@@ -5,6 +5,7 @@ import java.util.List;
 import com.team.prj.admin.service.adminVO;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.users.service.UsersVO;
 
 public interface adminMapper {
 	List<adminVO> adminSelectList(); // 관리자 목록
@@ -16,5 +17,7 @@ public interface adminMapper {
 	
 	int goodsRefuse(GoodsVO vo); // 상품 상태 업데이트 - 반려
 	int classRefuse(ClassVO vo); // 클래스 상태 업데이트 - 반려
+	
+	int uStateUpdate(UsersVO vo); // 일반회원 상태 업데이트
 	
 }

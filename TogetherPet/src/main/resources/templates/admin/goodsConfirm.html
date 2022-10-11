@@ -185,6 +185,7 @@
 
 			$('#approve').on('click', function(){
 			    let chkbox = document.querySelectorAll(".chk");
+			    console.log(chkbox)
 			    chkbox.forEach(elem => {
 				    if(elem.checked==true){
 				    	let no = elem.closest('tr').getAttribute('id')
@@ -207,7 +208,7 @@
 			    });
 			})
 			
-			// 반려 클릭 시
+			// 반려 - return message 입력 후 '저장' 클릭 시
 			$('#gUpdate').on('click', function(){
 			    let chkbox = document.querySelectorAll(".chk");
 			    //let uploadState = '2';

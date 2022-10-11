@@ -11,12 +11,12 @@
 	</select>
 
 
+	<!-- ! -->
 	<update id="postUpdate">
 		UPDATE goods 
 		SET upload_state='1'   
 		WHERE goods_no = #{goodsNo}
 	</update>
-
 
 
 	<!-- ! -->
@@ -27,8 +27,7 @@
 	</update>
 
 
-
-
+	<!-- ! -->
 	<update id="goodsRefuse">
 		UPDATE goods
 		SET upload_state='2', return_message=#{returnMessage}   
@@ -39,6 +38,12 @@
 		UPDATE class
 		SET upload_state='2', return_message=#{returnMessage}   
 		WHERE class_no = #{classNo}
+	</update>
+	
+	<update id="uStateUpdate">
+		update users
+		set state='1'
+		where user_no = #{userNo}
 	</update>
 
 

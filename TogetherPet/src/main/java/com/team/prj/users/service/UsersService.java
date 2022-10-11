@@ -71,9 +71,6 @@ public interface UsersService {
 	// 등록
 	int usersInsert(UsersVO vo);
 
-	// 일반회원 상태 변경 / 0929 지혜 추가
-	String usersStateUpdate(UsersVO vo);
-
 	// 일반회원 검색 / 1005 지혜 추가
 	List<UsersVO> userSearch(@Param("key") String key, @Param("val") String val);
 
@@ -85,5 +82,6 @@ public interface UsersService {
 	
 	// 스크랩 삭제
 	int usersScrapDelete(ScrapVO vo);
+	
 	
 }

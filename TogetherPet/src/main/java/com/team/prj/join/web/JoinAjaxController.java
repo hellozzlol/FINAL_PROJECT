@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team.prj.join.service.JoinService;
 import com.team.prj.join.service.RegisterMail;
+import com.team.prj.users.service.UsersService;
+import com.team.prj.users.service.UsersVO;
 
 @RestController
 @RequestMapping("/join")
@@ -18,6 +20,9 @@ public class JoinAjaxController {
 	
 	@Autowired
 	private RegisterMail rm;
+	
+	@Autowired
+	private UsersService user;
 	
 	// 일반회원id 중복체크
 	@ResponseBody
@@ -47,7 +52,6 @@ public class JoinAjaxController {
 		return result;
 	}
 	
-	
 
 	// 닉네임 중복체크
 	@ResponseBody
@@ -57,7 +61,6 @@ public class JoinAjaxController {
 		int result = js.nickCheck(nickname);
 		return result;
 	}
-	
 	
 	
 	// 이메일 인증
@@ -73,4 +76,13 @@ public class JoinAjaxController {
 		System.out.println("인증코드: " + code);
 		return code;
 	}
+	
+	
+	// 비밀번호 재설정 - 업데이트 // 안 됨..
+	@PostMapping("/pwUpdate")
+	public String usersUpdate(UsersVO vo) {
+		user.usersUpdate(vo);
+		return "redirect:/loginForm";
+	}
+	
 }

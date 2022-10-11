@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.team.prj.admin.mapper.adminMapper;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.users.service.UsersVO;
 @Service
 public class adminServiceImpl implements adminService {
 	
@@ -54,6 +55,12 @@ public class adminServiceImpl implements adminService {
 	public int classRefuse(ClassVO vo) {
 		// 클래스 상태 업데이트 - 반려
 		return map.classRefuse(vo);
+	}
+
+	@Override
+	public int uStateUpdate(UsersVO vo) {
+		// 일반회원 상태 업데이트
+		return map.uStateUpdate(vo);
 	}
 
 

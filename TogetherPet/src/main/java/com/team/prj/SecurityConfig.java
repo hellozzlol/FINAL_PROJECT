@@ -40,7 +40,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((requests) -> 
 							requests
 							.antMatchers("/", "/index", "/join/**", "/login", "/shop", "/member/**", "/assets/**", "/admin/**", "/fullcalendar/**","/js/**",
-									"/joinMain", "/loginForm", "/sellerJoinForm", "/tutorJoinForm", "/userJoinForm").permitAll()
+									"/joinMain", "/loginForm", "/sellerJoinForm", "/tutorJoinForm", "/userJoinForm", "/findPW").permitAll()
 							.antMatchers("/manager/**").hasAuthority("ROLE_ADMIN")
 							.anyRequest().authenticated())
 				.formLogin().loginPage("/loginForm")

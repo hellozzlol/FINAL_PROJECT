@@ -8,7 +8,7 @@
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>로그인</title>
+<title>TogetherPet - 로그인</title>
 
 <style>
 .LoginForm {
@@ -114,6 +114,7 @@
 								<br>
 							</div>
 						<button type="submit" class="btn-login2" id="basicLogin">로그인</button><br>
+						<button type="button" class="btn-login2" id="findPW" onclick="location.href='/findPW'">비밀번호 찾기</button><br>
 					</form>
 					</div>
 				</div>
@@ -135,7 +136,7 @@
 				</div>
 				<br> <br>
 
-				<button type="button" class="btn-login" id="basicSignup" onclick="location.href='/userJoinForm'">회원가입</button>
+				<button type="button" class="btn-login" id="basicSignup" onclick="location.href='/joinMain'">회원가입</button>
 			</div>
 		</div>
 	</article>

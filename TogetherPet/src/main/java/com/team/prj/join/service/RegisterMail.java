@@ -28,14 +28,14 @@ public class RegisterMail implements MailServiceInter{
 	       System.out.println("인증 번호 : "+ ePw);
 	        MimeMessage  message = emailSender.createMimeMessage();
 	 
-	        message.addRecipients(RecipientType.TO, to);//보내는 대상
-	        message.setSubject("TogetherPet 회원가입 이메일 인증 코드");//제목
+	        message.addRecipients(RecipientType.TO, to);// 보내는 사람
+	        message.setSubject("TogetherPet 인증 코드입니다.");// 메일 제목
 	 
 	        String msgg="";
 	        msgg+= "<div style='margin:100px;'>";
 	        msgg+= "<h1> 안녕하세요. TogetherPet입니다. </h1>";
 	        msgg+= "<br>";
-	        msgg+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
+	        msgg+= "<p>아래 코드를 인증코드 확인란에 입력해주세요.<p>";
 	        msgg+= "<br>";
 	        msgg+= "<p>감사합니다.<p>";
 	        msgg+= "<br>";
@@ -45,13 +45,13 @@ public class RegisterMail implements MailServiceInter{
 	        msgg+= "CODE : <strong>";
 	        msgg+= ePw+"</strong><div><br/> ";
 	        msgg+= "</div>";
-	        message.setText(msgg, "utf-8", "html");//내용
-	        message.setFrom(new InternetAddress("hyee1021@naver.com","TogetherPet_ADMIN"));//보내는 사람
+	        message.setText(msgg, "utf-8", "html");// 내용
+	        message.setFrom(new InternetAddress("hyee1021@naver.com","TogetherPet_ADMIN"));// 보내는 사람
 	 
 	        return message;
 	}
 	
-	// 랜덤 인증 코드 전송
+	// 랜덤 인증 코드
 	@Override
 	public String createKey() {
 		StringBuffer key = new StringBuffer();
@@ -62,13 +62,13 @@ public class RegisterMail implements MailServiceInter{
 			
 			switch(index) {
 			case 0:
-				key.append((char) ((int) (rnd.nextInt(26)) + 97));
+				key.append((char) ((int) (rnd.nextInt(26)) + 97)); // 소문자
 				break;
 			case 1:
-				key.append((char) ((int) (rnd.nextInt(26)) + 65));
+				key.append((char) ((int) (rnd.nextInt(26)) + 65)); // 대문자
 				break;
 			case 2:
-				key.append((rnd.nextInt(10)));
+				key.append((rnd.nextInt(10))); // 숫자
 				break;
 			}
 		}
@@ -76,12 +76,13 @@ public class RegisterMail implements MailServiceInter{
 		return key.toString();
 	}
 	
-	// 메일 발송
+	
+	// 메일 발송 (javaMail 객체 이용)
 	@Override
 	public String sendSimpleMessage(String to) throws Exception {
 		ePw = createKey(); // 랜덤 인증번호 생성
 		
-		MimeMessage message = createMessage(to); // 메일 발송?
+		MimeMessage message = createMessage(to); //  message = 전송할 메일 내용
 		try {
 			emailSender.send(message);
 		}catch(MailException es) {

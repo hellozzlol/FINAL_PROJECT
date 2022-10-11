@@ -70,37 +70,6 @@
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/admin/assets/js/config.js"></script>
 
-
-
-
-<!-- 
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		
-		$('#workIn').on('click', function(e){
-			let list = $("#list").val();
-			$.ajax('ajaxWorkIn', {
-				url : "/workInsert.do",
-				type: 'post',
-				data: {
-					adNo : $('#'),
-					startDt : ,
-					endDt : ,
-					state
-				},
-				beforeSend : function(xhr){
-					
-				}
-				dataType: 'text'
-				},
-			})
-			.done(res => {
-				console.log(res);
-			})
-		})
-	})
-</script>
- -->
 <script>
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
@@ -126,8 +95,6 @@
 
 	}
 </script>
-
-
 </head>
 
 <body>
@@ -237,14 +204,16 @@
 					<!-- 통계,현황 -->
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">통계·현황</span></li>
-					<li class="menu-item"><a href="/manager/visitCount"
-						class="menu-link"> <i
-							class="menu-icon tf-icons bx bx-collection"></i>
+					<li class="menu-item"><a href="/manager/userJoinCount" class="menu-link"> 
+						<i class="menu-icon tf-icons bx bx-collection"></i>
+							<div data-i18n="Basic">회원</div>
+					</a></li>
+					<li class="menu-item"><a href="/manager/visitCount" class="menu-link"> 
+						<i class="menu-icon tf-icons bx bx-collection"></i>
 							<div data-i18n="Basic">방문 · 유입</div>
 					</a></li>
-					<li class="menu-item"><a href="/manager/postCount"
-						class="menu-link"> <i
-							class="menu-icon tf-icons bx bx-collection"></i>
+					<li class="menu-item"><a href="/manager/postCount" class="menu-link"> 
+						<i class="menu-icon tf-icons bx bx-collection"></i>
 							<div data-i18n="Basic">조회수</div>
 					</a></li>
 
@@ -345,8 +314,8 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body" style="min-height: 100px;" id="message">출근 등록이
-					완료되었습니다.</div>
+				<div class="modal-body" style="min-height: 100px;" id="message">출근
+					등록이 완료되었습니다.</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary"
 						data-bs-dismiss="modal">확인</button>
@@ -382,7 +351,7 @@
 
 	<!-- Core JS -->
 	<!-- build:js assets/vendor/js/core.js -->
-	
+
 	<script src="/admin/assets/vendor/libs/popper/popper.js"></script>
 	<script src="/admin/assets/vendor/js/bootstrap.js"></script>
 	<script
