@@ -107,7 +107,7 @@
 		SELECT A.*
 		from (
 			<foreach collection="photoList" item="item" separator="UNION ALL ">
-				SELECT  #{item.groupNo} AS GROUP_NO, #{item.name} AS NAME, #{item.dir} AS DIR
+				SELECT  #{item.groupNo} AS GROUP_NO, '클래스' AS NAME, #{item.dir} AS DIR
 				FROM DUAL
 			</foreach>
 		) A
@@ -162,11 +162,11 @@
 			</if>
 			
 			<choose>
-				<when test="address != null and address=='address.equals(경남,경북)'">
+				<when test="address != null and address eq'경남,경북'">
 					AND ADDRESS LIKE '%'|| '경남' ||'%'
 						OR ADDRESS LIKE '%'|| '경북' ||'%'
 				</when>
-				<when test ="address != null and address=='address.equals(전남,전북)'">
+				<when test ="address != null and address eq'전남,전북'">
 					AND ADDRESS LIKE '%'|| '전남' ||'%'
 						OR ADDRESS LIKE '%'|| '전북' ||'%'
 				</when>

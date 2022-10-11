@@ -82,41 +82,22 @@ public class ClassController {
 		
 		return "class/classSelect";
 	}
-	
-
-	//클래스 등록페이지 튜터 컨트롤러로 넘김
-	//@GetMapping("classInsert")
-	//public String classInsert(Model model) {
-
-	//	return "class/classInsert";
-	//}
 
 
 	
 	//클래스 결제 페이지
 	@RequestMapping("classExreserve")
 	public String classExreserve(Model model, ClassExreserveVO vo) {
-		int insert =0;
-		int delete =0;
-		//임시예약에 있는지 단건조회
-		ClassExreserveVO oldvo = exreserve.classExreserveSelect(vo);
-		System.out.println("임시예약 입력 전 중복체크 단건조회");
-		if(oldvo == null) {
-			//임시예약에 없는 classNo이면 인서트
-			insert = exreserve.classExreserveInsert(vo);
-			System.out.println("임시예약 입력");
-		} else {
-			//임시예약에 있는 classNo이면 삭제하고 인서트
-			delete = exreserve.classExreserveDelete(vo);
-			System.out.println("임시예약 삭제");
 
-			insert = exreserve.classExreserveInsert(vo);
-			System.out.println("임시예약 삭제후입력");
-		}
-		List<ClassExreserveVO> list = exreserve.exreserveList(oldvo);
-		model.addAttribute("exreserve", list);
-		System.out.println("임시예약 리스트 넘김");
+		exreserve.classExreserveInsert(vo);
+		System.out.println("임시예약 입력");
+
+		int exno = vo.getExreserveNo();
 		
+		ClassExreserveVO exvo = exreserve.classExreserveSelect(exno);
+		model.addAttribute("ex", exvo);
+		System.out.println("임시예약 리스트 넘김");
+
 		return "class/classExreserve";
 	}
 	
@@ -130,8 +111,8 @@ public class ClassController {
 		List<ClassReserveVO> list = reserve.classReserveSelectList(vo);
 		vo = list.get(0);
 		System.out.println("클래스 예약 내역 셀렉트 완료");
-		
 
+		
 		// 적립금 업데이트
 		UsersVO u = new UsersVO();
 		u.setUserNo(vo.getUserNo());

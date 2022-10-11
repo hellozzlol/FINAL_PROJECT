@@ -12,6 +12,6 @@ public class TogetherPetApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TogetherPetApplication.class, args);
-	}
+}				
 
 }

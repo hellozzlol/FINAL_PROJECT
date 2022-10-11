@@ -888,17 +888,7 @@ $(document).ready(function(){
 								<div class="tab-pane fade show active" id="info" role="tabpanel">
 									<div class="product_info_content">
 										<a id="intro"></a>
-										<script>
-											var str = `[[${clas.intro}]]`;
-											str = str.replaceAll("&lt;", "<");
-											str = str.replaceAll("&gt;", ">");
-											str = str.replaceAll("&amp;lt;", "<");
-											str = str.replaceAll("&amp;gt;", ">");
-											str = str.replaceAll("&amp;nbsp;", " ");
-											str = str.replaceAll("&amp;amp;", "&");
-											document.getElementById('intro').innerHTML=str;
-										</script>
-										
+										[(${clas.intro})]
 									</div>
 								</div>
 

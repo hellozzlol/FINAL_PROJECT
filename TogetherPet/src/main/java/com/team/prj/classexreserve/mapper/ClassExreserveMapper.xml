@@ -3,22 +3,6 @@
 <mapper
 	namespace="com.team.prj.classexreserve.mapper.ClassExreserveMapper">
 
-	<!-- 클래스 예약전 단건조회 -->
-	<select id="classExreserveSelect" resultType="com.team.prj.classexreserve.service.ClassExreserveVO">
-		SELECT * 
-		FROM CLASS_EXRESERVE
-		WHERE CLASS_NO = #{classNo} 
-		AND USER_NO = #{userNo}
-	</select>
-	
-	<!-- 클래스 예약전 페이지 리스트 -->
-	<select id="exreserveList" resultType="com.team.prj.classexreserve.service.ClassExreserveVO">
-		SELECT *
-		FROM CLASS C, CLASS_EXRESERVE E, CLASS_OPTION O
-		WHERE C.CLASS_NO = E.CLASS_NO
-        AND E.CLASS_OPTION_NO = O.CLASS_OPTION_NO
-		AND E.USER_NO = #{userNo}
-	</select>
 	
 	<!-- 클래스 예약전 입력 -->
 	<insert id="classExreserveInsert">
@@ -31,6 +15,18 @@
 		VALUES(#{userNo}, #{classOptionNo}, #{exreserveNo}, #{classNo})
 	</insert>
 
+
+	<!-- 클래스 예약전 단건조회 -->
+	<select id="classExreserveSelect" parameterType="int"
+	resultType="com.team.prj.classexreserve.service.ClassExreserveVO">
+		SELECT *
+		FROM CLASS C, CLASS_EXRESERVE E, CLASS_OPTION O
+		WHERE C.CLASS_NO = E.CLASS_NO
+		AND E.CLASS_OPTION_NO = O.CLASS_OPTION_NO
+		AND E.EXRESERVE_NO = #{exreserveNo}
+	</select>
+	
+	
 	<!-- 클래스 예약전 삭제 -->
 	<delete id="classExreserveDelete">
 		DELETE CLASS_EXRESERVE
