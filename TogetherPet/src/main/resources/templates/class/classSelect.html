@@ -29,7 +29,44 @@ $(document).ready(function(){
 		var token = $("meta[name='_csrf']").attr("content");
  		var header = $("meta[name='_csrf_header']").attr("content");
 	    				
-	    				
+
+ 		
+		
+		/*-----------------------
+		옵션 있는 날짜만 캘린더에서 클릭 가능하도록 설정
+		-------------------------*/
+			var enableDay = [];
+			var size = $("#optionSize").val();
+
+			for(i=0; i<size; i++) {
+				var startDt =  $($(".optionList").children()[i]).val()
+
+				enableDay.push(startDt);
+			}
+			
+			function selectableDays(date){
+				var thismonth = date.getMonth()+1;
+				var thisday = date.getDate();
+				
+				if(thismonth<10){
+					thismonth = "0"+thismonth;
+				}
+				if(thisday<10){
+					thisday = "0"+thisday;	
+				}
+				
+				ymd = date.getFullYear() + "-" + thismonth + "-" + thisday;
+				
+				if($.inArray(ymd, enableDay) >= 0) {
+					return[true,"",""];
+				} else {
+					return[false,"",""];
+				}
+				
+			}
+
+
+ 		
 		/*-----------------------
 		데이터 피커 생성
 		-------------------------*/
@@ -37,7 +74,8 @@ $(document).ready(function(){
 				{ 	dateFormat : "yy-mm-dd",
 					dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
 					minDate : "0m",
-					maxDate : "+5m"
+					maxDate : "+5m",
+					beforeShowDay : selectableDays //선택가능일
 				}
 		)
 
@@ -707,8 +745,8 @@ $(document).ready(function(){
 					<div class="col-lg-6 col-md-6" id="content">
 						<div class="scontainer">
 							<ul id="sul" class="slider">
-								<li class="item" th:each="ph:${photoList}" id="parent"><img
-									id="slide" th:src="@{display(fileName=${ph.dir})}" name="slide"></li>
+								<li class="item" th:each="ph:${photoList}" id="parent">
+									<img id="slide" th:src="@{display(fileName=${ph.dir})}" name="slide"></li>
 												<!-- th:src="@{display(fileName=${ph.dir})}" -->
 							</ul>
 						</div>
@@ -757,7 +795,6 @@ $(document).ready(function(){
 												<input type="hidden" name="classOptionNo" id="classOptionNo">
 												<input type="number" name="userNo" id="userNo" style="display:none"
 													th:value="${#authentication.principal.login.no}"> <!-- 1005 지혜 수정 -->
-
 												</form>
 
 												<input type="text" id="inputdatebox"
@@ -773,6 +810,12 @@ $(document).ready(function(){
 											<i class="ion-ios-heart"></i>
 										</a>
 									</div>
+									
+									<!-- 날짜리스트 추출용 -->
+									<div th:each="op:${optionList}" class="optionList" style="display:none;">
+										<input th:value="${op.startDt}" id="startDt">
+									</div>
+									<input type="hidden" th:value="${#lists.size(optionList)}" id="optionSize">
 								<!----------------- 예약달력 ------------------>
 
 <!-- 

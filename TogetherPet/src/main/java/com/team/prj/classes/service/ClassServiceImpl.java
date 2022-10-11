@@ -115,6 +115,12 @@ public class ClassServiceImpl implements ClassService {
 		return map.classReviewSelect(vo);
 	}
 
+	@Override
+	public List<ClassOptionVO> classOptionList(ClassVO vo) {
+		//클래스 단건조회에서 옵션 리스트 (옵션 있는 날짜만 캘린더에 지정용)
+		return map.classOptionList(vo);
+	}
+
 
 
 
