@@ -236,20 +236,20 @@ public class SellerController {
 		goods.deliveryUpdate(ovo);
 		
 		// 알림 테이블에 등록 1010 선희추가
-		int refNo = Integer.parseInt(ovo.getDeliveryState());
-		String name = ovo.getName();
-		String type = "3"; // 알림 상태 3번(배송상태)
-		String msg;
-		nvo.setUserNo(ovo.getUserNo());
-		nvo.setRefNo(refNo);
-		nvo.setContent(name);
-		nvo.setType(type);
-		int cnt = notice.noticeInsert(nvo);
-		if (cnt > 0) {
-			msg = "주문하신 상품의 배송이 시작되었습니다.";
-		} else {
-			msg = "error";
-		}
+//		int refNo = Integer.parseInt(ovo.getDeliveryState());
+//		String name = ovo.getName();
+//		String type = "3"; // 알림 상태 3번(배송상태)
+//		String msg;
+//		nvo.setUserNo(ovo.getUserNo());
+//		nvo.setRefNo(refNo);
+//		nvo.setContent(name);
+//		nvo.setType(type);
+//		int cnt = notice.noticeInsert(nvo);
+//		if (cnt > 0) {
+//			msg = "주문하신 상품의 배송이 시작되었습니다.";
+//		} else {
+//			msg = "error";
+//		}
 		return "redirect:/sellerDeliList";
 	}
 
