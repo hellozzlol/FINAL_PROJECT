@@ -36,24 +36,26 @@ public class AjaxCalendarController {
 		UsersVO uvo = (UsersVO) session.getAttribute("user");
 		cvo.setUserNo(uvo.getUserNo());
 		int calendarNo = cvo.getCalendarNo();
-		calendar.calendarInsert(cvo);
+		int cnt = calendar.calendarInsert(cvo);
 		
 		// 알림 테이블에 등록 1010 선희추가
 		int refNo = cvo.getCalendarNo();
 		String title = cvo.getTitle();
 		String type = "1"; // 알림 상태 1번(일정)
 		String msg;
-		nvo.setUserNo(uvo.getUserNo());
+		msg = "'" + title + "'" + " 일정이 등록되었습니다.";
 		nvo.setRefNo(refNo);
 		nvo.setContent(title);
 		nvo.setType(type);
-		int cnt = notice.noticeInsert(nvo);
-		if (cnt > 0) {
-			msg = title + "일정이 등록되었습니다.";
-		} else {
-			msg = "error";
-		}
-		return calendarNo;
+		nvo.setContent(msg);
+		
+		CalendarVO c = new CalendarVO();
+		c.setCalendarNo(refNo);
+		int userNo = calendar.calendarSelect(cvo).getUserNo();
+		nvo.setUserNo(userNo);
+		notice.noticeInsert(nvo);
+		
+		return cnt;
 	}
 	
 	// 일정 삭제
