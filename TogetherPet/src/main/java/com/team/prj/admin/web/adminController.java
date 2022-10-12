@@ -1,6 +1,8 @@
 package com.team.prj.admin.web;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +24,7 @@ import com.team.prj.classes.service.ClassService;
 import com.team.prj.classes.service.ClassVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
+import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.tutor.service.TutorService;
@@ -172,7 +175,17 @@ public class adminController {
 			key = "1";
 		}
 		model.addAttribute("pageInfo", PageInfo.of(goods.goodsList(key)));
-		model.addAttribute("goods", goods.goodsSelectOne(vo));
+		
+		vo.setGoodsNo(1);
+		vo = goods.goodsSelectOne(vo);
+		model.addAttribute("goods", vo);
+		System.out.println(vo);
+		
+		List<PhotoVO> list = goods.goodsPhotoList(vo);
+		model.addAttribute("photoList", list);
+		
+		model.addAttribute("reviewList", goods.reviewList(vo));
+		
 		return "admin/goodsConfirm";
 	}
 
@@ -185,8 +198,9 @@ public class adminController {
 		model.addAttribute("pageInfo", PageInfo.of(cs.classList()));
 		return "admin/classConfirm";
 	}
+
 	
-	
-	
+
+
 	
 }
