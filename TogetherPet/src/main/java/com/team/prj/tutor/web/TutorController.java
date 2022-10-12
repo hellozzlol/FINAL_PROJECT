@@ -1,6 +1,7 @@
 package com.team.prj.tutor.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,14 +38,8 @@ public class TutorController {
 	
 	@Autowired
 	private ClassService clas;
+
 	
-	
-	//튜터 클래스 등록페이지
-	@GetMapping("classInsert")
-	public String classInsert(Model model) {
-		
-		return "tutor/classInsert";
-	}
 	
 	//튜터 마이페이지 - 기본정보 단건조회
 	@RequestMapping("tutorMyPage")
@@ -91,6 +87,14 @@ public class TutorController {
 	}
 	
 	
+
+	//튜터 클래스 등록폼 호출
+	@GetMapping("classInsert")
+	public String classInsert(Model model) {
+		return "tutor/classInsert";
+	}
+	
+	
 	//튜터 마이페이지 - 클래스 정보 수정폼 호출
 	@RequestMapping("classUpdateForm")
 	public String classUpdateForm(HttpServletRequest request, Model model, @RequestParam(value="classNo") int classNo) {
@@ -125,9 +129,7 @@ public class TutorController {
 		session.setAttribute("tutor", vo);
 		return "redirect:/tutorComList";
 	}
-	
-	//튜터 마이페이지 - 클래스 정보 수정처리
-	
+
 	
 	
 	//튜터가 등록신청한 클래스 리스트
@@ -160,7 +162,7 @@ public class TutorController {
 		HttpSession session = request.getSession();
 		tvo = (TutorVO) session.getAttribute("tutor");
 		clvo.setTutorNo(tvo.getTutorNo());
-		model.addAttribute("pageInfo",PageInfo.of(tutor.myExtiveClassList(clvo)));
+		model.addAttribute("pageInfo",PageInfo.of(tutor.myActiveClassList(clvo)));
 		
 		
 		//총 정산완료액 처리
@@ -189,6 +191,27 @@ public class TutorController {
 	
 	
 //////////////////////////ajax/////////////////////////////////
+	
+	
+	
+	
+	//튜터 마이페이지 - 그룹 사진 수정시 이전 데이터 삭제
+	@RequestMapping("classExphotoDelete")
+	@ResponseBody
+	public int classExphotoDelete(Model model, @RequestParam(value="groupNo") int groupNo) {
+		int result = tutor.classExphotoDelete(groupNo);
+		
+		return result;
+	}
+	
+//	//튜터 마이페이지 - 옵션 수정 시 이전 데이터 삭제
+	@RequestMapping("classExoptionDelete")
+	@ResponseBody
+	public int classExoptionDelete(Model model, @RequestParam(value="classNo") int classNo) {	
+		int result = tutor.classExoptionDelete(classNo);
+		
+		return result;
+	}
 	
 	
 	//클래스 수강자 및 정산 리스트에서 해당 클래스 클릭시 옵션리스트 자세히보기

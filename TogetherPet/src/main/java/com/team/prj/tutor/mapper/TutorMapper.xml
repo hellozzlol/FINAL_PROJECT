@@ -101,7 +101,7 @@
 	
 	
 	<!-- 튜터가 생성한 클래스 중 승인 완료된 클래스 리스트 조회 -->
-	<select id="myExtiveClassList" resultType="com.team.prj.classes.service.ClassVO">
+	<select id="myActiveClassList" resultType="com.team.prj.classes.service.ClassVO">
 		SELECT *
 		FROM CLASS
 		WHERE TUTOR_NO = #{tutorNo}
@@ -192,6 +192,20 @@
 			</when>
 		</choose>
 	</select>
+		
+	
+	<!-- 클래스 수정페이지에서 이전 그룹사진 삭제-->
+	<delete id="classExphotoDelete" parameterType="int">
+		DELETE FROM PHOTO
+		WHERE GROUP_NO = #{groupNo}
+	</delete>
+	
+	
+	<!-- 클래스 수정페이지에서 이전 옵션리스트 삭제-->
+	<delete id="classExoptionDelete" parameterType="int">
+		DELETE FROM CLASS_OPTION
+		WHERE CLASS_NO = #{classNo}
+	</delete>
 	
 
 </mapper>

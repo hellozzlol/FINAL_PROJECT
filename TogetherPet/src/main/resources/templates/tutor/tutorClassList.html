@@ -179,11 +179,10 @@
 			<!-- 페이지네이션 -->
 			
 			<!-- 클래스 삭제 -->
-			<form name="classDelete" id="classDelete" action="deleteClass">
+			<form name="classDelete" id="classDelete" action="classDelete" method="post">
 				<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
-				<input type="hidden"
-					id="deleteSubmit" name="classNo">
+				<input type="hidden" id="deleteSubmit" name="classNo">
 			</form>
 			<!-- 클래스 삭제 -->
 
@@ -248,10 +247,12 @@
 	
 	// 상품 삭제 처리
 	$("#btnList").on("click", "#deleteBtn", function () {
-		if (confirm('상품을 삭제하시겠습니까?')) {
+		if (confirm('선택하신 클래스를 정말로 삭제하시겠습니까?')) {
 			let classNo = Number($(this).closest('tr').attr('id'));
 			$('#deleteSubmit').val(classNo);
 			$("#classDelete").submit();
+			var answer;
+			answer = confirm("선택하신 클래스가 삭제되었습니다.");
 		}
 	})
 </script>

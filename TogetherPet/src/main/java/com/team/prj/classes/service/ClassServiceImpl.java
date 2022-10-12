@@ -40,7 +40,7 @@ public class ClassServiceImpl implements ClassService {
 
 
 	@Override
-	public ClassVO classUpdate(ClassVO vo) {
+	public int classUpdate(ClassVO vo) {
 		//클래스 수정
 		return map.classUpdate(vo);
 	}
@@ -49,7 +49,7 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public int classDelete(ClassVO vo) {
 		//클래스 삭제
-		return 0;
+		return map.classDelete(vo);
 	}
 
 	@Override

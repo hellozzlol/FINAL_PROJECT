@@ -19,9 +19,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- 클래식 에디터 -->
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
-
+<script src="//cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript"
@@ -248,7 +246,7 @@ var lastTime;
 		    fileArr=Array.prototype.slice.call(files);
 		    var preview = document.getElementById(View_area); //div id
 		    var ua = window.navigator.userAgent;
-		
+			var jsonArr = [];
 		 
 		    //ie일때(IE8 이하에서만 작동)
 		    if (ua.indexOf("MSIE") > -1) {
@@ -352,10 +350,10 @@ var lastTime;
 				for(let i = 0; i < fileList.length; i++){
 					formData.append("uploadFile", fileList[i]);
 				}
-	
+
 				var token = $("meta[name='_csrf']").attr("content");
 				var header = $("meta[name='_csrf_header']").attr("content");
-				
+					 				
 				//AJAX를 사용하여 서버로 전송
 				$.ajax({
 					beforeSend: function(xhr){
@@ -374,7 +372,7 @@ var lastTime;
 			    		$('#groupNo').val(result[0].groupNo); //다음그룹넘버 담아줌
 			    		console.log($('#groupNo').val())
 			    		
-			    		var jsonArr = [];
+			    		//var jsonArr = [];
 			    		for (var i=0; i<result.length; i++){
 			    			jsonArr.push({
 			    				groupNo : (result[i].groupNo),
@@ -384,38 +382,51 @@ var lastTime;
 			    		}
 			    		console.log(jsonArr);
 			    		
-			    		$.ajax({
-							url: 'classPhotoInsert',
-							type: 'post',
-							beforeSend: function (xhr) {
-								xhr.setRequestHeader(header, token)
-							},
-							traditional: true,
-							data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
-							dataType: 'JSON',
-							contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
-							success: function() {
-								alert("그룹사진을 등록했습니다.")
-								
-							},
-							fail: function() {
-								alert("그룹사진 인서트 오류! 다시 실행해주세요.")
-							}
-						
-						
-						})
-			    		
-			    		
-			    		
 			    	},error : function(result){
 			    		alert("이미지 파일이 아닙니다.");
 			    	}
-				});
-				
+				}).then((arg) => {
+					
+					//수정 이전의 그룹번호 삭제용
+					var groupNo = $("#exGroupNo").val()
+					console.log("이전 그룹번호" + groupNo);
+					
+					 $.ajax({ 
+						 url: 'classExphotoDelete',
+						 type: 'post',
+						 beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						 },
+						 data : {groupNo :groupNo},
+						 success: console.log("이전 사진정보 삭제완료.")
+						 })
 		
-		    }//file on change end
+		    })//end of file on change
+			.then((arg) => {
+	    		
+		    		$.ajax({
+						url: 'classPhotoInsert',
+						type: 'post',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token)
+						},
+						traditional: true,
+						data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
+						dataType: 'JSON',
+						contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
+						success: function() {
+							alert("그룹사진을 등록했습니다.");
+						},
+						fail: function() {
+							alert("그룹사진 인서트 오류! 다시 실행해주세요.")
+						}
+					})
+			
+			
+			})	//end of new photo insert
 		
 		}
+	}
 
 		
 		
@@ -456,7 +467,7 @@ var lastTime;
 				
 				console.log(jsonArr);
 				
-			}
+		}
 
 </script>
 
@@ -473,17 +484,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 			//에디터를 화면에 붙일때 작성공간인 textarea값이나 div의 id로 가져온다.
 			var theEditor;
-			ClassicEditor
-			   .create( document.querySelector( '#editor' ), {
-			       language: 'ko' //언어설정
-			  	})
-				.then( contents => {
-				theEditor = contents; // #contents에 있는 값을 theEditor에 넣어놓는다.
-				})
-			   .catch( error => {
-			       console.error( error );
-			    });
-	
+			var editor = CKEDITOR.replace('editor'
+						, {filebrowserUploadUrl:'boardIns'
+						, height: 600})
+			
 	
 			
 			/*-----------------------
@@ -491,9 +495,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			-------------------------*/	
 			$('#class_submit').on('click', function(){
 				
-			  	   //나중에 확인할때 소스
-			       var sHTML = theEditor.getData();
-			       console.log(sHTML); 
+			  	   	//나중에 확인할때 소스
+			       	//var sHTML = theEditor.getData();
+			      	//console.log(sHTML); 
+			      	var value = editor.getData();
+			        console.log(value)
 							    
 					//빈칸 확인
 					if($('#class_name').val() == ""){
@@ -508,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						alert('클래스 이미지 파일을 업로드하세요');
 						window.location.href="#f3";
 						return false;
-					}else if(sHTML == ""){
+					}else if(value == ""){
 						alert('클래스 소개를 입력하세요');
 						window.location.href="#f4";
 						return false;
@@ -532,16 +538,17 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 					
 					//빈칸 확인 후 최종 confirm
-					if(!confirm('작성하신 내용으로 클래스를 등록하시겠습니까?')) {
+					if(!confirm('작성하신 내용으로 클래스를 수정하시겠습니까?')) {
 						return;
 					}
 					
 					var token = $("meta[name='_csrf']").attr("content");
 					var header = $("meta[name='_csrf_header']").attr("content");
 			
+					let classNo = $('#classNo').val();
 					let name = $('#class_name').val();
 					let category = $('#category').val();
-					let intro = sHTML;
+					let intro = value;
 					let price = $('#class_fee').val();
 					let maxHeadcount = $('#class_nop').val();
 					let tutorNo = $('#tutorNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
@@ -554,14 +561,15 @@ document.addEventListener('DOMContentLoaded', function() {
 					let groupNo = $('#groupNo').val();
 					
 
-					$.ajax({ //클래스 인서트 ajax
-						url: 'classInsert',
+					$.ajax({ //클래스 업데이트 ajax
+						url: 'classUpdateAjax',
 						type: 'post',
 						beforeSend: function (xhr) {
 							xhr.setRequestHeader(header, token)
 						},
 						//async: true,  // 비동기 방식으로 설정
 						data: {
+							classNo: classNo,
 							name: name,
 							category: category,
 							intro: intro,
@@ -575,17 +583,28 @@ document.addEventListener('DOMContentLoaded', function() {
 							postcode: postcode,
 							groupNo: groupNo,
 							da: da
-							
 						},
 						success: function(result) {
-							$('#classNo').val(result);
-							console.log($('#classNo').val())
-							console.log("클래스 인서트 완료.")
+							console.log("클래스 업데이트 완료.")
 						},
 						fail: function(result) {
-							console.log("클래스 인서트 실패.")
+							console.log("클래스 업데이트 실패.")
 						}
-					}).then((arg)=> { //옵션 인서트 ajax
+					}).then((arg)=>{
+						
+						let classNo = $('#classNo').val();
+						//클래스 업데이트 완료 후 옵션인서트 전 수정이전 옵션정보 삭제 
+						$.ajax({
+							url: 'classExoptionDelete',
+							type: 'post',
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader(header, token)
+							},
+							data :{classNo :classNo},
+							success : console.log("이전 옵션정보 삭제완료.")
+						})
+						
+					}).then((arg)=> { //이전 옵션 삭제 후 새로운 옵션정보 ajax
 						
 						var day = $('#dateStr').html();
 						var arySdt = []; //시작시각 배열
@@ -603,10 +622,10 @@ document.addEventListener('DOMContentLoaded', function() {
 							
 							for(var i=0; i<arySdt.length; i++) {
 							jsonArr.push({
-								classNo: classNo,
-								startDt: arySdt[i],
-								endDt: aryEdt[i],
-								allHeadcount: allHeadcount
+									classNo: classNo,
+									startDt: arySdt[i],
+									endDt: aryEdt[i],
+									allHeadcount: allHeadcount
 								})
 							}
 			
@@ -624,11 +643,10 @@ document.addEventListener('DOMContentLoaded', function() {
 							dataType: 'JSON',
 							contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
 							success: function() {
-								console.log("성공");
 								var answer;
-								answer = confirm("클래스 등록이 완료되었습니다. 등록하신 클래스 페이지로 이동하시겠습니까?");
+								answer = confirm("클래스 수정이 완료되었습니다.");
 								if(answer == true){
-									location = 'classSelect?classNo='+classNo;
+									location = 'tutorClassList';
 								}
 							},
 							fail: function() {
@@ -637,19 +655,19 @@ document.addEventListener('DOMContentLoaded', function() {
 							complete: function() {
 								console.log("성공");
 								var answer;
-								answer = confirm("클래스 등록이 완료되었습니다. 등록하신 클래스 페이지로 이동하시겠습니까?");
+								answer = confirm("클래스 수정이 완료되었습니다.");
 								if(answer == true){
-									location = 'classSelect?classNo='+classNo;
+									location = 'tutorClassList';
 								}
 							}
 						
 						})// end of option ajax 
 						
 					
-				})//end of option ajax then
+				})//end of new option ajax then
 		
 		}) //end of click event
-	
+
 })//end of document event 	
 
 
@@ -1266,7 +1284,9 @@ input[type="radio"]:after {
 									<!-- 튜터 번호로 나중에 바꾸기!!! -->
 									<input type="hidden" id="tutorNo" th:value="${session.tutor.tutorNo}">
 									<!-- 클래스번호 -->
-									<input type="hidden" th:name="classNo" th:id="classNo">
+									<input type="hidden" th:id="classNo" th:name="classNo" th:value="${clas.classNo}">
+									<!-- 이전 그룹번호 --> 
+									<input type="hidden" th:id="exGroupNo" th:name="groupNo" th:value="${clas.groupNo}">
 									
 									<ul class="descriptionUl">
 										<li class="dsctitle">작성 Tip</li>
