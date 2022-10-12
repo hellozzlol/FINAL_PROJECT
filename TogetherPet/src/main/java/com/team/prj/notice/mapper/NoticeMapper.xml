@@ -39,7 +39,7 @@
 	<update id="noticeUpdate"
 		parameterType="com.team.prj.notice.service.NoticeVO">
 		UPDATE NOTICE
-		SET read_time = sysdate
+		SET read_time = SYSDATE
 		WHERE notice_no = #{noticeNo}
 	</update>
 	

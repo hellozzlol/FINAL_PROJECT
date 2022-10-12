@@ -45,7 +45,6 @@ public class AjaxCalendarController {
 		String msg;
 		msg = "'" + title + "'" + " 일정이 등록되었습니다.";
 		nvo.setRefNo(refNo);
-		nvo.setContent(title);
 		nvo.setType(type);
 		nvo.setContent(msg);
 		

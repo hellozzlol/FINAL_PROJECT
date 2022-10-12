@@ -241,16 +241,21 @@ public class SellerController {
 		
 		// 알림 테이블에 등록 1010 선희추가
 		int refNo = ovo.getOrderNo();
-		String type = "4";
+		String type = "3"; // 알림 상태 3번(배송지시)
 		String gname = ovo.getGoodsName();
 		String msg;
 		msg = "'" + gname + "'" + " 상품 배송이 시작되었습니다.";
 		nvo.setRefNo(refNo);
 		nvo.setType(type);
 		nvo.setContent(msg);
+		String url = "usersOrderList";
+		nvo.setUrl(url);
+		
 		OrderVO o = new OrderVO();
 		o.setOrderNo(refNo);
-		// int userNo = order.selectOrder(ovo).
+		int userNo = order.orderOne(o).getUserNo();
+		nvo.setUserNo(userNo);
+		notice.noticeInsert(nvo);
 		
 		return "redirect:/sellerDeliList";
 	}
@@ -348,21 +353,22 @@ public class SellerController {
 
 		// 알림 테이블에 등록 1010 선희추가
 		int refNo = qvo.getQnaNo();
-		int userNo = qvo.getUserNo();
-		String answer = qvo.getAnswer();
+		int goodsNo = qvo.getGoodsNo();
+		String answer = qvo.getTitle();
 		String type = "2"; // 알림 상태 2번(qna)
-		String msg;
-		nvo.setUserNo(userNo);
-		System.out.println("===========" + userNo); // 0을 받아옴..
+		String msg = "'" + answer + "'" + " 문의 답변이 등록되었습니다.";
+		String url = "goods?goodsNo=" + goodsNo;
+		nvo.setUrl(url);
 		nvo.setRefNo(refNo);
-		nvo.setContent(answer);
+		nvo.setContent(msg);
 		nvo.setType(type);
-		int cnt = notice.noticeInsert(nvo);
-		if (cnt > 0) {
-			msg = "답변이 등록되었습니다.";
-		} else {
-			msg = "error";
-		}
+		
+		QnaVO q = new QnaVO();
+		q.setQnaNo(refNo);
+		int userNo = seller.qnaSelect(q).getUserNo();
+		nvo.setUserNo(userNo);
+		notice.noticeInsert(nvo);
+		
 		return "redirect:/sellerQnaSelectList";
 	}
 

@@ -73,4 +73,12 @@
 		where delivery_state=7 and minus_yn != 1
 	</update>
 	
+	<!-- 알림용 1012 선희 추가 -->
+	<select id="orderOne"
+		resultType="com.team.prj.orders.service.OrderVO">
+		SELECT *
+		FROM orders
+		WHERE order_no = #{orderNo}
+	</select>
+	
 </mapper>
