@@ -24,6 +24,7 @@ import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.notice.service.NoticeService;
 import com.team.prj.notice.service.NoticeVO;
+import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.service.SellerService;
@@ -42,6 +43,9 @@ public class SellerController {
 	// 1010 선희 추가(알림)
 	@Autowired
 	private NoticeService notice;
+	// 1012 선희 추가
+	@Autowired
+	private OrderService order;
 
 	// 판매자 회원 전체 조회
 	@RequestMapping("/sellerSelectList")
@@ -236,20 +240,18 @@ public class SellerController {
 		goods.deliveryUpdate(ovo);
 		
 		// 알림 테이블에 등록 1010 선희추가
-//		int refNo = Integer.parseInt(ovo.getDeliveryState());
-//		String name = ovo.getName();
-//		String type = "3"; // 알림 상태 3번(배송상태)
-//		String msg;
-//		nvo.setUserNo(ovo.getUserNo());
-//		nvo.setRefNo(refNo);
-//		nvo.setContent(name);
-//		nvo.setType(type);
-//		int cnt = notice.noticeInsert(nvo);
-//		if (cnt > 0) {
-//			msg = "주문하신 상품의 배송이 시작되었습니다.";
-//		} else {
-//			msg = "error";
-//		}
+		int refNo = ovo.getOrderNo();
+		String type = "4";
+		String gname = ovo.getGoodsName();
+		String msg;
+		msg = "'" + gname + "'" + " 상품 배송이 시작되었습니다.";
+		nvo.setRefNo(refNo);
+		nvo.setType(type);
+		nvo.setContent(msg);
+		OrderVO o = new OrderVO();
+		o.setOrderNo(refNo);
+		// int userNo = order.selectOrder(ovo).
+		
 		return "redirect:/sellerDeliList";
 	}
 

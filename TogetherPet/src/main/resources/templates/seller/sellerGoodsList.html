@@ -114,8 +114,8 @@
 						<div class="mb-3 row">
 							<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
 							<div class="col-md-10">
-								<input class="form-control" type="search" value=""
-									placeholder="검색어를 입력하세요." id="html5-search-input" />
+								<input type="hidden" id="key" name="key" value="1">
+								<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
 							</div>
 						</div>
 						<div class="search-box">
@@ -128,7 +128,7 @@
 								</div>
 							</div>
 							<div class="mt-2" style="text-align: center;">
-								<a id="searchBtn" class="btn btn-primary me-2">검색하기</a>
+								<a id="searchBtn" class="btn btn-primary me-2" onclick="searchCall()">검색하기</a>
 								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
 							</div>
 						</div>
@@ -264,6 +264,9 @@
 	}
 </style>
 <script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+
 	// 등록된 상품 없을때
 	if($('#goodsEmpty').html()=='0'){
 		$("#empty").html('');
@@ -301,21 +304,54 @@
 	})
 	
 	// 검색
+	$("#searchBtn").on("click", searchCall) 
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	
-	let start = "";
-	let end = "";
-	$("#searchBtn").on("click", function() {
-		if ($('#start').val() != "" && $('#end').val() != "") {
+		function searchCall() {
+			let key = $("#key").val();
+			let val = $("#val").val();
 			start = $('#start').val();
 			end = $('#end').val();
-		} else {
-			alert("검색할 기간을 선택하세요.");
-			return;
+			
+			$.ajax({
+				url: "goodsAjaxSearch",
+				type: "post",
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token)
+				},
+				data: {'key' : key, 'val' : val, 'start' : start, 'end' : end},
+				dataType: "json",
+				success:function(response) {
+				console.log(response);
+				htmlView(response);
+			},
+			error:function() {
+				alert("오류발생");
+			}
+			});
+			
+		function htmlView(data) {
+			$("#btnList").remove();
+			var tbody = $("<tbody id='btnList' />");
+			
+			$.each(data, function(index, item) {
+				var row = $("<tr>").attr("onclick", "searchCall(" + item.goodsNo + ")")
+								   .append($("<td />").append($("<input>").attr("type", "checkbox")),
+										   $("<td />").text(item.goodsNo),
+										   $("<td />").text(item.name),
+										   $("<td />").text(item.uploadState),
+										   $("<td />").text(item.sellState),
+										   $("<td />").text(item.amount),
+										   $("<td />").text(item.uploadDate),
+										   $("<td />").append($("<button>").addClass("btn-primary3").html("상세"))
+												      .append($("<button>").addClass("btn-primary3").html("삭제")));
+										   tbody.append(row);
+					});
+				$("#all").append(tbody);
+			}	
 		}
-	}) 
-		
+	
 		// 체크박스 전체 선택
 		function allChecked(target) {
 			// 전체 체크박스 버튼
@@ -373,7 +409,7 @@
 			    if(elem.checked==true){
 			    	let goodsNo = elem.closest('tr').getAttribute('id')
 			    	$.ajax({
-						url: '/ajaxGoodsDelete',
+						url: 'ajaxGoodsDelete',
 						type: 'post',
 						beforeSend : function(xhr){
 							xhr.setRequestHeader(header, token)},
@@ -387,7 +423,7 @@
 						}
 					})
 			    }
-		    });
+		    })
 		})
 		
 		// 판매상태
@@ -411,23 +447,6 @@
 		$('#wait').html(stWait);
 		$('#ing').html(stIng);
 		$('#done').html(stDone);
-		
-		// 기간별 검색
-		// 디폴트
-		/* let start = "";
-		let end = "";
-		// 검색 버튼 클릭했을 때
-		$('#searchBtn').on('click', function() {
-			if($('#start').val() != "" && $('#end').val() != ""){
-				start = $('#start').val();
-				end = $('#end').val();
-				period = start + " ~ " + end
-			}else{
-				alert('날짜를 선택해 주세요');
-				return;
-			}
-
-		}) */
 		
 </script>
 	

@@ -169,6 +169,12 @@
 		<choose>
 			<when test="key == 1">name LIKE '%' || #{val} || '%'</when>
 		</choose>
+		<if test="start != null and end != null">
+		and upload_date
+			between to_date(#{start}, 'yyyy-mm-dd')
+			and
+			to_date(#{end}, 'yyyy-mm-dd')
+		</if>
 	</select>
 
 	<!-- 오더 상품 검색 -->
