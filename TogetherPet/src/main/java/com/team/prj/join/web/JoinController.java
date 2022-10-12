@@ -95,7 +95,6 @@ public class JoinController {
 	// 비밀번호 재설정
 	@PostMapping("pwUpdate")
 	public String pwUpdate(UsersVO vo) {
-		System.out.println("=================================");
 		System.out.println(vo.toString());
 		int cnt = js.pwUpdate(vo);
 		System.out.println("controller 업데이트 되나요           " + cnt);
