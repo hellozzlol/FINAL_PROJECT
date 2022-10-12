@@ -100,6 +100,15 @@ public class JoinServiceImpl implements JoinService {
 		return null;
 	}
 
+	// 비밀번호 재설정
+	@Override
+	public int pwUpdate(UsersVO vo) {
+		return jm.pwUpdate(vo);
+		
+	}
+
+	
+
 
 
 }

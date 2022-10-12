@@ -28,5 +28,5 @@ public interface JoinMapper {
 	
 	int nickCheck(String nickname); // 닉네임 중복체크
 	
-
+	int pwUpdate(UsersVO vo); // 비밀번호 재설정
 }
