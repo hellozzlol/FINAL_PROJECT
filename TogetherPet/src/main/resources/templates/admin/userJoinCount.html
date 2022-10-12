@@ -14,7 +14,62 @@
 </head>
 <body>
 	<article layout:fragment="content">
+	<canvas id="userChart" ></canvas>
+<script>
+  new Chart(document.getElementById("userChart"), {
+    type: 'line',
+    data: {
+      labels: ["5일전", "4일전", "3일전", "2일전", "1일전", "오늘"],
+      datasets: [{ 
+          data: [26,11,10,16,10,11,33,21,13,24],
+          label: "Africa",
+          borderColor: "#3e95cd",
+          fill: false
+        }, { 
+          data: [22,35,11,52,35,89,47,12,37,26],
+          label: "Asia",
+          borderColor: "#8e5ea2",
+          fill: false
+        }, { 
+          data: [40,20,10,16,24,38,24,17,8,14],
+          label: "Latin America",
+          borderColor: "#e8c3b9",
+          fill: false
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'World population per region (in millions)'
+      }
+    }
+  });
+</script>
+	
+	<!-- Profit Table -->
+	<br> <br> <br>
+	<div class="monthly" style="width: 80%; margin: 5px auto;">
+		<table id="monthly" class="table">
+			<thead>
+				<tr>
+					<th>정산일자</th>
+					<th>매출(원)</th>
 
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="mnths" th:each="m:${monthlyList}">
+					<td>[[${#numbers.formatInteger(m.MONTHLY, 0)}]]월</td>
+					<td>[[${#numbers.formatInteger(m.PF, 3, 'COMMA')}]]</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	
+	
+<!-- 
 		<script type="text/javascript">
 			var ctx = document.getElementById("myChart");
 			const myChart = new Chart(ctx, {
@@ -48,15 +103,15 @@
 				}
 			});
 		</script>
-		
-	<!-- 데이터 -->
+
+	<!-- 데이터 
     <input type="hidden" id="memMinus1" value="${memMinus1}">
     <input type="hidden" id="memMinus2" value="${memMinus2}">
     <input type="hidden" id="memMinus3" value="${memMinus3}">
     <input type="hidden" id="memMinus4" value="${memMinus4}">
     <input type="hidden" id="memMinus5" value="${memMinus5}">
-    <input type="hidden" id="memToday" value="${memToday}">
-		
+    <input type="hidden" id="memToday" value="${memToday}">  -->
+		 
 		
 		
 	</article>

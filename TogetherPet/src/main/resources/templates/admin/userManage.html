@@ -59,7 +59,7 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-					<tbody class="table-border-bottom-0" id="body">
+					<tbody class="table-border-bottom-0" >
 						<tr th:each="u:${pageInfo.list}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${u.userNo}" id="uNo"></td>
@@ -212,13 +212,16 @@
 		}	
 		</script>		
 		
-		<!-- 변경 클릭 시 -->
+		<!-- 선택 후 변경 클릭 시 -->
 		<script>
-		$('#uUpdate').on('click', function(){
-			let chkbox = document.querySelectorAll(".chk");
+		$('#uUpdate').on('click', function(e){
+			let chkbox = $(".chk:checked");
 				console.log(chkbox)
-			chkbox.forEach(elem => {
-				if(elem.checked==true){
+			 chkbox.each(elem => {
+				 	console.log(elem);
+				 	let a = $(elem).closest("tr");
+				 	console.log(a);
+				/* if(elem.checked==true){
 				let no = elem.closest('tr').getAttribute('id')
 				  console.log(no);
 			$.ajax({
@@ -232,7 +235,7 @@
 			.done(res=>{
 				location.href-'/manager/userManage';
 				})
-			}
+			} */
 		});
 	})
 		

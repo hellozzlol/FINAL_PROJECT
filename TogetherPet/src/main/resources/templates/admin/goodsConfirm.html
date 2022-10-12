@@ -11,6 +11,20 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+	// 이미지 변경
+	$('.zoom_tab_img').on('click', '.imgClick', function(){
+		let img = $(this);
+		let src = img[0].children[0].getAttribute('src');
+		$('#zoom').attr('src', src);
+	
+})
+</script>
+
 
 </head>
 <body>
