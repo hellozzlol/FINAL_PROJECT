@@ -11,6 +11,7 @@ public class ClassExreserveVO {
 	private String name;
 	private int price;
 	private String address;
+	private String thumb;
 	
 	//ClassOptionVO
 	private String startDt;

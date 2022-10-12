@@ -19,9 +19,9 @@ public class ClassExreserveServiceImpl implements ClassExreserveService {
 	}
 
 	@Override
-	public ClassExreserveVO classExreserveSelect(ClassExreserveVO vo) {
+	public ClassExreserveVO classExreserveSelect(int exreserveNo) {
 		// TODO Auto-generated method stub
-		return map.classExreserveSelect(vo);
+		return map.classExreserveSelect(exreserveNo);
 	}
 
 	@Override

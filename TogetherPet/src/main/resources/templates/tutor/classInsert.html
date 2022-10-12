@@ -19,9 +19,9 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- 클래식 에디터 -->
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
-
+<!--<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>-->
+<!--<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>-->
+<script src="//cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript"
@@ -473,16 +473,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 			//에디터를 화면에 붙일때 작성공간인 textarea값이나 div의 id로 가져온다.
 			var theEditor;
-			ClassicEditor
-			   .create( document.querySelector( '#editor' ), {
-			       language: 'ko' //언어설정
-			  	})
-				.then( contents => {
+			var editor = CKEDITOR.replace('editor'
+						, {filebrowserUploadUrl:'boardIns'
+						, height: 600
+				})
+				
+				//var contents = CKEDITOR.instances.intro.getData();
+				//alert(contents);
+				/*.then( contents => {
 				theEditor = contents; // #contents에 있는 값을 theEditor에 넣어놓는다.
 				})
 			   .catch( error => {
 			       console.error( error );
-			    });
+			    });*/
 	
 	
 			
@@ -492,8 +495,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			$('#class_submit').on('click', function(){
 				
 			  	   //나중에 확인할때 소스
-			       var sHTML = theEditor.getData();
-			       console.log(sHTML); 
+			       //var sHTML = theEditor.getData();
+			       //console.log(sHTML); 
+			        var value = editor.getData();
+			        console.log(value)
 							    
 					//빈칸 확인
 					if($('#class_name').val() == ""){
@@ -508,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						alert('클래스 이미지 파일을 업로드하세요');
 						window.location.href="#f3";
 						return false;
-					}else if(sHTML == ""){
+					}else if(value == ""){
 						alert('클래스 소개를 입력하세요');
 						window.location.href="#f4";
 						return false;
@@ -541,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 					let name = $('#class_name').val();
 					let category = $('#category').val();
-					let intro = sHTML;
+					let intro = value;
 					let price = $('#class_fee').val();
 					let maxHeadcount = $('#class_nop').val();
 					let tutorNo = $('#tutorNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨

@@ -64,8 +64,13 @@
         "url": "Replace_with_your_site_URL"
         }
 </script>
+<style>
+	#top {
+	    overflow:scroll;
+	}
+</style>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('DOMContentLoaded', function() {	
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -78,7 +83,13 @@
 			$('#layoutcartFrm').submit();
 		})
 		
-		let userNo = $('#userNo').val();
+		let userNo;
+		if($('#userNo').val()==null){
+		   userNo = 0;
+		}else{
+		   userNo = Number($('#userNo').val());
+		}
+		
 		$.ajax({
 			url: '/ajaxCartCount',
 			type: 'post',
@@ -91,7 +102,6 @@
 			$('#item_count').html(res);
 		})
 		
-		})
 		
 		// 1008 선희 추가
 		noticeCount(); // 알림 카운트
@@ -107,12 +117,11 @@
 				},
 				data: {userNo:userNo},
 				success: function(res) {
-					// console.log(res);
+					console.log(res);
 					let notice = '';
 					for(r of res) {
 						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
-								   <div class='mx-4'><a id="noticeSel">${r.content}</a>
-								   <span style="float:right;">${r.genTime}</span>
+								   <div style="font-size:13px;" class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
 								   </div></li><hr>`;
 						$('#noticeList').html(notice);	
 					}
@@ -136,24 +145,25 @@
 		}
 		
 		// 알림 상태 업데이트
-		// 알림명 클릭하면 읽은시간 업데이트
-		$("#noticeList").on("click", "#noticeSel", function() {
-				let noticeNo = $(this).closest("li").find("div").html();
-				// console.log(noticeNo);
+		$("#noticeList").on("click", function(e) {
+			if($(this).attr('tagName') == 'span') {
+				let userNo = $(this).closest('div').prev().html();
 				$.ajax({
 					url:"/ajaxNoticeUpdate",
 					type:"post",
 					beforeSend: function (xhr) {
 						xhr.setRequestHeader(header, token)
 					},
-					data: {noticeNo:noticeNo},
+					data: {userNo:userNo},
 					success: function(res) {
 						noticeCount();
 						noticeList();
 					}
 				})
-			})
+		}
 		
+		})
+		})
 </script>
 </head>
 
@@ -238,21 +248,14 @@
 
 							<div class="header_logo">
 								<a class="sticky_none" href="/"><img
-									src="assets/img/logo/logo4.png" alt="" style="width:120px"></a>
+									src="assets/img/logo/logo4.png" alt="" style="width: 120px"></a>
 							</div>
 							<!--main menu start-->
 							<div class="main_menu d-none d-lg-block">
 								<nav>
 									<ul class="d-flex">
 										<li><a href="shop">shop</a></li>
-										<li><a href="classList">class</a>
-											<ul class="sub_menu">
-												<li><a href="#">펫 푸드</a></li>
-												<li><a href="#">펫 핸드메이드</a></li>
-												<li><a href="#">펫 미용</a></li>
-												<li><a href="#">펫 드로잉</a></li>
-												<li><a href="#">기타 펫 클래스</a></li>
-											</ul></li>
+										<li><a href="classList">class</a></li>
 										<li><a href="#">pet info</a>
 											<ul class="sub_menu">
 												<li><a href="hospitalList">병원/약국</a></li>
@@ -272,52 +275,53 @@
 											class="icon-user icons"></i></a>
 										<ul class="dropdown_account_link">
 											<!-- 1008 지혜 추가 -->
-											<li sec:authorize="hasRole('USER')"><a href="/usersSelect">My Account</a></li>
-											<li sec:authorize="hasRole('SELLER')"><a href="/sellerMyPage">My Account</a></li>
-											<li sec:authorize="hasRole('TUTOR')"><a href="/tutorMyPage">My Account</a></li>
+											<li sec:authorize="hasRole('USER')"><a
+												href="/usersSelect">My Account</a></li>
+											<li sec:authorize="hasRole('SELLER')"><a
+												href="/sellerMyPage">My Account</a></li>
+											<li sec:authorize="hasRole('TUTOR')"><a
+												href="/tutorMyPage">My Account</a></li>
 											<!-- 0926 희수가 추가 -->
 											<div sec:authorize="isAnonymous()">
 												<li><a href="loginForm">Login</a></li>
-												<li><a href="joinMain">Join</a></li> <!-- 0929 JH 추가 -->
+												<li><a href="joinMain">Join</a></li>
+												<!-- 0929 JH 추가 -->
 											</div>
 											<div sec:authorize="isAuthenticated()">
 												<li><a id="logout">Logout</a></li>
-
 												<form action="logout" method="post" id="logoutFrm">
 													<input type="hidden" th:name="${_csrf.parameterName}"
 														th:value="${_csrf.token}">
 												</form>
 											</div>
 										</ul></li>
-									
+
 									<!-- 1008 선희 추가 -->
-									<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-									   <a data-toggle="dropdown">
-										   <i class="icon-bell icons"></i>
-										   <span id="noticeCount" class="noticeCount" style="font-size: 20px;"></span>
-									   </a>
-									   <div class="dropdown-menu" style="width:600px; left: auto; right: 0;" role="menu">
-										   <h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>								
-										   <ul id="noticeList"><ul>
-									   </div>
+									<li sec:authorize="isAuthenticated()" class="account_link">
+										<a href="#"><i class="icon-bell icons"></i></a>
+										<span sec:authorize="hasRole('USER')" id="noticeCount"
+										class="noticeCount" style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')"
+											class="dropdown_account_link"
+											style="width: 500px; left: auto; right: 0;" role="menu" id="top">
+											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
+											<li id="noticeList"></li>
+										</ul>
 									</li>
-									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
-									   <a href="loginForm">
-									   <i class="icon-bell icons"></i>
-									   </a>
-									</li>
+									<li sec:authorize="isAnonymous()" class="account_link">
+									<a href="loginForm"> <i class="icon-bell icons"></i>
+									</a></li>
 									<!-- 1008 선희 추가 -->
-								
+
 									<!-- 0926 희수가 추가 -->
 									<div sec:authorize="isAuthenticated()">
-										<li class="shopping_cart"><a id="layoutcartCall">
-											<img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
-											<span id="item_count" class="item_count"></span></a>
-										</li>
+										<li class="shopping_cart"><a id="layoutcartCall"> <img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
+												<span id="item_count" class="item_count"></span></a></li>
 									</div>
 									<div sec:authorize="isAnonymous()">
-										<li class="shopping_cart"><a href="loginForm">
-											<img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
+										<li class="shopping_cart"><a href="loginForm"> <img
+												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
 										</li>
 									</div>
 									<!-- 0926 희수가 추가 -->
@@ -433,6 +437,7 @@
 		</div>
 	</footer>
 	<!--footer area end-->
+
 	<!--modernizr min js here-->
 	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 
@@ -453,7 +458,7 @@
 
 	<!-- Main JS -->
 	<script src="/assets/js/main.js"></script>
-	
+
 </body>
 
 </html>

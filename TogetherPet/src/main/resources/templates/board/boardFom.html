@@ -433,19 +433,6 @@ a {
 					</form>
 				</div>
 
-				<!-- <script>
-					ClassicEditor.create(document.querySelector('#editor'), {
-						language : "ko",
-						ckfinder : {
-							uploadUrl:'/ajax/image.do'
-						}
-					});
-				</script> -->
-
-
-
-
-
 				<script>
  				 document.getElementById('dt').value = new Date().toISOString().substring(0, 10);;
 				</script>
@@ -455,10 +442,16 @@ a {
 				<script>
 				
 				function validateForm(){
-	                //체크박스
+	                //카테고리체크박스
 	                if(frm.category.value ==""){
 	                    alert("카테고리는 적어도 한개 이상은 선택해주세요")
 	                    return 
+	                }
+	                //제목체크
+	                let title = frm.title.value;
+	                if(title ==""){
+	                	alert("제목 을 입력 해주세요")
+	                	return
 	                }
 	                frm.submit();
 	            }

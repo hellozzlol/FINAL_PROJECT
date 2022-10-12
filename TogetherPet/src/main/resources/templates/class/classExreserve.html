@@ -155,57 +155,46 @@
 								<table>
 									<thead>
 										<tr>
-											<th>Class</th>
-											<th>Class Name</th>
-											<th>Class Start Time</th>
-											<th>Class End Time</th>
-											<th>Class Address</th>
-											<th>Price</th>
+											<th style="width:10%;">Class</th>
+											<th style="width:25%;">Class Name</th>
+											<th style="width:15%;">Class Start Time</th>
+											<th style="width:15%;">Class End Time</th>
+											<th style="width:25%;">Class Address</th>
+											<th style="width:10%;">Price</th>
 										</tr>
 									</thead>
 									<tbody id="tb">
 										<!-- tr 반복  -->
-										<tr th:each="e:${exreserve}" class="border-top"
-											th:id="${e.classNo}" th:data-cn="${e.exreserveNo}">
+										<tr class="border-top" th:id="${ex.classNo}">
 											<td>
 												<div class="cart_product_thumb">
-													<img src="assets/img/product/product4.jpg" alt="">
+													<img th:src="@{display(fileName=${ex.thumb})}">
+												</div>
+											</td>
+											<td style="height:198.3px;">
+												<div class="cart_product_text" style="margin:0 auto;">
+													<a id="className" name="className">[[${ex.name}]]</a>
 												</div>
 											</td>
 											<td>
 												<div class="cart_product_text">
-													<h4 id="className" name="className">[[${e.name}]]</h4>
-												</div>
-											</td>
-
-											<td id="classOptionNo" name="classOptionNo" class="border"
-												type="text" th:text="${e.classOptionNo}"
-												style="display: none;"></td>
-											<td id="classNo" name="classNo" class="border" type="text"
-												th:text="${e.classNo}" style="display: none;"></td>
-											<td id="exreserveNo" name="exreserveNo" class="border"
-												type="text" th:text="${e.exreserveNo}"
-												style="display: none;"></td>
-
-											<td>
-												<div class="cart_product_text">
-													<h4 id="dt" name="dt">[[${e.startDt}]]</h4>
+													<h4 id="dt" name="dt">[[${ex.startDt}]]</h4>
 												</div>
 											</td>
 											<td>
 												<div class="cart_product_text">
-													<h4>[[${e.endDt}]]</h4>
+													<h4>[[${ex.endDt}]]</h4>
 												</div>
 											</td>
 											<td>
 												<div class="cart_product_address">
-													<span>[[${e.address}]]</span>
+													<span>[[${ex.address}]]</span>
 												</div>
 											</td>
 											<td>
 												<div class="cart_product_price">
-													<span class="gTotal">[[${#numbers.formatInteger(e.price,4)}]]</span>
-													<span class="sTotal" style="display: none">[[${e.price}]]</span>
+													<span class="gTotal">[[${#numbers.formatInteger(ex.price,4)}]]</span>
+													<span class="sTotal" style="display: none">[[${ex.price}]]</span>
 												</div>
 											</td>
 
@@ -213,6 +202,14 @@
 										<!-- tr 반복 끝 -->
 									</tbody>
 								</table>
+
+								<input id="classOptionNo" name="classOptionNo" class="border"
+									type="hidden" th:value="${ex.classOptionNo}">
+								<input id="classNo" name="classNo" class="border" type="hidden"
+									th:value="${ex.classNo}">
+								<input id="exreserveNo" name="exreserveNo" class="border"
+									type="hidden" th:value="${ex.exreserveNo}">
+																
 							</div>
 						</div>
 					</div>

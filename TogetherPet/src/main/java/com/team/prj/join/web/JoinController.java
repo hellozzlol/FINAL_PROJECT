@@ -1,5 +1,6 @@
 package com.team.prj.join.web;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,9 @@ public class JoinController {
 
 	@Autowired
 	private JoinService js;
+	
+	@Autowired
+	private UsersService user;
 	
 	
 	// 로그인
@@ -84,6 +88,14 @@ public class JoinController {
 	@PostMapping("member/sellerJoinForm")
 	public String sellerInsert(SellerVO vo) {
 		js.sellerInsert(vo);
+		return "redirect:/loginForm";
+	}
+	
+	
+	// 비밀번호 재설정
+	@PostMapping("pwUpdate")
+	public String pwUpdate(UsersVO vo) {
+		js.pwUpdate(vo);
 		return "redirect:/loginForm";
 	}
 	
