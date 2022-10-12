@@ -1,7 +1,8 @@
 package com.team.prj.tutor.mapper;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -34,7 +35,7 @@ public interface TutorMapper {
 	List<ClassVO> myClassList(ClassVO vo);
 	
 	//튜터가 생성한 클래스 중 승인된 클래스 리스트 조회
-	List<ClassVO> myExtiveClassList(ClassVO vo);
+	List<ClassVO> myActiveClassList(ClassVO vo);
 	
 	//특정 클래스 옵션 리스트 (예약 건수가 있을 경우)
 	List<ClassOptionVO> classOptionList(int classNo);
@@ -50,4 +51,11 @@ public interface TutorMapper {
 	
 	//선택한 클래스의 예약건수의 유뮤 확인
 	int getClassReserve(int classNo);
+	
+	//수정페이지 -> 이전 그룹사진 정보 삭제
+	int classExphotoDelete(int groupNo);
+	
+	//수정페이지 -> 이전 옵션 정보 삭제
+	int classExoptionDelete(int classNo);
+	
 }

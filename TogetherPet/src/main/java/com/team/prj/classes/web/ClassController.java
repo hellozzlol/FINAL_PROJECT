@@ -3,6 +3,7 @@ package com.team.prj.classes.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +25,7 @@ import com.team.prj.classreserve.service.ClassReserveVO;
 import com.team.prj.photo.service.PhotoVO;
 import com.team.prj.review.service.ReviewService;
 import com.team.prj.review.service.ReviewVO;
+import com.team.prj.tutor.service.TutorService;
 import com.team.prj.tutor.service.TutorVO;
 import com.team.prj.users.service.UsersVO;
 
@@ -37,7 +40,8 @@ public class ClassController {
 	private ClassReserveService reserve;
 	@Autowired
 	private ReviewService review;
-	
+	@Autowired
+	private TutorService tutor;
 	
 	//소스코드 테스트용입니다
 	@RequestMapping("test")
@@ -83,6 +87,27 @@ public class ClassController {
 		return "class/classSelect";
 	}
 
+	
+	
+	//클래스 삭제처리
+	@RequestMapping("classDelete")
+	public String classDelete(Model model,HttpServletRequest request, 
+			ClassVO clvo, 
+			@RequestParam(required = false, defaultValue = "1") int pageNum,
+			@RequestParam(required = false, defaultValue = "3") int pageSize) {
+		//클래스 삭제
+		clas.classDelete(clvo);
+		
+		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
+		PageHelper.startPage(pageNum, pageSize);
+		HttpSession session = request.getSession();
+		TutorVO tuvo = (TutorVO) session.getAttribute("tutor");
+		clvo.setTutorNo(tuvo.getTutorNo());
+		model.addAttribute("pageInfo",PageInfo.of(tutor.myClassList(clvo)));
+		
+		return "redirect:/tutorClassList";
+	}
+	
 
 	
 	//클래스 결제 페이지

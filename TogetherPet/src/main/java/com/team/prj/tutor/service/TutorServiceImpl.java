@@ -1,6 +1,8 @@
 package com.team.prj.tutor.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,10 +87,23 @@ public class TutorServiceImpl implements TutorService {
 	}
 
 	@Override
-	public List<ClassVO> myExtiveClassList(ClassVO vo) {
+	public List<ClassVO> myActiveClassList(ClassVO vo) {
 		// TODO Auto-generated method stub
-		return map.myExtiveClassList(vo);
+		return map.myActiveClassList(vo);
 	}
+
+	@Override
+	public int classExphotoDelete(int groupNo) {
+		// TODO Auto-generated method stub
+		return map.classExphotoDelete(groupNo);
+	}
+
+	@Override
+	public int classExoptionDelete(int classNo) {
+		// TODO Auto-generated method stub
+		return map.classExoptionDelete(classNo);
+	}
+
 
 
 }

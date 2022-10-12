@@ -73,6 +73,7 @@ public class ClassAjaxController {
 		return list;
 	}
 	
+	
 	//클래스 단건조회에서 리뷰 등록
 	@RequestMapping("classReviewInsert")
 	@ResponseBody
@@ -118,8 +119,8 @@ public class ClassAjaxController {
 		return reserveNo;
 	}
 	
-	// 클래스 등록하기
-	@RequestMapping("classInsert")
+	// 클래스 등록처리
+	@RequestMapping("classInsertAjax")
 	@ResponseBody
 	public int classInsert(ClassVO vo, Model model) {
 		//클래스정보 인서트
@@ -130,6 +131,19 @@ public class ClassAjaxController {
 		return classNo;
 	}
 	
+	
+	// 클래스 수정처리
+	@RequestMapping("classUpdateAjax")
+	@ResponseBody
+	public int classUpdate(ClassVO vo, Model model) {
+		//클래스정보 업데이트
+		classDao.classUpdate(vo);
+		int classNo = vo.getClassNo();
+		System.out.println("클래스 업데이트 완료 : " + classNo);
+		
+		return classNo;
+	}
+
 	
 	//클래스 등록에서 옵션 등록
 	@RequestMapping("classOptionInsert")
@@ -149,7 +163,7 @@ public class ClassAjaxController {
 
 	}
 	
-	//클래스 등록에서 이미지리스트 등록
+	//클래스 등록에서 그룹이미지 등록
 	@RequestMapping("classPhotoInsert")
 	@ResponseBody
 	public void classPhotoInsert(@RequestBody List<Map<String,Object>> ptparams) {

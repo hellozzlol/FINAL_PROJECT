@@ -17,7 +17,7 @@ public interface ClassMapper {
 	List<ClassVO> classSelectList(); //클래스 목록
 	ClassVO classSelect(ClassVO vo); //클래스 단건조회
 	int classInsert(ClassVO vo); //클래스 입력
-	ClassVO classUpdate(ClassVO vo); //클래스 수정
+	int classUpdate(ClassVO vo); //클래스 수정
 	int classDelete(ClassVO vo); //클래스 삭제
 	List<ClassVO> classSearch(ClassVO vo); //클래스 검색
 	List<PhotoVO> classPhotoList(ClassVO vo);//클래스 상단 그룹사진 불러오기

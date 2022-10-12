@@ -83,6 +83,37 @@
 		#{address},#{latitude},#{longitude},'c','',#{thumb},'',#{postcode},#{da})
 	</insert>
 	
+
+		
+	<!-- 클래스 수정 -->
+	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
+		update class
+		<set>
+			<if test="name != null">NAME = #{name},</if>
+			<if test="category != null">CATEGORY = #{category},</if>
+			<if test="intro != null">INTRO = #{intro},</if>
+			<if test="price != null">PRICE = #{price},</if>
+			<if test="uploadDate != null">UPLOAD_DATE = sysdate,</if>
+			<if test="maxHeadcount != null">MAX_HEADCOUNT = #{maxHeadcount},</if>
+			<if test="groupNo != null">GROUP_NO = #{groupNo},</if>
+			<if test="address != null">ADDRESS = #{address},</if>
+			<if test="latitude != null">LATITUDE = #{latitude},</if>
+			<if test="longitude != null">LONGITUDE = #{longitude},</if>
+			<if test="thumb != null">THUMB = #{thumb},</if>
+			<if test="postcode != null">POSTCODE = #{postcode},</if>
+			<if test="da != null">DA = #{da},</if>
+		</set>
+		WHERE CLASS_NO = #{classNo}
+	</update>
+	
+	
+	
+	<!-- 클래스 삭제 -->
+	<delete id="classDelete">
+		DELETE FROM CLASS
+		WHERE CLASS_NO = #{classNo}
+	</delete>
+	
 	
 	
 	<!-- 클래스 옵션등록 -->
@@ -113,42 +144,6 @@
 		) A
 	</insert>
 
-
-	
-	
-	<!-- 그룹이미지 등록-->
-	<insert id="photoInsert" parameterType="java.util.List">
-		
-
-	</insert>
-	
-	
-	
-	<!-- 클래스 수정 -->
-	<update id="classUpdate" parameterType="com.team.prj.classes.service.ClassVO">
-		update class
-		<set>
-			<if test="category != null">CATEGORY = #{category},</if>
-			<if test="intro != null">INTRO = #{intro},</if>
-			<if test="price != null">PRICE = #{price},</if>
-			<if test="uploadDate != null">UPLOAD_DATE = #{uploadDate},</if>
-			<if test="maxHeadcount != null">MAX_HEADCOUNT = #{maxHeadcount},</if>
-			<if test="latitude != null">LATITUDE = #{latitude},</if>
-			<if test="longitude != null">LONGITUDE = #{longitude},</if>
-		</set>
-		WHERE CLASS_NO = #{classNo}
-	</update>
-	
-	
-	
-	
-	<!-- 클래스 삭제 -->
-	<delete id="classDelete">
-		DELETE FROM CLASS
-		WHERE CLASS_NO = #{classNo}
-	</delete>
-	
-	
 	
 	
 	<!-- 클래스 검색 -->

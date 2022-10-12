@@ -475,8 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			var theEditor;
 			var editor = CKEDITOR.replace('editor'
 						, {filebrowserUploadUrl:'boardIns'
-						, height: 600
-				})
+						, height: 600})
 				
 				//var contents = CKEDITOR.instances.intro.getData();
 				//alert(contents);
@@ -560,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					
 
 					$.ajax({ //클래스 인서트 ajax
-						url: 'classInsert',
+						url: 'classInsertAjax',
 						type: 'post',
 						beforeSend: function (xhr) {
 							xhr.setRequestHeader(header, token)
