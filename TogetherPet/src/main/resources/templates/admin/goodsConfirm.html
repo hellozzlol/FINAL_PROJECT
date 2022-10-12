@@ -45,8 +45,11 @@
 								onclick="chkClicked()"></td>
 							<td th:text="${g.goodsNo}"></td>
 							<td th:text="${g.category}"></td>
-							<td><a th:href="@{/goods(goodsNo=${g.goodsNo})}"
-								th:text="${g.name}"></a></td>
+							<td th:text="${g.name}"></td>
+							
+							<!-- <td><a th:href="@{/goods(goodsNo=${g.goodsNo})}"
+								th:text="${g.name}" data-bs-toggle="modal" data-bs-target="#goodsPreview"></a></td> -->
+							
 							<td th:text="${g.uploadDate}"></td>
 							<td th:text="${g.uploadState}"></td>
 						</tr>
@@ -60,9 +63,136 @@
 		<button type="button" class="btn btn-sm btn-primary" id="disapprove"
 			data-bs-toggle="modal" data-bs-target="#basicModal">반려</button>
 
+		<!-- 클릭 시 미리보기 Modal-->
+          <div class="modal fade" id="goodsPreview" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel4">미리보기</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                 
+                  <div class="row g-2">
+                    <div class="col mb-0">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6">
+                            <div class="product_zoom_gallery">
+                              <div class="zoom_gallery_inner d-flex">
+                                <div class="zoom_tab_img">
+                                  <!-- 반복되는 구간 -->
+                                  <div th:if="${photoList}">
+                                  <div th:each="ph:${photoList}">
+                                    <a class="imgClick"><img
+                                      th:src="${ph.dir}" alt="tab-thumb"></a>
+                                  </div>
+                                  </div>
+                                  <!-- 반복되는 구간 -->
+                                </div>
+                                <div class="product_zoom_main_img">
+                                  <div class="product_zoom_thumb">
+                                    <img id="zoom" th:src="${goods.thumb}" alt="">
+                                  </div>
+                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6">
+                            <div class="product_d_right">
+                              <br>
+                              <h3>[[${goods.name}]]</h3>
+                              <div class="product_ratting_review d-flex align-items-center">
+                                <div class=" product_ratting">
+                                  <ul class="d-flex">
+                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                  </ul>
+                                </div>
+                                <div class="product_review">
+                                  <ul class="d-flex">
+                                    <li>[[${#lists.size(reviewList)}]] reviews</li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <br> <br>
+                              <div class="price_box">
+                                <span class="old_price">KRW
+                                  [[${#numbers.formatInteger(goods.price,3,'COMMA')}]]</span><br> <span
+                                  class="current_price">KRW
+                                  [[${#numbers.formatInteger(goods.price*(1-goods.dc),3,'COMMA')}]]</span>
+                              </div>
+                              <div class="product_availalbe">
+                                <ul class="d-flex">
+                                  <li><i class="icon-layers icons"></i> Only <span
+                                    id="amount">[[${goods.amount}]]</span> left</li>
+                                  <li>Availalbe: <span id="stock" class="stock">In
+                                      Stock</span></li>
+                                </ul>
+                              </div>
+                
+                              <div class="product_variant">
+                
+                                <div class="variant_quantity_btn d-flex">
+                                  <div class="pro-qty border">
+                                    <input min="1" max="100" type="text" id="setQty" value="1">
+                                  </div>
+                                  <form id="cartCall" name="cartCall" action="cart" method="post">
+                                    <input type="hidden" th:name="${_csrf.parameterName}"
+                                      th:value="${_csrf.token}">
+                                    <!-- 상품번호 -->
+                                    <input type="hidden" name="goodsNo" id="goodsNo"
+                                      th:value="${goods.goodsNo}">
+                                    <!-- 유저번호 -->
+                                    <input type="hidden" name="userNo" id="userNo"
+                                      th:value="${#authentication.principal.login.no}">
+                                    <button class="button btn btn-primary" type="button"
+                                      id="addCart">
+                                      <i class="ion-android-add"></i> Add To Cart
+                                    </button>
+                                  </form>
+                                  <a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+		<br> <br>
+
+
+
+
+
+
+
+
+
 		<!-- 반려 클릭 시 Modal -->
-		<div class="modal fade" id="basicModal" tabindex="-1"
-			aria-hidden="true">
+		<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -213,7 +343,6 @@
 			    let chkbox = document.querySelectorAll(".chk");
 			    //let uploadState = '2';
 			    let returnMessage = document.getElementById("Textarea1").value;
-			    
 			    console.log(returnMessage);
 			    
 			    chkbox.forEach(elem => {
@@ -239,7 +368,6 @@
 			    })
 			})
 		</script>
-
 	</article>
 </body>
 </html>
