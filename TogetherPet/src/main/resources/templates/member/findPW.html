@@ -141,7 +141,7 @@ function pwChange(){
 			<div class="row">
 				<div id="pwForm">
 					<input type="hidden" id="mcode" value="">
-					<form action="pwUpdate" name="pwUpdate" method="post">
+					<form action="/pwUpdate" name="pwUpdate" method="post">
 						<input type="hidden" th:name="${_csrf.parameterName}"
 							th:value="${_csrf.token}">
 						<div class="col-md-6">
