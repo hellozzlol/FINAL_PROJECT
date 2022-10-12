@@ -117,15 +117,15 @@
 				},
 				data: {userNo:userNo},
 				success: function(res) {
-					console.log(res);
 					let notice = '';
 					for(r of res) {
-						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
+						notice += `<li style="border-bottom:1px solid lightgray; height:50px; margin-top:20px;">
+								   <div class='mx-4' style="display:none;">${r.noticeNo}</div>
 								   <div style="font-size:13px;" class='mx-4'>
-								   <a class="alarmClick" href= "${r.url}">${r.content} 
+								   <a class="alarmClick" th:id="${r.url}">${r.content} 
 								   <span style="float:right;">${r.genTime}</span></a>
-								   </div></li><hr>`;
-						$('#noticeList').html(notice);	
+								   </div></li>`;
+								   $('#noticeList').html(notice);	
 					}
 				}
 			})
@@ -148,40 +148,12 @@
 		
 		// 알림 상태 업데이트
 		$('#noticeList').on('click', ".alarmClick", function() {
-			// let url = $(this).attr("id");
-			// console.log(this);
-			// console.log("alarm : " + $(this).attr('id'));
-			// $(location).attr("href", url);
+			//console.log("alarm : " + $(this).attr('th:id'));
+			let url = $(this).attr("th:id");
+			$(location).attr("href", url);
 			$('#layoutNoticeFrm').submit();
 		})
 		
-		/* $("#noticeList").on("click", ".alarmClick", function(e) {
-			// let url
-			console.log("alarm clicked" + $(this).attr("id"))
-			
-			
-			// location.href=url
-			
-			// 읽은시간 update
-			
-			
-			if($(this).attr('tagName') == 'span') {
-				let userNo = $(this).closest('div').prev().html();
-				$.ajax({
-					url:"/ajaxNoticeUpdate",
-					type:"post",
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {userNo:userNo},
-					success: function(res) {
-						noticeCount();
-						noticeList();
-					}
-				})
-		}
-		
-		}) */
 		})
 </script>
 </head>
@@ -322,7 +294,7 @@
 										class="noticeCount" style="font-size: 15px;"></span>
 										<ul sec:authorize="hasRole('USER')"
 											class="dropdown_account_link"
-											style="width: 500px; left: auto; right: 0;" role="menu" id="top">
+											style="width: 450px; left: auto; right: 0; max-height: 400px;" role="menu" id="top">
 											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
 											<li id="noticeList"></li>
 										</ul>
@@ -395,8 +367,7 @@
 	<!-- 알림 업데이트 1012 선희 추가 -->
 	<div sec:authorize="isAuthenticated()">
 		<div th:if=${session.user}>
-			<form id="layoutNoticeFrm" name="layoutNoticeFrm" action="noticeUpdate"
-				method="post">
+			<form id="layoutNoticeFrm" name="layoutNoticeFrm" action="noticeUpdate" method="post">
 				<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}"> <input type="hidden"
 					name="userNo" id="userNo" th:value="${session.user.userNo}">

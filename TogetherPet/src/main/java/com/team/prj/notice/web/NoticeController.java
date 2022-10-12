@@ -15,6 +15,7 @@ public class NoticeController {
 	// 알림 상태 수정(읽은시간)
 	@RequestMapping("/noticeUpdate")
 	public int noticeUpdate(NoticeVO vo) {
+		vo.getUserNo();
 		return notice.noticeUpdate(vo);
 	}
 }

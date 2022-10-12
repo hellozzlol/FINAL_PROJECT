@@ -21,4 +21,7 @@ public interface OrderService {
 
 	// 주문 내역 삭제 0930 선희 추가
 	int deleteOrder(OrderVO vo);
+	
+	// 알림용 1012 선희 추가
+	OrderVO orderOne(OrderVO vo);
 }
