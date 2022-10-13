@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.team.prj.classes.service.ClassService;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.hospital.service.HospitalService;
 
@@ -12,11 +13,13 @@ import com.team.prj.hospital.service.HospitalService;
 public class MainController {
 	@Autowired
 	private GoodsService goods;
-	
+
+	@Autowired
+	private ClassService clas;
+
 	@Autowired
 	private HospitalService hospital;
-	
-	
+
 
 	@GetMapping("/index")
 	public String index(String key, Model model) {
@@ -27,7 +30,7 @@ public class MainController {
 		model.addAttribute("goodsList", goods.goodsSelectAll(key));
 		model.addAttribute("hospital",hospital.hospitalSelectList(key));//소현 20221012추가 
 		model.addAttribute("reviewCount", goods.reviewCount());
-		
+		model.addAttribute("class", clas.classSelectListMain());
 		return "index";
 	}
 

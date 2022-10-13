@@ -48,22 +48,29 @@ public class ClassController {
 	public String test(Model model) {
 		return "class/test";
 	}
+
 	
 	//클래스 리스트 페이지
 	@RequestMapping("classList")
-	public String classSelectList(Model model, HttpServletRequest request,
+	public String classSelectList(Model model, String key, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "9") int pageSize) {
+		//정렬
+		if(key==null) {
+			key="1";
+		}
 		//현재 페이지 번호와 1페이지에 출력할 레코드 건수 
 		PageHelper.startPage(pageNum, pageSize); 
-		
-		model.addAttribute("pageInfo",PageInfo.of(clas.classSelectList()));
+		model.addAttribute("pageInfo",PageInfo.of(clas.classSelectList(key)));
 		return "class/classList";
 	}
 	
 	//클래스 단건조회 페이지
 	@RequestMapping("classSelect")
 	public String classSelect(Model model, ClassVO vo) {
+		//클래스 조회수 증가
+		clas.classHitUpdate(vo);
+		
 		//클래스 정보
 		vo = clas.classSelect(vo);
 		model.addAttribute("clas", vo);
@@ -83,9 +90,41 @@ public class ClassController {
 		//클래스 그룹사진 슬라이드 리스트
 		List<PhotoVO> polist = clas.classPhotoList(vo);
 		model.addAttribute("photoList", polist);
-		
+
 		return "class/classSelect";
 	}
+	
+	
+	
+		//클래스 단건조회 페이지 (튜터용)
+		@RequestMapping("classTutorSelect")
+		public String classTutorSelect(Model model, ClassVO vo) {
+			//클래스 조회수 증가
+			clas.classHitUpdate(vo);
+			
+			//클래스 정보
+			vo = clas.classSelect(vo);
+			model.addAttribute("clas", vo);
+			
+			//클래스 옵션 리스트
+			List<ClassOptionVO> oplist = clas.classOptionList(vo);
+			model.addAttribute("optionList", oplist);
+			
+			//클래스 리뷰 리스트
+			List<ReviewVO> relist = clas.classReviewSelectList(vo);
+			model.addAttribute("reviewList", relist);
+			
+			//클래스 튜터 정보
+			TutorVO tutor = clas.tutorSelect(vo);
+			model.addAttribute("tutor", tutor);
+			
+			//클래스 그룹사진 슬라이드 리스트
+			List<PhotoVO> polist = clas.classPhotoList(vo);
+			model.addAttribute("photoList", polist);
+
+			return "class/classTutorSelect";
+		}
+
 
 	
 	

@@ -10,7 +10,8 @@ import com.team.prj.review.service.ReviewVO;
 import com.team.prj.tutor.service.TutorVO;
 
 public interface ClassService {
-	List<ClassVO> classSelectList(); //클래스 목록
+	List<ClassVO> classSelectList(String key); //클래스 목록
+	List<ClassVO> classSelectListMain(); //클래스 목록(메인용)
 	ClassVO classSelect(ClassVO vo); //클래스 단건조회
 	int classInsert(ClassVO vo); //클래스 입력
 	int classUpdate(ClassVO vo); //클래스 수정
@@ -44,5 +45,7 @@ public interface ClassService {
 
 	//그룹사진 리스트 인서트
 	List<Map<String,Object>> classPhotoInsert(HashMap<String,Object> maps);
-
+	
+	//조회수 증가
+	int classHitUpdate(ClassVO vo);
 }
