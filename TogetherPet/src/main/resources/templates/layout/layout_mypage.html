@@ -119,8 +119,6 @@
 		
 		// 알림 목록
 		function noticeList() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
 			$.ajax({
 				url:'/noticeList',
 				type:'post',
@@ -129,13 +127,15 @@
 				},
 				data: {userNo:userNo},
 				success: function(res) {
-					console.log(res);
 					let notice = '';
 					for(r of res) {
-						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
-								   <div style="font-size:13px;" class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
-								   </div></li><hr>`;
-						$('#noticeList').html(notice);	
+						notice += `<li style="border-bottom:1px solid lightgray; height:50px; margin-top:20px;">
+								   <div class='mx-4' style="display:none;">${r.noticeNo}</div>
+								   <div style="font-size:13px;" class='mx-4'>
+								   <a style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" class="alarmClick" th:id="${r.url}">${r.content} 
+								   </a>
+								   </div><span style="float:right;">${r.genTime}</span></li>`;
+								   $('#noticeList').html(notice);	
 					}
 				}
 			})
@@ -143,8 +143,6 @@
 		
 		// 알림 카운트
 		function noticeCount() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
 			$.ajax({
 				url:'/ajaxNoticeCount',
 				type:'post',
@@ -159,20 +157,26 @@
 		}
 		
 		// 알림 상태 업데이트
-		$("#noticeList").on("click", function(e) {
-			if($(this).attr('tagName') == 'span') {
-				let userNo = $(this).closest('div').prev().html();
-				$.ajax({
-					url:"/ajaxNoticeUpdate",
-					type:"post",
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {userNo:userNo},
-					success: function(res) {
-						noticeCount();
-						noticeList();
+		$('#noticeList').on('click', ".alarmClick", function() {
+			// console.log("alarm : " + $(this).parent().prev().html());
+			
+			let noticeNo = Number($(this).parent().prev().html());
+			let url = $(this).attr("th:id");
+			
+			// console.log('noticeNo-----------' + noticeNo)
+			$.ajax({
+				url:'/noticeUpdate',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {noticeNo:noticeNo},
+				success: function(res) {
+					if(res== '1'){
+						// console.log(url)
+						location.href=url;
 					}
+				} 
 				})
 		})
 	})
@@ -349,20 +353,13 @@
 							<div class="main_menu d-none d-lg-block">
 								<nav>
 									<ul class="d-flex">
-										<li><a href="/shop">shop</a></li>
-										<li><a href="classList">class</a>
+										<li><a href="shop">shop</a></li>
+										<li><a href="classList">class</a></li>
+										<li><a>pet info</a>
 											<ul class="sub_menu">
-												<li><a href="#">펫 푸드</a></li>
-												<li><a href="#">펫 핸드메이드</a></li>
-												<li><a href="#">펫 미용</a></li>
-												<li><a href="#">펫 드로잉</a></li>
-												<li><a href="#">기타 펫 클래스</a></li>
-											</ul></li>
-										<li><a href="#">pet info</a>
-											<ul class="sub_menu">
-												<li><a href="#">병원/약국</a></li>
-												<li><a href="#">여행상품</a></li>
-												<li><a href="#">숙박</a></li>
+												<li><a href="hospitalList">병원/약국</a></li>
+												<li><a href="Trproduct">여행상품</a></li>
+												<li><a href="accomoList">숙박</a></li>
 												<li><a href="funeralList">장례업체</a></li>
 											</ul></li>
 										<li><a href="/boardList">community</a></li>
@@ -400,19 +397,19 @@
 										
 									<!-- 1008 선희 추가 -->
 									<li sec:authorize="isAuthenticated()" class="account_link">
-											<a href="#"><i class="icon-bell icons"></i></a>
-											<span sec:authorize="hasRole('USER')" id="noticeCount" class="noticeCount"
-											style="font-size: 15px;"></span>
-										<ul sec:authorize="hasRole('USER')" class="dropdown_account_link"
-											style="width: 500px; left: auto; right: 0;" role="menu">
+										<a href="#"><i class="icon-bell icons"></i></a>
+										<span sec:authorize="hasRole('USER')" id="noticeCount"
+										class="noticeCount" style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')"
+											class="dropdown_account_link"
+											style="width: 450px; left: auto; right: 0; max-height: 400px;" role="menu" id="top">
 											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
 											<li id="noticeList"></li>
 										</ul>
 									</li>
 									<li sec:authorize="isAnonymous()" class="account_link">
 										<a href="loginForm"> <i class="icon-bell icons"></i>
-									</a>
-									</li>
+									</a></li>
 									<!-- 1008 선희 추가 -->
 									
 									<!-- 0926 희수가 추가 -->
@@ -536,6 +533,18 @@
 							method="post">
 							<input type="hidden" th:name="${_csrf.parameterName}"
 								th:value="${_csrf.token}"> <input type="hidden"
+								name="userNo" id="userNo" th:value="${session.user.userNo}">
+						</form>
+					</div>
+				</div>
+				
+				<!-- 알림 업데이트 1012 선희 추가 -->
+				<div sec:authorize="isAuthenticated()">
+					<div th:if=${session.user}>
+						<form id="layoutNoticeFrm" name="layoutNoticeFrm" action="noticeUpdate" method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}">
+							<input type="hidden"
 								name="userNo" id="userNo" th:value="${session.user.userNo}">
 						</form>
 					</div>

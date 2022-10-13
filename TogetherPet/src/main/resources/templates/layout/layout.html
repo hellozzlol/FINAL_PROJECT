@@ -101,7 +101,13 @@
 			$('#layoutcartFrm').submit();
 		})
 		
-		let userNo = $('#userNo').val();
+		let userNo;
+		if($('#userNo').val()==null){
+		   userNo = 0;
+		}else{
+		   userNo = Number($('#userNo').val());
+		}
+		
 		$.ajax({
 			url: 'ajaxCartCount',
 			type: 'post',
@@ -112,6 +118,74 @@
 		})
 		.done(res => {
 			$('#item_count').html(res);
+		})
+		
+		
+		// 1013 선희 추가
+		noticeCount(); // 알림 카운트
+		noticeList(); // 알림 목록
+		
+		// 알림 목록
+		function noticeList() {
+			$.ajax({
+				url:'/noticeList',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {userNo:userNo},
+				success: function(res) {
+					let notice = '';
+					for(r of res) {
+						notice += `<li style="border-bottom:1px solid lightgray; height:50px; margin-top:20px;">
+								   <div class='mx-4' style="display:none;">${r.noticeNo}</div>
+								   <div style="font-size:13px;" class='mx-4'>
+								   <a style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" class="alarmClick" th:id="${r.url}">${r.content} 
+								   </a>
+								   </div><span style="float:right;">${r.genTime}</span></li>`;
+								   $('#noticeList').html(notice);	
+					}
+				}
+			})
+		}
+		
+		// 알림 카운트
+		function noticeCount() {
+			$.ajax({
+				url:'/ajaxNoticeCount',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {userNo:userNo},
+				success: function(res){
+					$('#noticeCount').html(res);
+				}
+			})
+		}
+		
+		// 알림 상태 업데이트
+		$('#noticeList').on('click', ".alarmClick", function() {
+			// console.log("alarm : " + $(this).parent().prev().html());
+			
+			let noticeNo = Number($(this).parent().prev().html());
+			let url = $(this).attr("th:id");
+			
+			// console.log('noticeNo-----------' + noticeNo)
+			$.ajax({
+				url:'/noticeUpdate',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {noticeNo:noticeNo},
+				success: function(res) {
+					if(res== '1'){
+						// console.log(url)
+						location.href=url;
+					}
+				} 
+				})
 		})
 	})
 </script>
@@ -243,8 +317,25 @@
 											</div>
 											<!-- 0926 희수가 추가 -->
 										</ul></li>
-									<li><a href="#"><i class="icon-heart icons"></i></a> <span
-										class="item_count">2</span></li>
+										
+									<!-- 1013 선희 추가 -->
+									<li sec:authorize="isAuthenticated()" class="account_link">
+										<a href="#"><i class="icon-bell icons"></i></a>
+										<span sec:authorize="hasRole('USER')" id="noticeCount"
+										class="noticeCount" style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')"
+											class="dropdown_account_link"
+											style="width: 450px; left: auto; right: 0; max-height: 400px;" role="menu" id="top">
+											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
+											<li id="noticeList"></li>
+										</ul>
+									</li>
+									<li sec:authorize="isAnonymous()" class="account_link">
+										<a href="loginForm"> <i class="icon-bell icons"></i>
+									</a></li>
+									<!-- 1013 선희 추가 -->
+									
+									<!-- 0926 희수가 추가 -->	
 									<div sec:authorize="isAuthenticated()">
 										<li class="shopping_cart"><a id="layoutcartCall"><img
 												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" />
@@ -255,7 +346,7 @@
 												src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-Cart-shopping-those-icons-lineal-those-icons.png" /></a>
 										</li>
 									</div>
-									<!-- / 0926 희수가 추가 -->
+									<!-- 0926 희수가 추가 -->
 								</ul>
 							</div>
 						</div>
@@ -300,6 +391,18 @@
 				th:value="${_csrf.token}"> <input type="hidden"
 				name="userNo" id="userNo" th:value="${#authentication.principal.login.no}">
 		</form>
+	</div>
+	
+	<!-- 알림 업데이트 1012 선희 추가 -->
+	<div sec:authorize="isAuthenticated()">
+		<div th:if=${session.user}>
+			<form id="layoutNoticeFrm" name="layoutNoticeFrm" action="noticeUpdate" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+				<input type="hidden"
+					name="userNo" id="userNo" th:value="${session.user.userNo}">
+			</form>
+		</div>
 	</div>
 	<!-- goods body end -->
 
