@@ -43,6 +43,7 @@ public class AjaxCalendarController {
 		String title = cvo.getTitle();
 		String type = "1"; // 알림 상태 1번(일정)
 		String msg;
+		String url = "calendar";
 		msg = "'" + title + "'" + " 일정이 등록되었습니다.";
 		nvo.setRefNo(refNo);
 		nvo.setType(type);
