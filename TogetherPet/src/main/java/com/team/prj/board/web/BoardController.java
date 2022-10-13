@@ -236,7 +236,7 @@ public class BoardController {
 			File saveFile = new File(boardupd, filename);
 			file.transferTo(saveFile);
 			vo.setAttech(filename);
-			String path = fileDir + "C:\\Temp" + filename;
+			String path = fileDir + "/home/Temp" + filename;
 			vo.setAttechDir(path);
 		}
 		// fileDir이 경로
