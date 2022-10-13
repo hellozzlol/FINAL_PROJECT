@@ -28,6 +28,7 @@ import com.team.prj.notice.service.NoticeService;
 import com.team.prj.notice.service.NoticeVO;
 import com.team.prj.orders.service.OrderService;
 import com.team.prj.orders.service.OrderVO;
+import com.team.prj.qna.service.QnaService;
 import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
@@ -47,6 +48,9 @@ public class SellerController {
 	// 1012 선희 추가
 	@Autowired
 	private OrderService order;
+	// 1013 선희 추가
+	@Autowired
+	private QnaService qna;
 
 	// 판매자 회원 전체 조회
 	@RequestMapping("/sellerSelectList")
@@ -240,13 +244,6 @@ public class SellerController {
 		// 배송 지시
 		goods.deliveryUpdate(ovo);
 		
-		// 알림 테이블에 등록 1010 선희추가
-		int refNo = ovo.getOrderNo();
-		
-		String type = "3"; // 알림 상태 3번(배송지시)
-		String gname = ovo.getGoodsName();
-		String url = "usersOrderList";
-		
 		// 메시지를 위한 오더 단건 조회
 		List<OrderVO> ol = order.selectOrder(ovo);
 		OrderVO ov = ol.get(0);
@@ -257,6 +254,10 @@ public class SellerController {
 		//지정한 포맷으로 변환
 		String strNowDate = simpleDateFormat.format(msgDt); 
 		
+		// 알림 테이블에 등록 1010 선희추가
+		int refNo = ovo.getOrderNo();
+		String type = "3"; // 알림 상태 3번(배송지시)
+		String url = "usersOrderList";
 		String msgGn = ov.getGoodsName(); 
 		int olSize = ol.size();
 		String msg = strNowDate + "에 주문하신 " + msgGn + " 외 " + (olSize-1) + "건의 상품 배송이 시작되었습니다.";
@@ -371,12 +372,14 @@ public class SellerController {
 		seller.qnaAnswer(qvo);
 
 		// 알림 테이블에 등록 1010 선희추가
+		QnaVO ql = qna.selectQnaOne(qvo);
 		int refNo = qvo.getQnaNo();
-		int goodsNo = qvo.getGoodsNo();
-		String answer = qvo.getTitle();
+		int goodsNo = ql.getGoodsNo();
+		String title = ql.getTitle(); // null이 뜸
 		String type = "2"; // 알림 상태 2번(qna)
-		String msg = "'" + answer + "'" + " 문의 답변이 등록되었습니다.";
 		String url = "goods?goodsNo=" + goodsNo;
+		String msg = "'" + title + "'" + " 문의에 대한 답변이 등록되었습니다.";
+		
 		nvo.setUrl(url);
 		nvo.setRefNo(refNo);
 		nvo.setContent(msg);
