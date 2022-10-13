@@ -20,9 +20,15 @@ public class ClassServiceImpl implements ClassService {
 	private ClassMapper map;
 
 	@Override
-	public List<ClassVO> classSelectList() {
+	public List<ClassVO> classSelectList(String key) {
 		//클래스 리스트
-		return map.classSelectList();
+		return map.classSelectList(key);
+	}
+	
+	@Override
+	public List<ClassVO> classSelectListMain() {
+		//클래스 리스트 메인용
+		return map.classSelectListMain();
 	}
 
 	@Override
@@ -121,7 +127,11 @@ public class ClassServiceImpl implements ClassService {
 		return map.classOptionList(vo);
 	}
 
-
+	@Override
+	public int classHitUpdate(ClassVO vo) {
+		// TODO Auto-generated method stub
+		return map.classHitUpdate(vo);
+	}
 
 
 

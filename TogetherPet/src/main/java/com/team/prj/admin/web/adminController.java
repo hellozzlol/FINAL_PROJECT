@@ -154,11 +154,11 @@ public class adminController {
 
 	// 전체 글 조회, 삭제 (클래스) // (state가 1인것만 조회)
 	@GetMapping("/manager/classPost")
-	public String boardPost(Model model, ClassVO vo, HttpServletRequest request,
+	public String boardPost(Model model, String key, ClassVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList()));
+		model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList(key)));
 		return "admin/classPost";
 	}
 

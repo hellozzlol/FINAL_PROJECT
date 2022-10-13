@@ -374,32 +374,15 @@
 		</section>
 		<!-- banner section end -->
 
-		<!-- product section start -->
+		<!-- 클래스 리스트 start -->
 		<section class="product_section mb-80">
 			<div class="container">
 				<div class="product_header d-flex justify-content-between  mb-60">
 					<div class="section_title">
 						<h2>CLASS</h2>
 					</div>
-					<div class="product_tab_btn d-flex">
-						<ul class="nav" role="tablist">
-							<li><a class="active" data-toggle="tab" href="#all2"
-								role="tab" aria-controls="all2" aria-selected="true"> All </a></li>
-							<li><a data-toggle="tab" href="#clothings2" role="tab"
-								aria-controls="clothings2" aria-selected="false"> 푸드 </a></li>
-							<li><a data-toggle="tab" href="#bags2" role="tab"
-								aria-controls="bags2" aria-selected="false"> 핸드메이드 </a></li>
-							<li><a data-toggle="tab" href="#shoes2" role="tab"
-								aria-controls="shoes2" aria-selected="false"> 미용 </a></li>
-							<li><a data-toggle="tab" href="#accessories2" role="tab"
-								aria-controls="accessories2" aria-selected="false"> 드로잉 </a></li>
-							<li><a data-toggle="tab" href="#accessories2" role="tab"
-								aria-controls="accessories2" aria-selected="false"> 기타 펫 클래스
-							</a></li>
-						</ul>
-						<div class="all_product">
-							<a href="#">All CLASS</a>
-						</div>
+					<div class="all_product">
+						<a href="#">NEW CLASS</a>
 					</div>
 				</div>
 				<div class="product_container row">
@@ -418,216 +401,57 @@
                               {"breakpoint":992, "settings": { "slidesToShow": 3 } },
                               {"breakpoint":768, "settings": { "slidesToShow": 2 } },
                               {"breakpoint":300, "settings": { "slidesToShow": 1 } }]}'>
-
-								<article class="col single_product">
+								
+								<!-- 클래스 -->
+								<article th:each="c:${class}" class="col single_product">
 									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/test.jpg" alt="consectetur">
+										<div class="product_thumb" id="product_thumb">
+											<a th:href="@{classSelect(classNo=${c.classNo})}"> <img
+												th:src="@{display(fileName=${c.thumb})}" alt="consectetur"
+												class="card-img-top embed-responsive-item" id="thumb_img">
 											</a>
+
 											<div class="product_action">
 												<ul>
 													<li class="wishlist"><a href="#" data-tippy="Wishlist"
 														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"> <i
-															class="icon-heart icons"></i>
-													</a></li>
+														data-tippy-arrow="true" data-tippy-placement="left"><i
+															class="icon-heart icons"></i></a></li>
 												</ul>
 											</div>
 										</div>
-										<figcaption class="blog_content">
-											<div>
-												<h3>
-													<a href="#">강아지 수제간식 만들기</a>
-												</h3>
-												<hr>
-											</div>
-											<div align="right">
+										<!-----센터설명------>
+										<div class="product_content grid_content text-center" id="product_info">
+
+											<div class="clas1">
+												<button class="catebtn">[[${c.category}]]</button>
+												<br>
 												<h4 class="product_name">
-													<svg xmlns="http://www.w3.org/2000/svg" width="16"
-														height="16" fill="currentColor" class="bi bi-geo-alt"
-														viewBox="0 0 16 16">
-											  <path
-															d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-											  <path
-															d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /></svg>
-													<a href="#">위치정보</a>
+													<a class="clasname"
+														th:href="@{classSelect(classNo=${c.classNo})}">[[${c.name}]]</a>
 												</h4>
-												<div class="blog_meta" align="right">
-													<h4 class="product_name">40,000원</h4>
+											</div>
+											<div class="clas2">
+												<h4 class="product_name">
+													<a th:href="@{classSelect(classNo=${c.classNo})}">🗺
+														[[${c.address}]]</a>
+												</h4>
+												<div class="price_box">
+													<span class="current_price">KRW
+														[[${#numbers.formatInteger(c.price,3,'COMMA')}]]</span>
 												</div>
 											</div>
-										</figcaption>
+											<div class="add_to_cart">
+												<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+													data-tippy-inertia="true" data-tippy-delay="50"
+													data-tippy-arrow="true" data-tippy-placement="top">클래스
+													찜하기</a>
+											</div>
+										</div>
+
 									</figure>
 								</article>
 
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/test.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"> <i
-															class="icon-heart icons"></i>
-													</a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="blog_content">
-											<div>
-												<h3>
-													<a href="#">강아지 수제간식 만들기</a>
-												</h3>
-												<hr>
-											</div>
-											<div align="right">
-												<h4 class="product_name">
-													<svg xmlns="http://www.w3.org/2000/svg" width="16"
-														height="16" fill="currentColor" class="bi bi-geo-alt"
-														viewBox="0 0 16 16">
-											  <path
-															d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-											  <path
-															d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /></svg>
-													<a href="#">위치정보</a>
-												</h4>
-												<div class="blog_meta" align="right">
-													<h4 class="product_name">40,000원</h4>
-												</div>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/test2.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"> <i
-															class="icon-heart icons"></i>
-													</a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="blog_content">
-											<div>
-												<h3>
-													<a href="#">강아지 수제간식 만들기</a>
-												</h3>
-												<hr>
-											</div>
-											<div align="right">
-												<h4 class="product_name">
-													<svg xmlns="http://www.w3.org/2000/svg" width="16"
-														height="16" fill="currentColor" class="bi bi-geo-alt"
-														viewBox="0 0 16 16">
-											  <path
-															d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-											  <path
-															d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /></svg>
-													<a href="#">위치정보</a>
-												</h4>
-												<div class="blog_meta" align="right">
-													<h4 class="product_name">40,000원</h4>
-												</div>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"> <i
-															class="icon-heart icons"></i>
-													</a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="blog_content">
-											<div>
-												<h3>
-													<a href="#">강아지 수제간식 만들기</a>
-												</h3>
-												<hr>
-											</div>
-											<div align="right">
-												<h4 class="product_name">
-													<svg xmlns="http://www.w3.org/2000/svg" width="16"
-														height="16" fill="currentColor" class="bi bi-geo-alt"
-														viewBox="0 0 16 16">
-											  <path
-															d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-											  <path
-															d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /></svg>
-													<a href="#">위치정보</a>
-												</h4>
-												<div class="blog_meta" align="right">
-													<h4 class="product_name">40,000원</h4>
-												</div>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
-
-								<article class="col single_product">
-									<figure>
-										<div class="product_thumb">
-											<a href="product-details.html"> <img class="primary_img"
-												src="assets/img/product/product3.jpg" alt="consectetur">
-											</a>
-											<div class="product_action">
-												<ul>
-													<li class="wishlist"><a href="#" data-tippy="Wishlist"
-														data-tippy-inertia="true" data-tippy-delay="50"
-														data-tippy-arrow="true" data-tippy-placement="left"> <i
-															class="icon-heart icons"></i>
-													</a></li>
-												</ul>
-											</div>
-										</div>
-										<figcaption class="blog_content">
-											<div>
-												<h3>
-													<a href="#">강아지 수제간식 만들기</a>
-												</h3>
-												<hr>
-											</div>
-											<div align="right">
-												<h4 class="product_name">
-													<svg xmlns="http://www.w3.org/2000/svg" width="16"
-														height="16" fill="currentColor" class="bi bi-geo-alt"
-														viewBox="0 0 16 16">
-											  <path
-															d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-											  <path
-															d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /></svg>
-													<a href="#">위치정보</a>
-												</h4>
-												<div class="blog_meta" align="right">
-													<h4 class="product_name">40,000원</h4>
-												</div>
-											</div>
-										</figcaption>
-									</figure>
-								</article>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="clothings2" role="tabpanel">

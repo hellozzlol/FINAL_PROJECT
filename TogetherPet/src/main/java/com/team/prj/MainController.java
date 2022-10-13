@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.team.prj.classes.service.ClassService;
 import com.team.prj.goods.service.GoodsService;
 
 @Controller
 public class MainController {
 	@Autowired
 	private GoodsService goods;
+	@Autowired
+	private ClassService clas;
 
 	@GetMapping("/index")
 	public String index(String key, Model model) {
@@ -20,7 +23,7 @@ public class MainController {
 		}
 		model.addAttribute("goodsList", goods.goodsSelectAll(key));
 		model.addAttribute("reviewCount", goods.reviewCount());
-		
+		model.addAttribute("class", clas.classSelectListMain());
 		return "index";
 	}
 
