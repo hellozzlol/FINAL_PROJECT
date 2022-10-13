@@ -118,7 +118,7 @@
 						th:class="|page-item ${(pageInfo.pageNum eq page) ? 'active': ''} |"
 						th:each="page:${pageInfo.navigatepageNums}"><span
 						class="page-link" th:if="${pageInfo.pageNum eq page}"
-						th:text="${page}"></span> <a class="page-link"
+						th:text="${page}" id="pageColor"></span> <a class="page-link"
 						th:unless="${pageInfo.pageNum eq page}"
 						th:href="|javascript:gopage(${page})|" th:text="${page}">{{$page
 							}}</a></li>
@@ -164,6 +164,16 @@
 		})
 		
 	</script>
+	<style>
+	#pageColor {
+		background-color: #6a7964;
+		border-color: #6a7964;
+		color:white;
+	}
+	.page-link {
+		color:black;
+	}
+	</style>
 		
 	</div>
 	<!--shop  area end-->
