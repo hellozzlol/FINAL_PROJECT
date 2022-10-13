@@ -8,7 +8,13 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
+	
+<style>
+.slider_area slick_slider_activation{
+height: 300px;
+}
 
+</style>	
 <title>Together Pet</title>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -72,59 +78,42 @@
             "speed": 300,
             "infinite": true}'>
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="assets/img/slider/main2.jpg">
+					data-bgimg="assets/img/slider/pet1.jpg">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-7">
 								<div class="slider_text">
-									<span>강쥐</span>
-									<h1>fashion trend for autum girls with vibes</h1>
-									<p>
-										We love seeing how our Aslam wearers like <br> to wear
-										their Norda
-									</p>
-									<a class="btn btn-primary" href="shop.html">See More</a>
+									<span></span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="https://images.pexels.com/photos/2558605/pexels-photo-2558605.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+					data-bgimg="assets/img/slider/pet2.jpg">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-7">
 								<div class="slider_text">
-									<span>고영이</span>
-									<h1>fashion trend for autum girls with vibes</h1>
-									<p>
-										We love seeing how our Aslam wearers like <br> to wear
-										their Norda
-									</p>
-									<a class="btn btn-primary" href="shop.html">Explore Now</a>
+									<span></span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="assets/img/slider/main4.jpg">
+					data-bgimg="assets/img/slider/pet3.jpg">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-7">
 								<div class="slider_text">
-									<span>토끼</span>
-									<h1>fashion trend for autum girls with vibes</h1>
-									<p>
-										We love seeing how our Aslam wearers like <br> to wear
-										their Norda
-									</p>
-									<a class="btn btn-primary" href="shop.html">Explore Now</a>
+									<span></span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</section>
 		<!--slider area end-->
@@ -335,44 +324,6 @@
 		</section>
 		<!-- product section end -->
 
-		<!-- banner section start -->
-		<section class="banner_section banner_style2 mb-109">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-6 col-md-6 col-sm-6">
-						<figure class="single_banner position-relative">
-							<img src="assets/img/bg/bg3.jpg" alt="">
-							<div class="banner_text position-absolute">
-								<h3>
-									Minimalist <br> sneaker
-								</h3>
-								<p>
-									Stretch, fresh-cool help you alway <br> comfortable
-								</p>
-								<a class="btn btn-primary" href="shop.html">Shop Now</a>
-							</div>
-							<div class="banner_tag">
-								<span>new arrivals <br> women
-								</span>
-							</div>
-						</figure>
-					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6">
-						<figure class="single_banner position-relative">
-							<img src="assets/img/bg/bg4.jpg" alt="">
-							<div class="banner_text position-absolute text__style2">
-								<h3>for Autumn</h3>
-								<p>
-									Stretch, fresh-cool help you alway <br> comfortable
-								</p>
-								<a class="btn btn-primary" href="shop.html">Shop Now</a>
-							</div>
-						</figure>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- banner section end -->
 
 		<!-- product section start -->
 		<section class="product_section mb-80">
@@ -1848,7 +1799,7 @@
 
 
 
-<!-- product section start -->
+		<!-- product section start -->
 		<section class="product_section mb-96">
 			<div class="container">
 				<div class="product_header d-flex justify-content-between  mb-50">
@@ -1883,8 +1834,9 @@
 								<article th:each="h:${hospital}" class="col single_product">
 									<figure>
 										<div class="product_thumb">
-											<a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"> 
-											<img th:src="${h.hphoto}" class="card-img-top embed-responsive-item" alt="tree">
+											<a th:href="@{hospital(hospitalNo=${h.hospitalNo})}"> <img
+												th:src="${h.hphoto}"
+												class="card-img-top embed-responsive-item" alt="tree">
 											</a>
 											<div class="product_action">
 												<ul>
@@ -1902,11 +1854,12 @@
 													</a></li>
 												</ul>
 											</div>
-											
+
 										</div>
 										<figcaption class="product_content text-center">
 											<h4 class="product_name">
-												<a th:href="@{hospital/{hospitalNo}(hospitalsNo=${h.hospitalNo})}">[[${h.name}]]</a>
+												<a
+													th:href="@{hospital/{hospitalNo}(hospitalsNo=${h.hospitalNo})}">[[${h.name}]]</a>
 											</h4>
 										</figcaption>
 									</figure>
