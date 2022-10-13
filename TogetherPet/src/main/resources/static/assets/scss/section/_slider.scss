@@ -23,12 +23,12 @@
     background-position: center center;
     background-size: cover; 
     position: relative;
-    min-height: 960px;
+    min-height: 500px;
     @media #{$laptop-device}{
-        min-height: 900px;
+        min-height: 500px;
     }
     @media #{$desktop-device}{
-        min-height: 700px;
+        min-height: 470px;
     }
     @media #{$tablet-device}{
        min-height: 470px;
