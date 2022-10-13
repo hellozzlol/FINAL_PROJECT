@@ -53,6 +53,21 @@
 <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
 <link rel="stylesheet" href="/assets/css/magnific-popup.css">
 
+<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
+<script src="/assets/js/vendor/popper.js"></script>
+<script src="/assets/js/vendor/bootstrap.min.js"></script>
+<script src="/assets/js/slick.min.js"></script>
+<script src="/assets/js/wow.min.js"></script>
+<script src="/assets/js/jquery.scrollup.min.js"></script>
+<script src="/assets/js/images-loaded.min.js"></script>
+<script src="/assets/js/isotope.pkgd.min.js"></script>
+<script src="/assets/js/jquery.nice-select.js"></script>
+<script src="/assets/js/tippy-bundle.umd.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="/assets/js/jquery.instagramFeed.min.js"></script>
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="/assets/js/mailchimp-ajax.js"></script>
+
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="/assets/css/style.css">
 
@@ -79,7 +94,13 @@
 			$('#layoutcartFrm').submit();
 		})
 		
-		let userNo = $('#userNo').val();
+		let userNo;
+		if($('#userNo').val()==null){
+		   userNo = 0;
+		}else{
+		   userNo = Number($('#userNo').val());
+		}
+		
 		$.ajax({
 			url: 'ajaxCartCount',
 			type: 'post',
@@ -112,7 +133,7 @@
 					let notice = '';
 					for(r of res) {
 						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
-								   <div class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
+								   <div style="font-size:13px;" class='mx-4'>${r.content}<span style="float:right;">${r.genTime}</span>
 								   </div></li><hr>`;
 						$('#noticeList').html(notice);	
 					}
@@ -139,11 +160,8 @@
 		
 		// 알림 상태 업데이트
 		$("#noticeList").on("click", function(e) {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			
-			if($(e.target).prop("tagName") == 'SPAN') {
-				let userNo = $(e.target).closest("div").prev().html();
+			if($(this).attr('tagName') == 'span') {
+				let userNo = $(this).closest('div').prev().html();
 				$.ajax({
 					url:"/ajaxNoticeUpdate",
 					type:"post",
@@ -156,7 +174,6 @@
 						noticeList();
 					}
 				})
-			}
 		})
 	})
 </script>
@@ -359,7 +376,13 @@
 									<li class="account_link"><a href="#"><i
 											class="icon-user icons"></i></a>
 										<ul class="dropdown_account_link">
-											<li><a href="/usersSelect">My Account</a></li>
+											<!-- 1008 지혜 추가 -->
+											<li sec:authorize="hasRole('USER')"><a
+												href="/usersSelect">My Account</a></li>
+											<li sec:authorize="hasRole('SELLER')"><a
+												href="/sellerMyPage">My Account</a></li>
+											<li sec:authorize="hasRole('TUTOR')"><a
+												href="/tutorMyPage">My Account</a></li>
 											<!-- 0926 희수가 추가 -->
 											<div sec:authorize="isAnonymous()">
 												<li><a href="loginForm">Login</a></li>
@@ -376,20 +399,19 @@
 										</ul></li>
 										
 									<!-- 1008 선희 추가 -->
-									<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-									   <a data-toggle="dropdown">
-										   <i class="icon-bell icons"></i>
-										   <span id="noticeCount" class="noticeCount" style="font-size: 20px;"></span>
-									   </a>
-									   <div class="dropdown-menu" style="width:600px; left: auto; right: 0;" role="menu">
-										   <h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>								
-										   <ul id="noticeList"><ul>
-									   </div>
+									<li sec:authorize="isAuthenticated()" class="account_link">
+											<a href="#"><i class="icon-bell icons"></i></a>
+											<span sec:authorize="hasRole('USER')" id="noticeCount" class="noticeCount"
+											style="font-size: 15px;"></span>
+										<ul sec:authorize="hasRole('USER')" class="dropdown_account_link"
+											style="width: 500px; left: auto; right: 0;" role="menu">
+											<h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 15px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
+											<li id="noticeList"></li>
+										</ul>
 									</li>
-									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
-									   <a href="loginForm">
-									   <i class="icon-bell icons"></i>
-									   </a>
+									<li sec:authorize="isAnonymous()" class="account_link">
+										<a href="loginForm"> <i class="icon-bell icons"></i>
+									</a>
 									</li>
 									<!-- 1008 선희 추가 -->
 									
@@ -588,9 +610,6 @@
 	</footer>
 	<!--footer area end-->
 	
-	<!--modernizr min js here-->
-	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
-	
 	<!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="/admin/assets/vendor/libs/jquery/jquery.js"></script>
@@ -606,25 +625,14 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-	
-	<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
-	<script src="/assets/js/vendor/popper.js"></script>
-	<script src="/assets/js/vendor/bootstrap.min.js"></script>
-	<script src="/assets/js/slick.min.js"></script>
-	<script src="/assets/js/wow.min.js"></script>
-	<script src="/assets/js/jquery.scrollup.min.js"></script>
-	<script src="/assets/js/images-loaded.min.js"></script>
-	<script src="/assets/js/isotope.pkgd.min.js"></script>
-	<script src="/assets/js/jquery.nice-select.js"></script>
-	<script src="/assets/js/tippy-bundle.umd.js"></script>
-	<script src="/assets/js/jquery-ui.min.js"></script>
-	<script src="/assets/js/jquery.instagramFeed.min.js"></script>
-	<script src="/assets/js/jquery.magnific-popup.min.js"></script>
-	<script src="/assets/js/mailchimp-ajax.js"></script>
-	
+    
+  
 	
 	<!-- Main JS -->
 	<script src="/assets/js/main.js"></script>
+	
+	<!--modernizr min js here-->
+	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 </body>
 
 </html>

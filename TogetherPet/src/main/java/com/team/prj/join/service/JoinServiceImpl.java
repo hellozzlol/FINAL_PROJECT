@@ -100,7 +100,14 @@ public class JoinServiceImpl implements JoinService {
 		return null;
 	}
 
-
-
+	// 비밀번호 재설정
+	@Override
+	public int pwUpdate(UsersVO vo) {
+		BCryptPasswordEncoder Pencoder = new BCryptPasswordEncoder();
+		String result = Pencoder.encode(vo.getPassword());
+		vo.setPassword(result);
+		System.out.println("impl 암호화됐나요                     " +vo.getPassword());
+		return jm.pwUpdate(vo);
+	}
 }
 

@@ -35,35 +35,35 @@ public class SellerAjaxController {
 	// 상품 검색 goods
 	@RequestMapping("/goodsAjaxSearch")
 	@ResponseBody
-	public List<GoodsVO> goodsAjaxSearch(String key, @RequestParam String val) {
-		return goods.goodsSearch(key, val);
+	public List<GoodsVO> goodsAjaxSearch(String key, @RequestParam String val, @RequestParam String start, @RequestParam String end) {
+		return goods.goodsSearch(key, val, start, end);
 	}
 
 	// 상품 검색 orders
 	@RequestMapping("/orderAjaxSearch")
 	@ResponseBody
-	public List<OrderVO> orderAjaxSearch(String key, @RequestParam String val) {
-		return goods.orderSearch(key, val);
+	public List<OrderVO> orderAjaxSearch(String key, @RequestParam String val, @RequestParam String start, @RequestParam String end) {
+		return goods.orderSearch(key, val, start, end);
 	}
 
 	// 상품 검색 state
 	@RequestMapping("/stateAjaxSearch")
 	@ResponseBody
-	public List<StateVO> stateAjaxSearch(String key, @RequestParam String val) {
-		return goods.stateSearch(key, val);
+	public List<StateVO> stateAjaxSearch(String key, @RequestParam String val, @RequestParam String start, @RequestParam String end) {
+		return goods.stateSearch(key, val, start, end);
 	}
 
 	// 판매완료 상품 검색
 	@RequestMapping("/goodsSellSearch")
 	@ResponseBody
-	public List<OrderVO> goodsSellSearch(String key, @RequestParam String val) {
-		return goods.goodsSellSearch(key, val);
+	public List<OrderVO> goodsSellSearch(String key, @RequestParam String val, @RequestParam String start, @RequestParam String end) {
+		return goods.goodsSellSearch(key, val, start, end);
 	}
 
-	// 판매완료 상품 검색
+	// 문의 검색
 	@RequestMapping("/qnaSearch")
 	@ResponseBody
-	public List<QnaVO> qnaSearch(String key, @RequestParam String val) {
+	public List<QnaVO> qnaSearch(String key, @RequestParam String val, @RequestParam String start, @RequestParam String end) {
 		return seller.qnaSearch(key, val);
 	}
 

@@ -61,22 +61,29 @@ public class BoardAjaxController {
 	@ResponseBody
 	public int commentInsert(CommentVO vo, NoticeVO nvo) {
 		// 댓글 등록
-		Service.commentInsert(vo);
+		int cnt = Service.commentInsert(vo);
 		
 		// 알림 테이블에 등록 1010 선희추가
-		int refNo = vo.getCommentNo();
-		String nickname = vo.getNickname();
+		int refNo = vo.getBoardNo();
+		String nickname = vo.getNickname(); // 댓글 단 사람
 		String type = "0"; // 알림 상태 0번(댓글)
 		String msg;
+		msg = nickname + "님이 댓글을 달았습니다.";		
 		nvo.setRefNo(refNo);
 		nvo.setNickname(nickname);
 		nvo.setType(type);
-		int cnt = notice.noticeInsert(nvo);
-		if (cnt > 0) {
-			msg = nickname + "님이 댓글을 달았습니다.";
-		} else {
-			msg = "error";
-		}
+		nvo.setContent(msg);
+		String url = "boardSel?boardNo=" + refNo;
+		nvo.setUrl(url);
+		
+		// 알림 받을 사람 = 글쓴 사람
+		BoardVO b = new BoardVO();
+		b.setBoardNo(refNo);
+		int userNo = Service.boardSelect(b).getUserNo();
+		System.out.println("================== USERNO" + userNo);
+		nvo.setUserNo(userNo);
+		notice.noticeInsert(nvo);
+		
 		return cnt;
 	}
 

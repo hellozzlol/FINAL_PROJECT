@@ -108,30 +108,33 @@
 					</div>
 				</div>
 
-				<!-- 검색 시작 -->
-				<form id="btn">
-					<div class="card mb-4">
-						<div class="card-body">
-							<div class="mb-3 row" style="text-align:center; vertical-align: middle;">
-								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
+				<!-- 검색 -->
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="mb-3 row">
+							<label for="html5-search-input" class="col-md-2 col-form-label" id="search">검색어</label>
+							<div class="col-md-10">
+								<input type="hidden" id="key" name="key" value="1">
+								<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
+							</div>
+						</div>
+						<div class="search-box">
+							<div class="mb-3 row">
+								<label for="html5-search-input" class="col-md-2 col-form-label" id="search">조회기간</label>
 								<div class="col-md-10">
-									<input type="hidden" id="key" name="key" value="1">
-									<input class="form-control" type="text" id="val" name="val" placeholder="검색할 상품명을 입력하세요." />
+									<input id="start" type="date" value="" class="form-control" />
+									&nbsp;<label>~</label>&nbsp;&nbsp;
+									<input id="end" type="date" value="" class="form-control" />
 								</div>
 							</div>
-							<div class="search-box">
-								<div class="mt-2" style="text-align: center;">
-									<button type="button" class="btn btn-primary me-2" id="searchBtn" onclick="searchCall()">
-									검색하기
-									</button>
-									<button type="reset" class="btn btn-primary2 me-2">초기화</button>
-								</div>
+							<div class="mt-2" style="text-align: center;">
+								<a id="searchBtn" class="btn btn-primary me-2" onclick="searchCall()">검색하기</a>
+								<button type="reset" class="btn btn-primary2 me-2">초기화</button>
 							</div>
 						</div>
 					</div>
-				</form>
+				</div>
 				<!-- 검색 끝 -->
-
 
 				<div class="goodsSelect" id="deleteAll">
 					<button id="deleteButton" type="button" class="btn-primary3">선택삭제</button>
@@ -261,6 +264,9 @@
 	}
 </style>
 <script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+
 	// 등록된 상품 없을때
 	if($('#goodsEmpty').html()=='0'){
 		$("#empty").html('');
@@ -305,6 +311,8 @@
 		function searchCall() {
 			let key = $("#key").val();
 			let val = $("#val").val();
+			start = $('#start').val();
+			end = $('#end').val();
 			
 			$.ajax({
 				url: "goodsAjaxSearch",
@@ -312,15 +320,15 @@
 				beforeSend : function(xhr){
 				xhr.setRequestHeader(header, token)
 				},
-				data: {'key' : key, 'val' : val},
+				data: {'key' : key, 'val' : val, 'start' : start, 'end' : end},
 				dataType: "json",
-						success:function(response) {
-						console.log(response);
-						htmlView(response);
-					},
-					error:function() {
-						alert("오류발생");
-					}
+				success:function(response) {
+				console.log(response);
+				htmlView(response);
+			},
+			error:function() {
+				alert("오류발생");
+			}
 			});
 			
 		function htmlView(data) {
@@ -329,21 +337,21 @@
 			
 			$.each(data, function(index, item) {
 				var row = $("<tr>").attr("onclick", "searchCall(" + item.goodsNo + ")")
-						.append($("<td />").append($("<input>").attr("type", "checkbox")),
-								$("<td />").text(item.goodsNo),
-								$("<td />").text(item.name),
-								$("<td />").text(item.uploadState),
-								$("<td />").text(item.sellState),
-								$("<td />").text(item.amount),
-								$("<td />").text(item.uploadDate),
-								$("<td />").append($("<button>").addClass("btn-primary3").html("상세"))
-										   .append($("<button>").addClass("btn-primary3").html("삭제")));
-						tbody.append(row);
+								   .append($("<td />").append($("<input>").attr("type", "checkbox")),
+										   $("<td />").text(item.goodsNo),
+										   $("<td />").text(item.name),
+										   $("<td />").text(item.uploadState),
+										   $("<td />").text(item.sellState),
+										   $("<td />").text(item.amount),
+										   $("<td />").text(item.uploadDate),
+										   $("<td />").append($("<button>").addClass("btn-primary3").html("상세"))
+												      .append($("<button>").addClass("btn-primary3").html("삭제")));
+										   tbody.append(row);
 					});
 				$("#all").append(tbody);
 			}	
 		}
-		
+	
 		// 체크박스 전체 선택
 		function allChecked(target) {
 			// 전체 체크박스 버튼
@@ -394,7 +402,6 @@
 			});
 		}
 		
-		
 		// 일괄 삭제
 		$('#deleteButton').on('click', function(){
 		    let chkbox = document.querySelectorAll(".chk");
@@ -402,7 +409,7 @@
 			    if(elem.checked==true){
 			    	let goodsNo = elem.closest('tr').getAttribute('id')
 			    	$.ajax({
-						url: '/ajaxGoodsDelete',
+						url: 'ajaxGoodsDelete',
 						type: 'post',
 						beforeSend : function(xhr){
 							xhr.setRequestHeader(header, token)},
@@ -416,7 +423,7 @@
 						}
 					})
 			    }
-		    });
+		    })
 		})
 		
 		// 판매상태

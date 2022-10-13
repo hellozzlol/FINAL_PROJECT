@@ -53,6 +53,24 @@
 <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
 <link rel="stylesheet" href="/assets/css/magnific-popup.css">
 
+<!--modernizr min js here-->
+<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
+<script src="/assets/js/vendor/popper.js"></script>
+<script src="/assets/js/vendor/bootstrap.min.js"></script>
+<script src="/assets/js/slick.min.js"></script>
+<script src="/assets/js/wow.min.js"></script>
+<script src="/assets/js/jquery.scrollup.min.js"></script>
+<script src="/assets/js/images-loaded.min.js"></script>
+<script src="/assets/js/isotope.pkgd.min.js"></script>
+<script src="/assets/js/jquery.nice-select.js"></script>
+<script src="/assets/js/tippy-bundle.umd.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="/assets/js/jquery.instagramFeed.min.js"></script>
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="/assets/js/mailchimp-ajax.js"></script>
+
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="/assets/css/style.css">
 
@@ -69,19 +87,25 @@
 	document.addEventListener('DOMContentLoaded', function() {
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
-
+	
 		$('#logout').on('click', function() {
 			$('#logoutFrm').submit();
 		})
-
+	
 		/* 0926 희수가 추가 */
 		$('#layoutcartCall').on('click', function() {
 			$('#layoutcartFrm').submit();
 		})
 		
-		let userNo = $('#userNo').val();
+		let userNo;
+		if($('#userNo').val()==null){
+		   userNo = 0;
+		}else{
+		   userNo = Number($('#userNo').val());
+		}
+		
 		$.ajax({
-			url: 'ajaxCartCount',
+			url: '/ajaxCartCount',
 			type: 'post',
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader(header, token)
@@ -91,68 +115,7 @@
 		.done(res => {
 			$('#item_count').html(res);
 		})
-		
-		// 1008 선희 추가
-		noticeCount(); // 알림 카운트
-		noticeList(); // 알림 목록
-		
-		// 알림 목록
-		function noticeList() {
-			$.ajax({
-				url:'/noticeList',
-				type:'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
-				data: {userNo:userNo},
-				success: function(res) {
-					// console.log(res);
-					let notice = '';
-					for(r of res) {
-						notice += `<li><div class='mx-4' style="display:none;">${r.noticeNo}</div>
-								   <div class='mx-4'><a id="noticeSel">${r.content}</a>
-								   <span style="float:right;">${r.genTime}</span>
-								   </div></li><hr>`;
-						$('#noticeList').html(notice);	
-					}
-				}
-			})
-		}
-		
-		// 알림 카운트
-		function noticeCount() {
-			$.ajax({
-				url:'/ajaxNoticeCount',
-				type:'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
-				data: {userNo:userNo},
-				success: function(res){
-					$('#noticeCount').html(res);
-				}
-			})
-		}
-		
-		// 알림 상태 업데이트
-		// 알림명 클릭하면 읽은시간 업데이트
-		$("#noticeList").on("click", "#noticeSel", function() {
-				let noticeNo = $(this).closest("li").find("div").html();
-				// console.log(noticeNo);
-				$.ajax({
-					url:"/ajaxNoticeUpdate",
-					type:"post",
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {noticeNo:noticeNo},
-					success: function(res) {
-						noticeCount();
-						noticeList();
-					}
-				})
-			})
-	})
+		})
 </script>
 
 </head>
@@ -294,22 +257,24 @@
 										</ul></li>
 										
 									<!-- 1008 선희 추가 -->
-									<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-									   <a data-toggle="dropdown">
-										   <i class="icon-bell icons"></i>
-										   <span id="noticeCount" class="noticeCount" style="font-size: 20px;"></span>
-									   </a>
-									   <div class="dropdown-menu" style="width:600px; left: auto; right: 0;" role="menu">
-										   <h4 style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>								
-										   <ul id="noticeList"><ul>
-									   </div>
+									<!-- <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+										<a data-toggle="dropdown"> <i class="icon-bell icons"></i>
+											<span sec:authorize="hasRole('USER')" id="noticeCount" class="noticeCount"
+											style="font-size: 20px;"></span>
+									</a>
+										<div sec:authorize="hasRole('USER')"  class="dropdown-menu"
+											style="width: 600px; left: auto; right: 0;" role="menu">
+											<h4
+												style="border-bottom: 5px double lightgray; text-align: center; font-size: 20px; font-weight: bold; padding-bottom: 10px; padding-top: 5px; margin-bottom: 10px;">알림</h4>
+											<ul id="noticeList">
+												</ul>
+										</div>
 									</li>
 									<li sec:authorize="isAnonymous()" class="nav-item dropdown">
-									   <a href="loginForm">
-									   <i class="icon-bell icons"></i>
-									   </a>
-									</li>
-									<!-- 1008 선희 추가 -->	
+										<a href="loginForm"> <i class="icon-bell icons"></i>
+									</a>
+									</li> -->
+									<!-- 1008 선희 추가 -->
 										
 									<!-- / 0926 희수가 추가 -->	
 									<div sec:authorize="isAuthenticated()">
@@ -492,29 +457,8 @@
 	</footer>
 	<!--footer area end-->
 	
-	<!--modernizr min js here-->
-	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
-	
-	<script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
-	<script src="/assets/js/vendor/popper.js"></script>
-	<script src="/assets/js/vendor/bootstrap.min.js"></script>
-	<script src="/assets/js/slick.min.js"></script>
-	<script src="/assets/js/wow.min.js"></script>
-	<script src="/assets/js/jquery.scrollup.min.js"></script>
-	<script src="/assets/js/images-loaded.min.js"></script>
-	<script src="/assets/js/isotope.pkgd.min.js"></script>
-	<script src="/assets/js/jquery.nice-select.js"></script>
-	<script src="/assets/js/tippy-bundle.umd.js"></script>
-	<script src="/assets/js/jquery-ui.min.js"></script>
-	<script src="/assets/js/jquery.instagramFeed.min.js"></script>
-	<script src="/assets/js/jquery.magnific-popup.min.js"></script>
-	<script src="/assets/js/mailchimp-ajax.js"></script>
-	
 	<!-- Main JS -->
 	<script src="/assets/js/main.js"></script>
-	
-	<!--modernizr min js here-->
-	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>
 	
 	<!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

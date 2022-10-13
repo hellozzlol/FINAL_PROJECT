@@ -74,6 +74,10 @@
 	font-size: xx-large;
 	color: #ffd700;
 }
+.reviewbtn{
+width: 100px;
+height: 300px;
+}
 </style>
 </head>
 <body>
@@ -127,19 +131,10 @@
 
 											<h1 th:text="${a.name}">숙소이름</h1>
 											<div class="product_ratting_review d-flex align-items-center">
-												<div class=" product_ratting">
-													<ul class="d-flex">
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-													</ul>
-												</div>
+												
 												<div class="product_review">
-													<ul class="d-flex">
-														<li>4 reviews</li>
-														<li>리뷰쓰세요</li>
+													<ul>
+														<li>📝[[${#lists.size(rEviewSelectList)}]]개의 리뷰가 있습니다.</li>
 													</ul>
 												</div>
 											</div>
@@ -298,7 +293,7 @@
 																	</span>
 																</div>
 															</div>
-															<button id="reviewbtn" type="button">작성하기</button>
+															<button id="reviewbtn" type="button" class="reviewbtn">작성하기</button>
 														</div>
 														<!-- 말풍선 모양 div -->
 													</div>

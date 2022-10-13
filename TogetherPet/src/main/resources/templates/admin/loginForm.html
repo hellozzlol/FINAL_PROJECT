@@ -115,21 +115,7 @@
 					</div>
 				</div>
 
-				<div class="kakao-login">
-					<a href="javascript:void(0);" onclick="kakaoLogin();"
-						id="kakaoLogin" class="btn-login"> <span>카카오톡 아이디로 시작하기</span>
-					</a>
-				</div>
-				<div class="naver-login">
-					<a href="javascript:void(0)" onclick="naverBtnClick();"
-						id="naverLogin" class="btn-login"> 
-						<span>네이버 아이디로 시작하기</span>
-					</a>
-					<div id="naver_id_login" class="btn-login" style="display: none;">
-						<span>네이버 아이디로 시작하기</span> 
-					</a>
-					</div>
-				</div>
+
 				<br> <br>
 
 				<button type="button" class="btn-login" id="basicSignup" onclick="location.href='/userJoinForm'">회원가입</button>
@@ -137,20 +123,5 @@
 		</div>
 	</article>
 </body>
-
-<!-- 카카오 로그인 -->
-<script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        Kakao.init('script앱키 입력');
-        Kakao.isInitialized();
-    });
-
-    function loginWithKakao() {
-        Kakao.Auth.authorize({ 
-        redirectUri: 'https://localhost/loginForm' 
-        }); // 등록한 리다이렉트uri 입력
-    }
-</script>
 
 </html>

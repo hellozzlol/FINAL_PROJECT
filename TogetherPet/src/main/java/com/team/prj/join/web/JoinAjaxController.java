@@ -77,12 +77,4 @@ public class JoinAjaxController {
 		return code;
 	}
 	
-	
-	// 비밀번호 재설정 - 업데이트 // 안 됨..
-	@PostMapping("/pwUpdate")
-	public String usersUpdate(UsersVO vo) {
-		user.usersUpdate(vo);
-		return "redirect:/loginForm";
-	}
-	
 }
