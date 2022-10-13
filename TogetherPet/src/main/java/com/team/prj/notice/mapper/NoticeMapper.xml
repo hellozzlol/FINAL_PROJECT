@@ -4,10 +4,10 @@
 	<!-- 알림 조회 -->
 	<select id="noticeSelectList"
 		resultType="com.team.prj.notice.service.NoticeVO">
-		SELECT n.notice_no, n.content, n.gen_time, n.read_time, u.nickname, u.attach, u.user_no
+		SELECT n.notice_no, n.content, n.gen_time, n.read_time, n.url, u.nickname, u.attach, u.user_no
 		FROM notice n, users u
 		WHERE n.user_no = u.user_no 
-        AND u.user_no = 2
+        AND u.user_no = #{userNo}
 		ORDER BY n.notice_no DESC
 	</select>
 
@@ -29,7 +29,7 @@
 		#{userNo},
 		#{content},
 		SYSDATE,
-		#{readTime},
+		null,
 		#{url},
 		#{type},
 		#{refNo})
@@ -39,7 +39,7 @@
 	<update id="noticeUpdate"
 		parameterType="com.team.prj.notice.service.NoticeVO">
 		UPDATE NOTICE
-		SET read_time = sysdate
+		SET read_time = SYSDATE
 		WHERE notice_no = #{noticeNo}
 	</update>
 	

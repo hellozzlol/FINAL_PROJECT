@@ -171,7 +171,7 @@
 	<!-- 고객문의 단건 조회 -->
 	<select id="qnaSelect"
 		resultType="com.team.prj.qna.service.QnaVO">
-		SELECT *
+		SELECT qna_no, title, dt, content, answer, user_no
 		FROM qna
 		WHERE qna_no = #{qnaNo}
 	</select>

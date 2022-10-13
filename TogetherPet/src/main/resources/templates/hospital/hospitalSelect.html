@@ -132,29 +132,21 @@
 										<div class="product_d_right" th:each="h:${hospital}">
 
 											<h1 th:text="${h.name}">병원</h1>
+											<br>
 											<div class="product_ratting_review d-flex align-items-center">
-												<div class=" product_ratting">
-													<ul class="d-flex">
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-														<li><a href="#"><i class="ion-ios-star"></i></a></li>
-													</ul>
-												</div>
 												<div class="product_review">
-													<ul class="d-flex">
-														<li>4 reviews</li>
-														<li>리뷰쓰세요</li>
+													<ul>
+														<li>📝[[${#lists.size(ReviewSelectList)}]]개의 리뷰가 있습니다.</li>
 													</ul>
 												</div>
-											</div>
-
-											<div class="product_desc">
-												<p>전화번호 : [[${h.call}]]</p>
 											</div>
 
 											<div class="product_sku">
+											
+												<p>
+													<span>전화번호 : </span> [[${h.call}]]
+												</p>
+											
 												<p>
 													<span>전문과목: </span> [[${h.info}]]
 												</p>

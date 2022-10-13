@@ -2,6 +2,8 @@ package com.team.prj.orders.service;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,8 @@ import lombok.Setter;
 public class OrderVO {
 	private int orderNo, amount, totalPrice, minusPrice, userNo, goodsNo;
 	private String address, message, call, name, pay, payYn, deliveryNo, deliveryState, minusYn;
-	private Date dt, minusDate;
+	private Date dt;
+	private Date minusDate;
 	
 	// 0923 희수 추가
 	private int cartNo, money; 

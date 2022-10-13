@@ -50,4 +50,13 @@ public class OrderServiceImpl implements OrderService {
 	public int deleteOrder(OrderVO vo) {
 		return map.deleteOrder(vo);
 	}
+
+	// 알림용 1012 선희 추가
+	@Override
+	public OrderVO orderOne(OrderVO vo) {
+		return map.orderOne(vo);
+	}
+
+	
+
 }

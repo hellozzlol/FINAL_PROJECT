@@ -120,11 +120,20 @@
 		where id = #{id}
 	</select>
 
+
 	<!-- 아이디 찾기 -->
 	<select id="find_id" parameterType="String" resultType="String">
 		select id
 		from users
 		where email = #{email}
 	</select>
+	
+	
+	<!-- 비밀번호 재설정 -->
+	<update id="pwUpdate" parameterType="com.team.prj.users.service.UsersVO">
+		UPDATE USERS
+		set password = #{password}
+		WHERE id = #{id}
+	</update>
 
 </mapper>

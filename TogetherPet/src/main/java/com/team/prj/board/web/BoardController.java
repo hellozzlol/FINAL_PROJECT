@@ -152,7 +152,7 @@ public class BoardController {
 			String originFileName = URLDecoder.decode(fileName, "UTF-8");
 			String onlyFileName = originFileName.substring(originFileName.lastIndexOf("_") + 1);
 
-			File file = new File("C:\\Temp", originFileName);
+			File file = new File("/home/Temp", originFileName);
 			if (file.exists()) {
 				String agent = request.getHeader("User-Agent");
 
@@ -236,7 +236,7 @@ public class BoardController {
 			File saveFile = new File(boardupd, filename);
 			file.transferTo(saveFile);
 			vo.setAttech(filename);
-			String path = fileDir + "C:\\Temp" + filename;
+			String path = fileDir + "/home/Temp" + filename;
 			vo.setAttechDir(path);
 		}
 		// fileDir이 경로

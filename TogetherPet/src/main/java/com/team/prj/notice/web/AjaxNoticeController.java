@@ -46,10 +46,10 @@ public class AjaxNoticeController {
 	}
 	
 	// 알림 상태 수정(읽은시간)
-	@RequestMapping("/ajaxNoticeUpdate")
-	public int ajaxNoticeUpdate(NoticeVO vo) {
-		int cnt = notice.noticeUpdate(vo);
-		return cnt;
-	}
+//	@RequestMapping("/ajaxNoticeUpdate")
+//	public int ajaxNoticeUpdate(NoticeVO vo) {
+//		int cnt = notice.noticeUpdate(vo);
+//		return cnt;
+//	}
 
 }

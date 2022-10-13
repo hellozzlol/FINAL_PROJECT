@@ -46,26 +46,26 @@ public class GoodsServiceImpl implements GoodsService {
 
 	// 검색 기능(1004 선희 수정 => String value -> String val로 변경)
 	@Override
-	public List<GoodsVO> goodsSearch(String key, String val) {
-		return map.goodsSearch(key, val);
+	public List<GoodsVO> goodsSearch(String key, String val, String start, String end) {
+		return map.goodsSearch(key, val, start, end);
 	}
 
 	// 오더 검색 기능(1004 선희 추가)
 	@Override
-	public List<OrderVO> orderSearch(String key, String val) {
-		return map.orderSearch(key, val);
+	public List<OrderVO> orderSearch(String key, String val, String start, String end) {
+		return map.orderSearch(key, val, start, end);
 	}
 
 	// 반품교환 검색 기능(1005 선희 추가)
 	@Override
-	public List<StateVO> stateSearch(String key, String val) {
-		return map.stateSearch(key, val);
+	public List<StateVO> stateSearch(String key, String val, String start, String end) {
+		return map.stateSearch(key, val, start, end);
 	}
 
 	// 판매완료 상품 검색 기능(1005 선희 추가)
 	@Override
-	public List<OrderVO> goodsSellSearch(String key, String val) {
-		return map.goodsSellSearch(key, val);
+	public List<OrderVO> goodsSellSearch(String key, String val, String start, String end) {
+		return map.goodsSellSearch(key, val, start, end);
 	}
 
 	@Override
@@ -142,5 +142,6 @@ public class GoodsServiceImpl implements GoodsService {
 	public int changeUpdate(StateVO vo) {
 		return map.changeUpdate(vo);
 	}
+
 
 }

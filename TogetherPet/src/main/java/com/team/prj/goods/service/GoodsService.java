@@ -30,16 +30,16 @@ public interface GoodsService {
 	int deleteGoods(GoodsVO vo);
 	
 	// 검색 기능(1004 선희 수정 => String value -> String val로 변경)
-	List<GoodsVO> goodsSearch(@Param("key") String key, @Param("val") String val);
+	List<GoodsVO> goodsSearch(@Param("key") String key, @Param("val") String val, @Param("start") String start, @Param("end") String end);
 
 	// 오더 검색 기능(1004 선희 추가)
-	List<OrderVO> orderSearch(@Param("key") String key, @Param("val") String val);
+	List<OrderVO> orderSearch(@Param("key") String key, @Param("val") String val, @Param("start") String start, @Param("end") String end);
 	
 	// 반품교환 검색 기능(1005 선희 추가)
-	List<StateVO> stateSearch(@Param("key") String key, @Param("val") String val);
+	List<StateVO> stateSearch(@Param("key") String key, @Param("val") String val, @Param("start") String start, @Param("end") String end);
 	
 	// 판매완료 상품 검색 기능(1005 선희 추가)
-	List<OrderVO> goodsSellSearch(@Param("key") String key, @Param("val") String val);
+	List<OrderVO> goodsSellSearch(@Param("key") String key, @Param("val") String val, @Param("start") String start, @Param("end") String end);
 	
 	// 조회수 처리
 	int goodsHitUpdate(GoodsVO vo);
