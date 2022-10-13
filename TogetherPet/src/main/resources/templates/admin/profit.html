@@ -336,7 +336,7 @@
 													</thead>
 													<tbody>
 														<tr class="mnths" th:each="m:${monthlyList}">
-															<td>[[${#numbers.formatInteger(m.MONTHLY, 0)}]]월</td>
+															<td>[[${m.MONTHLY}]]월</td>
 															<td>[[${#numbers.formatInteger(m.PF, 3, 'COMMA')}]]</td>
 														</tr>
 													</tbody>
