@@ -35,13 +35,14 @@
 
 	<!-- 일별 -->
 	<select id="dailyList" resultType="Map">
-		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, sum(profit) as pf
+		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, 
+				sum(profit) as pf
 		from    profit
 		where   minus_yn=1 <!-- and category_id='S' -->
 		<if test="start != null">
 		and     to_date(minus_dt, 'yy/mm/dd') = to_date(#{start}, 'yy/mm/dd')
 		</if>
-		group by  minus_dt
+		group by  to_char(minus_dt, 'yyyy-mm-dd')
 		order by  1 desc
 	</select>
 
@@ -64,16 +65,15 @@
 
 	<!-- 월별 조회 -->
 	<select id="monthlyList" resultType="Map">
-		select substr(minus_dt,4,2) as monthly,
-			   sum(profit) as pf
-		from profit
+		select substr(to_char(minus_dt,'yy/mm/dd'),4,2) as monthly, 
+			   sum(profit) as pf 
+		from profit 
 		where minus_yn=1
 		<if test="start != null">
-        and to_number(substr(minus_dt,4,2)) = #{start}
+        	  and substr(to_char(minus_dt,'yy/mm/dd'),4,2) = #{start}
         </if>
-		group by substr(minus_dt, 4, 2)
+		group by substr(to_char(minus_dt,'yy/mm/dd'), 4, 2) 
 		order by 1 desc
 	</select>
-
 
 </mapper>
