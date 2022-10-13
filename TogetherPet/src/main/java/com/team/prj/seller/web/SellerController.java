@@ -2,6 +2,8 @@ package com.team.prj.seller.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +32,6 @@ import com.team.prj.qna.service.QnaVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
 import com.team.prj.state.service.StateVO;
-import com.team.prj.users.service.UsersVO;
 
 @Controller
 public class SellerController {
@@ -241,19 +242,37 @@ public class SellerController {
 		
 		// 알림 테이블에 등록 1010 선희추가
 		int refNo = ovo.getOrderNo();
+		
 		String type = "3"; // 알림 상태 3번(배송지시)
 		String gname = ovo.getGoodsName();
-		String msg;
-		msg = "'" + gname + "'" + " 상품 배송이 시작되었습니다.";
+		String url = "usersOrderList";
+		
+		// 메시지를 위한 오더 단건 조회
+		List<OrderVO> ol = order.selectOrder(ovo);
+		OrderVO ov = ol.get(0);
+		Date msgDt = ov.getDt();
+		
+		//원하는 데이터 포맷 지정
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일"); 
+		//지정한 포맷으로 변환
+		String strNowDate = simpleDateFormat.format(msgDt); 
+		
+		String msgGn = ov.getGoodsName(); 
+		int olSize = ol.size();
+		String msg = strNowDate + "에 주문하신 " + msgGn + " 외 " + (olSize-1) + "건의 상품 배송이 시작되었습니다.";
+		if(olSize == 1) {
+			msg = strNowDate + "에 주문하신 " + msgGn + "의 상품 배송이 시작되었습니다.";
+		}
+		// System.out.println("===============" + msg + "===============");
+
 		nvo.setRefNo(refNo);
 		nvo.setType(type);
 		nvo.setContent(msg);
-		String url = "usersOrderList";
 		nvo.setUrl(url);
 		
 		OrderVO o = new OrderVO();
 		o.setOrderNo(refNo);
-		int userNo = order.orderOne(o).getUserNo();
+		int userNo = ov.getUserNo();
 		nvo.setUserNo(userNo);
 		notice.noticeInsert(nvo);
 		
