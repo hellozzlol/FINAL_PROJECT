@@ -4,8 +4,8 @@
 	<!-- 일별 리스트 -->
 	<select id="profitList"
 		resultType="com.team.prj.admin.service.ProfitVO">
-		select  to_char(minus_dt, 'yyyy-mm-dd') as minus_dt,
-				to_char(order_dt, 'yyyy-mm-dd') as order_dt,
+		select  to_date(to_char(minus_dt, 'yyyy-mm-dd')) as minus_dt,
+				to_date(to_char(minus_dt, 'yyyy-mm-dd')) as order_dt,
 				user_no,
 				user_name,
 				seller_no,
@@ -23,7 +23,7 @@
 				and minus_dt
 					between to_date(#{start}, 'yyyy-mm-dd')
 					and
-					to_char(to_date(#{end}, 'yyyy-mm-dd') + INTERVAL '1' DAY, 'yyyy-mm-dd')
+					to_date(#{end}, 'yyyy-mm-dd')+1
 		</if>
 	</select>
 
@@ -35,14 +35,14 @@
 
 	<!-- 일별 -->
 	<select id="dailyList" resultType="Map">
-		select  to_char(minus_dt, 'yyyy-mm-dd') as daily, 
+		select  to_date(to_char(minus_dt, 'yyyy-mm-dd')) as daily, 
 				sum(profit) as pf
 		from    profit
 		where   minus_yn=1 <!-- and category_id='S' -->
 		<if test="start != null">
 		and     to_date(minus_dt, 'yy/mm/dd') = to_date(#{start}, 'yy/mm/dd')
 		</if>
-		group by  to_char(minus_dt, 'yyyy-mm-dd')
+		group by  to_date(to_char(minus_dt, 'yyyy-mm-dd'))
 		order by  1 desc
 	</select>
 
@@ -65,15 +65,14 @@
 
 	<!-- 월별 조회 -->
 	<select id="monthlyList" resultType="Map">
-		select substr(to_char(minus_dt,'yy/mm/dd'),4,2) as monthly, 
-			   sum(profit) as pf 
-		from profit 
-		where minus_yn=1
+		select 		extract(month from minus_dt) as monthly, sum(profit) as pf 
+		from 		profit 
+		where 		minus_yn=1 
 		<if test="start != null">
-        	  and to_char(to_number(substr(minus_dt,4,2))) = #{start}
-        </if>
-		group by substr(to_char(minus_dt,'yy/mm/dd'), 4, 2) 
-		order by 1 desc
+		and 		extract(month from minus_dt) = #{start} 
+		</if>
+		group by 	extract(month from minus_dt) 
+		order by 	1 desc
 	</select>
 
 </mapper>
