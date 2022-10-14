@@ -266,7 +266,7 @@ public class ClassAjaxController {
 	public ResponseEntity<byte[]> getImage(String fileName){
 		//File file = new File("C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
 		//테스트용
-		File file = new File("/home/Temp" + fileName);
+		File file = new File("/home/Temp/" + fileName);
 		ResponseEntity<byte[]> result = null;
 		
 		try {
