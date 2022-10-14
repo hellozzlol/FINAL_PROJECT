@@ -70,7 +70,7 @@
 		from profit 
 		where minus_yn=1
 		<if test="start != null">
-        	  and to_number(substr(minus_dt,4,2)) = #{start}
+        	  and to_char(to_number(substr(minus_dt,4,2))) = #{start}
         </if>
 		group by substr(to_char(minus_dt,'yy/mm/dd'), 4, 2) 
 		order by 1 desc

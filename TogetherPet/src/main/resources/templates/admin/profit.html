@@ -526,7 +526,7 @@
 			today = today.toISOString().substr(0,10)
 			$('#std').html(today);
 	
-			console.log('DS ▶▶▶▶▶' + today);
+			console.log('D ▶▶▶▶▶' + today);
 			$.ajax('/manager/ajaxDailyList',{
 					type: 'post',
 					beforeSend: function (xhr) {
@@ -583,7 +583,7 @@
 			let stWeek = mn + '월 ' + wn + '주차';
 			$('#stw').html(stWeek)
 			$('#stMonday').html(monday)
-			console.log('WS ▶▶▶▶▶' + monday);
+			console.log('W ▶▶▶▶▶' + monday);
 			$.ajax('/manager/ajaxWeeklyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
@@ -634,7 +634,7 @@
 				sm = pm;
 			}
 			$('#stm').html(sm);
-			console.log('MS ▶▶▶▶▶' + sm);
+			console.log('M ▶▶▶▶▶' + sm);
 			$.ajax('/manager/ajaxMonthlyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
