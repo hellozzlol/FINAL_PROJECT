@@ -65,7 +65,7 @@ public interface GoodsService {
 	// 배송 상태 업데이트 => 배송완료(1005 선희 추가)
 	int deliveryDone(OrderVO vo);
 
-	// 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
+	// (관리자 페이지) 상품 조회(state=0 (미 승인) 1004 추가 / 지혜)
 	List<GoodsVO> goodsList(String key);
 
 	// 반품/교환 상품 조회(1004 선희 추가)
@@ -79,5 +79,6 @@ public interface GoodsService {
 
 	// 교환요청 상태 업데이트(1004 선희 추가)
 	int changeUpdate(StateVO vo);
+	
 	
 }
