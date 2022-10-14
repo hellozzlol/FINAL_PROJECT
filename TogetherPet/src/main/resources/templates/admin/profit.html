@@ -235,7 +235,7 @@
 													</thead>
 													<tbody>
 														<tr class="days" th:each="d:${dailyList}">
-															<td>[[${d.DAILY}]]</td>
+															<td>[[${#strings.substring(d.DAILY, 0, 10)}]]</td>
 															<td>[[${#numbers.formatInteger(d.PF,3,'COMMA')}]]</td>
 														</tr>
 													</tbody>
@@ -807,6 +807,7 @@
 				.done(res => {
 					console.log('DC ▶▶▶▶▶' + res);
 					for(i=0; i<15; i++){
+						console.log('▶▶▶▶▶▶▶▶▶▶ ',res[i].DAILY)
 						today.setDate(today.getDate()+1);
 						t = today.toISOString().substr(0, 10);
 						let arr = [];
@@ -814,6 +815,7 @@
 						for(let field in res){
 							
 							let d = res[field].DAILY;
+							d = d.substr(0,10);
 							let p = res[field].PF;
 							if(d==t){
 								arr[1] = p;
