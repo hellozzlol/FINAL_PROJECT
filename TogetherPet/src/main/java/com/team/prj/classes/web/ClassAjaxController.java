@@ -208,7 +208,7 @@ public class ClassAjaxController {
 		//파일 경로를 저장하는 String 타입의 변수를 선언하고 초기화
 		//String uploadFolder = "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp";
 		//테스트용
-		String uploadFolder = "/home/Temp";
+		String uploadFolder = ""; ///home/Temp
 		
 		//File객체를 사용해 폴더 생성
 		File uploadPath = new File(uploadFolder); //물리적 저장할 위치		
