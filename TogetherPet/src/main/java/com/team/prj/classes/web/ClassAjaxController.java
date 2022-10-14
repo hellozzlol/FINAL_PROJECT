@@ -265,8 +265,10 @@ public class ClassAjaxController {
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName){
 		//File file = new File("C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
+
 		//테스트
 		File file = new File("/home/Temp", fileName);
+
 		ResponseEntity<byte[]> result = null;
 		
 		try {
