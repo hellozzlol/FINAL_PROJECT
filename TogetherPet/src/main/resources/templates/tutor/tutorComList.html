@@ -80,10 +80,13 @@
 												name="address" placeholder="Address"
 												th:value="${session.tutor.address}" disabled="disabled" />
 										</div>
+										<!--  -->
 										<div class="mb-3 col-md-6">
-											<label class="col-sm-2 col-form-label" for="name">이메일</label>
-											<input class="form-control" type="text" id="email"
-												name="email" th:value="${session.tutor.email}" disabled="disabled" />
+											<label class="col-sm-2 col-form-label" for="name">소개</label>
+											<textarea class="form-control" type="text" id="introduce"  style="resize: none;"
+												name="email" th:text="${session.tutor.introduce}" rows="10" 
+												placeholder="튜터님의 경력, 주요 클래스 등을
+												자유롭게 소개해주세요." disabled="disabled" ></textarea>
 										</div>
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="name">소셜미디어</label>
@@ -95,11 +98,9 @@
 												name="email" th:value="${session.tutor.snsYoutube}" placeholder="유튜브 주소를 입력해주세요." disabled="disabled" />
 										</div>
 										<div class="mb-3 col-md-6">
-											<label class="col-sm-2 col-form-label" for="name">소개</label>
-											<textarea class="form-control" type="text" id="introduce"  style="resize: none;"
-												name="email" th:text="${session.tutor.introduce}" rows="10" 
-												placeholder="튜터님의 경력, 주요 클래스 등을
-												자유롭게 소개해주세요." disabled="disabled" ></textarea>
+											<label class="col-sm-2 col-form-label" for="name">이메일</label>
+											<input class="form-control" type="text" id="email"
+												name="email" th:value="${session.tutor.email}" disabled="disabled" />
 										</div>
 									</div>
 									<div class="mt-2" style="text-align: center;">
