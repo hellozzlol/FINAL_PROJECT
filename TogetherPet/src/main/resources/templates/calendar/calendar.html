@@ -85,11 +85,6 @@
 				selectMirror : true,
 				dayMaxEventRows : true,
 				events : events,
-				eventTimeFormat : { // '14:30:00' 형태로 만들기
-					hour : '2-digit',
-					minute : '2-digit',
-					hour12 : false
-				},
 				eventClick : function(info) { // 일정 삭제
 					if (confirm(info.event.title + ' 일정을 삭제하시겠습니까?')) {
 						// console.log(info.event);
@@ -170,6 +165,9 @@
 		.fc .fc-button-primary:not(:disabled):active, .fc .fc-button-primary:not(:disabled).fc-button-active {
 			background-color:#576352;
 			border-color:#576352;
+		}
+		.fc-event-time {
+			display: none;
 		}
 	</style>
 

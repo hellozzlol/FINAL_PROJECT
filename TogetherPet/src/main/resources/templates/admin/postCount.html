@@ -81,50 +81,50 @@
 											</div>
 
 											<div class="col-12">
-												<div class="col-6 col-sm-3" id="dailyIncomeChart" style="width: 50%; height: 500px; border-right: 1px solid lightgray;"></div>
-												<div class="col-6 col-sm-3" style="display: inline;">
-												<table style="text-align: center; vertical-align: middle;">
-													<thead>
-														<tr>
-															<th>날짜</th>
-															<th>전체조회수</th>
-														</tr>
-													</thead>
-													<tbody id="btnList" class="table-border-bottom-0">
-														<tr>
-															<td></td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
+												<div id="dailyIncomeChart" style="width:100%; height: 500px;"></div>
+											</div>
+
+											<!-- hit count Table -->
+											<br> <br> <br>
+											<div class="row" style="width: 100%; margin: auto;">
+												<div class="daily" style="width: 30%; height: auto; margin: 5px auto; text-align: center; border-right: 1px solid lightgray;">
+													<table class="table" style="text-align: center; vertical-align: middle;">
+														<thead>
+															<tr>
+																<th style="width: 50%;">날짜</th>
+																<th style="width: 50%;">전체조회수</th>
+															</tr>
+														</thead>
+														<tbody id="btnList" class="table-border-bottom-0">
+															<tr>
+																<td>dd</td>
+																<td>dd</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<div class="daily" style="width: 70%; height: auto; margin: 5px auto; text-align: center;">
+													<table id="daily" class="table">
+														<thead>
+															<tr>
+																<th style="width: 100px;">카테고리</th>
+																<th style="width: 600px;">글제목</th>
+																<th style="width: 80px;">조회수</th>
+																<th style="width: 100px;">게시일자</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr class="days" th:each="d:${dailyList}">
+																<td>[[${d.id}]]</td>
+																<td>[[${d.title}]]</td>
+																<td>[[${d.hit}]]</td>
+																<td>[[${dt}]]</td>
+															</tr>
+														</tbody>
+													</table>
 												</div>
 											</div>
-
-											<!-- Profit Table -->
-											<br> <br> <br>
-											<div class="daily"
-												style="width: 90%; height: auto; margin: 5px auto; text-align: center;">
-												<table id="daily" class="table">
-													<thead>
-														<tr>
-															<th style="width: 100px;">카테고리</th>
-															<th style="width: 600px;">글제목</th>
-															<th style="width: 80px;">조회수</th>
-															<th style="width: 100px;">게시일자</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr class="days" th:each="d:${dailyList}">
-															<td>[[${d.DAILY}]]</td>
-															<td>[[${d.DAILY}]]</td>
-															<td>[[${d.DAILY}]]</td>
-															<td>[[${#numbers.formatInteger(d.PF,3,'COMMA')}]]</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-
-											<!-- /Profit Table -->
+											<!-- hit count Table -->
 										</div>
 									</div>
 								</div>
@@ -140,14 +140,12 @@
 		<script type="text/javascript"
 			src="https://www.gstatic.com/charts/loader.js"></script>
 		<script type="text/javascript">
-			/* <div id="curve_chart" style="width: 100%; height: 500px"></div> */
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
 		let arrs=[];
 		
 		dailyChart();	
-		DSum();
 		WSum();
 		MSum();
 
@@ -164,7 +162,6 @@
 			})	 
 		
 		/* 일간 차트 동적 제어 */
-		
 		$('#prevDBtn').on('click', function(){
 			let pd = $('#stDay').html();
 			pd = new Date(pd);
@@ -189,7 +186,6 @@
 		})
 		
 		/* 주간 차트 동적 제어 */
-		
 		$('#prevWBtn').on('click', function(){
 			let pw = new Date($('#stWeekStart').html());
 			pw = pw.setDate(pw.getDate()-7);
@@ -198,7 +194,6 @@
 		})	
 		
 		$('#nextWBtn').on('click', function(){
-			
 			let nw = new Date($('#stWeekStart').html()); 
 			nw = nw.setDate(nw.getDate()+7);
 			nw = new Date(nw).toISOString().substr(0,10);
@@ -211,7 +206,6 @@
 		})
 		
 		/* 월간 차트 동적 제어 */
-		
 		$('#prevMBtn').on('click', function(){
 			let pm = Number($('#stMonth').html());
 			pm = pm-1;
@@ -231,7 +225,6 @@
 		})
 		
 		/* 일일 매출 합계 */
-		
 		$('#prevDSum').on('click', function(){
 			let pd = $('#std').html();
 			pd = new Date(pd);
@@ -256,38 +249,7 @@
 			DSum(nd);
 		})
 		
-		function DSum(sd){
-			let today = new Date();
-			if(sd){
-				today = new Date(sd);
-			}
-			today = today.toISOString().substr(0,10)
-			$('#std').html(today);
-	
-			
-			$.ajax('/manager/ajaxDailyList',{
-					type: 'post',
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {
-						start: today,
-					}
-				})
-				.done(res => {
-					if(res==''){
-						$('#dayTotal').html('0원');
-						
-					}else{
-						res = Number(res[0].PF).toLocaleString() + '원'
-						$('#dayTotal').html(res);
-					}
-				})
-
-		}
-		
 		/* 주별 매출 합계 */
-		
 		$('#prevWSum').on('click', function(){
 			let pw = new Date($('#stMonday').html());
 			pw = pw.setDate(pw.getDate()-7);
@@ -308,8 +270,6 @@
 		})
 		
 		function WSum(sw){
-			
-			
 			let monday = getMondayDate(new Date().toISOString().substr(0,10));
 			
 			if(sw){
@@ -321,7 +281,7 @@
 			$('#stw').html(stWeek)
 			$('#stMonday').html(monday)
 			
-			$.ajax('/manager/ajaxWeeklyList',{
+			$.ajax('/manager/weeklyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)
@@ -344,7 +304,6 @@
 		}
 		
 		/* 월별 매출 합계 */
-		
 		$('#prevMSum').on('click', function(){
 			let pm = Number($('#stm').html());
 			pm = pm-1;		
@@ -371,7 +330,7 @@
 			}
 			$('#stm').html(sm);
 			console.log(sm)
-			$.ajax('/manager/ajaxMonthlyList',{
+			$.ajax('/manager/monthlyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)
@@ -390,8 +349,6 @@
 					$('#monthTotal').html(res);
 				}
 			})
-			
-			
 		}
 		
 		// 올해 몇주차인지 반환 ( ex 39주 )	
@@ -431,7 +388,7 @@
 				
 				$('#stMonth').html(month);
 				
-				$.ajax('/manager/ajaxMonthlyList',{
+				$.ajax('/manager/monthlyList',{
 					type: 'post',
 					beforeSend: function (xhr) {
 						xhr.setRequestHeader(header, token)
@@ -462,7 +419,6 @@
 			}
 		
 		function weeklyChart(sw){
-			
 			arrs = [];
 			let f = ['Weekly', 'Profit'];
 			arrs.push(f);
@@ -480,7 +436,7 @@
 			$('#stWeekStart').html(monday)
 			
 			monday = new Date(Date.parse(monday) - 56 * 1000 * 60 * 60 * 24);  // 56일 전 = 8주 전
-			$.ajax('/manager/ajaxWeeklyList',{
+			$.ajax('/manager/weeklyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)
@@ -530,7 +486,7 @@
 			$('#stDay').html(today.toISOString().substr(0,10))
 			today = new Date(Date.parse(today) - 15 * 1000 * 60 * 60 * 24); // 보름 전
 
-			$.ajax('/manager/ajaxDailyList',{
+			$.ajax('/manager/dailyList',{
 					type: 'post',
 					beforeSend: function (xhr) {
 						xhr.setRequestHeader(header, token)
@@ -563,18 +519,7 @@
 				})
 			}
 			
-			/* total profit */
-			let pfSum = $('.mnths');
-			let sum = 0;
-			for(pf of pfSum){
-				let p = Number(pf.children[1].innerHTML.replace(",",""));
-				sum += p;
-			}
-			
-			$('#totalProfit').html(sum.toLocaleString())
-			
 			/* Google Chart */
-		 
 			google.charts.load('current', {
 				'packages' : [ 'corechart' ]
 			});
@@ -600,7 +545,6 @@
 			}
 			
 			/* DataTables */
-
 			$('.table').DataTable({
 				lengthChange : false,
 				pageLength : 10,
