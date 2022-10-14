@@ -11,40 +11,56 @@
 	</select>
 
 
-	<!-- ! -->
+	
+	<!-- 일반회원 검색 -->
+	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
+		SELECT *
+		FROM users
+		WHERE
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> nickname like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+
+
+
+	<!-- 상품 등록 승인 -->
 	<update id="postUpdate">
 		UPDATE goods 
 		SET upload_state='1'   
 		WHERE goods_no = #{goodsNo}
 	</update>
 
-
-	<!-- ! -->
-	<update id="cpostUpdate">
-		UPDATE class 
-		SET upload_state='1'   
-		WHERE class_no = #{classNo}
-	</update>
-
-
-	<!-- ! -->
+	<!-- 상품 등록 반려 -->
 	<update id="goodsRefuse">
 		UPDATE goods
 		SET upload_state='2', return_message=#{returnMessage}   
 		WHERE goods_no = #{goodsNo}
 	</update>
-	
+
+	<!-- 클래스 등록 승인 -->
+	<update id="cpostUpdate">
+		UPDATE class 
+		SET upload_state='1'   
+		WHERE class_no = #{classNo}
+	</update>
+		
+	<!-- 클래스 등록 반려 -->
 	<update id="classRefuse">
 		UPDATE class
 		SET upload_state='2', return_message=#{returnMessage}   
 		WHERE class_no = #{classNo}
 	</update>
 	
+	<!-- 일반회원 상태 변경(활동정지) -->
 	<update id="uStateUpdate">
 		update users
 		set state='1'
 		where user_no = #{userNo}
 	</update>
-
+	
+	
 
 </mapper>

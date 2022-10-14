@@ -23,6 +23,7 @@ import com.team.prj.attend.service.attendVO;
 import com.team.prj.board.service.BoardService;
 import com.team.prj.board.service.BoardVO;
 import com.team.prj.classes.service.ClassVO;
+import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.tutor.service.TutorService;
@@ -48,6 +49,9 @@ public class AjaxadminController {
 	
 	@Autowired
 	BoardService board;
+	
+	@Autowired
+	GoodsService goods;
 	
 	@Autowired
 	private attendService attend;
@@ -87,6 +91,10 @@ public class AjaxadminController {
 //		System.out.println("=====================" + vo.getBoardNo());
 //		return board.boardDelete(vo);
 //	}
+	
+	// (관리자 페이지) 상품 검색
+
+	
 	
 	
 	// 상품, 클래스 상태 업데이트 - 승인

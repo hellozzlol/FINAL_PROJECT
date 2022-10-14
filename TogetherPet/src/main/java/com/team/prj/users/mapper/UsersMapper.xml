@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.users.mapper.UsersMapper">
-
-	<!-- 1010 수정 / 지혜 --> <!-- 관리자 - 회원관리 -->
+	<!-- 일반회원 List -->
 	<select id="usersSelectList"
 		resultType="com.team.prj.users.service.UsersVO">
 		SELECT user_no, id, name, nickname, 
@@ -13,6 +12,7 @@
 		FROM USERS
 		ORDER BY user_no desc
 	</select>
+
 
 	<!-- 주문 내역 불러오기(배송상태 1,2,3,4,7 인것만 조회) -->
 	<select id="orderList"
@@ -201,39 +201,6 @@
 		WHERE user_no = #{userNo}
 	</select>
 
-	<!-- 회원 등록
-	<insert id="usersInsert"
-		parameterType="com.team.prj.users.service.UsersVO">
-		<selectKey keyProperty="userNo" order="BEFORE"
-			resultType="int">
-			SELECT
-			CASE WHEN max(user_no) IS NULL
-			THEN 1
-			ELSE
-			max(user_no) + 1
-			END AS no
-			FROM users
-		</selectKey>
-
-		INSERT INTO USERS
-		VALUES(#{userNo}
-		,#{id}
-		,#{password}
-		,#{name}
-		,#{nickname}
-		,#{email}
-		,#{call}
-		,#{address}
-		,'USER'
-		,3000
-		,1
-		,SYSDATE
-		,'1'
-		,#{postcode}
-		,#{da}
-		,#{attach}
-		,#{attachDir})
-	</insert> -->
 
 	<!-- 회원 수정 -->
 	<update id="usersUpdate"
@@ -256,17 +223,7 @@
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
 		
-	<!-- 일반회원 검색 / 1005 지혜 추가 -->
-	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
-		SELECT *
-		FROM users
-		WHERE
-		<choose>  
-			<when test="key==1"> id like '%' || #{val}||'%'</when>
-			<when test="key==2"> name like '%' || #{val}||'%'</when>
-			<when test="key==3"> nickname like '%' || #{val}||'%'</when>
-		</choose>
-	</select>
+
 	
 		
 </mapper>
