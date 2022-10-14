@@ -122,9 +122,9 @@
 						notice += `<li style="border-bottom:1px solid lightgray; height:50px; margin-top:20px;">
 								   <div class='mx-4' style="display:none;">${r.noticeNo}</div>
 								   <div style="font-size:13px;" class='mx-4'>
-								   <a class="alarmClick" th:id="${r.url}">${r.content} 
-								   <span style="float:right;">${r.genTime}</span></a>
-								   </div></li>`;
+								   <a style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" class="alarmClick" th:id="${r.url}">${r.content} 
+								   </a>
+								   </div><span style="float:right;">${r.genTime}</span></li>`;
 								   $('#noticeList').html(notice);	
 					}
 				}
@@ -148,10 +148,26 @@
 		
 		// 알림 상태 업데이트
 		$('#noticeList').on('click', ".alarmClick", function() {
-			//console.log("alarm : " + $(this).attr('th:id'));
+			// console.log("alarm : " + $(this).parent().prev().html());
+			
+			let noticeNo = Number($(this).parent().prev().html());
 			let url = $(this).attr("th:id");
-			$(location).attr("href", url);
-			$('#layoutNoticeFrm').submit();
+			
+			// console.log('noticeNo-----------' + noticeNo)
+			$.ajax({
+				url:'/noticeUpdate',
+				type:'post',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token)
+				},
+				data: {noticeNo:noticeNo},
+				success: function(res) {
+					if(res== '1'){
+						// console.log(url)
+						location.href=url;
+					}
+				} 
+				})
 		})
 		
 		})
@@ -247,7 +263,7 @@
 									<ul class="d-flex">
 										<li><a href="shop">shop</a></li>
 										<li><a href="classList">class</a></li>
-										<li><a href="#">pet info</a>
+										<li><a>pet info</a>
 											<ul class="sub_menu">
 												<li><a href="hospitalList">병원/약국</a></li>
 												<li><a href="Trproduct">여행상품</a></li>
@@ -395,7 +411,7 @@
 				<div class="col-lg-5 col-md-5 col-sm-5">
 					<div class="footer_widget_list">
 						<div class="footer_logo">
-							<a href="#"><img src="assets/img/logo/logo.png" alt=""></a>
+							<a href="#"><img src="assets/img/logo/logo4.png" alt="" style="width: 120px"></a>
 						</div>
 						<div class="footer_contact">
 							<div class="footer_contact_list">
