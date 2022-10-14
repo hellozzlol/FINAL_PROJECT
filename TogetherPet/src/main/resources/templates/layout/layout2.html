@@ -172,48 +172,6 @@
 		
 		})
 </script>
-
-<style>
-/*===================클래스 정보css=====================*/
-.catebtn {
-	border-radius: 5px;
-	border: none;
-	background-color: #ebff82;
-}
-
-.product_name {
-	padding-top: 0.5em;
-}
-
-.clas1 {
-	text-align: left;
-}
-
-
-.clas2 {
-	text-align: right; 
-	color: #a0a0a0;
-}
-
-#product_thumb{
-	height: 274px;
-	width: 274px;
-	overflow:hidden;
-    margin:0 auto;
-}
-
-#product_info{
-	width: 274px;
-}
-
-#thumb_img {
-	width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/*========================================*/
-</style>
 </head>
 
 <body>
@@ -275,7 +233,7 @@
 										<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
 										<li><a href="#"><i
 												class="icon-social-instagram icons"></i></a></li>
-										<li><a href="manager/admin">관리자 페이지로</a></li>
+										<li><a href="manager/admin">admin</a></li>
 									</ul>
 								</div>
 							</div>
@@ -316,7 +274,19 @@
 									</ul>
 								</nav>
 							</div>
+							
+							
 							<div class="header_account">
+							<!-- 카카오톡 상담 -->
+							<div
+							  id="kakao-talk-channel-chat-button"
+							  data-channel-public-id="_xiGQxbxj"
+							  data-title="question"
+							  data-size="small"
+							  data-color="yellow"
+							  data-shape="pc"
+							  data-support-multiple-densities="true"></div>
+							
 								<ul class="d-flex">
 									<li class="header_search"><a href="#"><i
 											class="icon-magnifier icons"></i></a></li>
@@ -427,8 +397,7 @@
 		<div th:if=${session.user}>
 			<form id="layoutNoticeFrm" name="layoutNoticeFrm" action="noticeUpdate" method="post">
 				<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}">
-				<input type="hidden"
+					th:value="${_csrf.token}"> <input type="hidden"
 					name="userNo" id="userNo" th:value="${session.user.userNo}">
 			</form>
 		</div>
@@ -498,6 +467,24 @@
 		</div>
 	</footer>
 	<!--footer area end-->
+	
+<script>
+  window.kakaoAsyncInit = function() {
+    Kakao.Channel.createChatButton({
+      container: '#kakao-talk-channel-chat-button',
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.channel.min.js';
+    js.integrity = 'sha384-qN6njjEgLQzM0N/uuB26JXrlFnwdctF+owkJc/pTqUpi1Qrp9xAvRKYIkzH5XcJU';
+    js.crossOrigin = 'anonymous';
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, 'script', 'kakao-js-sdk');
+</script>
 
 	<!--modernizr min js here-->
 	<script src="/assets/js/vendor/modernizr-3.7.1.min.js"></script>

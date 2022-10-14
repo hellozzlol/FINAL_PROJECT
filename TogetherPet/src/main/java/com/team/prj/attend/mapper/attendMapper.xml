@@ -17,12 +17,14 @@
 	    SELECT ad_no, nvl(end_dt, ' ') end_dt, state, start_dt
 		FROM ATTEND
 		WHERE ad_no = #{adNo}
+		order by start_dt desc
 	</select>
 
  	<!-- 출근 시간 입력  -->
 	<insert id="workIn" parameterType="com.team.prj.attend.service.attendVO">
 		insert into attend
 		values (#{adNo}, startDt, endDt, 0)
+		
 	</insert>
 	
 
