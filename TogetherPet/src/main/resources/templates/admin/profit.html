@@ -381,9 +381,9 @@
 									<tbody>
 										<tr>
 											<td><input class="form-control" type="date"
-												id="html5-date-input" name="start"></td>
+												id="html5-date-input" name="start" required></td>
 											<td><input class="form-control" type="date"
-												id="html5-date-input" name="end"></td>
+												id="html5-date-input" name="end" required></td>
 											<td><button type="submit" class="btn btn-primary"
 													style="width: 100%; margin: 0px auto">
 													<i class="bx bxl-baidu mb-2"></i>액셀 다운로드
@@ -526,7 +526,7 @@
 			today = today.toISOString().substr(0,10)
 			$('#std').html(today);
 	
-			
+			console.log('DS ▶▶▶▶▶' + today);
 			$.ajax('/manager/ajaxDailyList',{
 					type: 'post',
 					beforeSend: function (xhr) {
@@ -537,6 +537,7 @@
 					}
 				})
 				.done(res => {
+					console.log('DS ▶▶▶▶▶' + res);
 					if(res==''){
 						$('#dayTotal').html('0원');
 						
@@ -582,7 +583,7 @@
 			let stWeek = mn + '월 ' + wn + '주차';
 			$('#stw').html(stWeek)
 			$('#stMonday').html(monday)
-			
+			console.log('WS ▶▶▶▶▶' + monday);
 			$.ajax('/manager/ajaxWeeklyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
@@ -593,6 +594,7 @@
 				}
 			})
 			.done(res => {
+				console.log('WS ▶▶▶▶▶' + res);
 				if(res==''){
 					$('#weekTotal').html('0원');
 					
@@ -632,7 +634,7 @@
 				sm = pm;
 			}
 			$('#stm').html(sm);
-			console.log(sm)
+			console.log('MS ▶▶▶▶▶' + sm);
 			$.ajax('/manager/ajaxMonthlyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
@@ -643,7 +645,7 @@
 				}
 			})
 			.done(res => {
-				console.log(res);
+				console.log('MS ▶▶▶▶▶' + res);
 				if(res==''){
 					$('#monthTotal').html('0원');
 					
@@ -690,7 +692,6 @@
 				if(sm){
 					month = sm;
 				}	
-				
 				$('#stMonth').html(month);
 				
 				$.ajax('/manager/ajaxMonthlyList',{
@@ -703,6 +704,7 @@
 					}
 				})
 				.done(res => {
+					console.log('MC ▶▶▶▶▶' + res);
 					for(i=month-6; i<=month; i++){
 						let arr = [];
 						arr[0] = i;
@@ -752,6 +754,7 @@
 				}
 			})
 			.done(res => {
+				console.log('WC ▶▶▶▶▶' + res);
 				for(i=0; i<8; i++){
 					let arr = [];
 					let setMonday = monday.setDate(monday.getDate()+7);
@@ -802,6 +805,7 @@
 					}
 				})
 				.done(res => {
+					console.log('DC ▶▶▶▶▶' + res);
 					for(i=0; i<15; i++){
 						today.setDate(today.getDate()+1);
 						t = today.toISOString().substr(0, 10);

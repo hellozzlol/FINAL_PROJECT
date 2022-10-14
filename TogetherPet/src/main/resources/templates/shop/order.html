@@ -63,6 +63,10 @@
 
 			// 주문/결제 
 			$('#insertOrder').on('click', function () {
+				if($('input[name=pay]:checked').val() == null){
+					alert('결제 방법을 선택해 주세요.');
+					return;
+				}else{
 				if (confirm('해당 상품으로 주문 및 결제를 진행하시겠습니까?')) {
 					let address = $('#roadAddress').val();
 					let postcode = $('#postcode').val();
@@ -125,6 +129,7 @@
 							})
 					}
 					
+				}
 				}
 			})
 
@@ -227,12 +232,14 @@
 									id="call" name="call" class="border" placeholder="연락처"
 									type="text" th:value="${session.user.call}">
 								<!-- 주소 -->
-								<input id="postcode" name="postcode" class="border" placeholder="우편번호"
-									type="text" th:value="${session.user.postcode}"> <input
+								<input id="postcode" name="postcode" class="border"
+									placeholder="우편번호" type="text"
+									th:value="${session.user.postcode}"> <input
 									id="roadAddress" name="address" class="border"
 									placeholder="도로명주소" type="text"
 									th:value="${session.user.address}"> <input id="address"
-									class="border" name="da" placeholder="상세주소" type="text" th:value="${session.user.da}">
+									class="border" name="da" placeholder="상세주소" type="text"
+									th:value="${session.user.da}">
 								<!-- /주소 -->
 
 								<button class="btn btn-primary" onclick="execDaumPostcode()"

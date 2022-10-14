@@ -47,21 +47,26 @@
 					})
 			}
 		})
-		
 		// 필터링
 		// 배너를 클릭했을 때 배너 값이랑 카테고리 값이랑 다르면 display:none 스타일 추가
+		let all = Number($('#listSize').html());
 		$('#category').on('click', 'button', function() {
+			let listSize = all;
 			let filter = $(this).data('filter');
 			let categories = $('.category') // <div> 태그 배열
-			
+			let noneCnt = 0;
 			for(category of categories){ 
 				category.style='';
 				if(filter == 'ALL'){
 					category.style='';
 				}else if(category.getAttribute('data-category') != filter){
 					category.style.display='none';
+					noneCnt += 1;					
 				}
 			}
+			// 전체 갯수 - none 갯수 = 검색된 갯수
+			listSize -= noneCnt;
+			$('#listSize').html(listSize);
 		})
 		// 정렬
 		orderby();
@@ -92,38 +97,6 @@
 							</ul>
 						</div>
 						<!--breadcrumbs area end-->
-						<!-- 카테고리 -->
-						<div id="category"
-							class="blog_messonry_button d-flex justify-content-center"
-							style="margin-top: 100px;">
-							<button class="active" data-filter="ALL">
-								<img
-									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
-							</button>
-							<button data-filter="FOOD">
-								<img
-									src="https://img.icons8.com/ios-filled/50/1A1A1A/dog-bowl.png" /><br>사료
-							</button>
-							<button data-filter="SNACK">
-								<img src="https://img.icons8.com/dotty/50/1A1A1A/doggy-bag.png" /><br>간식
-							</button>
-							<button data-filter="TOY">
-								<img
-									src="https://img.icons8.com/sf-ultralight/50/1A1A1A/football2.png" /><br>장난감
-							</button>
-							<button data-filter="LIFE">
-								<img src="https://img.icons8.com/ios/50/1A1A1A/clothes.png" /><br>생활용품
-							</button>
-							<button data-filter="PAD">
-								<img src="https://img.icons8.com/ios/50/1A1A1A/dog-pooping.png" /><br>위생/배변
-							</button>
-							<button data-filter="HEALTH">
-								<img
-									src="https://img.icons8.com/external-yogi-aprelliyanto-detailed-outline-yogi-aprelliyanto/50/1A1A1A/external-medicine-pet-shop-yogi-aprelliyanto-detailed-outline-yogi-aprelliyanto.png" /><br>건강관리
-							</button>
-
-						</div>
-						<!-- 카테고리끝 -->
 						<div class="shop_banner d-flex align-items-center"
 							data-bgimg="assets/img/bg/pexels-photo-59523.jpeg">
 							<div class="shop_banner_text">
@@ -140,7 +113,7 @@
 							class="shop_toolbar_wrapper d-flex justify-content-between align-items-center">
 							<div class="page_amount">
 								<p>
-									<span>[[${#lists.size(goodsList)}]]</span> Products Found
+									<span id="listSize">[[${#lists.size(goodsList)}]]</span> Products Found
 								</p>
 							</div>
 							<div class=" sorting_by d-flex align-items-center">
@@ -174,6 +147,37 @@
 							</div>
 						</div>
 						<!--shop toolbar end-->
+						<!-- 카테고리 -->
+						<div id="category"
+							class="blog_messonry_button d-flex justify-content-center"
+							style="margin-top: 100px;">
+							<button class="active" data-filter="ALL">
+								<img
+									src="https://img.icons8.com/sf-regular-filled/50/1A1A1A/a.png" /><br>전체
+							</button>
+							<button data-filter="FOOD">
+								<img
+									src="https://img.icons8.com/ios-filled/50/1A1A1A/dog-bowl.png" /><br>사료
+							</button>
+							<button data-filter="SNACK">
+								<img src="https://img.icons8.com/dotty/50/1A1A1A/doggy-bag.png" /><br>간식
+							</button>
+							<button data-filter="TOY">
+								<img
+									src="https://img.icons8.com/sf-ultralight/50/1A1A1A/football2.png" /><br>장난감
+							</button>
+							<button data-filter="LIFE">
+								<img src="https://img.icons8.com/ios/50/1A1A1A/clothes.png" /><br>생활용품
+							</button>
+							<button data-filter="PAD">
+								<img src="https://img.icons8.com/ios/50/1A1A1A/dog-pooping.png" /><br>위생/배변
+							</button>
+							<button data-filter="HEALTH">
+								<img
+									src="https://img.icons8.com/external-yogi-aprelliyanto-detailed-outline-yogi-aprelliyanto/50/1A1A1A/external-medicine-pet-shop-yogi-aprelliyanto-detailed-outline-yogi-aprelliyanto.png" /><br>건강관리
+							</button>
+						</div>
+						<!-- 카테고리끝 -->
 						<div class="row shop_wrapper" id="all">
 							<!-- 반복되는 곳 -->
 							<div th:each="g:${goodsList}"
@@ -187,7 +191,7 @@
 										class="dcPrice" name="dcPrice">
 								</form>
 								<div class="single_product">
-									<!-- 썸네일 찾기 -->
+									<!-- 썸네일 -->
 									<div class="product_thumb">
 										<a th:href="@{goods(goodsNo=${g.goodsNo})}"> <img
 											class="primary_img" th:src="${g.thumb}" alt="consectetur">
@@ -200,9 +204,10 @@
 														class="icon-heart icons"></i></a></li>
 
 												<li class="quick_view"><a data-toggle="modal"
-													th:data-target="|#modal_box_${g.goodsNo}|" data-tippy="Quick View" href="#"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
+													th:data-target="|#modal_box_${g.goodsNo}|"
+													data-tippy="Quick View" href="#" data-tippy-inertia="true"
+													data-tippy-delay="50" data-tippy-arrow="true"
+													data-tippy-placement="left"><i
 														class="icon-size-fullscreen icons"></i></a></li>
 
 											</ul>
@@ -212,7 +217,7 @@
 												100,2,'COMMA')}]]%</span>
 										</div>
 									</div>
-									<!-- 썸네일 찾기 끝 -->
+									<!-- /썸네일 -->
 									<div class="product_content grid_content text-center">
 										<div class="product_ratting">
 											<ul class="d-flex justify-content-center">
@@ -314,8 +319,8 @@
 									</div>
 
 									<!-- modal area start-->
-									<div class="modal fade" th:id="|modal_box_${g.goodsNo}|" tabindex="-1"
-										role="dialog" aria-hidden="true">
+									<div class="modal fade" th:id="|modal_box_${g.goodsNo}|"
+										tabindex="-1" role="dialog" aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered"
 											role="document">
 											<div class="modal-content">
@@ -345,9 +350,7 @@
 																		</span> <span class="old_price" th:if="${g.dc}">KRW
 																			[[${#numbers.formatInteger(g.price,3,'COMMA')}]]</span>
 																	</div>
-																	<br>
-																	<br>
-																	<br>
+																	<br> <br> <br>
 																	<div class="modal_description mb-15">
 																		<p th:text="${g.info}"></p>
 																	</div>

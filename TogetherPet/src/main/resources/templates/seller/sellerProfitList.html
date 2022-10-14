@@ -143,6 +143,10 @@
 
 			// 검색 버튼 클릭했을 때
 			$('#searchBtn').on('click', function() {
+				console.log('searchBtn clicked')
+				let start = "";
+				let end = "";
+				let by = "";
 				let period = "전체"
 				by = $('input[name=searchBy]:checked').val();
 				if(by == '1'){
@@ -173,6 +177,7 @@
 				
 				$('#period').html(period);
 				
+				console.log('right before reload')
 				console.log(key, start, end)
 				let url = "/profitTable?start=" + start + "&end=" + end + "&key=" + key  + "&by=" + by  + "&pageNum=" + pn;
 				$("#subHtml").load(url);
