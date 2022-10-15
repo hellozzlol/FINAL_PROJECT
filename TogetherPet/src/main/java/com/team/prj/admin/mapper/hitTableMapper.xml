@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.prj.admin.mapper.hitTableMapper">
+	<!-- 조회수 목록 -->
+	<select id="hitList" resultType="com.team.prj.admin.service.hitTableVO">
+		SELECT SUM(hit), CASE WHEN id = 'S' then '쇼핑'
+		                      WHEN id = 's' then '쇼핑'
+		                      WHEN id = 'c' then '클래스'
+		                      WHEN id = 'C' then '클래스'
+		                      WHEN id = 'FREE' then '게시판'
+		                 ELSE ' '
+		                 END AS ID
+		FROM hitTable
+		WHERE ID IN ('S', 'c', 'C', 's', 'FREE')
+		AND dt
+		    BETWEEN TO_DATE(dt, 'yyyy-mm-dd')
+		    and TO_DATE(dt, 'yyyy-mm-dd') + '7'
+		GROUP BY ID
+	</select>
+</mapper>

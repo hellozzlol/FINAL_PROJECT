@@ -233,7 +233,7 @@
 										<li><a href="#"><i class="icon-social-facebook icons"></i></a></li>
 										<li><a href="#"><i
 												class="icon-social-instagram icons"></i></a></li>
-										<li><a href="manager/admin">admin</a></li>
+										<li><a href="manager/mypage">admin</a></li>
 									</ul>
 								</div>
 							</div>
@@ -277,16 +277,6 @@
 							
 							
 							<div class="header_account">
-							<!-- 카카오톡 상담 -->
-							<div
-							  id="kakao-talk-channel-chat-button"
-							  data-channel-public-id="_xiGQxbxj"
-							  data-title="question"
-							  data-size="small"
-							  data-color="yellow"
-							  data-shape="pc"
-							  data-support-multiple-densities="true"></div>
-							
 								<ul class="d-flex">
 									<li class="header_search"><a href="#"><i
 											class="icon-magnifier icons"></i></a></li>
@@ -319,7 +309,7 @@
 									<li sec:authorize="isAuthenticated()" class="account_link">
 										<a href="#"><i class="icon-bell icons"></i></a>
 										<span sec:authorize="hasRole('USER')" id="noticeCount"
-										class="noticeCount" style="font-size: 15px;"></span>
+										class="item_count" style="font-size: 10px;"></span>
 										<ul sec:authorize="hasRole('USER')"
 											class="dropdown_account_link"
 											style="width: 450px; left: auto; right: 0; max-height: 400px;" role="menu" id="top">
@@ -347,6 +337,16 @@
 								</ul>
 							</div>
 						</div>
+						<!-- 카카오톡 상담 -->
+						<div
+						  id="kakao-talk-channel-chat-button"
+						  data-channel-public-id="_xiGQxbxj"
+						  data-title="question"
+						  data-size="small"
+						  data-color="yellow"
+						  data-shape="pc"
+						  data-support-multiple-densities="true"
+						  style="float:right;"></div>
 					</div>
 				</div>
 			</div>
@@ -375,7 +375,6 @@
 				</button>
 			</form>
 		</div>
-
 	</header>
 	<!--header area end-->
 

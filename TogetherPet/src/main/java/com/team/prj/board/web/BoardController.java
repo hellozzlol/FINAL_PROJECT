@@ -109,10 +109,6 @@ public class BoardController {
 	}
 
 	// 커뮤니티 글 등록
-	/* @PostMapping("/boardIns") */
-	
-	
-
 	/* @PostMapping(value = "/boardIns") */
 	@RequestMapping(value="/boardIns", method = RequestMethod.POST) 
 	public String boardInsert(BoardVO vo, @RequestParam("file") MultipartFile file, HttpServletRequest request)

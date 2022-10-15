@@ -39,26 +39,6 @@
 				style="padding-top: 20px; padding-bottom: 20px; font-weight: bold;">조회수 차트</h3>
 			<div class="col-xl-12">
 				<div class="nav-align-top mb-4">
-					<ul class="nav nav-pills mb-3" role="tablist">
-						<li class="nav-item">
-							<button type="button" class="nav-link active" role="tab"
-								id="dailyBtn" data-bs-toggle="tab" data-bs-target="#dailyTab"
-								aria-controls="navs-pills-top-home" aria-selected="true">
-								일간</button>
-						</li>
-						<li class="nav-item">
-							<button type="button" class="nav-link" role="tab" id="weeklyBtn"
-								data-bs-toggle="tab" data-bs-target="#weeklyTab"
-								aria-controls="navs-pills-top-profile" aria-selected="false">
-								주간</button>
-						</li>
-						<li class="nav-item">
-							<button type="button" class="nav-link" role="tab" id="monthlyBtn"
-								data-bs-toggle="tab" data-bs-target="#monthlyTab"
-								aria-controls="navs-pills-top-messages" aria-selected="false">
-								월간</button>
-						</li>
-					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade show active" id="dailyTab"
 							role="tabpanel">
@@ -67,22 +47,12 @@
 									<div class="tab-content p-0">
 										<div class="tab-pane fade show active"
 											id="navs-tabs-line-card-income" role="tabpanel">
-											<div class="p-4 pt-3">
-												<div>
-													<small class="text-muted d-block">15일 동안의 일간 차트입니다.</small>
-												</div>
-												<div>
-													<h5 class="card-header">
-														<a href="#" id="prevDBtn"> << </a>&nbsp;&nbsp;&nbsp;
-														<span id="stDay"></span> &nbsp;&nbsp;&nbsp;
-														<a href="#" id="nextDBtn"> >> </a>
-													</h5>
-												</div>
-											</div>
 
-											<div class="col-12">
-												<div id="dailyIncomeChart" style="width:100%; height: 500px;"></div>
+											<!-- 차트 -->
+											<div style="width: 90%; margin: auto;">
+											  <canvas id="line-chart"></canvas>
 											</div>
+											<!-- 차트 -->
 
 											<!-- hit count Table -->
 											<br> <br> <br>
@@ -95,10 +65,10 @@
 																<th style="width: 50%;">전체조회수</th>
 															</tr>
 														</thead>
-														<tbody id="btnList" class="table-border-bottom-0">
+														<tbody id="btnList" th:each="c:${count}" class="table-border-bottom-0">
 															<tr>
-																<td>dd</td>
-																<td>dd</td>
+																<td>[[${c.dt}]]</td>
+																<td>[[${c.hit}]]</td>
 															</tr>
 														</tbody>
 													</table>
@@ -108,17 +78,17 @@
 														<thead>
 															<tr>
 																<th style="width: 100px;">카테고리</th>
-																<th style="width: 600px;">글제목</th>
-																<th style="width: 80px;">조회수</th>
-																<th style="width: 100px;">게시일자</th>
+																<th style="width: 500px;">글제목</th>
+																<th style="width: 100px;">조회수</th>
+																<th style="width: 120px;">게시일자</th>
 															</tr>
 														</thead>
 														<tbody>
-															<tr class="days" th:each="d:${dailyList}">
-																<td>[[${d.id}]]</td>
-																<td>[[${d.title}]]</td>
-																<td>[[${d.hit}]]</td>
-																<td>[[${dt}]]</td>
+															<tr class="days" th:each="c:${count}">
+																<td>[[${c.id}]]</td>
+																<td>[[${c.title}]]</td>
+																<td>[[${c.hit}]]</td>
+																<td>[[${c.dt}]]</td>
 															</tr>
 														</tbody>
 													</table>
@@ -137,496 +107,114 @@
 		</div>
 		<!--/ Profit Overview -->
 
-		<script type="text/javascript"
-			src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+		<canvas id="line-chart"></canvas>
+		
 		<script type="text/javascript">
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-		let arrs=[];
+		$(document).ready(function() {
+			getGraph();
+		});
 		
-		dailyChart();	
-		WSum();
-		MSum();
-
-		$('#weeklyBtn').on('click', function() {
-			weeklyChart();	
-			})	
+		function getGraph() {
+			let timeList = []; // 시간
+			let cntList = []; // 카테고리 아이디
+			let cnt = []; // 조회수
 			
- 		$('#monthlyBtn').on('click', function() {
-			monthlyChart();	
-			})  
-	 
-		$('#dailyBtn').on('click', function() {
-			dailyChart();	
-			})	 
-		
-		/* 일간 차트 동적 제어 */
-		$('#prevDBtn').on('click', function(){
-			let pd = $('#stDay').html();
-			pd = new Date(pd);
-			pd = pd.setDate(pd.getDate()-1);
-			pd = new Date(pd).toISOString().substr(0,10);
-			dailyChart(pd);
-		})	
-		
-		$('#nextDBtn').on('click', function(){
-			let nd = $('#stDay').html(); 
-			nd = new Date(nd);
-			nd = nd.setDate(nd.getDate()+1);
-			nd = new Date(nd).toISOString().substr(0,10);
-			
-			let td = new Date().toISOString().substr(0,10);
-			
-			if(nd>td){
-				alert('오늘 이후의 일자로 설정할 수 없습니다.')
-				return;
-			}
-			dailyChart(nd);
-		})
-		
-		/* 주간 차트 동적 제어 */
-		$('#prevWBtn').on('click', function(){
-			let pw = new Date($('#stWeekStart').html());
-			pw = pw.setDate(pw.getDate()-7);
-			pw = new Date(pw).toISOString().substr(0,10);
-			weeklyChart(pw);
-		})	
-		
-		$('#nextWBtn').on('click', function(){
-			let nw = new Date($('#stWeekStart').html()); 
-			nw = nw.setDate(nw.getDate()+7);
-			nw = new Date(nw).toISOString().substr(0,10);
-			let tw = getMondayDate(new Date().toISOString().substr(0,10));
-			if(nw>tw){
-				alert('이번 주 이후의 날짜로 설정할 수 없습니다.')
-				return;
-			}
-			weeklyChart(nw);
-		})
-		
-		/* 월간 차트 동적 제어 */
-		$('#prevMBtn').on('click', function(){
-			let pm = Number($('#stMonth').html());
-			pm = pm-1;
-			monthlyChart(pm);
-		})	
-		
-		$('#nextMBtn').on('click', function(){
-			let nm = Number($('#stMonth').html()); 
-			nm = nm+1;
-			let tm = new Date();
-			tm = Number(tm.toISOString().substr(5,2));
-			if(nm>tm){
-				alert('이번 달 이후의 날짜로 설정할 수 없습니다.')
-				return;
-			}
-			monthlyChart(nm);
-		})
-		
-		/* 일일 매출 합계 */
-		$('#prevDSum').on('click', function(){
-			let pd = $('#std').html();
-			pd = new Date(pd);
-			pd = pd.setDate(pd.getDate()-1);
-			pd = new Date(pd).toISOString().substr(0,10);
-			
-			DSum(pd);
-		})
-		
-		
-		$('#nextDSum').on('click', function(){
-			let nd = $('#std').html();
-			nd = new Date(nd);
-			nd = nd.setDate(nd.getDate()+1);
-			nd = new Date(nd).toISOString().substr(0,10);
-			let td = new Date().toISOString().substr(0,10);
-			
-			if(nd>td){
-				alert('오늘 이후의 날짜로 설정할 수 없습니다.')
-				return;
-			}
-			DSum(nd);
-		})
-		
-		/* 주별 매출 합계 */
-		$('#prevWSum').on('click', function(){
-			let pw = new Date($('#stMonday').html());
-			pw = pw.setDate(pw.getDate()-7);
-			pw = new Date(pw).toISOString().substr(0,10);
-			WSum(pw);
-		})
-		
-		$('#nextWSum').on('click', function(){
-			let nw = new Date($('#stMonday').html()); 
-			nw = nw.setDate(nw.getDate()+7);
-			nw = new Date(nw).toISOString().substr(0,10);
-			let tw = getMondayDate(new Date().toISOString().substr(0,10));
-			if(nw>tw){
-				alert('이번 주 이후의 날짜로 설정할 수 없습니다.')
-				return;
-			}
-			WSum(nw);
-		})
-		
-		function WSum(sw){
-			let monday = getMondayDate(new Date().toISOString().substr(0,10));
-			
-			if(sw){
-				monday = sw;
-			}
-			let wn = getWeekNumber(monday);
-			let mn = new Date(monday).getMonth()+1;
-			let stWeek = mn + '월 ' + wn + '주차';
-			$('#stw').html(stWeek)
-			$('#stMonday').html(monday)
-			
-			$.ajax('/manager/weeklyList',{
-				type: 'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
-				},
+			$.ajax({
+				url:"/admin/postCount",
+				type:"get",
 				data: {
-					start: monday,
-				}
-			})
-			.done(res => {
-				if(res==''){
-					$('#weekTotal').html('0원');
-					
-				}else{
-					res = Number(res[0].PF).toLocaleString() + '원'
-					$('#weekTotal').html(res);
-				}
-			})
-			
-			
-		}
-		
-		/* 월별 매출 합계 */
-		$('#prevMSum').on('click', function(){
-			let pm = Number($('#stm').html());
-			pm = pm-1;		
-			MSum(pm);
-		})
-		
-		$('#nextMSum').on('click', function(){
-			let nm = Number($('#stm').html());
-			nm = nm+1
-			let tm = new Date();
-			tm = Number(tm.toISOString().substr(5,2));
-			if(nm>tm){
-				alert('이번 달 이후의 날짜로 설정할 수 없습니다.')
-				return;
-			}
-			MSum(nm);
-		})
-		
-		function MSum(pm){
-			let sm = new Date();
-			sm = Number(sm.toISOString().substr(5,2));
-			if(pm){
-				sm = pm;
-			}
-			$('#stm').html(sm);
-			console.log(sm)
-			$.ajax('/manager/monthlyList',{
-				type: 'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
+					id : "${count.id}"
 				},
-				data: {
-					start: sm,
-				}
-			})
-			.done(res => {
-				console.log(res);
-				if(res==''){
-					$('#monthTotal').html('0원');
+				dataType : "json",
+				success : function(data) {
+					for (let i = 0; i < data.length; i++) {
+						timeList.push(data[i].dt);
+						cntList.push(data[i].id);
+						cnt.push(data[i].hit);
+					}
+					console.log(timeList); // 시간
+					console.log(cntList); // 카테고리 아이디
+					console.log(cnt); // 조회수
 					
-				}else{
-					res = Number(res[0].PF).toLocaleString() + '원'
-					$('#monthTotal').html(res);
-				}
-			})
-		}
-		
-		// 올해 몇주차인지 반환 ( ex 39주 )	
-		function ISO8601_week_no() 
-		  {
-			 var dt = new Date();	
-		     var tdt = new Date(dt.valueOf());
-		     var dayn = (dt.getDay() + 6) % 7;
-		     tdt.setDate(tdt.getDate() - dayn + 3);
-		     var firstThursday = tdt.valueOf();
-		     tdt.setMonth(0, 1);
-		     if (tdt.getDay() !== 4) 
-		       {
-		      tdt.setMonth(0, 1 + ((4 - tdt.getDay()) + 7) % 7);
-		        }
-		     return 1 + Math.ceil((firstThursday - tdt) / 604800000);
-		        }
-		
-		// 특정 주차의 시작일자(월요일)
-		function getMondayDate(d) {
-		    var paramDate = new Date(d); // new Date('2021-06-08'): 화요일
-		 
-		    var day = paramDate.getDay();
-		    var diff = paramDate.getDate() - day + (day == 0 ? -6 : 1);
-		    return new Date(paramDate.setDate(diff)).toISOString().substring(0, 10);
-		}
-		
-		function monthlyChart(sm){
-				arrs = [];
-				arrs.push(['Monthly', 'Profit']);
-				let today = new Date();
-				let month = Number(today.toISOString().substr(5,2));
-				
-				if(sm){
-					month = sm;
-				}	
-				
-				$('#stMonth').html(month);
-				
-				$.ajax('/manager/monthlyList',{
-					type: 'post',
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {
-						start: ''
-					}
-				})
-				.done(res => {
-					for(i=month-6; i<=month; i++){
-						let arr = [];
-						arr[0] = i;
-						for(let field in res){
-							let m = res[field].MONTHLY;
-							let p = res[field].PF;
-							if(m==i){
-								arr[1] = Number(p);
-								break;
-							}else{
-								arr[1] = 0;
-							}
+					new Chart(document.getElementById("line-chart"), {
+						type:"line",
+						data : {
+							labels : timeList, // x축(날짜)
+							datasets : [{
+								data:cnt, // 값
+								label:"조회수 ",
+								borderColor: "#6a7964",
+								fill : false
+							}]
+						},
+						options: {
+						title: {
+							display:true
 						}
-						arrs.push(arr);
-					}
-					chartId = 'monthlyIncomeChart';
-					google.charts.setOnLoadCallback(drawChart);
-				})
-			}
-		
-		function weeklyChart(sw){
-			arrs = [];
-			let f = ['Weekly', 'Profit'];
-			arrs.push(f);
-			
-			let monday = getMondayDate(new Date().toISOString().substr(0,10));
-			
-			if(sw){
-				monday = sw;
-			}
-			console.log('4monday out of for,      ', monday);
-			let wn = getWeekNumber(monday);
-			let mn = new Date(monday).getMonth()+1;
-			let stWeek = mn + '월 ' + wn + '주차';
-			$('#stWeek').html(stWeek)
-			$('#stWeekStart').html(monday)
-			
-			monday = new Date(Date.parse(monday) - 56 * 1000 * 60 * 60 * 24);  // 56일 전 = 8주 전
-			$.ajax('/manager/weeklyList',{
-				type: 'post',
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(header, token)
+						}
+					});
 				},
-				data: {
-					start: ''
+				error:function() {
+					alert("실패");
 				}
-			})
-			.done(res => {
-				for(i=0; i<8; i++){
-					let arr = [];
-					let setMonday = monday.setDate(monday.getDate()+7);
-					setMonday = new Date(setMonday).toISOString().substr(0,10);
-					let m = setMonday;
-					let wn = getWeekNumber(setMonday);
-					let mn = new Date(setMonday).getMonth()+1;
-					let stWeek = mn + '월' + wn + '주'
-					arr[0] = stWeek;
-					
-					for(let field in res){
-						let w = res[field].START_DT;
-						let p = res[field].PF;
-						if(w==m){
-							arr[1] = p;
-							break;
-						}else{
-							arr[1] = 0;
-						}
-					}
-					arrs.push(arr);
-					}	
-				chartId = 'weeklyIncomeChart';
-				google.charts.setOnLoadCallback(drawChart);
 			})
 		}
 		
-		function dailyChart(sd){
-			arrs = [];
-			arrs.push(['Daily', 'Profit']);
-			
-			let today = new Date();
-			
-			if(sd){
-				today = new Date(sd);
-			}
-			
-			$('#stDay').html(today.toISOString().substr(0,10))
-			today = new Date(Date.parse(today) - 15 * 1000 * 60 * 60 * 24); // 보름 전
-
-			$.ajax('/manager/dailyList',{
-					type: 'post',
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token)
-					},
-					data: {
-						start: ''
-					}
-				})
-				.done(res => {
-					for(i=0; i<15; i++){
-						today.setDate(today.getDate()+1);
-						t = today.toISOString().substr(0, 10);
-						let arr = [];
-						arr[0] = t.substr(5);
-						for(let field in res){
-							
-							let d = res[field].DAILY;
-							let p = res[field].PF;
-							if(d==t){
-								arr[1] = p;
-								break;
-							}else{
-								arr[1] = 0;
-							}
-						}
-						arrs.push(arr);
-					}
-					chartId = 'dailyIncomeChart';
-					google.charts.setOnLoadCallback(drawChart);
-				})
-			}
-			
-			/* Google Chart */
-			google.charts.load('current', {
-				'packages' : [ 'corechart' ]
-			});
-
-			function drawChart() {
-				var data = google.visualization.arrayToDataTable(arrs);
-				
-				var options = {
-					title : 'Company Performance',
-					curveType : 'function',
-					legend : {
-						position : 'bottom'
-					},
-					 vAxis: {
-	                    min: 0
-	                }
-				};
-				
-				var chart = new google.visualization.LineChart(document
-						.getElementById(chartId));
-
-				chart.draw(data, options);
-			}
-			
-			/* DataTables */
-			$('.table').DataTable({
-				lengthChange : false,
-				pageLength : 10,
-				lengthMenu : [ 10, 20, 30, 40, 50 ],
-				info : true,
-				searching : false,
-				ordering : false,
-			});
-			
-			/* m월 n주 */
-			function getWeekNumber(wn){
-				let today = new Date(wn) // 해당 날짜 (일)
-				let currentDate = today.getDate(); // 이번 달 1일로 지정
-				let startOfMonth = new Date(today.setDate(1)); // 이번 달 1일이 무슨 요일인지 확인
-				let weekDay = startOfMonth.getDay(); // 0: Sun ~ 6: Sat
-				return parseInt(((weekDay - 1) + currentDate) / 7) + 1;
-			}
-			
-			// console.log('getWeekNumber', getWeekNumber())
 		
-			/* 올해 n주차의 시작날짜(일요일) 구하기 */
-			var month_days       = new Array( 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
-			var month_days_count = new Array();
-
-			// 윤년(2월이 29일)인지 검사
-			function is_leap_year( year )
-			{
-			    return ( year % 4 == 0 && year % 100 != 0 ) || ( year % 400 == 0 && year % 4000 != 0 );
+		// Datatables
+		$('.table').DataTable({
+			lengthChange : false,
+			pageLength : 10,
+			lengthMenu : [ 10, 20, 30, 40, 50 ],
+			info : true,
+			searching : false,
+			ordering : false,
+		});
+		
+		
+		/* new Chart(document.getElementById("line-chart"), {
+			type : 'line',
+			data : {
+				labels : [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+				datasets : [{
+					data : [86,114,106,107,111,133,221,783,2478],
+					label : "Africa",
+					borderColor: "#3e95cd",
+					fill : false
+				}, {
+					data : [282,350,411,502,635,809,947,1402,3700,5267],
+					label : "Asia",
+					borderColor: "#8e5ea2",
+					fill : false
+				}, {
+					data : [168,170,178,190,203,276,408,547,675,734],
+					label : "Europe",
+					borderColor : "#3cba9f",
+					fill : false
+				}, {
+					data : [40,20,10,16,24,38,74,167,508,784],
+					label : "Latin America",
+					borderColor : "#e8c3b9",
+					fill : false
+				}, {
+					data : [6,3,2,2,7,26,82,172,312,433],
+					label : "North America",
+					borderColor : "#c45850",
+					fill : false
+				}
+			]
+			},
+			options: {
+			title: {
+				display:true,
+				text:'World population per region (in Millions)'
 			}
-
-			// 년도에 맞게 month_days 와 month_days_count의 값을 설정한다.
-			function set_month_days( year )
-			{
-			        if( is_leap_year( year ) ) month_days[1] = 29; else month_days[1] = 28;
-
-			        month_days_count[0] = 0;
-
-			        for( i=0;i<12;i++){
-			                month_days_count[i+1] = month_days_count[i] + month_days[i];
-			        }
 			}
-			//console.log(test('2022', 40));
-			function test(year, week)
-			{
-			        set_month_days( year );
-
-			        var weekday = new Date( year,0,1).getDay();
-			        var total_days = ( (week-1) * 7 ) - weekday;
-			        
-			        var yy1,yy2,mm1,mm2,dd1,dd2;
-
-			        if( total_days < 0 ){
-			                yy1 = year-1;
-			                yy2 = year;
-			                mm1=12;
-			                mm2=1;
-			                dd1=32-weekday;
-			                dd2=7-weekday;
-			        }else{
-			            yy1 = yy2 = year;
-			                for( mm1 = 0 ; mm1 < 12 ; mm1++ ){
-			                        if( month_days_count[mm1] > total_days ) break;
-			                }
-			                
-			                dd1 = total_days - month_days_count[mm1-1] + 1;        
-			                dd2 = dd1 + 6;
-			                mm2 = mm1;
-
-			                if( dd2 > month_days[ mm1-1 ] ){
-			                        mm2 = mm1 % 12 + 1;
-			                        dd2 = dd2 - month_days[ mm1-1];
-			                }
-
-			                if( mm1==12 && mm2==1 ) yy2++;  
-			        }
-			        
-			        var ss0 =  year + "년 " + week  + "주"
-			        var ss1 =  yy1 + "년 " + mm1 + "월 " + dd1 + "일";
-			        var ss2 =  yy2 + "년 " + mm2 + "월 " + dd2 + "일";        
-
-			        return ss1;       
-			}
+		}); */
 			
 		</script>
 	</article>
