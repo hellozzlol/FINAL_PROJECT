@@ -214,7 +214,7 @@
 										</div>
 										<div class="product_label" th:if="${g.dc}">
 											<span>[[${#numbers.formatInteger(g.dc *
-												100,2,'COMMA')}]]%</span>
+												100,1,'COMMA')}]]%</span>
 										</div>
 									</div>
 									<!-- /썸네일 -->
@@ -415,17 +415,6 @@
 								</div>
 							</div>
 							<!-- 반복되는 곳 -->
-						</div>
-						<div class="pagination_style pagination justify-content-center">
-							<ul class="d-flex">
-								<li><a href="#"> << </a></li>
-								<li><a href="#">1</a></li>
-								<li><a class="current" href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">>></a></li>
-							</ul>
 						</div>
 						<form id="getOrderBy" action="shop" method="post">
 							<div sec:authorize="isAuthenticated()">

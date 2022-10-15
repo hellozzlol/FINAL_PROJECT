@@ -132,7 +132,7 @@
 			</if>
 			between to_date(#{start}, 'yyyy-mm-dd')
 			and
-			to_date(#{end}, 'yyyy-mm-dd')+1
+			to_date(#{end}, 'yyyy-mm-dd')
 		</if>
 		<choose>
 			<when test="key == 1"> order by minus_yn desc, 1 desc </when>

@@ -168,6 +168,49 @@
 		</div>
 
 		<!-- /Profit Card -->
+		<!-- Profit Data Excelize & Download -->
+		<br> <br>
+		<div class="row">
+			<h1 class="display-4 mb-0"
+				style="padding-top: 20px; padding-bottom: 20px;">매출 데이터 다운로드</h1>
+			<div class="col-xl-12">
+				<!-- HTML5 Inputs -->
+				<div class="card mb-4">
+					<h5 class="card-header">날짜 선택</h5>
+					<div class="card-body">
+						<form action="/exelDownload" method="post">
+							<div class="mb-1 row">
+								<table>
+									<thead>
+										<tr>
+											<td style="width: 40%"><label for="html5-date-input"
+												class="form-label">시작날짜</label></td>
+											<td style="width: 40%"><label for="html5-date-input"
+												class="form-label">종료날짜</label></td>
+											<td style="width: 20%"><input type="hidden"
+												th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><input class="form-control" type="date"
+												id="html5-date-input" name="start" required></td>
+											<td><input class="form-control" type="date"
+												id="html5-date-input" name="end" required></td>
+											<td><button type="submit" class="btn btn-primary"
+													style="width: 100%; margin: 0px auto">
+													<i class="bx bxl-baidu mb-2"></i>액셀 다운로드
+												</button></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Profit Data Excelize & Download -->
 		<!-- Profit Overview -->
 		<br> <br>
 		<div class="row">
@@ -210,8 +253,8 @@
 												<div>
 													<h5 class="card-header">
 														<a id="prevDBtn"> << </a>&nbsp;&nbsp;&nbsp; <span
-															id="stDay"></span> &nbsp;&nbsp;&nbsp;<a
-															id="nextDBtn"> >> </a>
+															id="stDay"></span> &nbsp;&nbsp;&nbsp;<a id="nextDBtn">
+															>> </a>
 													</h5>
 												</div>
 											</div>
@@ -355,49 +398,6 @@
 
 		</div>
 		<!--/ Profit Overview -->
-		<!-- Profit Data Excelize & Download -->
-		<br> <br>
-		<div class="row">
-			<h1 class="display-4 mb-0"
-				style="padding-top: 20px; padding-bottom: 20px;">매출 데이터 다운로드</h1>
-			<div class="col-xl-12">
-				<!-- HTML5 Inputs -->
-				<div class="card mb-4">
-					<h5 class="card-header">날짜 선택</h5>
-					<div class="card-body">
-						<form action="/exelDownload" method="post">
-							<div class="mb-1 row">
-								<table>
-									<thead>
-										<tr>
-											<td style="width:40%"><label for="html5-date-input"
-												class="form-label">시작날짜</label></td>
-											<td style="width:40%"><label for="html5-date-input"
-												class="form-label">종료날짜</label></td>
-											<td style="width:20%"><input type="hidden"
-												th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></td>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td><input class="form-control" type="date"
-												id="html5-date-input" name="start" required></td>
-											<td><input class="form-control" type="date"
-												id="html5-date-input" name="end" required></td>
-											<td><button type="submit" class="btn btn-primary"
-													style="width: 100%; margin: 0px auto">
-													<i class="bx bxl-baidu mb-2"></i>액셀 다운로드
-												</button></td>
-										</tr>	
-									</tbody>
-								</table>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Profit Data Excelize & Download -->
 
 		<script type="text/javascript"
 			src="https://www.gstatic.com/charts/loader.js"></script>
@@ -526,7 +526,6 @@
 			today = today.toISOString().substr(0,10)
 			$('#std').html(today);
 	
-			console.log('D ▶▶▶▶▶' + today);
 			$.ajax('/manager/ajaxDailyList',{
 					type: 'post',
 					beforeSend: function (xhr) {
@@ -537,7 +536,6 @@
 					}
 				})
 				.done(res => {
-					console.log('DS ▶▶▶▶▶' + res);
 					if(res==''){
 						$('#dayTotal').html('0원');
 						
@@ -583,7 +581,6 @@
 			let stWeek = mn + '월 ' + wn + '주차';
 			$('#stw').html(stWeek)
 			$('#stMonday').html(monday)
-			console.log('W ▶▶▶▶▶' + monday);
 			$.ajax('/manager/ajaxWeeklyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
@@ -594,7 +591,6 @@
 				}
 			})
 			.done(res => {
-				console.log('WS ▶▶▶▶▶' + res);
 				if(res==''){
 					$('#weekTotal').html('0원');
 					
@@ -634,7 +630,6 @@
 				sm = pm;
 			}
 			$('#stm').html(sm);
-			console.log('M ▶▶▶▶▶' + sm);
 			$.ajax('/manager/ajaxMonthlyList',{
 				type: 'post',
 				beforeSend: function (xhr) {
@@ -645,7 +640,6 @@
 				}
 			})
 			.done(res => {
-				console.log('MS ▶▶▶▶▶' + res);
 				if(res==''){
 					$('#monthTotal').html('0원');
 					
@@ -704,7 +698,6 @@
 					}
 				})
 				.done(res => {
-					console.log('MC ▶▶▶▶▶' + res);
 					for(i=month-6; i<=month; i++){
 						let arr = [];
 						arr[0] = i;
@@ -736,7 +729,6 @@
 			if(sw){
 				monday = sw;
 			}
-			console.log('4monday out of for,      ', monday);
 			let wn = getWeekNumber(monday);
 			let mn = new Date(monday).getMonth()+1;
 			let stWeek = mn + '월 ' + wn + '주차';
@@ -754,7 +746,6 @@
 				}
 			})
 			.done(res => {
-				console.log('WC ▶▶▶▶▶' + res);
 				for(i=0; i<8; i++){
 					let arr = [];
 					let setMonday = monday.setDate(monday.getDate()+7);
@@ -805,9 +796,7 @@
 					}
 				})
 				.done(res => {
-					console.log('DC ▶▶▶▶▶' + res);
 					for(i=0; i<15; i++){
-						console.log('▶▶▶▶▶▶▶▶▶▶ ',res[i].DAILY)
 						today.setDate(today.getDate()+1);
 						t = today.toISOString().substr(0, 10);
 						let arr = [];
@@ -887,7 +876,7 @@
 				return parseInt(((weekDay - 1) + currentDate) / 7) + 1;
 			}
 			
-			// console.log('getWeekNumber', getWeekNumber())
+			// ''('getWeekNumber', getWeekNumber())
 		
 			/* 올해 n주차의 시작날짜(일요일) 구하기 */
 			var month_days       = new Array( 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
@@ -910,7 +899,7 @@
 			                month_days_count[i+1] = month_days_count[i] + month_days[i];
 			        }
 			}
-			//console.log(test('2022', 40));
+			//''(test('2022', 40));
 			function test(year, week)
 			{
 			        set_month_days( year );

@@ -1,5 +1,6 @@
 package com.team.prj.admin.web;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class AjaxProfitController {
 		if(start == "") {
 			start = null;
 		}
+		
 		return ps.dailyList(start);
 	}
 	

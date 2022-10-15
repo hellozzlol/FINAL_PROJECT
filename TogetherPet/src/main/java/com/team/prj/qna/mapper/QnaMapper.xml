@@ -14,7 +14,7 @@
 	<insert id="insertQna">
 		<selectKey keyProperty="qnaNo" order="BEFORE"
 			resultType="int">
-			select case max(qna_no) when null then 1 else
+			select case when max(qna_no) is null then 1 else
 			max(qna_no)+1 end
 			from qna
 		</selectKey>

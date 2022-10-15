@@ -4,8 +4,8 @@
 	<!-- 일별 리스트 -->
 	<select id="profitList"
 		resultType="com.team.prj.admin.service.ProfitVO">
-		select  to_date(to_char(minus_dt, 'yyyy-mm-dd'), 'yyyy-mm-dd') as minus_dt,
-				to_date(to_char(minus_dt, 'yyyy-mm-dd'), 'yyyy-mm-dd') as order_dt,
+		select  minus_dt,
+				order_dt,
 				user_no,
 				user_name,
 				seller_no,
@@ -23,7 +23,7 @@
 				and minus_dt
 					between to_date(#{start}, 'yyyy-mm-dd')
 					and
-					to_date(#{end}, 'yyyy-mm-dd')+1
+					to_date(#{end}, 'yyyy-mm-dd')
 		</if>
 	</select>
 

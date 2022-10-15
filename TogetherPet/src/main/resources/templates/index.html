@@ -8,13 +8,12 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
-	
-<style>
-.slider_area slick_slider_activation{
-height: 300px;
-}
 
-</style>	
+<style>
+.slider_area slick_slider_activation {
+	height: 300px;
+}
+</style>
 <title>Together Pet</title>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -115,8 +114,7 @@ height: 300px;
 				</div>
 
 				<div class="single_slider d-flex align-items-center"
-					data-bgimg="assets/img/slider/main5.jpg">
-				</div>
+					data-bgimg="assets/img/slider/main5.jpg"></div>
 
 			</div>
 		</section>
@@ -179,24 +177,25 @@ height: 300px;
 				</div>
 				<div class="banner_container d-flex">
 					<figure class="single_banner position-relative mr-30">
-						<img src="assets/img/bg/bg1.jpg" alt="">
+						<img src="/assets/img/bg/pexels-photo-59523.jpeg" alt=""
+							style="width: 700px; height: 550px;">
 						<figcaption class="banner_text position-absolute">
 							<h3>
-								Zara Pattern <br> backpacks
+								강아지 생활용품 <br> 최대 할인 10%
 							</h3>
 							<p>
-								Stretch, fresh-cool help you alway <br> comfortable
+								방석, 하우스, 캐리어, 개모차 등 <br> 다양한 할인 혜택을 만나보세요!
 							</p>
-							<a class="btn btn-primary" href="shop.html">Shop Now</a>
+							<a class="btn btn-primary" href="/shop">Shop Now</a>
 						</figcaption>
 					</figure>
 					<figure class="single_banner position-relative">
-						<img src="assets/img/bg/bg2.jpg" alt="">
+						<img style="width: 440px; height: 550px;" 
+						src="https://images.pexels.com/photos/3069334/pexels-photo-3069334.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
 						<figcaption class="banner_text position-absolute">
-							<h3 class="text-white">Basic Color Caps</h3>
+							<h3 class="text-white">회원가입 이벤트</h3>
 							<p class="text-white">
-								Minimalist never cool, choose and make <br> the simple
-								great again!
+								신규 가입시 <br> 3,000원의 적립금을 <br> 선물해 드립니다!
 							</p>
 						</figcaption>
 					</figure>
@@ -261,7 +260,7 @@ height: 300px;
 											</div>
 											<div class="product_label" th:if="${g.dc}">
 												<span>[[${#numbers.formatInteger(g.dc *
-													100,2,'COMMA')}]]%</span>
+													100,1,'COMMA')}]]%</span>
 											</div>
 										</div>
 										<figcaption class="product_content text-center">
@@ -356,7 +355,7 @@ height: 300px;
                               {"breakpoint":992, "settings": { "slidesToShow": 3 } },
                               {"breakpoint":768, "settings": { "slidesToShow": 2 } },
                               {"breakpoint":300, "settings": { "slidesToShow": 1 } }]}'>
-								
+
 								<!-- 클래스 -->
 								<article th:each="c:${class}" class="col single_product">
 									<figure>
@@ -376,7 +375,8 @@ height: 300px;
 											</div>
 										</div>
 										<!-----센터설명------>
-										<div class="product_content grid_content text-center" id="product_info">
+										<div class="product_content grid_content text-center"
+											id="product_info">
 
 											<div class="clas1">
 												<button class="catebtn">[[${c.category}]]</button>
