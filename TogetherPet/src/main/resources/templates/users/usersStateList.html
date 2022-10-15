@@ -75,6 +75,7 @@
 									<th>가격</th>
 									<th>수량</th>
 									<th>상태</th>
+									<th id="listEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
 							</thead>
 							<tbody id="all" class="table-border-bottom-0" style="text-align: center; vertical-align: middle;">
@@ -163,6 +164,11 @@
 			}
 		})
 		
+		// 신청 내역 없을때
+	    if($('#listEmpty').html()=='0'){
+	    	$("#all").html('');
+	    	$('#all').html("<td colspan=8 align=center><h3> <br>신청 내역이 없습니다.</h3></td>");
+	    }
 	</script>
 	<style>
 	#pageColor {

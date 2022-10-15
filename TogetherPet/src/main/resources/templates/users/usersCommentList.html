@@ -49,12 +49,12 @@
 				<!-- Hoverable Table rows -->
 				<div class="card">
 					<h5 class="card-header" style="font-weight: bold;">댓글 수
-						[[${#lists.size(pageInfo.list)}]]</h5>
+						[[${#lists.size(pageInfo.list)}]]개</h5>
 					<div class="table-responsive text-nowrap">
 						<table class="table table-hover">
 							<thead>
 								<tr style="text-align: center;">
-									<th style="width: 100px;">NO</th>
+									<th style="width: 100px; display: none;">NO</th>
 									<th style="width: 650px;">내용</th>
 									<th>작성일</th>
 									<th></th>
@@ -63,7 +63,7 @@
 							</thead>
 							<tbody class="table-border-bottom-0" id="all">
 								<tr th:each="list : ${pageInfo.list}" style="text-align: center;" th:id="${list.commentNo}">
-									<td style="width: 100px; border-right: 1px solid lightgray;">[[${list.commentNo}]]</td>
+									<td style="display: none; width: 100px; border-right: 1px solid lightgray;">[[${list.commentNo}]]</td>
 									<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
 										<strong>[[${list.content}]]</strong></td>
 									<td>[[${#dates.format(list.dt, 'yyyy-MM-dd')}]]</td>
