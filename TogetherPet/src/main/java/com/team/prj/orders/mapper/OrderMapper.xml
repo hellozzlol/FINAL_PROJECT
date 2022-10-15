@@ -25,7 +25,7 @@
 			from orders
 		</selectKey>
 		insert into orders
-		values (#{orderNo},
+		values (
 				#{address},
 				#{message},
 				#{call},
@@ -47,8 +47,8 @@
 				(select seller_no from goods where goods_no=#{goodsNo}),
 				(select name from goods where goods_no=#{goodsNo}),
 				#{postcode},
-				#{da})
-
+				#{da},
+				#{orderNo})
 	</insert>
 
 	<update id="updateMoney">

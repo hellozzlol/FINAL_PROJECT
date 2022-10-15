@@ -1,6 +1,7 @@
 package com.team.prj.admin.web;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -119,10 +120,12 @@ public class ProfitController {
 			cell.setCellValue(i + 1);
 			cell = row.createCell(1);
 			cell.setCellStyle(bodyStyle);
-			cell.setCellValue(pl.get(i).getMinusDt());
+			String dt = pl.get(i).getMinusDt().substring(0, 10);
+			cell.setCellValue(dt);
 			cell = row.createCell(2);
 			cell.setCellStyle(bodyStyle);
-			cell.setCellValue(pl.get(i).getOrderDt());
+			dt = pl.get(i).getOrderDt().substring(0, 10);
+			cell.setCellValue(dt);
 			cell = row.createCell(3);
 			cell.setCellStyle(bodyStyle);
 			cell.setCellValue(pl.get(i).getUserName());
