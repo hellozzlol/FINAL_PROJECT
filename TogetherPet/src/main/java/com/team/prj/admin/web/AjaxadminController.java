@@ -134,7 +134,7 @@ public class AjaxadminController {
 		return cnt;
 	}
 	
-	// 일반회원 상태 업데이트 - 활동정지 // 다시 확인하기
+	// *** 일반회원 상태 업데이트 - 활동정지 // 다시 확인하기
 	@RequestMapping("userUpdateAjax")
 	public int uStateUpdate(UsersVO vo) {
 		int cnt = 0;

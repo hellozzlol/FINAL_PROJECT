@@ -235,6 +235,21 @@
 				
 			})
 		})
+		
+		
+		// 공유하기(트위터) 
+		function shareTwitter() {
+	    	var sendText = "TogetherPet: "; // 전달할 텍스트
+	    	var sendUrl = "localhost/"; // 전달할 URL
+	    	window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
+		}
+		
+    	// 공유하기(페이스북)
+    	function shareFacebook() {
+    	    var sendUrl = "localhost/"; // 전달할 URL
+    	    window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+    	}
+
 	</script>
 </head>
 
@@ -351,8 +366,8 @@
 							<div class="priduct_social d-flex">
 								<span>SHARE: </span>
 								<ul>
-									<li><a href="#n"><i class="ion-social-twitter"></i></a></li>
-									<li><a href="#n"><i class="ion-social-facebook"></i></a></li>
+									<li><a href="javascript:shareTwitter();"><i class="ion-social-twitter"></i></a></li>
+									<li><a href="javascript:shareFacebook();"><i class="ion-social-facebook"></i></a></li>
 									
 									<li><a href="#"><i
 											class="ion-social-instagram-outline"></i></a></li>

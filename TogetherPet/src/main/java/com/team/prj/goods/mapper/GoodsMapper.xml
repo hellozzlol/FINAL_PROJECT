@@ -151,7 +151,7 @@
 					 when upload_state = '1' then '승인완료'
 					 when upload_state = '2' then '반려'
 				else ' '
-				end as upload_state
+				end as upload_state, price, thumb, detail
 		from goods
 		where upload_state != 1
 		order by

@@ -60,9 +60,9 @@
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0" >
-						<tr th:each="u:${pageInfo.list}">
+						<tr th:each="u:${pageInfo.list}" th:id="${u.userNo}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
-							<td th:text="${u.userNo}" id="uNo"></td>
+							<td th:text="${u.userNo}"></td>
 							<td th:text="${u.id}"></td>
 							<td th:text="${u.name}"></td>
 							<td th:text="${u.nickname}"></td>
@@ -214,14 +214,13 @@
 		
 		<!-- 선택 후 변경 클릭 시 -->
 		<script>
-		$('#uUpdate').on('click', function(e){
-			let chkbox = $(".chk:checked");
-				console.log(chkbox)
-			 chkbox.each(elem => {
+		$('#uUpdate').on('click', function(){
+			let chkbox = document.querySelectorAll(".chk");
+				console.log(chkbox);
+			 chkbox.foreach(elem => {
 				 	console.log(elem);
-				 	let a = $(elem).closest("tr");
-				 	console.log(a);
-				/* if(elem.checked==true){
+				 	
+				 if(elem.checked==true){
 				let no = elem.closest('tr').getAttribute('id')
 				  console.log(no);
 			$.ajax({
@@ -229,13 +228,13 @@
 				type: 'post',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)},
-				data: {no: no
+				data: {userNo: no
 					 }
 			})
 			.done(res=>{
 				location.href-'/manager/userManage';
 				})
-			} */
+			} 
 		});
 	})
 		
