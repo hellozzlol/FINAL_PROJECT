@@ -1,6 +1,6 @@
 package com.team.prj.orders.service;
 
-import java.util.Date;
+import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,6 +13,7 @@ public class OrderVO {
 	private int orderNo, amount, totalPrice, minusPrice, userNo, goodsNo;
 	private String address, message, call, name, pay, payYn, deliveryNo, deliveryState, minusYn;
 	private Date dt;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
 	private Date minusDate;
 	
 	// 0923 희수 추가

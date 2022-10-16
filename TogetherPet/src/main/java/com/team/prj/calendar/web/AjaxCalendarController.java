@@ -48,6 +48,7 @@ public class AjaxCalendarController {
 		nvo.setRefNo(refNo);
 		nvo.setType(type);
 		nvo.setContent(msg);
+		nvo.setUrl(url);
 		
 		CalendarVO c = new CalendarVO();
 		c.setCalendarNo(refNo);

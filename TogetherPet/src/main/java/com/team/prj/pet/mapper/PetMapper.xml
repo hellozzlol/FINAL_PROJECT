@@ -4,7 +4,7 @@
 	<!-- 반려동물 전체 조회(로그인한 유저) -->
 	<select id="petSelectList"
 		resultType="com.team.prj.pet.service.PetVO">
-		SELECT pet_no, name, TO_char(birth, 'YYYY-MM-DD') as birth, gender, type, weight
+		SELECT pet_no, name, birth, gender, type, weight
 		FROM PET
 		where user_no = #{userNo}
 		order by pet_no
@@ -14,7 +14,7 @@
 	<select id="petSelect"
 		parameterType="com.team.prj.pet.service.PetVO"
 		resultType="com.team.prj.pet.service.PetVO">
-		SELECT pet_no, name, TO_char(birth, 'YYYY-MM-DD') as birth, gender, weight, type, breed, neu
+		SELECT pet_no, name, birth, gender, weight, type, breed, neu
 		from pet
 		where pet_no = #{petNo}
 		and user_no = #{userNo}
@@ -30,7 +30,7 @@
 			#{breed},
 			#{weight},
 			#{gender},
-			TO_DATE(#{birth},'yy-mm-dd'),
+			TO_DATE(#{birth},'yyyy-mm-dd'),
 			#{neu},
 			1,
 			#{userNo},
