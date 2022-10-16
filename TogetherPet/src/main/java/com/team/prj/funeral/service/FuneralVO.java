@@ -18,7 +18,7 @@ public class FuneralVO {
 	private String latitude;//위도
 	private String longitude;//경도
 	private String categoryId;//카테고리아이디
-	private String homepage;//홈페이지
+	private String homepages;//홈페이지
 	private String fphoto;//포토
 	
 	
