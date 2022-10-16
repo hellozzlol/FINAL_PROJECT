@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderVO {
-	private int orderNo, amount, totalPrice, minusPrice, userNo, goodsNo;
-	private String address, message, call, name, pay, payYn, deliveryNo, deliveryState, minusYn;
+	private int orderNo, amount, totalPrice, minusPrice, userNo, goodsNo, deliveryNo;
+	private String address, message, call, name, pay, payYn, deliveryState, minusYn;
 	private Date dt;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
 	private Date minusDate;

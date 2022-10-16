@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.prj.admin.mapper.hitTableMapper">
-	<!-- 조회수 목록 -->
+	<!-- 조회수 차트 -->
 	<select id="hitList" resultType="com.team.prj.admin.service.hitTableVO">
-		SELECT SUM(hit), CASE WHEN id = 'S' then '쇼핑'
-		                      WHEN id = 's' then '쇼핑'
-		                      WHEN id = 'c' then '클래스'
-		                      WHEN id = 'C' then '클래스'
-		                      WHEN id = 'FREE' then '게시판'
-		                 ELSE ' '
-		                 END AS ID
-		FROM hitTable
-		WHERE ID IN ('S', 'c', 'C', 's', 'FREE')
-		AND dt
-		    BETWEEN TO_DATE(dt, 'yyyy-mm-dd')
-		    and TO_DATE(dt, 'yyyy-mm-dd') + '7'
-		GROUP BY ID
+		SELECT SUM(HIT) AS HIT, DT
+		FROM HITTABLE
+		WHERE DT BETWEEN TO_CHAR(SYSDATE - 7, 'YYYY-MM-DD')
+		    		 AND TO_CHAR(SYSDATE + 7, 'YYYY-MM-DD')
+		GROUP BY DT
+		ORDER BY DT
+	</select>
+	
+	<!-- 조회수 테이블(합계) -->
+	<select id="hitAll" resultType="com.team.prj.admin.service.hitTableVO">
+		SELECT DT, TITLE, SUM(HIT) AS HIT, CASE WHEN ID = 'S' THEN '쇼핑'
+			                      WHEN id = 's' THEN '쇼핑'
+			                      WHEN id = 'c' THEN '클래스'
+			                      WHEN id = 'C' THEN '클래스'
+			                      WHEN id = 'FREE' THEN '게시판'
+			                 ELSE ' '
+			                 END AS ID
+		FROM HITTABLE
+		GROUP BY ID, DT, TITLE
+		ORDER BY DT
+	</select>
+	
+	<!-- 조회수 테이블(가장 높은 조회수) -->
+	<select id="hitTable" resultType="com.team.prj.admin.service.hitTableVO">
+		SELECT DT, MAX(HIT) AS HIT
+		FROM HITTABLE
+		GROUP BY DT
+		ORDER BY DT
 	</select>
 </mapper>

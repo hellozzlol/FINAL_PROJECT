@@ -57,24 +57,26 @@
 											<!-- hit count Table -->
 											<br> <br> <br>
 											<div class="row" style="width: 100%; margin: auto;">
-												<div class="daily" style="width: 30%; height: auto; margin: 5px auto; text-align: center; border-right: 1px solid lightgray;">
+												<div style="width: 40%; height: auto; margin: 5px auto; text-align: center; border-right: 1px solid lightgray;">
 													<table class="table" style="text-align: center; vertical-align: middle;">
 														<thead>
 															<tr>
-																<th style="width: 50%;">날짜</th>
-																<th style="width: 50%;">전체조회수</th>
+																<th style="width: 30%;">날짜</th>
+																<th style="width: 30%;">카테고리</th>
+																<th style="width: 40%;">전체조회수</th>
 															</tr>
 														</thead>
-														<tbody id="btnList" th:each="c:${count}" class="table-border-bottom-0">
-															<tr>
-																<td>[[${c.dt}]]</td>
-																<td>[[${c.hit}]]</td>
+														<tbody>
+															<tr th:each="ct:${cntTb}">
+																<td></td>
+																<td>[[${ct.id}]]</td>
+																<td>[[${ct.hit}]]</td>
 															</tr>
 														</tbody>
 													</table>
 												</div>
-												<div class="daily" style="width: 70%; height: auto; margin: 5px auto; text-align: center;">
-													<table id="daily" class="table">
+												<div style="width: 60%; height: auto; margin: 5px auto; text-align: center;">
+													<table class="table">
 														<thead>
 															<tr>
 																<th style="width: 100px;">카테고리</th>
@@ -84,7 +86,7 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr class="days" th:each="c:${count}">
+															<tr th:each="c:${cnt}">
 																<td>[[${c.id}]]</td>
 																<td>[[${c.title}]]</td>
 																<td>[[${c.hit}]]</td>
@@ -120,11 +122,10 @@
 		
 		function getGraph() {
 			let timeList = []; // 시간
-			let cntList = []; // 카테고리 아이디
 			let cnt = []; // 조회수
 			
 			$.ajax({
-				url:"/admin/postCount",
+				url:"/admin/ajaxPostCount",
 				type:"get",
 				data: {
 					id : "${count.id}"
@@ -133,11 +134,9 @@
 				success : function(data) {
 					for (let i = 0; i < data.length; i++) {
 						timeList.push(data[i].dt);
-						cntList.push(data[i].id);
 						cnt.push(data[i].hit);
 					}
 					console.log(timeList); // 시간
-					console.log(cntList); // 카테고리 아이디
 					console.log(cnt); // 조회수
 					
 					new Chart(document.getElementById("line-chart"), {
@@ -145,8 +144,8 @@
 						data : {
 							labels : timeList, // x축(날짜)
 							datasets : [{
-								data:cnt, // 값
-								label:"조회수 ",
+								data:cnt, // 값(조회수)
+								label: "일별 게시판 조회수 통계 ",
 								borderColor: "#6a7964",
 								fill : false
 							}]
@@ -164,8 +163,7 @@
 			})
 		}
 		
-		
-		// Datatables
+		// Data Tables
 		$('.table').DataTable({
 			lengthChange : false,
 			pageLength : 10,
@@ -174,48 +172,6 @@
 			searching : false,
 			ordering : false,
 		});
-		
-		
-		/* new Chart(document.getElementById("line-chart"), {
-			type : 'line',
-			data : {
-				labels : [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-				datasets : [{
-					data : [86,114,106,107,111,133,221,783,2478],
-					label : "Africa",
-					borderColor: "#3e95cd",
-					fill : false
-				}, {
-					data : [282,350,411,502,635,809,947,1402,3700,5267],
-					label : "Asia",
-					borderColor: "#8e5ea2",
-					fill : false
-				}, {
-					data : [168,170,178,190,203,276,408,547,675,734],
-					label : "Europe",
-					borderColor : "#3cba9f",
-					fill : false
-				}, {
-					data : [40,20,10,16,24,38,74,167,508,784],
-					label : "Latin America",
-					borderColor : "#e8c3b9",
-					fill : false
-				}, {
-					data : [6,3,2,2,7,26,82,172,312,433],
-					label : "North America",
-					borderColor : "#c45850",
-					fill : false
-				}
-			]
-			},
-			options: {
-			title: {
-				display:true,
-				text:'World population per region (in Millions)'
-			}
-			}
-		}); */
-			
 		</script>
 	</article>
 </body>

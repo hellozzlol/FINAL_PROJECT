@@ -24,6 +24,35 @@ document.addEventListener('DOMContentLoaded', function() {
 	})
 	}
 	
+	// 1016 선희 추가(마이페이지 위시리스트에 등록)
+	// 스크랩 하트버튼 클릭시
+	$("#all").on('click','.scrapBtn', function() {
+		let categoryId = $(this).children().val(); // 클래스 카테고리 c
+		// console.log(categoryId);
+		let classNo =$(this).children().next().val(); // classNo 클래스 번호
+		// console.log(classNo);
+		let userNo = $(this).children().next().next().val(); // userNo 유저번호
+		// console.log(userNo);
+		
+		// 스크랩 등록 처리
+		if (!confirm("스크랩 하시겠습니까?")) {
+			return;
+		}
+		
+		$.ajax({
+	         url:'/scrapInsert.do',
+	         type:'post',
+	         beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token)},
+	     	 dataType:'json',
+	         data:{categoryId:categoryId, userNo:userNo, boardNo:classNo},
+	         success:function(data,idx,arr){
+			 	// console.log(arr);
+				alert("스크랩이 성공적으로 등록되었습니다.")
+	       }
+	    })
+	})
+	
 })
 
 </script>
@@ -302,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						</div>
 						<!--shop toolbar end-->
 
-						<div class="row shop_wrapper">
+						<div class="row shop_wrapper" id="all">
 							<!---------싱글 상품 리스트 반복문---------->
 							<div class="col-lg-4 col-md-4 col-sm-6 col-6" id="point"
 								th:each="c:${pageInfo.list}">
@@ -316,14 +345,23 @@ document.addEventListener('DOMContentLoaded', function() {
 											class="card-img-top embed-responsive-item" id="thumb_img">
 										</a>
 
+										<!-- 스크랩기능 시작 1016 선희 추가 -->
 										<div class="product_action">
 											<ul>
-												<li class="wishlist"><a href="#" data-tippy="Wishlist"
-													data-tippy-inertia="true" data-tippy-delay="50"
-													data-tippy-arrow="true" data-tippy-placement="left"><i
-														class="icon-heart icons"></i></a></li>
+												<li class="wishlist">
+													<a class="scrapBtn" data-tippy="Wishlist"
+														data-tippy-inertia="true" data-tippy-delay="50"
+														data-tippy-arrow="true" data-tippy-placement="left">
+														
+														<input type="hidden" th:value="${c.categoryId}" name="categoryId"> 
+														<input type="hidden" th:value="${c.classNo}" name="classNo">
+														<input type="hidden" th:value="${session.user.userNo}" name="userNo">
+														<i class="icon-heart"></i>
+													</a>
+												</li>
 											</ul>
 										</div>
+										<!--스크랩기능 끝  -->
 									</div>
 
 									<!-----센터설명------>
