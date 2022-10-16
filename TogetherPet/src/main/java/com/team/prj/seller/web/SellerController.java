@@ -252,6 +252,8 @@ public class SellerController {
 	@PostMapping("/deliveryUpdate")
 	public String deliveryUpdate(OrderVO ovo, NoticeVO nvo) {
 		// 배송 지시
+		long num = (long)(Math.random()*99999999) + 10000000;
+		ovo.setDeliveryNo((int) num); // 운송장번호
 		goods.deliveryUpdate(ovo);
 		
 		// 메시지를 위한 오더 단건 조회
@@ -259,9 +261,9 @@ public class SellerController {
 		OrderVO ov = ol.get(0);
 		Date msgDt = ov.getDt();
 		
-		//원하는 데이터 포맷 지정
+		// 원하는 데이터 포맷 지정
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일"); 
-		//지정한 포맷으로 변환
+		// 지정한 포맷으로 변환
 		String strNowDate = simpleDateFormat.format(msgDt); 
 		
 		// 알림 테이블에 등록 1010 선희추가

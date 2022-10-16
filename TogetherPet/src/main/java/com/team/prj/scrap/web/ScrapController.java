@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
+import com.team.prj.classes.service.ClassService;
 import com.team.prj.funeral.service.FuneralService;
 import com.team.prj.hospital.service.HospitalService;
 import com.team.prj.scrap.service.ScrapService;
@@ -19,6 +19,8 @@ public class ScrapController {
 	private HospitalService hospital;
 	@Autowired
 	private FuneralService funeral;
+	@Autowired
+	private ClassService classes;
 	
 	
 	// 스크랩 전체 조회

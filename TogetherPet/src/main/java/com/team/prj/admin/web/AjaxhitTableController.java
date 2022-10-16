@@ -16,7 +16,8 @@ public class AjaxhitTableController {
 	@Autowired
 	private hitTableService hit;
 	
-	@RequestMapping("/admin/postCount")
+	// 조회수 차트
+	@RequestMapping("/admin/ajaxPostCount")
 	public @ResponseBody List<hitTableVO> postCount(Model model, hitTableVO vo) throws Exception {
 		List<hitTableVO> count = hit.hitList(vo);
 		model.addAttribute("count", count);

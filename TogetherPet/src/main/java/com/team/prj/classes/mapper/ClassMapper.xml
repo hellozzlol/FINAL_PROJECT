@@ -15,7 +15,7 @@
 	<select id="classSelectList" resultType="com.team.prj.classes.service.ClassVO">
 		SELECT * 
 		FROM CLASS
-		where upload_state=1  <!-- 1004 추가 / 지혜  -->
+		where upload_state='1'  <!-- 1004 추가 / 지혜  -->
 		order by 
 		<choose>
 			<when test="key == 1"> 1 desc </when>
@@ -29,7 +29,7 @@
 	<select id="classSelectListMain" resultType="com.team.prj.classes.service.ClassVO">
 		SELECT * 
 		FROM CLASS
-		where upload_state=1  <!-- 1004 추가 / 지혜  -->
+		where upload_state='1'  <!-- 1004 추가 / 지혜  -->
 		order by class_no desc
 	</select>
 	

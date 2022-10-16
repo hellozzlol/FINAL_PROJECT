@@ -13,7 +13,6 @@
 		ORDER BY user_no desc
 	</select>
 
-
 	<!-- 주문 내역 불러오기(배송상태 1,2,3,4,7 인것만 조회) -->
 	<select id="orderList"
 		parameterType="com.team.prj.goods.service.GoodsVO"
@@ -153,8 +152,7 @@
 				likes, hit, board_no
 		FROM board
 		WHERE user_no = #{userNo}
-		ORDER BY
-		board_no DESC
+		ORDER BY dt DESC
 	</select>
 	
 	<!-- 작성 글 삭제 -->
@@ -171,7 +169,7 @@
 		SELECT *
 		FROM comments
 		WHERE user_no = #{userNo}
-		ORDER BY comment_no DESC
+		ORDER BY dt DESC
 	</select>
 	
 	<!-- 작성 댓글 삭제 -->

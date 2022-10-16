@@ -113,7 +113,8 @@
 	<update id="deliveryUpdate"
 		parameterType="com.team.prj.orders.service.OrderVO">
 		UPDATE orders
-		SET delivery_state = '3'
+		SET delivery_state = '3',
+			delivery_no = #{deliveryNo}
 		WHERE delivery_state = '2'
 		AND order_no = #{orderNo}
 	</update>
