@@ -46,9 +46,8 @@
 							<h5 class="card-header">Profile Details</h5>
 							<!-- Account -->
 							<div class="card-body">
-								<div
-									class="d-flex align-items-start align-items-sm-center gap-4">
-									<img src="/admin/assets/img/elements/2408133.png" alt="user-avatar"
+								<div class="d-flex align-items-start align-items-sm-center gap-4">
+									<img th:src="${tutor.attechDir}" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
 										id="uploadedAvatar" />
 								</div>
@@ -84,18 +83,18 @@
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="name">소개</label>
 											<textarea class="form-control" type="text" id="introduce"  style="resize: none;"
-												name="email" th:text="${session.tutor.introduce}" rows="10" 
+												name="introduce" th:text="${session.tutor.introduce}" rows="10" 
 												placeholder="튜터님의 경력, 주요 클래스 등을
 												자유롭게 소개해주세요." disabled="disabled" ></textarea>
 										</div>
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="name">소셜미디어</label>
 											<input class="form-control" type="text" id="snsInsta"
-												name="email" th:value="${session.tutor.snsInsta}" placeholder="인스타그램 주소를 입력해주세요." disabled="disabled" />
+												name="snsInsta" th:value="${session.tutor.snsInsta}" placeholder="인스타그램 주소를 입력해주세요." disabled="disabled" />
 											<input class="form-control" type="text" id="snsBlog"
-												name="email" th:value="${session.tutor.snsBlog}" placeholder="블로그 주소를 입력해주세요." disabled="disabled" />
+												name="snsBlog" th:value="${session.tutor.snsBlog}" placeholder="블로그 주소를 입력해주세요." disabled="disabled" />
 											<input class="form-control" type="text" id="snsYoutube"
-												name="email" th:value="${session.tutor.snsYoutube}" placeholder="유튜브 주소를 입력해주세요." disabled="disabled" />
+												name="snsYoutube" th:value="${session.tutor.snsYoutube}" placeholder="유튜브 주소를 입력해주세요." disabled="disabled" />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label class="col-sm-2 col-form-label" for="name">이메일</label>

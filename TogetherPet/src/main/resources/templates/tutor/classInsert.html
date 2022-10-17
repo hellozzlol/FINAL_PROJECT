@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					var header = $("meta[name='_csrf_header']").attr("content");
 			
 					let name = $('#class_name').val();
-					let category = $('#category').val();
+					let category = $("input[name='check']:checked").val();
 					let intro = value;
 					let price = $('#class_fee').val();
 					let maxHeadcount = $('#class_nop').val();

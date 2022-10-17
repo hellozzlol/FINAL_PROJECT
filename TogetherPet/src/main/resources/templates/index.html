@@ -293,10 +293,10 @@
 				</div>
 				<div class="product_container row">
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="all2" role="tabpanel">
+						<div class="tab-pane fade show active" id="all" role="tabpanel">
 							<div class="product_slick slick_slider_activation"
 								data-slick='{
-                            "slidesToShow": 3,
+                            "slidesToShow": 4,
                             "slidesToScroll": 1,
                             "arrows": true,
                             "dots": false,
@@ -306,11 +306,13 @@
                             "responsive":[
                               {"breakpoint":992, "settings": { "slidesToShow": 3 } },
                               {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }]}'>
+                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                             ]
+                        }'>
 
 								<!-- 클래스 -->
-								<article th:each="c:${class}" class="col single_product">
-									<figure>
+								<article th:each="c:${class}" class="col single_product_class">
+									<figure class="fig">
 										<div class="product_thumb" id="product_thumb">
 											<a th:href="@{classSelect(classNo=${c.classNo})}"> <img
 												th:src="@{display(fileName=${c.thumb})}" alt="consectetur"
@@ -334,8 +336,7 @@
 												<button class="catebtn">[[${c.category}]]</button>
 												<br>
 												<h4 class="product_name">
-													<a class="clasname"
-														th:href="@{classSelect(classNo=${c.classNo})}">[[${c.name}]]</a>
+													<a th:href="@{classSelect(classNo=${c.classNo})}">[[${c.name}]]</a>
 												</h4>
 											</div>
 											<div class="clas2">
