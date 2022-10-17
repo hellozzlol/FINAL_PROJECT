@@ -11,23 +11,23 @@
 		ORDER BY DT
 	</select>
 	
-	<!-- 조회수 테이블(합계) -->
+	<!-- 조회수 테이블 -->
 	<select id="hitAll" resultType="com.team.prj.admin.service.hitTableVO">
-		SELECT DT, TITLE, SUM(HIT) AS HIT, CASE WHEN ID = 'S' THEN '쇼핑'
-			                      WHEN id = 's' THEN '쇼핑'
-			                      WHEN id = 'c' THEN '클래스'
-			                      WHEN id = 'C' THEN '클래스'
-			                      WHEN id = 'FREE' THEN '게시판'
-			                 ELSE ' '
-			                 END AS ID
+		SELECT DT, TITLE, MAX(HIT) AS HIT, CASE WHEN ID = 'S' THEN '쇼핑'
+						                        WHEN id = 's' THEN '쇼핑'
+						                        WHEN id = 'c' THEN '클래스'
+						                        WHEN id = 'C' THEN '클래스'
+						                        WHEN id = 'FREE' THEN '게시판'
+						                   ELSE ' '
+						                   END AS ID
 		FROM HITTABLE
 		GROUP BY ID, DT, TITLE
 		ORDER BY DT
 	</select>
 	
-	<!-- 조회수 테이블(가장 높은 조회수) -->
+	<!-- 조회수 테이블(합계) -->
 	<select id="hitTable" resultType="com.team.prj.admin.service.hitTableVO">
-		SELECT DT, MAX(HIT) AS HIT
+		SELECT DT, SUM(HIT) AS HIT
 		FROM HITTABLE
 		GROUP BY DT
 		ORDER BY DT
