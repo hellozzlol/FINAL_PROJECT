@@ -101,19 +101,11 @@
 							<h5 class="card-header">Profile Details</h5>
 							<!-------------- 프로필사진 ------------->
 							<div class="card-body">
-								<div class="d-flex align-items-start align-items-sm-center gap-4">
-									<img src="${tutorList.attechDir}" alt="user-avatar"
+								<div
+									class="d-flex align-items-start align-items-sm-center gap-4">
+									<img th:src="${tutorList.attechDir}" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
 										id="uploadedAvatar" />
-									<div class="button-wrapper">
-										<input type="file" id="file" name="file" />
-										<button type="button"
-											class="btn btn-primary2 account-image-reset mb-4">
-											<i class="bx bx-reset d-block d-sm-none"></i> <span
-												class="d-none d-sm-block">Reset</span>
-										</button>
-										<p class="text-muted mb-0">Allowed JPG or PNG.</p>
-									</div>
 								</div>
 							</div>
 							<!-------------- 프로필사진 ------------->

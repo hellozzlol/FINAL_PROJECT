@@ -385,9 +385,8 @@ var lastTime;
 			    	},error : function(result){
 			    		alert("이미지 파일이 아닙니다.");
 			    	}
-				}).then((arg) => {
-					
-					//수정 이전의 그룹번호 삭제용
+				}).then((arg) => {			
+					//수정 이전의 그룹번호 삭제
 					var groupNo = $("#exGroupNo").val()
 					console.log("이전 그룹번호" + groupNo);
 					

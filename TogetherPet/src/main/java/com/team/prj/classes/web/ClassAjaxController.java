@@ -148,17 +148,15 @@ public class ClassAjaxController {
 	//클래스 등록에서 옵션 등록
 	@RequestMapping("classOptionInsert")
 	@ResponseBody
-	public void classOptionInsert(@RequestBody List<Map<String,Object>> opparams) {
+	public void classOptionInsert(@RequestBody List<Map<String,Object>> opparams){
 		//데이터를 담아줄 map 생성 
 		HashMap<String,Object> opmap = new HashMap<String,Object>(); 
 
 		opmap.put("optionList", opparams);
-		System.out.println("클래스 옵션 맵에 담음");
-		
 		try {
 			classDao.classOptionInsert(opmap);
 		} catch (Exception e) {
-			System.out.println("---hashmap 바인딩 오류 예외처리함---");
+			System.out.println("hashmap 바인딩 예외처리");
 		}
 
 	}
@@ -166,16 +164,15 @@ public class ClassAjaxController {
 	//클래스 등록에서 그룹이미지 등록
 	@RequestMapping("classPhotoInsert")
 	@ResponseBody
-	public void classPhotoInsert(@RequestBody List<Map<String,Object>> ptparams) {
+	public void classPhotoInsert(@RequestBody List<Map<String,Object>> ptparams){
 		//데이터를 담아줄 map 생성 
 		HashMap<String,Object> ptmap = new HashMap<String,Object>(); 
 
 		ptmap.put("photoList", ptparams);
-		System.out.println("그룹사진 맵에 담음");
 		try {
 			classDao.classPhotoInsert(ptmap);
 		} catch (Exception e) {
-			System.out.println("---hashmap 바인딩 오류 예외처리함---");
+			System.out.println("hashmap 바인딩 예외처리");
 		}
 		
 	}
@@ -185,9 +182,7 @@ public class ClassAjaxController {
 	@PostMapping(value="classPhoto", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	 public ResponseEntity<List<PhotoVO>> classPhoto(MultipartFile[] uploadFile){
-		
-		///// 이미지 파일 맞는지 체크 /////
-		for(MultipartFile multipartFile: uploadFile) {
+				for(MultipartFile multipartFile: uploadFile) {
 			File checkfile = new File(multipartFile.getOriginalFilename());
 			String type = null;
 			try {
@@ -201,25 +196,16 @@ public class ClassAjaxController {
 				List<PhotoVO> list = null;
 				return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
 			}
-		}///// 이미지 파일 맞는지 체크 end/////
-		
-		
+		}
 
-		//파일 경로를 저장하는 String 타입의 변수를 선언하고 초기화
-		//String uploadFolder = "C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp";
-		//테스트용
-		String uploadFolder = fileDir + "/"; ///home/Temp
+		String uploadFolder = fileDir + "/"; 
 		
-		//File객체를 사용해 폴더 생성
 		File uploadPath = new File(uploadFolder); //물리적 저장할 위치		
 		if(uploadPath.exists() == false) {
 			uploadPath.mkdirs();
 		}
-		
 
-		// 이미지 정보 담는 객체
 		List<PhotoVO> list = new ArrayList();	
-		//향상된 for문
 		for(MultipartFile multipartFile : uploadFile) {
 			//이미지 정보 객체
 			PhotoVO vo = new PhotoVO();		
@@ -247,17 +233,6 @@ public class ClassAjaxController {
 		}//for문
 
 		ResponseEntity<List<PhotoVO>> result = new ResponseEntity<List<PhotoVO>>(list, HttpStatus.OK);
-		
-		
-		//classDao.photoInsert(result);
-		//System.out.println("그룹사진 인서트 완료");
-		
-		//PhotoVO vo = new PhotoVO();	
-		//int groupNo = vo.getGroupNo();
-		//vo.setGroupNo(groupNo);
-		
-	 
-
 			
 		return result;
 	}

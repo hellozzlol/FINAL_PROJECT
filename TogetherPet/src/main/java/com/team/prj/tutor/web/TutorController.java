@@ -65,13 +65,15 @@ public class TutorController {
 
 	//튜터 마이페이지 - 개인정보 수정폼 호출
 	@RequestMapping("/tutorMyPageUpdForm")
-	public String tutorMyPageUpdForm(HttpServletRequest request, Model model) {
+	public String tutorMyPageUpdForm(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		TutorVO vo = new TutorVO();
 		String id = (String) session.getAttribute("id");
 		vo.setId(id);
-		vo = tutor.tutorMyPage(vo);
-		model.addAttribute("tutorList", vo);
+		tutor.tutorMyPage(vo);
+		
+		TutorVO vo2 = (TutorVO) session.getAttribute("tutor");
+		model.addAttribute("tutorList", vo2);
 		return "tutor/tutorMyPageUpdForm";
 	}
 	
@@ -84,7 +86,9 @@ public class TutorController {
 		String id = (String)session.getAttribute("id");
 		vo.setId(id);
 		vo = tutor.tutorMyPage(vo);
-		request.setAttribute("tutorList", vo);
+		
+		TutorVO vo2 = (TutorVO) session.getAttribute("tutor");
+		request.setAttribute("tutorList", vo2);
 		return "tutor/tutorComUpForm";
 	}
 	

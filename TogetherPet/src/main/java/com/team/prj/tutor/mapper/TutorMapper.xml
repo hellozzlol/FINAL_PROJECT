@@ -110,10 +110,7 @@
 		c.price, r.minus_price
 		order by o.start_dt DESC
 	</select>
-	
-	
-	
-	
+
 	<!-- (예약 건수가 없을 경우)특정 클래스의 모든 날짜옵션 리스트-->
 	<select id="classOption"	parameterType="int" 
 		resultType="com.team.prj.classes.service.ClassOptionVO">
@@ -128,12 +125,12 @@
 	</select>
 	
 	
-	<!-- 특정 클래스의 한 옵션을 예약한 예약자 리스트-->
+	<!-- 특정 클래스의 옵션을 예약한 예약자 리스트-->
 	<select id="optionReserv"	parameterType="int" 
 		resultType="com.team.prj.classes.service.ClassOptionVO">
 		SELECT R.RESERVE_NO, O.CLASS_OPTION_NO, O.START_DT, R.DT, R.ORDER_DATE, 
-				R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, R.CLASS_NO, 
-				R.CLASS_NAME, R.MINUS_YN
+				R.PAY, R.USER_NO, R.CALL, R.NAME, R.MINUS_PRICE, R.TOTAL_PRICE, 
+				R.CLASS_NO, R.CLASS_NAME, R.MINUS_YN
 		FROM CLASS_OPTION O, CLASS_RESERVE R 
 		WHERE R.CLASS_OPTION_NO = ${classOptionNo} 
 		AND R.CLASS_OPTION_NO = O.CLASS_OPTION_NO 

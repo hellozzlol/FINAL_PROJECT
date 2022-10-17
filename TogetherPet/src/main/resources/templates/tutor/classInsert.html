@@ -422,7 +422,7 @@ var lastTime;
 		
 		
 		/*-----------------------
-		클래스 옵션 선택한 리스트 배열 만듦 
+		클래스 옵션 선택 리스트 배열 생성
 		-------------------------*/	
 		function classOptionInput(){
 				$('#optioncheck').val('1');
@@ -493,9 +493,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			-------------------------*/	
 			$('#class_submit').on('click', function(){
 				
-			  	   //나중에 확인할때 소스
-			       //var sHTML = theEditor.getData();
-			       //console.log(sHTML); 
 			        var value = editor.getData();
 			        console.log(value)
 							    
@@ -548,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					let intro = value;
 					let price = $('#class_fee').val();
 					let maxHeadcount = $('#class_nop').val();
-					let tutorNo = $('#tutorNo').val() //나중에 <-- tutorNo로 바꾸기!! 지금은 튜터 로그인처리 안됨
+					let tutorNo = $('#tutorNo').val();
 					let address = $('#address').val();
 					let postcode = $('#postcode').val();
 					let da = $('#da').val();
@@ -564,7 +561,6 @@ document.addEventListener('DOMContentLoaded', function() {
 						beforeSend: function (xhr) {
 							xhr.setRequestHeader(header, token)
 						},
-						//async: true,  // 비동기 방식으로 설정
 						data: {
 							name: name,
 							category: category,
@@ -623,10 +619,10 @@ document.addEventListener('DOMContentLoaded', function() {
 								xhr.setRequestHeader(header, token)
 							},
 							traditional: true,
-							async: false, //컨트롤러에서 Exception처리 이후 return안될 때 동기화 꺼야함
-							data : JSON.stringify(jsonArr), //data: JSON.stringify(jsonArr)
+							async: false, 
+							data : JSON.stringify(jsonArr),
 							dataType: 'JSON',
-							contentType: 'application/json; charset=utf-8', //'application/json; charset=utf-8',
+							contentType: 'application/json; charset=utf-8', 
 							success: function() {
 								console.log("성공");
 								var answer;
