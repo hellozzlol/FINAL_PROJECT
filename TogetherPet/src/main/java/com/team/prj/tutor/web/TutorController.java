@@ -47,6 +47,7 @@ public class TutorController {
 		HttpSession session = request.getSession();
 		TutorVO vo = (TutorVO) session.getAttribute("tutor");
 		tutor.tutorMyPage(vo);
+		model.addAttribute("tutor",vo);
 		return "tutor/tutorMyPage";
 	}
 	
@@ -56,6 +57,7 @@ public class TutorController {
 		HttpSession session = request.getSession();
 		TutorVO vo = (TutorVO) session.getAttribute("tutor");
 		tutor.tutorMyPage(vo);
+		model.addAttribute("tutor",vo);
 		return "tutor/tutorComList";
 	}
 		

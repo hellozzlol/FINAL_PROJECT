@@ -140,8 +140,6 @@ $(document).ready(function(){
 				var option =  $('input:radio[name="radioNo"]:checked').val();
 				//폼에 추출한 값 넣어주기?
 				$("#classOptionNo").val(option);
-				alert(option);
-				
 				$('#exreserveCall').submit();
 				
 				
@@ -897,14 +895,11 @@ $(document).ready(function(){
 											<div class="mb-3 col-md-8">
 													
 													<div class="box" style="background: #BDBDBD;">		
-														<img th:src="@{display(fileName=${tutor.attechDir})}">
+														<img th:src="${tutor.attechDir}" class="profile">
 													</div><br>
 													
 													<h3>[[${tutor.name}]]</h3><br>
-												
-													<a>[[${tutor.introduce}]]</a><br><br>
-													
-													
+																		
 													<a><i class="ion-social-instagram-outline"></i> 
 														[[${tutor.snsInsta}]]></a><br>
 													
@@ -914,7 +909,11 @@ $(document).ready(function(){
 													 
 													
 													<a><i class="ion-social-youtube-outline"></i> 
-														[[${tutor.snsYoutube}]]</a>
+														[[${tutor.snsYoutube}]]</a><br><br>
+														
+													<textarea class="form-control" type="text" id="intro" style="resize: none;border:none;"
+														th:text="${tutor.introduce}" rows="20"/><br><br>
+													
 											</div>
 										</div>
 										
