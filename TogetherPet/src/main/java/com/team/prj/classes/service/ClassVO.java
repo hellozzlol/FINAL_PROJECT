@@ -1,8 +1,8 @@
 package com.team.prj.classes.service;
 
-import java.util.Date;
 
-import lombok.Data;
+import java.sql.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +20,7 @@ public class ClassVO {
 	Date timeEnd;
 	int price;
 	String uploadState;
-	String uploadDate;
+	Date uploadDate;
 	int hit;
 	int maxHeadcount;
 	int tutorNo;

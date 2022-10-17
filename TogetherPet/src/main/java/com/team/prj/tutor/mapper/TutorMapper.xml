@@ -23,30 +23,6 @@
 		where tutor_no = #{tutorNo}
 	</select>
 
-	<!-- 튜터 등록 0929 JH 주석처리
-	<insert id="tutorInsert">
-		<selectKey keyProperty="tutorNo" order="BEFORE" resultType="int">
-			SELECT 
-			    CASE WHEN max(tutor_no) IS NULL 
-			    THEN 1
-			    ELSE max(tutor_no) + 1 
-			    END AS no
-			FROM tutor
-		</selectKey>
-		
-		INSERT INTO tutor
-		VALUES(#{userNo}
-				,#{id}
-				,#{password}
-				,#{name}
-				,#{company}
-				,#{email}
-				,#{call}
-				,#{address}
-				,'TUTOR'
-				,1
-				,SYSDATE)
-	</insert> -->
 
 	<!-- 마이페이지에서 튜터정보 수정 -->
 	<update id="tutorUpdate" parameterType="com.team.prj.tutor.service.TutorVO">
@@ -87,7 +63,6 @@
 		<choose>  
 			<when test="key==1"> id like '%' || #{val}||'%'</when>
 			<when test="key==2"> name like '%' || #{val}||'%'</when>
-			<when test="key==3"> company like '%' || #{val}||'%'</when>
 		</choose>
 	</select>
 

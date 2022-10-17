@@ -79,20 +79,6 @@ public class adminController {
 		return "admin/mypage";
 	}
 
-	// 회원 가입 통계
-	@GetMapping("/manager/userJoinCount")
-	public String uJoinCount(Model model) {
-		return "admin/userJoinCount";
-	}
-	
-	
-	
-	// 방문자 수
-	@GetMapping("/manager/visitCount")
-	public String visitCount(Model model) {
-		//
-		return "admin/visitCount";
-	}
 
 	// 조회수
 	@GetMapping("/manager/postCount")
@@ -142,7 +128,8 @@ public class adminController {
 		return "admin/boardPost";
 	}
 
-	@GetMapping("/manager/goodsPost") // (state가 1인것만 조회)
+	// 전체 글 조회, 삭제 (상품) / (state: 1(승인완료) 조회)
+	@GetMapping("/manager/goodsPost") 
 	public String goodsPost(String key, Model model, BoardVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
@@ -151,21 +138,23 @@ public class adminController {
 			key = "1";
 		}
 		model.addAttribute("pageInfo", PageInfo.of(goods.goodsSelectAll(key)));
-
 		return "admin/goodsPost";
 	}
 
-	// 전체 글 조회, 삭제 (클래스) // (state가 1인것만 조회)
+	// 전체 글 조회, 삭제 (클래스) / (state: 1(승인완료) 조회)
 	@GetMapping("/manager/classPost")
 	public String boardPost(Model model, String key, ClassVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
+		if (key == null) {
+			key = "1";
+		}
 		model.addAttribute("pageInfo", PageInfo.of(cs.classSelectList(key)));
 		return "admin/classPost";
 	}
 
-	// 글 등록 검토 (상품) // 상태 조건 걸기(state가 0인것만 조회)
+	// 글 등록 검토 (상품) / (state: 0(승인대기) 조회)
 	@GetMapping("/manager/goodsConfirm")
 	public String goodsConfirm(String key, Model model, GoodsVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
@@ -187,7 +176,7 @@ public class adminController {
 		return "admin/goodsConfirm";
 	}
 
-	// ***** 글 등록 검토(클래스) // (state가 0 = 승인대기 인것만 조회) 
+	// ***** 글 등록 검토(클래스) / (state: 0(승인대기) 조회)
 	@GetMapping("/manager/classConfirm")
 	public String classConfirm(Model model, ClassVO vo, HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,

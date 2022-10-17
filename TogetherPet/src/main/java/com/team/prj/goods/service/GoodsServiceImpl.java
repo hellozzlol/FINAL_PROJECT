@@ -143,6 +143,12 @@ public class GoodsServiceImpl implements GoodsService {
 		return map.changeUpdate(vo);
 	}
 
+	// (관리자 페이지) 상품 검색 (1017 지혜 추가)
+	@Override
+	public List<GoodsVO> goodsSearchAd(String key, String val) {
+		return map.goodsSearchAd(key, val);
+	}
+
 
 
 

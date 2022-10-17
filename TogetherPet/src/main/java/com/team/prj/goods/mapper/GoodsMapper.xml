@@ -219,4 +219,15 @@
 		ORDER BY order_no DESC
 	</select>
 	
+	
+	<!-- 상품 검색 --> <!-- 관리자 - 전체 상품 조회 -->
+	<select id="goodsSearchAd" resultType="com.team.prj.goods.service.GoodsVO">
+		select *
+		from goods
+		where
+		<choose>
+			<when test="key == 1"> name like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
+	
 </mapper>
