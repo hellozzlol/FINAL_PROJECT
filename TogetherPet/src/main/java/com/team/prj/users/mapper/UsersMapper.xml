@@ -39,19 +39,19 @@
 	<select id="classList"
 		parameterType="com.team.prj.tutor.service.TutorVO"
 		resultType="com.team.prj.classreserve.service.ClassReserveVO">
-		SELECT cr.class_name as className, t.name as name, cr.dt as dt,
-				c.address as address, cr.pay_yn as pay, u.user_no, c.class_no
-		FROM class_reserve cr, tutor t, users u, class c
-		WHERE cr.class_no = c.class_no
-		AND u.user_no = cr.user_no
-		AND cr.user_no = #{userNo}
+		SELECT cr.class_name, t.name, cr.dt, cr.pay_yn, u.user_no, cr.class_no
+		FROM class_reserve cr, tutor t, users u
+		WHERE cr.class_no = t.tutor_no
+		AND u.user_no = 4
+		ORDER BY 1 DESC
 	</select>
 
 	<!-- 위시리스트 조회 -->
 	<select id="likeList"
 		parameterType="com.team.prj.scrap.service.ScrapVO"
 		resultType="com.team.prj.classes.service.ClassVO">
-		SELECT s.scrap_no, c.thumb, c.category, c.name, c.address, c.price, c.class_no
+		SELECT s.scrap_no, c.thumb, c.category, c.name,
+			   c.address, c.price, c.class_no
 		FROM scrap s, class c
 		WHERE s.category_id = c.category_id
         AND s.board_no = c.class_no
