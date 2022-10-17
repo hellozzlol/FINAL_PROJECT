@@ -69,7 +69,27 @@ public class UsersController {
 
 	// 회원 정보 수정 처리
 	@PostMapping("/usersUpdate")
-	public String usersUpdate(UsersVO vo, HttpSession session) {
+	public String usersUpdate(UsersVO vo, HttpSession session,
+			@RequestPart(value = "file", required = false) MultipartFile file)
+			throws IllegalStateException, IOException {
+		// file UpLoad 처리해야함.
+		String saveFolder = (""); // 저장할 공간 변수 명
+		// System.out.println(saveFolder);
+		File sfile = new File(saveFolder); // 물리적 저장할 위치
+		String oFileName = file.getOriginalFilename(); // 넘어온 파일의 이름.원래파일네임
+
+		if (!oFileName.isEmpty()) {
+
+			// 파일명 충돌방지를 위한 별명 만듦
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것,
+																												// 랜덤파일네임
+			String path = fileDir + "/" + sFileName;
+			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장
+
+			vo.setAttach(oFileName);
+			vo.setAttachDir(saveFolder + "/" + sFileName);
+		}
+		
 		user.usersUpdate(vo);
 		vo = user.usersSelect(vo);
 		session.setAttribute("user", vo);
@@ -302,9 +322,30 @@ public class UsersController {
 
 	// 반려동물 정보 수정 처리
 	@PostMapping("/petUpdate")
-	public String petUpdate(PetVO pvo, HttpSession session) {
+	public String petUpdate(PetVO pvo, HttpSession session,
+			@RequestPart(value = "file", required = false) MultipartFile file)
+			throws IllegalStateException, IOException {
 		UsersVO vo = (UsersVO) session.getAttribute("user");
 		pvo.setUserNo(vo.getUserNo());
+
+		// file UpLoad 처리해야함.
+		String saveFolder = (""); // 저장할 공간 변수 명
+		// System.out.println(saveFolder);
+		File sfile = new File(saveFolder); // 물리적 저장할 위치
+		String oFileName = file.getOriginalFilename(); // 넘어온 파일의 이름.원래파일네임
+
+		if (!oFileName.isEmpty()) {
+
+			// 파일명 충돌방지를 위한 별명 만듦
+			String sFileName = UUID.randomUUID().toString() + oFileName.substring(oFileName.lastIndexOf(".")); // 파일확장자찾는것,
+																												// 랜덤파일네임
+			String path = fileDir + "/" + sFileName;
+			file.transferTo(new File(path)); // 파일을 물리적 위치에 저장
+
+			pvo.setAttach(oFileName);
+			pvo.setAttachDir(saveFolder + "/" + sFileName);
+		}
+
 		pet.petUpdate(pvo);
 		pvo = pet.petSelect(pvo);
 		session.setAttribute("pet", pvo);
@@ -327,7 +368,7 @@ public class UsersController {
 
 		// file UpLoad 처리해야함.
 		String saveFolder = (""); // 저장할 공간 변수 명
-		System.out.println(saveFolder);
+		// System.out.println(saveFolder);
 		File sfile = new File(saveFolder);// 물리적 저장할 위치
 		String oFileName = file.getOriginalFilename();// 넘어온 파일의 이름.원래파일네임
 

@@ -47,7 +47,7 @@
 									style="display: block; margin: auto;">
 									<a th:href="@{/petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
-										src="/admin/assets/img/elements/dog.png" alt="Card image"
+										th:src="${list.attach}" alt="Card image"
 										style="width: 220px; height: 220px;" />
 									</a>
 								</div>

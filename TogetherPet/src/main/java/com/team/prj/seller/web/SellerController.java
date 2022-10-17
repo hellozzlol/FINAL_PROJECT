@@ -358,7 +358,7 @@ public class SellerController {
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		qvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("pageInfo", PageInfo.of(seller.qnaSelectList(qvo)));
-		return "/seller/sellerQnaSelectList";
+		return "seller/sellerQnaSelectList";
 	}
 
 	// 문의 상세보기
@@ -367,14 +367,14 @@ public class SellerController {
 		SellerVO svo = (SellerVO) session.getAttribute("seller");
 		qvo.setSellerNo(svo.getSellerNo());
 		model.addAttribute("qna", seller.qnaSelect(qvo));
-		return "/seller/sellerQnaSelect";
+		return "seller/sellerQnaSelect";
 	}
 
 	// 문의 답변 폼 호출
 	@RequestMapping("/sellerQnaAnswer")
 	public String sellerQnaAnswer(Model model, QnaVO qvo, HttpSession session) {
 		model.addAttribute("qna", seller.qnaSelect(qvo));
-		return "/seller/sellerQnaAnswer";
+		return "seller/sellerQnaAnswer";
 	}
 
 	// 문의 답변 처리
@@ -410,7 +410,7 @@ public class SellerController {
 	@RequestMapping("/sellerQnaAnswerUp")
 	public String sellerQnaAnswerUp(Model model, QnaVO qvo, HttpSession session) {
 		model.addAttribute("qna", seller.qnaSelect(qvo));
-		return "/seller/sellerQnaAnswerUp";
+		return "seller/sellerQnaAnswerUp";
 	}
 
 	// 문의 답변 수정 처리

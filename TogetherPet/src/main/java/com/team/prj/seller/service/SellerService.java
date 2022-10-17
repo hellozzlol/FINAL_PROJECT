@@ -1,6 +1,8 @@
 package com.team.prj.seller.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import com.team.prj.admin.service.ProfitVO;
@@ -27,25 +29,27 @@ public interface SellerService {
 
 	// 판매자 상품 조회
 	List<GoodsVO> goodsList(GoodsVO vo);
-	
+
 	// 판매자 상품 등록
 	int goodsInsert(GoodsVO vo);
-	
+
 	// 정산내역조회(1005 희수 추가)
-	List<ProfitVO> sellerProfitList(@Param("svo") SellerVO svo, @Param("key") String key, @Param("start") String start, @Param("end") String end, @Param("by") String by);
+	List<ProfitVO> sellerProfitList(@Param("svo") SellerVO svo, @Param("key") String key, @Param("start") String start,
+			@Param("end") String end, @Param("by") String by);
 
 	// 판매자회원 검색 / 1005 지혜 추가
-	List<UsersVO> sUserSearch(@Param("key")String key, @Param("val") String val);
-	
+	List<UsersVO> sUserSearch(@Param("key") String key, @Param("val") String val);
+
 	// 고객문의 조회
 	List<QnaVO> qnaSelectList(QnaVO vo);
-	
+
 	// 문의 상세보기
 	QnaVO qnaSelect(QnaVO vo);
-	
+
 	// 문의 검색
 	List<QnaVO> qnaSearch(@Param("key") String key, @Param("val") String val);
 
 	// 문의 답변
 	int qnaAnswer(QnaVO vo);
+
 }
