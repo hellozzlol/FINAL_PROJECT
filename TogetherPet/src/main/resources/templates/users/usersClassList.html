@@ -62,7 +62,6 @@
 									<th>클래스명</th>
 									<th>튜터명</th>
 									<th>수업시작일</th>
-									<th>수업장소</th>
 									<th style="text-align: center;">결제상태</th>
 									<th id="classEmpty" style="display: none;">[[${#lists.size(pageInfo.list)}]]</th>
 								</tr>
@@ -74,9 +73,8 @@
 									</td>
 									<td>[[${list.name}]]</td>
 									<td>[[${#dates.format(session.user.dt, 'yyyy-MM-dd')}]]</td>
-									<td>[[${list.address}]]</td>
 									<td style="text-align: center;">
-										<div th:switch="${list.pay}">
+										<div th:switch="${list.payYn}">
 											<p th:case="1">결제완료</p>
 											<p th:case="0">결제대기중</p>
 										</div>
