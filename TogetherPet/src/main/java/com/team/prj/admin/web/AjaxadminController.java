@@ -77,6 +77,20 @@ public class AjaxadminController {
 		return tutor.tutorSearch(key, val) ;
 	}
 	
+	// 전체 게시글 검색(커뮤니티)
+	@ResponseBody
+	@RequestMapping("boardSearchAjax")
+	public List<BoardVO> boardSearch(String key, String val){
+		return board.boardSearch(key, val);
+	}
+	
+	// 전체 게시글 검색(상품) goodsSearchAjax
+	@ResponseBody
+	@RequestMapping("goodsSearchAjaxAd")
+	public List<GoodsVO> goodsSearchAd(String key, String val){
+		return goods.goodsSearchAd(key, val);
+	}
+		
 	
 	// (관리자 페이지) 커뮤니티 글 삭제 
 	@PostMapping("/ajaxboardDelete")

@@ -25,11 +25,32 @@
 			커뮤니티
 			</h5>
 		<br><br>
+		
+		<!-- 검색 -->
+		<form class="row gy-2 gx-3 align-items-center" id="btn">
+		<div class="col-auto">
+			<select id="key" name="key" class="form-select">
+				<option value="1">닉네임</option>
+				<option value="2">제목</option>
+			</select>
+		</div>
+	
+		<div class="col-auto">
+			<input class="form-control" type="text" id="val" name="val">
+		</div>
+		<div class="col-auto">
+			<button type="button" class="btn btn-primary" id="searchBtn"
+				onclick="searchDo()">검색</button>
+		</div>
+		</form>
+		<br>
+		
+		
 		<!-- 커뮤니티 게시글 테이블 -->
 		<div class="card">
 			<h5 class="card-header"></h5>
 			<div class="table-responsive text-nowrap">
-				<table class="table">
+				<table class="table" id="bTable">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
@@ -40,7 +61,7 @@
 							<th>작성일자</th>
 						</tr>
 					</thead>
-					<tbody class="table-border-bottom-0">
+					<tbody class="table-border-bottom-0" id="body">
 						<tr th:each="b:${pageInfo.list}" th:id="${b.boardNo}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${b.boardNo}"></td>
@@ -94,6 +115,56 @@
 			}
 		</script>
 		<!-- 페이지네이션 -->
+		
+		<!-- 검색 Ajax -->
+		<script>
+		$("#searchBtn").on('click', searchDo)
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			
+			function searchDo(){
+				let key = document.getElementById('key').value;
+				let val = document.getElementById('val').value;
+				
+					$.ajax({
+						url: "/boardSearchAjax",
+						type: 'post',
+						beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token)},
+						data: {'key':key, 'val':val},
+						dataType: 'json',
+							success: function(response){
+							htmlView(response);	
+						},
+							error: function(){
+								console.log('error!!');
+							}
+					});
+					
+			function htmlView(data) { // 검색 결과 
+				 $("#body").remove();
+		         var tbody = $("<tbody id='body' />");
+		        
+		         $.each(data, function(index, item){
+		            var row =  $('<tr>').attr("onclick", "searchDo("+ item.boardNo +")")
+                    .append(
+                    		 $("<td />").text(item.ckbox),
+		                     $("<td />").text(item.boardNo),
+		                     $("<td />").text(item.categoty),
+		                     $("<td />").text(item.title),
+		                     $("<td />").text(item.nickname),
+		                     $("<td />").text(item.dt),
+		                         
+		                  );
+		            tbody.append(row);
+		         });
+		         $("#bTable").append(tbody);
+			}			
+	};
+	
+		</script>
+		
+		
 		
 	<!-- 체크박스 -->	
 		<script>

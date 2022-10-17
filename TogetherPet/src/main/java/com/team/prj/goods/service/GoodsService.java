@@ -80,5 +80,6 @@ public interface GoodsService {
 	// 교환요청 상태 업데이트(1004 선희 추가)
 	int changeUpdate(StateVO vo);
 	
-	
+	// (관리자 페이지) 검색 / 1017 지혜 추가
+	List<GoodsVO> goodsSearchAd(@Param("key") String key, @Param("val") String val);
 }

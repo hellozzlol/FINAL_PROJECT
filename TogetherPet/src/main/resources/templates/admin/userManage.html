@@ -59,7 +59,7 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-					<tbody class="table-border-bottom-0" >
+					<tbody class="table-border-bottom-0" id="body">
 						<tr th:each="u:${pageInfo.list}" th:id="${u.userNo}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${u.userNo}"></td>

@@ -221,7 +221,17 @@
 		DELETE FROM USERS WHERE user_no = #{userNo}
 	</delete>
 		
-
+	<!-- 일반회원 검색 -->
+	<select id="userSearch" resultType="com.team.prj.users.service.UsersVO">
+		SELECT *
+		FROM users
+		WHERE
+		<choose>  
+			<when test="key==1"> id like '%' || #{val}||'%'</when>
+			<when test="key==2"> name like '%' || #{val}||'%'</when>
+			<when test="key==3"> nickname like '%' || #{val}||'%'</when>
+		</choose>
+	</select>
 	
 		
 </mapper>
