@@ -90,39 +90,33 @@
 							</div>
 						</div>
 							<hr>
-							<div class="col-md-12" align="center">
-								<div class="col-md-6" style="float: left;">
+							<div class="row" align="center">
+								<div class="col-md-6">
 								<label for="exampleFormControlInput1" class="form-label">
 								<strong style="font-size: 18px;">대표 이미지 등록</strong></label>
-									<div class="button-wrapper" align="center">
-										<input type="file" id="file" name="file"/>
-											<button type="button"
-												class="btn btn-primary2 account-image-reset mb-4">
-												<i class="bx bx-reset d-block d-sm-none"></i> <span
-													class="d-none d-sm-block">Reset</span>
-											</button>
+									<div class="filebox">
+									    <input class="upload-name" value="첨부파일" placeholder="첨부파일" readonly="readonly">
+									    <label for="file">파일찾기</label> 
+									    <input type="file" id="file" name="file">
 									</div>
 								</div>
-								<div class="col-md-6" style="float: right;">
+								<div class="col-md-6">
 								<label for="exampleFormControlInput1" class="form-label">
 								<strong style="font-size: 18px;">상세 이미지 등록</strong></label>
-									<div class="button-wrapper" align="center">
-										<input type="file" id="file" name="file"/>
-											<button type="button"
-												class="btn btn-primary2 account-image-reset mb-4">
-												<i class="bx bx-reset d-block d-sm-none"></i> <span
-													class="d-none d-sm-block">Reset</span>
-											</button>
+									<div class="filebox">
+									    <input class="upload-name" value="첨부파일" placeholder="첨부파일" readonly="readonly">
+									    <label for="file">파일찾기</label> 
+									    <input type="file" id="file" name="file">
 									</div>
 								</div>
-							</div>
-						<div class="mb-3 col-md-12" align="center">
-							<input type="submit" class="btn btn-primary me-2" value="등록하기">
-							<input type="reset" class="btn btn-primary2 me-2" value="초기화">
-							<a href="/sellerGoodsList" class="btn btn-primary2 me-2">뒤로가기</a>
-						</div>
-					</form>
-				</div>
+							</div><br>
+							<div class="col-md-12" align="center">
+								<input type="submit" class="btn btn-primary me-2" value="등록하기">
+								<input type="reset" class="btn btn-primary2 me-2" value="초기화">
+								<a href="/sellerGoodsList" class="btn btn-primary2 me-2">뒤로가기</a>
+							</div>	
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -134,7 +128,40 @@
 		font-size: 23px;
 		line-height: 18px;
 	}
+	.filebox .upload-name {
+	    display: inline-block;
+	    height: 40px;
+	    padding: 0 10px;
+	    vertical-align: middle;
+	    border: 1px solid #dddddd;
+	    width: 50%;
+	    color: #999999;
+	}
+	.filebox label {
+	    display: inline-block;
+	    padding: 10px 20px;
+	    color: #fff;
+	    vertical-align: middle;
+	    background-color: #6a7964;
+	    cursor: pointer;
+	    height: 40px;
+	    margin-left: 10px;
+	}
+	.filebox input[type="file"] {
+	    position: absolute;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    border: 0;
+	}
 </style>
+<script>
+	$("#file").on('change', function(){
+	  var fileName = $("#file").val();
+	  $(".upload-name").val(fileName);
+	});
+</script>
 		
 	</div>
 	<!-- Content wrapper -->

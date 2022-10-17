@@ -5,22 +5,17 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageInfo;
 import com.team.prj.admin.service.ProfitVO;
 import com.team.prj.goods.service.GoodsService;
 import com.team.prj.goods.service.GoodsVO;
 import com.team.prj.orders.service.OrderVO;
 import com.team.prj.qna.service.QnaVO;
-import com.team.prj.scrap.service.ScrapVO;
 import com.team.prj.seller.service.SellerService;
 import com.team.prj.seller.service.SellerVO;
-import com.team.prj.users.service.UsersVO;
 
 import com.team.prj.state.service.StateVO;
 
@@ -28,7 +23,6 @@ import com.team.prj.state.service.StateVO;
 public class SellerAjaxController {
 	@Autowired
 	GoodsService goods;
-
 	@Autowired
 	private SellerService seller;
 
@@ -116,4 +110,5 @@ public class SellerAjaxController {
 		}
 		return msg;
 	}
+	
 }

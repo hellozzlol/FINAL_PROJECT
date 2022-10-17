@@ -1,6 +1,8 @@
 package com.team.prj.seller.mapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -33,7 +35,8 @@ public interface SellerMapper {
 	int goodsInsert(GoodsVO vo);
 
 	// 정산내역조회(1005 희수 추가)
-	List<ProfitVO> sellerProfitList(@Param("svo") SellerVO svo, @Param("key") String key, @Param("start") String start, @Param("end") String end, @Param("by") String by);
+	List<ProfitVO> sellerProfitList(@Param("svo") SellerVO svo, @Param("key") String key, @Param("start") String start,
+			@Param("end") String end, @Param("by") String by);
 
 	// 판매자회원 검색 / 1005 지혜 추가
 	List<UsersVO> sUserSearch(@Param("key") String key, @Param("val") String val);
@@ -49,5 +52,6 @@ public interface SellerMapper {
 
 	// 문의 답변
 	int qnaAnswer(QnaVO vo);
+
 
 }

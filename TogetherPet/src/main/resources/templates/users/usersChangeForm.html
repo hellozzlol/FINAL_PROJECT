@@ -79,7 +79,7 @@
 										th:value="${_csrf.token}"> <label for="type"
 										class="form-label"> <strong>교환사유</strong></label>
 									<div class="mb-1 col-md-6">
-										<select id="change" name="change">
+										<select id="change" name="change" class="form-select">
 											<option value="0">===선택===</option>
 											<option value="1">상품에 문제가 있어요</option>
 											<option value="2">주문한 상품과 다른 상품이 왔어요</option>
@@ -87,7 +87,7 @@
 											<option value="4">상품을 받지 못했어요</option>
 										</select>
 									</div>
-									<br> <br>
+									<br>
 									<div class="mb-3 col-md-12">
 										<label for="exampleFormControlInput" class="form-label"><strong>상세사유</strong></label>
 										<textarea name="changeDetail" class="form-control"

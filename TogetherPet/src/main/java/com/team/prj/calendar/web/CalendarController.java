@@ -8,7 +8,7 @@ public class CalendarController {
 
 	@GetMapping("/calendar")
 	public String calendar() {
-		return "/calendar/calendar";
+		return "calendar/calendar";
 	}
 
 }
