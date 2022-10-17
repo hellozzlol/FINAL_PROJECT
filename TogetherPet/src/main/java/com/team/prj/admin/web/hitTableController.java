@@ -16,8 +16,9 @@ public class hitTableController {
 	private hitTableService hit;
 	
 	// 조회수 테이블
-	@RequestMapping("/admin/postCount")
-	public String userScrap(Model model, hitTableVO vo) {
+	@RequestMapping("/manager/postCount")
+	public String countTable(Model model, hitTableVO vo) {
+		System.out.println("CONTROLLER IN");
 		List<hitTableVO> hitAll = hit.hitAll(vo);
 		List<hitTableVO> hitTable = hit.hitTable(vo);
 		model.addAttribute("cnt", hitAll);

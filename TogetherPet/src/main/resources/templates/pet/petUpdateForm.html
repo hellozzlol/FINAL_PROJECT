@@ -39,16 +39,13 @@
 							<div class="card-body">
 								<div
 									class="d-flex align-items-start align-items-sm-center gap-4">
-									<img th:src="${list.attach}" alt="user-avatar"
+									<img src="/admin/assets/img/avatars/petProfile.jpg" style="margin-right: 10px;" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
 										id="uploadedAvatar" />
-									<div class="button-wrapper">
-										<input type="file" id="file" name="file" />
-										<!-- <button type="button"
-											class="btn btn-primary2 account-image-reset mb-4">
-											<i class="bx bx-reset d-block d-sm-none"></i> <span
-												class="d-none d-sm-block">Reset</span>
-										</button> -->
+									<div class="filebox">
+									    <input class="upload-name" value="첨부파일" placeholder="첨부파일" readonly="readonly">
+									    <label for="file">파일찾기</label> 
+									    <input type="file" id="file" name="file">
 										<p class="text-muted mb-0">Allowed JPG or PNG.</p>
 									</div>
 								</div>
@@ -150,6 +147,11 @@
 	var selectBoxChange4 =  function(value) {
 		$("#changeInput4").val(value);
 	}
+	
+	$("#file").on('change', function(){
+	  var fileName = $("#file").val();
+	  $(".upload-name").val(fileName);
+	});
 </script>
 <style>
 	.shipping_text h3 {
@@ -164,6 +166,33 @@
 	#changeInput1, #changeInput2, #changeInput3, #changeInput4 {
 		width: 290px;
 		display: inline;
+	}
+	.filebox .upload-name {
+	    display: inline-block;
+	    height: 40px;
+	    padding: 0 10px;
+	    vertical-align: middle;
+	    border: 1px solid #dddddd;
+	    width: 50%;
+	    color: #999999;
+	}
+	.filebox label {
+	    display: inline-block;
+	    padding: 10px 20px;
+	    color: #fff;
+	    vertical-align: middle;
+	    background-color: #6a7964;
+	    cursor: pointer;
+	    height: 40px;
+	    margin-left: 10px;
+	}
+	.filebox input[type="file"] {
+	    position: absolute;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    border: 0;
 	}
 </style>
 

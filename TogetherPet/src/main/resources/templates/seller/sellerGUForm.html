@@ -46,7 +46,7 @@
 								<strong>상품카테고리</strong></label><br>
 								<input type="text" class="form-control" name="category"
 									id="changeInput" th:value="${list.category}" readonly="readonly" />
-								<select id="defaultSelect" onchange="selectBoxChange(this.value);">
+								<select id="defaultSelect" class="form-select" onchange="selectBoxChange(this.value);">
 									<option value="0">===선택===</option>
 									<option value="FOOD">사료</option>
 									<option value="SNACK">간식</option>
@@ -122,7 +122,14 @@
 		<!-- / Content -->
 		
 <style>
+	#defaultSelect {
+		width: 140px;
+		display: inline;
+		float: right;
+	}
 	#changeInput {
+		width: 100%;
+		display: inline;
 		float: left;
 	}
 	.shipping_text h3 {
@@ -133,26 +140,6 @@
 	.option .form-control {
 		display: inline;
 		width: 30%;
-	}
-	.form-select {
-	  display: block;
-	  width: 100%;
-	  padding: 0.4375rem 1.875rem 0.4375rem 0.875rem;
-	  -moz-padding-start: calc(0.875rem - 3px);
-	  font-size: 0.9375rem;
-	  font-weight: 400;
-	  line-height: 1.53;
-	  color: #697a8d;
-	  background-color: #fff;
-	  background-repeat: no-repeat;
-	  background-position: right 0.875rem center;
-	  background-size: 17px 12px;
-	  border: 1px solid #d9dee3;
-	  border-radius: 0.375rem;
-	  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	  -webkit-appearance: none;
-	     -moz-appearance: none;
-	          appearance: none;
 	}
 	.filebox .upload-name {
 	    display: inline-block;

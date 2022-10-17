@@ -57,7 +57,7 @@
 						<div class="single_product">
 							<div class="product_thumb">
 								<a th:href="@{classSelect(classNo=${list.classNo})}">
-									<img th:src="${list.thumb}">
+									<img th:src="@{displays(fileName=${list.thumb})}" id="thumb_img">
 								</a>
 								<div class="product_label">
 									<span>[[${list.category}]]</span>
