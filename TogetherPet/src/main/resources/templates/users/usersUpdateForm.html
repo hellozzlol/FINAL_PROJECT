@@ -42,9 +42,11 @@
 									class="d-flex align-items-start align-items-sm-center gap-4">
 									<img th:src="${session.user.attach}" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
-										id="uploadedAvatar" />
-									<div class="button-wrapper">
-										<input type="file" id="file" name="file"/>
+										id="uploadedAvatar" style="margin-right: 20px;"/>
+									<div class="filebox">
+									    <input class="upload-name" value="첨부파일" placeholder="첨부파일" readonly="readonly">
+									    <label for="file">파일찾기</label> 
+									    <input type="file" id="file" name="file">
 										<p class="text-muted mb-0">Allowed JPG or PNG.</p>
 									</div>
 								</div>
@@ -121,36 +123,63 @@
 		<!-- Content wrapper -->
 
 <style>
-.shipping_text h3 {
-	margin-bottom: 7px;
-	font-size: 23px;
-	line-height: 18px;
-}
-
-#detailAddress {
-	display: inline;
-}
-
-.addressForm #postcode {
-	width: 30%;
-	display: inline;
-}
-
-.btn-primary3 {
-	color: #272727;
-	font-size: 16px;
-	line-height: 30px;
-	margin-bottom: 5px;
-	height: 40px;
-	padding: 0 10px;
-	background: #6a7964;
-	border-radius: 0;
-	position: relative;
-	z-index: 9;
-	color: #ffffff;
-	border: 0;
-	font-weight: 600;
-}
+	.shipping_text h3 {
+		margin-bottom: 7px;
+		font-size: 23px;
+		line-height: 18px;
+	}
+	
+	#detailAddress {
+		display: inline;
+	}
+	
+	.addressForm #postcode {
+		width: 30%;
+		display: inline;
+	}
+	
+	.btn-primary3 {
+		color: #272727;
+		font-size: 16px;
+		line-height: 30px;
+		margin-bottom: 5px;
+		height: 40px;
+		padding: 0 10px;
+		background: #6a7964;
+		border-radius: 0;
+		position: relative;
+		z-index: 9;
+		color: #ffffff;
+		border: 0;
+		font-weight: 600;
+	}
+	.filebox .upload-name {
+	    display: inline-block;
+	    height: 40px;
+	    padding: 0 10px;
+	    vertical-align: middle;
+	    border: 1px solid #dddddd;
+	    width: 50%;
+	    color: #999999;
+	}
+	.filebox label {
+	    display: inline-block;
+	    padding: 10px 20px;
+	    color: #fff;
+	    vertical-align: middle;
+	    background-color: #6a7964;
+	    cursor: pointer;
+	    height: 40px;
+	    margin-left: 10px;
+	}
+	.filebox input[type="file"] {
+	    position: absolute;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    border: 0;
+	}
 </style>
 
 <script type="text/javascript">
@@ -204,6 +233,11 @@
 			}
 		}).open();
 	}
+	
+	$("#file").on('change', function(){
+	  var fileName = $("#file").val();
+	  $(".upload-name").val(fileName);
+	});
 </script>
 
 

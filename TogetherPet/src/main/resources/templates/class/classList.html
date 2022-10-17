@@ -53,6 +53,34 @@ document.addEventListener('DOMContentLoaded', function() {
 	    })
 	})
 	
+	// 클래스 찜하기 버튼 클릭시
+	$("#all").on('click','.scrapBtn2', function() {
+		let categoryId = $(this).children().val(); // 클래스 카테고리 c
+		console.log(categoryId);
+		let classNo =$(this).children().next().val(); // classNo 클래스 번호
+		console.log(classNo);
+		let userNo = $(this).children().next().next().val(); // userNo 유저번호
+		console.log(userNo);
+		
+		// 스크랩 등록 처리
+		if (!confirm("스크랩 하시겠습니까?")) {
+			return;
+		}
+		
+		$.ajax({
+	         url:'/scrapInsert.do',
+	         type:'post',
+	         beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token)},
+	     	 dataType:'json',
+	         data:{categoryId:categoryId, userNo:userNo, boardNo:classNo},
+	         success:function(data,idx,arr){
+			 	// console.log(arr);
+				alert("스크랩이 성공적으로 등록되었습니다.")
+	       }
+	    })
+	})
+	
 })
 
 </script>
@@ -64,6 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 .page-link {
 	color:black;
+}
+#top {
+    overflow:scroll;
 }
 </style>
 
@@ -385,10 +416,13 @@ document.addEventListener('DOMContentLoaded', function() {
 											</div>
 										</div>
 										<div class="add_to_cart">
-											<a class="btn btn-primary" href="#" data-tippy="Add To Cart"
+											<a class="btn btn-primary scrapBtn2" data-tippy="Add To Cart"
 												data-tippy-inertia="true" data-tippy-delay="50"
-												data-tippy-arrow="true" data-tippy-placement="top">클래스
-												찜하기</a>
+												data-tippy-arrow="true" data-tippy-placement="top">클래스 찜하기
+												<input type="hidden" th:value="${c.categoryId}" name="categoryId"> 
+												<input type="hidden" th:value="${c.classNo}" name="classNo">
+												<input type="hidden" th:value="${session.user.userNo}" name="userNo">
+											</a>
 										</div>
 									</div>
 

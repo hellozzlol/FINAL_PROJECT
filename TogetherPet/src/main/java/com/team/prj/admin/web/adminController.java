@@ -94,13 +94,6 @@ public class adminController {
 		return "admin/visitCount";
 	}
 
-	// 조회수
-	@GetMapping("/manager/postCount")
-	public String postCount(Model model) {
-		//
-		return "admin/postCount";
-	}
-
 	// 일반회원 관리
 	@GetMapping("/manager/userManage")
 	public String userManage(Model model, UsersVO vo, HttpServletRequest request,

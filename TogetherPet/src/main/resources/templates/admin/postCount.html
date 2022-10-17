@@ -62,14 +62,12 @@
 														<thead>
 															<tr>
 																<th style="width: 30%;">날짜</th>
-																<th style="width: 30%;">카테고리</th>
 																<th style="width: 40%;">전체조회수</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr th:each="ct:${cntTb}">
-																<td></td>
-																<td>[[${ct.id}]]</td>
+																<td>[[${ct.dt}]]</td>
 																<td>[[${ct.hit}]]</td>
 															</tr>
 														</tbody>
@@ -166,7 +164,7 @@
 		// Data Tables
 		$('.table').DataTable({
 			lengthChange : false,
-			pageLength : 10,
+			pageLength : 5,
 			lengthMenu : [ 10, 20, 30, 40, 50 ],
 			info : true,
 			searching : false,

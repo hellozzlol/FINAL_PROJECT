@@ -8,45 +8,7 @@
 <meta id="_csrf_header" name="_csrf_header"
    th:content="${_csrf.headerName}" />
 <title>Together Pet</title>
-<script>
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
 
-	// select 박스 => 직접 입력 클릭시
-	$(function() {
-		// 직접입력 input box(hidden)
-		$("#selboxDirect1").hide();
-
-		$("#defaultSelect1").change(function() {
-			// 직접입력 누르면 나타나는 input box
-			if ($("#defaultSelect1").val() == "direct") {
-				$("#selboxDirect1").show();
-			} else {
-				$("#selboxDirect1").hide();
-			}
-		})
-	})
-	$(function() {
-		// 직접입력 input box(hidden)
-		$("#selboxDirect2").hide();
-
-		$("#defaultSelect2").change(function() {
-			// 직접입력 누르면 나타나는 input box
-			if ($("#defaultSelect2").val() == "direct") {
-				$("#selboxDirect2").show();
-			} else {
-				$("#selboxDirect2").hide();
-			}
-		})
-	})
-</script>
-<style>
-.shipping_text h3 {
-	margin-bottom: 7px;
-	font-size: 23px;
-	line-height: 18px;
-}
-</style>
 <!-- Core CSS -->
 <link rel="stylesheet" href="/assets/css/core.css"
 	class="template-customizer-core-css" />
@@ -83,8 +45,10 @@
 									<img src="/admin/assets/img/elements/dog.png" alt="user-avatar"
 										class="d-block rounded" height="100" width="100"
 										id="uploadedAvatar" />
-									<div class="button-wrapper">
-										<input type="file" id="file" name="file" />
+									<div class="filebox">
+									    <input class="upload-name" value="첨부파일" placeholder="첨부파일" readonly="readonly">
+									    <label for="file">파일찾기</label> 
+									    <input type="file" id="file" name="file">
 										<p class="text-muted mb-0">Allowed JPG or PNG.</p>
 									</div>
 								</div>
@@ -172,6 +136,80 @@
 		</div>
 		<!-- Content wrapper -->
 		<!--shop wrapper end-->
+
+<style>
+	.shipping_text h3 {
+		margin-bottom: 7px;
+		font-size: 23px;
+		line-height: 18px;
+	}
+	.filebox .upload-name {
+	    display: inline-block;
+	    height: 40px;
+	    padding: 0 10px;
+	    vertical-align: middle;
+	    border: 1px solid #dddddd;
+	    width: 50%;
+	    color: #999999;
+	}
+	.filebox label {
+	    display: inline-block;
+	    padding: 10px 20px;
+	    color: #fff;
+	    vertical-align: middle;
+	    background-color: #6a7964;
+	    cursor: pointer;
+	    height: 40px;
+	    margin-left: 10px;
+	}
+	.filebox input[type="file"] {
+	    position: absolute;
+	    width: 0;
+	    height: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    border: 0;
+	}
+</style>
+<script>
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+
+	// select 박스 => 직접 입력 클릭시
+	$(function() {
+		// 직접입력 input box(hidden)
+		$("#selboxDirect1").hide();
+
+		$("#defaultSelect1").change(function() {
+			// 직접입력 누르면 나타나는 input box
+			if ($("#defaultSelect1").val() == "direct") {
+				$("#selboxDirect1").show();
+			} else {
+				$("#selboxDirect1").hide();
+			}
+		})
+	})
+	$(function() {
+		// 직접입력 input box(hidden)
+		$("#selboxDirect2").hide();
+
+		$("#defaultSelect2").change(function() {
+			// 직접입력 누르면 나타나는 input box
+			if ($("#defaultSelect2").val() == "direct") {
+				$("#selboxDirect2").show();
+			} else {
+				$("#selboxDirect2").hide();
+			}
+		})
+	})
+	
+	$("#file").on('change', function(){
+	  var fileName = $("#file").val();
+	  $(".upload-name").val(fileName);
+	});
+</script>		
+		
+		
 	</div>
 
 	<!--shop  area end-->

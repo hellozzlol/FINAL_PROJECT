@@ -2,6 +2,7 @@ package com.team.prj.users.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,8 +11,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -451,4 +458,23 @@ public class UsersController {
 		return "redirect:/scrapHospital";
 	}
 
+	// 이지지 띄우기
+	@GetMapping("/displays")
+	public ResponseEntity<byte[]> getImage(String fileName){
+		//File file = new File("C:\\Users\\admin\\git\\FINAL_PROJECT\\TogetherPet\\src\\main\\resources\\Temp\\" + fileName);
+
+		//테스트
+		File file = new File("/home/Temp", fileName);
+		ResponseEntity<byte[]> result = null;
+		
+		try {
+			MultiValueMap<String,String> header = new LinkedMultiValueMap<String, String>();
+			header.add("Content-type", Files.probeContentType(file.toPath()));
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 }

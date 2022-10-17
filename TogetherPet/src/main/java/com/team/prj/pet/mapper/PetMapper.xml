@@ -30,7 +30,7 @@
 			#{breed},
 			#{weight},
 			#{gender},
-			#{birth},
+			TO_DATE(#{birth}, 'yyyy-MM-dd'),
 			#{neu},
 			1,
 			#{userNo},

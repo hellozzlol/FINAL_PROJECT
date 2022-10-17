@@ -45,10 +45,10 @@
 							<div class="row petrow">
 								<div class="col-md-4" align="center"
 									style="display: block; margin: auto;">
-									<a th:href="@{/petSelect(petNo=${list.petNo})}"> <img
+									<a th:href="@{petSelect(petNo=${list.petNo})}"> <img
 										class="card-img card-img-left"
-										th:src="${list.attach}" alt="Card image"
-										style="width: 220px; height: 220px;" />
+										src="/admin/assets/img/avatars/petProfile.jpg" alt="Card image"
+										style="margin-left: 5px;" id="thumb_img"/>
 									</a>
 								</div>
 								<div class="col-md-8" style="border-left: 1px solid lightgray;">
