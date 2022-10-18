@@ -22,7 +22,7 @@
 						                   END AS ID
 		FROM HITTABLE
 		GROUP BY ID, DT, TITLE
-		ORDER BY DT
+		ORDER BY DT DESC
 	</select>
 	
 	<!-- 조회수 테이블(합계) -->
@@ -30,6 +30,6 @@
 		SELECT DT, SUM(HIT) AS HIT
 		FROM HITTABLE
 		GROUP BY DT
-		ORDER BY DT
+		ORDER BY DT DESC
 	</select>
 </mapper>

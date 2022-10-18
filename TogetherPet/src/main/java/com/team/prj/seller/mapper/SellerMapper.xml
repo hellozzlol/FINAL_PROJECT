@@ -69,30 +69,29 @@
 			CASE WHEN max(goods_no) IS NULL
 			THEN 1
 			ELSE
-			max(goods_no)
-			+ 1
+			MAX(goods_no) + 1
 			END AS no
 			FROM goods
 		</selectKey>
 
 		INSERT INTO GOODS
 		VALUES(#{goodsNo},
-		#{name},
-		#{amount},
-		#{category},
-		#{price},
-		#{info},
-		0,
-		sysdate,
-		0,
-		#{hit},
-		#{sellerNo},
-		#{dc},
-		's',
-		10,
-		'',
-		#{thumb, jdbcType = VARCHAR},
-		#{detail, jdbcType = VARCHAR})
+		 	   #{name},
+		       #{amount},
+			   #{category},
+			   #{price},
+			   #{info},
+			   0,
+			   sysdate,
+			   0,
+			   #{hit},
+			   #{sellerNo},
+			   #{dc},
+			   's',
+			   10,
+			   '',
+			   #{thumb, jdbcType = VARCHAR},
+			   #{detail, jdbcType = VARCHAR})
 	</insert>
 
 	<!-- 사진 불러오기 -->
