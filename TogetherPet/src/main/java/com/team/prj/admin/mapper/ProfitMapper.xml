@@ -40,7 +40,7 @@
 		from    profit
 		where   minus_yn=1 <!-- and category_id='S' -->
 		<if test="start != null">
-		and    to_date(minus_dt, 'yy/mm/dd')=to_date(#{start}, 'yy/mm/dd')
+		and     minus_dt = to_date(#{start}, 'yy/mm/dd')
 		</if>
 		group by  to_date(to_char(minus_dt, 'yyyy-mm-dd'),'yyyy-mm-dd')
 		order by  1 desc
