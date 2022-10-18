@@ -122,37 +122,16 @@
 
 											<br> <br>
 											<div class="price_box">
-												<span class="old_price">KRW
-													[[${#numbers.formatInteger(gm.price,3,'COMMA')}]]</span><br>
 												<span class="current_price">KRW
 													[[${#numbers.formatInteger(gm.price*(1-gm.dc),3,'COMMA')}]]</span>
 											</div>
 											<div class="product_availalbe">
 												<ul class="d-flex">
-													<li><i class="icon-layers icons"></i> Only <span
-														id="amount">[[${gm.amount}]]</span> left</li>
+													
 													<li>Available: <span id="stock" class="stock">In
 															Stock</span></li>
 												</ul>
 											</div>
-
-											<div class="product_variant">
-
-												<div class="variant_quantity_btn d-flex">
-													<div class="pro-qty border">
-														<input min="1" max="100" type="text" id="setQty" value="1">
-													</div>
-													<button class="button btn btn-primary" type="button"
-														id="addCart">
-														<i class="ion-android-add"></i> Add To Cart
-													</button>
-
-													<a class="wishlist" href="#"><i class="ion-ios-heart"></i></a>
-
-												</div>
-											</div>
-
-
 										</div>
 									</div>
 								</div>
@@ -349,7 +328,7 @@
 			    });
 			})
 			
-			// 반려 - return message 입력 후 '저장' 클릭 시
+			// 반려 - return message 입력 후 '저장'
 			$('#gUpdate').on('click', function(){
 			    let chkbox = document.querySelectorAll(".chk");
 			    //let uploadState = '2';
@@ -367,7 +346,6 @@
 									xhr.setRequestHeader(header, token)
 								},
 								data: {
-									//uploadState: uploadState,
 									returnMessage: returnMessage,
 									goodsNo: no
 								}

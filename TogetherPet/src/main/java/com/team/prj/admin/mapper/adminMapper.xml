@@ -42,7 +42,7 @@
 	<!-- 일반회원 상태 변경(활동정지) -->
 	<update id="uStateUpdate">
 		update users
-		set state='1'
+		set state=#{state}
 		where user_no = #{userNo}
 	</update>
 	

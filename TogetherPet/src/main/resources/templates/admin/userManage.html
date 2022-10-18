@@ -60,7 +60,7 @@
 						</tr>
 					</thead>
 					<tbody class="table-border-bottom-0" id="body">
-						<tr th:each="u:${pageInfo.list}" th:id="${u.userNo}">
+						<tr th:each="u:${pageInfo.list}" th:id="${u.userNo}" th:name="${u.state}">
 							<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()"></td>
 							<td th:text="${u.userNo}"></td>
 							<td th:text="${u.id}"></td>
@@ -74,7 +74,7 @@
 		</div>
 		<!-- Table end-->
 		<br>
-		<button type="button" class="btn btn-sm btn-primary" id="uUpdate">변경</button>
+ 	<button type="button" class="btn btn-sm btn-primary" id="uUpdate">변경</button>
 		<br> <br>
 
 		<!-- 페이지네이션 -->
@@ -215,27 +215,28 @@
 		<!-- 선택 후 변경 클릭 시 -->
 		<script>
 		$('#uUpdate').on('click', function(){
-			let chkbox = document.querySelectorAll(".chk");
-				console.log(chkbox);
-			 chkbox.foreach(elem => {
-				 	console.log(elem);
-				 	
-				 if(elem.checked==true){
-				let no = elem.closest('tr').getAttribute('id')
-				  console.log(no);
-			$.ajax({
+		 var chk_length = document.getElementsByName("chk").length;
+	     var chk_list = [];
+	     var state_list = [];
+	     
+			for(var i=0; i<chk_length; i++){
+				if(document.getElementsByName("chk")[i].checked == true){
+					chk_list.push(document.getElementsByName("chk")[i].closest('tr').getAttribute('id'));
+					state_list.push(document.getElementsByName("chk")[i].closest('tr').getAttribute('name'));
+				}
+			} 
+ 			$.ajax({
 				url: '/userUpdateAjax',
 				type: 'post',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(header, token)},
-				data: {userNo: no
+				data: {userList: chk_list,
+					   stateList : state_list
 					 }
 			})
 			.done(res=>{
-				location.href-'/manager/userManage';
+				location.href='/manager/userManage';
 				})
-			} 
-		});
 	})
 		
 		</script>

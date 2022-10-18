@@ -114,10 +114,9 @@ public class AjaxadminController {
 	// 상품, 클래스 상태 업데이트 - 승인
 	@RequestMapping("postUpdateAjax")
 	public int postUpdate(String category, int no){
-		System.out.println("ajax===========");
 		System.out.println(category);
 		System.out.println(no);
-		System.out.println("===========");
+		//System.out.println("===========");
 		int cnt = 0;
 		GoodsVO g = new GoodsVO();
 		ClassVO c = new ClassVO();
@@ -130,7 +129,6 @@ public class AjaxadminController {
 		}
 		return cnt;
 	}
-	
 	
 	// 상품 상태 업데이트 - 반려
 	@RequestMapping("goodsRefuseAjax")
@@ -148,12 +146,21 @@ public class AjaxadminController {
 		return cnt;
 	}
 	
-	// *** 일반회원 상태 업데이트 - 활동정지 // 다시 확인하기
+	// *** 일반회원 상태 업데이트 - 활동정지
+	@ResponseBody
 	@RequestMapping("userUpdateAjax")
-	public int uStateUpdate(UsersVO vo) {
-		int cnt = 0;
-		cnt = admin.uStateUpdate(vo);
-		return cnt;
+	public void uStateUpdate(@RequestParam(value="userList[]") List<String> chkList,
+							 @RequestParam(value="stateList[]") List<String> stateList) {
+		UsersVO vo = new UsersVO();
+		for (int i=0; i<chkList.size(); i++) {
+			vo.setUserNo(Integer.parseInt(chkList.get(i)));
+			if(stateList.get(i).equals("활동정지")) {
+				vo.setState("0");
+			}else {
+				vo.setState("1");
+			}
+			admin.uStateUpdate(vo);
+		}
 	}
 	
 	
@@ -171,20 +178,12 @@ public class AjaxadminController {
 		LocalDate now = LocalDate.now(); // 'yyyy-mm-dd'
 		LocalTime time = LocalTime.now();
 		ato.setState(0); // 디폴트 값 0(정상)으로 설정
-		System.out.println("==============================");
 		System.out.println(now);
 		
 		// 오늘 날짜 데이터 있는지 확인
 		ato.setStartDt(now.toString()+" "+time.toString().substring(0, 8));
 		List<HashMap<String,Object>> attendList = attend.attendSelectList(ato.getAdNo());
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println(attendList.contains(now.toString()));
-		/*
-		 * for(HashMap<String,Object> map : attendList) {
-		 * if(map.get("START_DT").toString().substring(0, 8).equals(now.toString())) { }
-		 * }
-		 */
-		
 		
 		//9시 넘으면 지각
 		if(time.getHour()>9||(time.getHour()==9&&time.getMinute()>=1)){
@@ -203,9 +202,7 @@ public class AjaxadminController {
 				String n = now.toString();
 				String at = attendList.get(i).get("START_DT").toString().substring(0,10);
 				System.out.println(n);
-				System.out.println("==================");
 				System.out.println(at);
-				System.out.println("==================");
 				System.out.println(n.equals(at));
 				
 				if(n.equals(at)) {

@@ -18,6 +18,6 @@ public interface adminMapper {
 	int goodsRefuse(GoodsVO vo); // 상품 상태 업데이트 - 반려
 	int classRefuse(ClassVO vo); // 클래스 상태 업데이트 - 반려
 	
-	int uStateUpdate(UsersVO vo); // 일반회원 상태 업데이트
+	void uStateUpdate(UsersVO vo); // 일반회원 상태 업데이트
 	
 }
