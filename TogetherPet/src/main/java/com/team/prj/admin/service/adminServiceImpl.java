@@ -58,9 +58,9 @@ public class adminServiceImpl implements adminService {
 	}
 
 	@Override
-	public int uStateUpdate(UsersVO vo) {
+	public void uStateUpdate(UsersVO vo) {
 		// 일반회원 상태 업데이트
-		return map.uStateUpdate(vo);
+		map.uStateUpdate(vo);
 	}
 
 

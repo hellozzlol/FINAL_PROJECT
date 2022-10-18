@@ -158,14 +158,12 @@ public class adminController {
 		}
 		model.addAttribute("pageInfo", PageInfo.of(goods.goodsList(key)));
 		
-		//vo.setGoodsNo(1);
 		vo = goods.goodsSelectOne(vo);
 		model.addAttribute("goods", vo);
-		System.out.println("vo확인=========================" + vo);
+		//System.out.println("vo확인==========" + vo);
 		
 		List<PhotoVO> list = goods.goodsPhotoList(vo);
 		model.addAttribute("photoList", list);
-		
 		return "admin/goodsConfirm";
 	}
 
