@@ -71,7 +71,7 @@
 		select *
 		from class
 		where tutor_no = #{tutorNo}
-		order by upload_date
+		order by upload_date desc
 	</select>
 	
 	
