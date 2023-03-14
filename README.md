@@ -3,7 +3,8 @@
 반려동물 포털사이트를 제작하였으며
 ‘같이’의 ‘TOGETHER’에 ‘동물’의 ‘PET’를 덧붙인 합성어로 
 반려동물과 함께 일상을 살아가자 라는 의미를 가지고 있습니다.
-![image](https://user-images.githubusercontent.com/103908012/225008407-b73fa864-d3c8-4018-8424-cd774a3a0e64.png)
+
+
 
 
 # 사용기술
